@@ -17,10 +17,12 @@ export class ChatActions {
       })
     }
     if (response.action === 'chat_notification' && response.data.type == 'notification_count') {
-      this.serviceManager.getCommonEventService().broadcast({
-        channel: 'ChatConversationService',
-        action: 'addNotification',
-        payload: response.data
+      ['ChatConversationService', 'ChatNotificationComponent'].forEach(component => {
+        this.serviceManager.getCommonEventService().broadcast({
+          channel: component,
+          action: 'addNotification',
+          payload: response.data
+        })
       })
     }
 

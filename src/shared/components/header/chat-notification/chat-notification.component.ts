@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { CHAT_CONVERSATIONS, Constants } from '@shared/constant';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { CHAT_CONVERSATIONS, Constants, STORE_CONVERSATIONS } from '@shared/constant';
 import { WTHNavigateService } from '@shared/services/wth-navigate.service';
 import { Router } from '@angular/router';
 import { ConnectionNotificationService } from '@shared/services/connection-notification.service';
@@ -12,7 +12,12 @@ import { Conversation } from '@chat/shared/models/conversation.model';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { Observable } from 'rxjs/Observable';
-import { AuthService, ChatCommonService } from '@shared/services';
+import { AuthService, ChatCommonService, CommonEventHandler, CommonEventService } from '@shared/services';
+import { Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { takeUntil, map, switchMap } from 'rxjs/operators';
+import { Conversations } from '@shared/shared/models/chat/conversations.list.model';
+import { SET_CHAT_CONVERSATIONS } from '@core/store/chat/conversations.reducer';
 
 declare var $: any;
 
@@ -21,21 +26,26 @@ declare var $: any;
   templateUrl: './chat-notification.component.html',
   styleUrls: ['./chat-notification.component.scss']
 })
-export class ChatNotificationComponent implements OnInit {
+export class ChatNotificationComponent extends CommonEventHandler implements OnInit, OnDestroy {
   readonly tooltip: any = Constants.tooltip;
   readonly defaultAvatar: string = Constants.img.avatar;
   readonly urls: any = Constants.baseUrls;
-  conversations: any = [];
-  @Input() notificationCount = 0;
+  conversations: Conversations = new Conversations();
+  notificationCount = 0;
   links: any;
+  inChat: boolean = false;
+  channel: any = 'ChatNotificationComponent';
+  destroy$ = new Subject();
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
 
   constructor(
     private navigateService: WTHNavigateService,
     private apiBaseService: ApiBaseService,
     private chatCommonService: ChatCommonService,
+    public commonEventService: CommonEventService,
     private router: Router,
     private storageService: StorageService,
+    private store: Store<any>,
     public connectionService: ConnectionNotificationService,
     public notificationService: NotificationService,
     public handlerService: HandlerService,
@@ -43,56 +53,31 @@ export class ChatNotificationComponent implements OnInit {
     public authService: AuthService,
     private wthEmojiService: WTHEmojiService
   ) {
+    super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
   ngOnInit() {
-    // This function is relocated to w-header components for PWA bug fixes
-    // if (this.authService.isAuthenticated()) {
-    //   this.apiBaseService
-    //     .addCommand(ConversationApiCommands.notificationsCount())
-    //     .subscribe((res: any) => {
-    //       this.notificationCount = res.data.count;
-    //     });
-    // }
-    this.handlerService.addListener(
-      'remove_notification_after_select_header',
-      'on_conversation_select',
-      (contact: any) => {
-        if (
-          this.notificationCount > 0 &&
-          this.notificationCount - contact.notification_count > 0
-        ) {
-          this.notificationCount -= contact.notification_count;
-        } else {
-          this.notificationCount = 0;
-        }
-        this.conversations = this.conversations.map((conversation: any) => {
-          if (conversation.id === contact.group_json.id) {
-            conversation.notification_count = 0;
-          }
-          return conversation;
-        });
+    // in chat only
+    this.store.select(STORE_CONVERSATIONS).pipe(takeUntil(this.destroy$)).subscribe((conversations: Conversations) => {
+      if (conversations) {
+        this.inChat = true;
+        this.notificationCount = conversations.getAllNotifications();
       }
-    );
-    this.handlerService.addListener(
-      'add_notification',
-      'on_notification_come',
-      (res: any) => {
-        this.notificationCount += res.count;
-      }
-    );
+    })
+  }
 
-    this.storageService.getAsync(CHAT_CONVERSATIONS).subscribe(res => {
-      // console.log('conversations: ', res);
-      if (res && res.data) {
-        this.conversations = res.data;
-        this.notificationCount = this.conversations.reduce(
-          (acc, item) => acc + item.notification_count,
-          0
-        );
-      }
-    });
+  updateNotificationCount(data: any){
+    this.notificationCount = data;
+  }
+
+  ngOnDestroy(){
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  addNotification(res: any){
+    if(!this.inChat) this.notificationCount += 1;
   }
 
   gotoChat() {
@@ -101,54 +86,35 @@ export class ChatNotificationComponent implements OnInit {
   }
 
   toggleViewNotifications() {
-    this.apiBaseService
-      .addCommand(ConversationApiCommands.mostRecentConversations())
-      .subscribe((res: any) => {
-        console.log(res);
-
-        this.links = res.meta.links;
-        this.conversations = res.data;
-        // this.visibleConversations = this.conversations.filter(c => this.visibleConversationIds.includes(c.group_user.id));
-      });
+    this.apiBaseService.get('zone/chat/contacts').pipe(map(res => new Conversations(res))).subscribe((conversations: Conversations) => {
+      this.conversations = conversations;
+      this.links = conversations.meta.links;
+    })
   }
 
   markAllAsRead() {
     this.apiBaseService
       .addCommand(ConversationApiCommands.markAllAsRead())
-      .subscribe((res: any) => {
+      .subscribe(res => {
         this.notificationCount = 0;
-        this.conversations = this.conversations.map((conversation: any) => {
-          conversation.notification_count = 0;
-          return conversation;
-        });
-        this.updateChatStore('markAllAsRead');
+        this.conversations.markAllAsRead();
+        if (this.inChat) this.updateChatStore();
       });
   }
 
   markAsRead(c: Conversation) {
-    const group_id = c.group_json.id;
+    const group_id = c.group.id;
     this.apiBaseService
       .addCommand(ConversationApiCommands.markAsRead({ id: group_id }))
       .subscribe((res: any) => {
-        if (this.notificationCount > 0) {
-          if (this.notificationCount - res.data.old > 0) {
-            this.notificationCount -= res.data.old;
-          } else {
-            this.notificationCount = 0;
-          }
-        }
-        this.conversations = this.conversations.map((conversation: any) => {
-          if (conversation.id === group_id) {
-            conversation.notification_count = 0;
-          }
-          return conversation;
-        });
-        this.updateChatStore('markAsRead', { id: group_id });
+        this.conversations.markAsRead(group_id);
+        this.notificationCount = this.conversations.getAllNotifications();
+        if (this.inChat) this.updateChatStore();
       });
   }
 
   updateNotification(c: Conversation) {
-    const group_id = c.group_json.id;
+    const group_id = c.group.id;
     this.apiBaseService
       .addCommand(
         ConversationApiCommands.updateNotification({
@@ -158,60 +124,19 @@ export class ChatNotificationComponent implements OnInit {
       )
       .subscribe((res: any) => {
         c.notification = res.data.notification;
-        this.updateChatStore('updateNotification', {
-          id: group_id,
-          notification: res.data.notification
-        });
+        this.conversations.update(c);
+        if (this.inChat) this.updateChatStore();
       });
   }
 
-  updateChatStore(action: any, params: any = null): void {
-    const chat_conversations_response = this.storageService.getValue(CHAT_CONVERSATIONS);
-    if (!chat_conversations_response || !chat_conversations_response.data) {
-      return;
-    }
-    let chat_conversations = chat_conversations_response.data;
-    switch (action) {
-      case 'markAllAsRead': {
-        chat_conversations = chat_conversations.map(
-          (conversation: any) => {
-            conversation.notification_count = 0;
-            return conversation;
-          }
-        );
-      }
-        break;
-      case 'markAsRead': {
-        chat_conversations = chat_conversations.map(
-          (conversation: any) => {
-            if (conversation.group_json.id === params.id) {
-              conversation.notification_count = 0;
-            }
-            return conversation;
-          }
-        );
-      }
-        break;
-      case 'updateNotification': {
-        chat_conversations = chat_conversations.map(
-          (conversation: any) => {
-            if (conversation.group_json.id === params.id) {
-              conversation.notification = params.notification;
-            }
-            return conversation;
-          }
-        );
-      }
-        break;
-    }
-
-    this.chatCommonService.setAllConversations(chat_conversations_response);
+  updateChatStore(): void {
+    this.store.dispatch({ type: SET_CHAT_CONVERSATIONS, payload: this.conversations})
   }
 
   getMore() {
     if (this.links && this.links.next) {
       this.apiBaseService.get(this.links.next).subscribe((res: any) => {
-        this.conversations = [...this.conversations, ...res.data];
+        this.conversations.data = [...this.conversations.data, ...res.data];
         this.links = res.meta.links;
       });
     }
@@ -220,7 +145,7 @@ export class ChatNotificationComponent implements OnInit {
   navigate(conversation: any) {
     $('#chat-header-notification').removeClass('open');
     this.wthNavigateService.navigateOrRedirect(
-      `conversations/${conversation.group_json.id}`,
+      `conversations/${conversation.group.id}`,
       'chat'
     );
     this.handlerService.triggerEvent('on_conversation_select', conversation);
@@ -232,6 +157,10 @@ export class ChatNotificationComponent implements OnInit {
     $('#chat-header-notification')
       .find('ul.dropdown-menu')
       .hide();
+  }
+
+  parentHide(event: any){
+
   }
 
   private subToggle(e: any) {

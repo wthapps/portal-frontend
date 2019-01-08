@@ -136,6 +136,11 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
       .addCommand(ConversationApiCommands.notificationsCount())
       .subscribe((res: any) => {
         this.notificationCount = res.data.count;
+        this.commonEventService.broadcast({
+          channel: 'ChatNotificationComponent',
+          action: 'updateNotificationCount',
+          payload: this.notificationCount
+        })
       });
   }
 

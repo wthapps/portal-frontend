@@ -31,7 +31,7 @@
          (scrolled)="getMore()">
 
       <div class="notification-list notification-list-xs">
-        <div *ngFor="let conversation of conversations" class="noti-item can-click"
+        <div *ngFor="let conversation of conversations.data" class="noti-item can-click"
              [ngClass]="conversation?.notification_count > 0 ? 'conversation_active' : ''">
           <div class="noti-item-avatar">
             <img *ngIf="conversation.group_type != 'multiple'" class="avatar-xs" [src]="conversation?.display?.image"

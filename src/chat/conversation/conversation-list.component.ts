@@ -34,8 +34,8 @@ export class ConversationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.destroy$.complete();
     this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onAddContact() {
