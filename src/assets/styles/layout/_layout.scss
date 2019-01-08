@@ -2,16 +2,17 @@
   overflow: hidden;
   @include flexbox;
   @include flex-direction(column);
+  height: 100vh;
 }
 
 .main {
-  padding-top: $header-height;
-  min-height: 100vh;
   @include flex(1);
   @include flex-basis(auto);
   position: relative; //for child
   @include flexbox;
   @include flex-direction(column);
+  padding-top: $header-height;
+  height: 100vh;
   .main-page {
     @include flex(1);
     @include flex-basis(auto);
@@ -21,6 +22,9 @@
 
 .main-page-body {
   position: relative;
+  @include flexbox;
+  height: 100%;
+  @include flex-direction(column);
   @media (min-width: $screen-md-min) {
     margin-left: $main-page-left;
   }

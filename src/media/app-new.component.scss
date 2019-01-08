@@ -2,10 +2,13 @@
 
 .objects-main {
   padding: 10px;
+  @include flexbox;
+  @include flex-direction(column);
+  height: 100%;
   @media (min-width: $screen-sm-min) {
     padding: 30px;
-    margin-right: $objects-main-information-w;
     &.objects-main-show {
+      margin-right: $objects-main-information-w;
       .objects-main-menu {
         right: $objects-main-information-w;
       }
@@ -89,9 +92,7 @@
   .action {
     @include flexbox;
     a {
-      color: inherit;
       text-decoration: none;
-      display: inline-block;
     }
     .slider {
       @include flexbox;
@@ -99,6 +100,11 @@
       margin: 0 20px;
     }
   }
+}
+
+.content-view {
+  position: relative;
+  z-index: 1;
 }
 
 $i_content-grid: 4;
@@ -125,6 +131,13 @@ $i_content-grid: 4;
           @include flex(0 0 percentage(1/(8 - $i_content-grid)));
           max-width: percentage(1/(8 - $i_content-grid));
         }
+        .item-media-img {
+          i {
+            width: #{($i_content-grid + 2) * 10}px;
+            height: #{($i_content-grid + 2) * 10}px;
+            font-size: #{($i_content-grid + 2) * 10 - 2}px;
+          }
+        }
       }
       $i_content-grid: $i_content-grid - 1;
     }
@@ -141,9 +154,6 @@ $i_content-grid: 4;
     -moz-border-radius: 3px;
     border-radius: 3px;
     position: relative;
-    &.active {
-      background-color: $theme-color;
-    }
   }
   .item-media-img {
     position: relative;
@@ -200,5 +210,35 @@ $i_content-grid: 4;
     top: 10px;
     left: 10px;
     z-index: 10;
+    visibility: hidden;
+  }
+  .item-select {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9;
+  }
+  .content-item {
+    &:hover {
+      .form-checkbox {
+        visibility: visible;
+      }
+    }
+    &.selected {
+      .item-media {
+        border-color: $theme-color;
+      }
+      .form-checkbox {
+        visibility: visible;
+        background-color: $theme-color;
+        &:before {
+          visibility: visible;
+        }
+      }
+    }
   }
 }
+
+

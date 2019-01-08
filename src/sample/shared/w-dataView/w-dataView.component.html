@@ -1,0 +1,26 @@
+<dts-select-container #container="dts-select-container" [(selectedItems)]="selectedDocuments" (select)="someMethod($event)">
+  <!--<ul>
+    <li [dtsSelectItem]="document" *ngFor="let document of documents">{{ document.name }}</li>
+  </ul>-->
+
+  <div class="content-view content-grid content-grid-3">
+    <div *ngFor="let item of medias" [dtsSelectItem]="item" class="content-item">
+      <div class="item-media">
+        <div class="item-actions">
+          <i (mouseover)="container.selectMode = true" class="form-checkbox"></i>
+        </div>
+        <div (mouseover)="container.selectMode = false" class="item-select"></div>
+        <div class="item-media-img">
+          <img src="http://placehold.it/200x800" alt="">
+          <i class="fa fa-play-circle-o" aria-hidden="true"></i>
+          <div class="item-media-img-over">
+            7 items
+          </div>
+        </div>
+        <div class="item-media-name">
+          <span>{{ item.name }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</dts-select-container>

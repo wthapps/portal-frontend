@@ -38,6 +38,7 @@ $active-color: red;
   }
   .menuleft-content {
     @include flex(1);
+    overflow: auto;
   }
   .menuleft-footer {
     padding: 5px 10px;

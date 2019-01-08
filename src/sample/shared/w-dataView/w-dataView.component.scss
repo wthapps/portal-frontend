@@ -1,0 +1,36 @@
+@import "../../../assets/styles/global";
+
+// Example for overriding the color of the selection retangle
+$dts-primary: $theme-color;
+
+$select-box-color: $theme-color;
+$select-box-border-size: 1px;
+$select-box-removing-color: $theme-color;
+
+$selected-item-border: false;
+$selected-item-border-color: transparent;
+$selected-item-border-size: 0px;
+
+$box-shadow: false;
+@import "~ngx-drag-to-select/scss/ngx-drag-to-select";
+
+.dts-select-container {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 15;
+  overflow: auto;
+  padding: 15px;
+  .item-media-img {
+    pointer-events: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+  }
+}
