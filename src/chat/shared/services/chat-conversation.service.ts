@@ -84,7 +84,7 @@ export class ChatConversationService extends CommonEventHandler {
 
   apiDeleteConversation(contact: any) {
     of(contact).pipe(withLatestFrom(this.store.select(STORE_MESSAGES)), map(([contact, messages]) => {
-      this.apiUpdateGroupUser(contact.group_id, { deleted: true, notification_count: 0, message_from: messages.data[messages.data.length - 1].id + 1 })
+      this.apiUpdateGroupUser(contact.group_id, { deleted: true, notification_count: 0, message_from: messages.data[messages.data.length - 1].id + 1 || 1})
         .then(res => this.apiGetConversations())
         .then(r2 => this.router.navigate(['/conversations']));
     })).toPromise().then(res => {

@@ -1,6 +1,8 @@
 import { ServiceManager } from '../../services';
 import { CHAT_ACTIONS, CHAT_CONVERSATIONS, Constants } from '../../constant';
 
+declare var _: any;
+
 export class ChatActions {
   constructor(private serviceManager: ServiceManager) {
 
