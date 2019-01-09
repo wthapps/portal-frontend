@@ -35,10 +35,18 @@ export class ChatActions {
     }
 
     if (response.action === 'chat_notification' && response.data.type == 'update_display') {
-      this.updateDisplay(response);
+      this.serviceManager.getCommonEventService().broadcast({
+        channel: 'ChatConversationService',
+        action: 'updateStoreConversation',
+        payload: response.data.group_user
+      });
     }
     if (response.action === 'chat_notification' && response.data.type == 'update_conversation_list') {
-      this.updateConversationList(response);
+      this.serviceManager.getCommonEventService().broadcast({
+        channel: 'ChatConversationService',
+        action: 'updateStoreConversations',
+        payload: response.data.group_users
+      });
     }
     if (response.action === 'chat_notification' && response.data.type == 'notification_message') {
       this.serviceManager.getCommonEventService().broadcast({
@@ -47,42 +55,5 @@ export class ChatActions {
         payload: response.data
       })
     }
-  }
-
-  updateDisplay(data) {
-    const item = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
-    const index = _.findIndex(item.value.data, { id: data.data.group_user.id });
-    if (index !== -1) {
-      item.value.data[index] = data.data.group_user;
-      this.serviceManager.getChatCommonService().updateAll();
-    }
-  }
-
-  addContact(data: any) {
-    const conversations = this.serviceManager.getStorageService().getValue(CHAT_CONVERSATIONS);
-    if (!conversations)
-      return;
-    const index = _.findIndex(conversations.data, { id: data.data.group_user.id });
-    if (index === -1) {
-      conversations.data.unshift(data.data.group_user);
-      this.serviceManager.getStorageService().save(CHAT_CONVERSATIONS, conversations);
-    } else {
-      conversations.data[index] = data.data.group_user;
-    }
-    this.serviceManager.getChatCommonService().updateAll();
-  }
-
-  updateConversationList(data: any) {
-    const item = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
-    item.value.data = data.data.group_users;
-    this.serviceManager.getChatCommonService().updateAll();
-  }
-
-  addNotificationMessage(data: any) {
-    this.serviceManager.getChatCommonService().addMessage(data.data.group, data.data);
-  }
-
-  private inSameModule(moduleNames: string[]) {
-    return moduleNames.includes(window.location.origin);
   }
 }

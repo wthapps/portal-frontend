@@ -448,17 +448,6 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     return this.apiBaseService.post('zone/chat/restore_setting');
   }
 
-  acceptRequest(contact: any) {
-    this.updateGroupUser(
-      contact.group_id,
-      { accept_friend: true })
-      .then((res: any) => {
-        contact.active = true;
-        this.chatMessageService.getMessages(contact.group_id);
-      }
-    );
-  }
-
   declineRequest(contact: any, setDefaultOnSelect: boolean = true) {
     this.updateGroupUser(
       contact.group_id,
