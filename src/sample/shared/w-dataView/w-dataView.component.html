@@ -1,17 +1,19 @@
-<dts-select-container #container="dts-select-container" [(selectedItems)]="selectedDocuments" (select)="someMethod($event)">
-  <!--<ul>
-    <li [dtsSelectItem]="document" *ngFor="let document of documents">{{ document.name }}</li>
-  </ul>-->
-
+<dts-select-container #container="dts-select-container"
+                      [(selectedItems)]="selectedDocuments"
+                      (select)="someMethod($event)"
+                      infinite-scroll [infiniteScrollDistance]="2"
+                      [infiniteScrollThrottle]="50"
+                      [scrollWindow]="scrollWindow"
+                      (scrolled)="onLoadMore()">
   <div class="content-view content-grid content-grid-3">
-    <div *ngFor="let item of medias" [dtsSelectItem]="item" class="content-item">
+    <div *ngFor="let item of data" [dtsSelectItem]="item" class="content-item">
       <div class="item-media">
         <div class="item-actions">
           <i (mouseover)="container.selectMode = true" class="form-checkbox"></i>
         </div>
         <div (mouseover)="container.selectMode = false" class="item-select"></div>
         <div class="item-media-img">
-          <img src="http://placehold.it/200x800" alt="">
+          <img [src]="item.thumbnail_url" alt="">
           <i class="fa fa-play-circle-o" aria-hidden="true"></i>
           <div class="item-media-img-over">
             7 items

@@ -2,7 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/media', pathMatch: 'full' }
+  // { path: '', component: AppComponent },
+  { path: '', redirectTo: '/media', pathMatch: 'full' },
+  {
+    path: 'media',
+    loadChildren: './media/media.module#SampleMediaModule'
+  }
 ];
 
 @NgModule({

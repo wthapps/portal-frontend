@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, HostBinding } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-media',
@@ -7,5 +7,4 @@ import { Component, ViewEncapsulation, HostBinding } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 export class SampleMediaComponent {
-  @HostBinding('class') class = 'main-page-body';
 }

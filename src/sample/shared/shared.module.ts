@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { DirectiveModule } from '@shared/shared/directive/directive.module';
 import { CheckboxModule } from 'primeng/primeng';
+import { HttpClientModule } from '@angular/common/http';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -19,6 +20,7 @@ import { CheckboxModule } from 'primeng/primeng';
   exports: [
     BrowserAnimationsModule,
     CommonModule,
+    HttpClientModule,
     FormsModule,
     RouterModule,
     ReactiveFormsModule,

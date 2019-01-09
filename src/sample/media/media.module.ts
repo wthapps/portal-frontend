@@ -3,14 +3,18 @@ import { SampleMediaComponent } from './media.component';
 
 import { SampleMediaRoutingModule } from './media-routing.module';
 import { SliderModule } from 'primeng/slider';
-import { SampleSharedModule } from '../shared/shared.module';
 import { SampleMediaListComponent } from './list/list.component';
 import { WDataViewModule } from '../shared/w-dataView/w-dataView.module';
+import { CommonModule } from '@angular/common';
+import { SampleMediaService } from './shared/media.service';
+import { ApiBaseService } from '@shared/services';
+import { CookieModule } from 'ngx-cookie';
 
 @NgModule({
   imports: [
+    CommonModule,
+    CookieModule.forRoot(),
     SliderModule,
-    SampleSharedModule,
     SampleMediaRoutingModule,
     WDataViewModule
   ],
@@ -21,6 +25,10 @@ import { WDataViewModule } from '../shared/w-dataView/w-dataView.module';
   exports: [
     SampleMediaComponent,
     SampleMediaListComponent
+  ],
+  providers: [
+    ApiBaseService,
+    SampleMediaService
   ]
 })
 export class SampleMediaModule {

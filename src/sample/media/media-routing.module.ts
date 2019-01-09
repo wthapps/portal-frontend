@@ -1,9 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SampleMediaComponent } from './media.component';
+import { SampleMediaListComponent } from './list/list.component';
 
 const routes: Routes = [
-  { path: 'media', component: SampleMediaComponent }
+  {
+    path: '',
+    component: SampleMediaComponent,
+    children: [
+      {
+        path: '',
+        component: SampleMediaListComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({
