@@ -24,7 +24,7 @@ import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 import { merge, mergeMap, mergeMapTo, map, filter, withLatestFrom, combineLatest, takeUntil } from 'rxjs/operators';
 import { ChatMessageService } from '@chat/shared/services/chat-message.service';
-import { SET_SELECTED_CONVERSATION } from '@core/store/chat/selected-conversation.reducer';
+import { CHAT_SELECTED_CONVERSATION_SET } from '@core/store/chat/selected-conversation.reducer';
 
 declare var _: any;
 declare var $: any;
@@ -97,7 +97,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     ).pipe(takeUntil(this.destroy$)).subscribe(([conversations, params]) => {
       let conversation = conversations.data.filter(c => !c.blacklist && !c.left && !c.deleted).find(c => c.group_id == params.id);
       if (conversation) {
-        this.store.dispatch({ type: SET_SELECTED_CONVERSATION, payload: conversation });
+        this.store.dispatch({ type: CHAT_SELECTED_CONVERSATION_SET, payload: conversation });
       }
     })
     // Get messages when select

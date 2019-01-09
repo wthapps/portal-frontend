@@ -4,7 +4,7 @@ import { ApiBaseService, ChatCommonService, StorageService, UserService, CommonE
 import { CONVERSATION_SELECT, STORE_CONVERSATIONS, STORE_CONTEXT, STORE_SELECTED_CONVERSATION, STORE_MESSAGES } from '@shared/constant';
 import { takeUntil, filter, map, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { SET_CHAT_CONVERSATIONS, ADD_CHAT_CONVERSATION_NOTIFICATION, UPDATE_CHAT_CONVERSATIONS, SET_CHAT_SELECTED } from '@core/store/chat/conversations.reducer';
+import { CHAT_CONVERSATIONS_SET, CHAT_CONVERSATIONS_ADD_NOTIFICATION, CHAT_CONVERSATIONS_UPDATE } from '@core/store/chat/conversations.reducer';
 import { of } from 'rxjs';
 
 
@@ -52,7 +52,7 @@ export class ChatConversationService extends CommonEventHandler {
 
   apiGetConversations(option: any = {}): Promise<any> {
     return this.apiBaseService.get('zone/chat/contacts').toPromise().then((res: any) => {
-      this.store.dispatch({ type: SET_CHAT_CONVERSATIONS, payload: res });
+      this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: res });
       return res;
     });
   }
@@ -71,7 +71,7 @@ export class ChatConversationService extends CommonEventHandler {
   }
 
   addNotification(data: any){
-    this.store.dispatch({ type: ADD_CHAT_CONVERSATION_NOTIFICATION, payload: data})
+    this.store.dispatch({ type: CHAT_CONVERSATIONS_ADD_NOTIFICATION, payload: data})
   }
 
   addRemoveMember(data: any){
@@ -79,12 +79,16 @@ export class ChatConversationService extends CommonEventHandler {
   }
 
   updateStoreConversation(conversation: any){
-    this.store.dispatch({ type: UPDATE_CHAT_CONVERSATIONS, payload: conversation})
+    this.store.dispatch({ type: CHAT_CONVERSATIONS_UPDATE, payload: conversation})
+  }
+  updateStoreConversations(conversations: any){
+    this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: conversations})
   }
 
   apiDeleteConversation(contact: any) {
     of(contact).pipe(withLatestFrom(this.store.select(STORE_MESSAGES)), map(([contact, messages]) => {
-      this.apiUpdateGroupUser(contact.group_id, { deleted: true, notification_count: 0, message_from: messages.data[messages.data.length - 1].id + 1 || 1})
+      let id = messages.data[messages.data.length - 1] ? messages.data[messages.data.length - 1].id + 1 : 0;
+      this.apiUpdateGroupUser(contact.group_id, { deleted: true, notification_count: 0, message_from: id})
         .then(res => this.apiGetConversations())
         .then(r2 => this.router.navigate(['/conversations']));
     })).toPromise().then(res => {
@@ -102,7 +106,7 @@ export class ChatConversationService extends CommonEventHandler {
     return this.apiBaseService
       .put('zone/chat/group_user/' + groupId, data)
       .toPromise().then((res: any) => {
-        this.store.dispatch({ type: SET_CHAT_CONVERSATIONS, payload: res });
+        this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: res });
         return res;
       });
   }

@@ -1,10 +1,9 @@
 import { Conversations } from "@shared/shared/models/chat/conversations.list.model";
 
-export const SET_CHAT_CONVERSATIONS = '[CHAT] SET_CHAT_CONVERSATIONS';
-export const ADD_CHAT_CONVERSATIONS = '[CHAT] ADD_CHAT_CONVERSATIONS';
-export const ADD_CHAT_CONVERSATION_NOTIFICATION = '[CHAT] ADD_CHAT_CONVERSATION_NOTIFICATION';
-export const UPDATE_CHAT_CONVERSATIONS = '[CHAT] UPDATE_CHAT_CONVERSATIONS';
-export const SET_CHAT_SELECTED = '[CHAT] SET_CHAT_SELECTED';
+export const CHAT_CONVERSATIONS_SET = 'CHAT_CONVERSATIONS_SET';
+export const CHAT_CONVERSATIONS_ADD = 'CHAT_CONVERSATIONS_ADD';
+export const CHAT_CONVERSATIONS_ADD_NOTIFICATION = 'CHAT_CONVERSATIONS_ADD_NOTIFICATION';
+export const CHAT_CONVERSATIONS_UPDATE = 'CHAT_CONVERSATIONS_UPDATE';
 
 declare let _: any;
 const empty: any = function (): any {
@@ -14,11 +13,11 @@ const empty: any = function (): any {
 export function reducer(state: Conversations = empty(), action: any) {
   let stateClone: Conversations = _.clone(state);
   switch (action.type) {
-    case SET_CHAT_CONVERSATIONS:
+    case CHAT_CONVERSATIONS_SET:
       stateClone.data = [...action.payload.data];
       stateClone.meta = action.payload.meta;
       return stateClone;
-    case ADD_CHAT_CONVERSATION_NOTIFICATION:
+    case CHAT_CONVERSATIONS_ADD_NOTIFICATION:
       stateClone.data = stateClone.data.map(c => {
         if(c.group_id == action.payload.group_id) {
           c.notification_count = action.payload.count;
@@ -26,7 +25,7 @@ export function reducer(state: Conversations = empty(), action: any) {
         return c;
       });
       return stateClone;
-    case UPDATE_CHAT_CONVERSATIONS:
+    case CHAT_CONVERSATIONS_UPDATE:
       if (stateClone.data.find(c => c.group_id == action.payload.group_id)) {
         stateClone.data = stateClone.data.map(c => {
           if(c.group_id == action.payload.group_id) {

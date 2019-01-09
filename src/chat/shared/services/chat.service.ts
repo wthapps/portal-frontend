@@ -30,7 +30,7 @@ import { BlackListPolicy } from '@shared/policies/black-list-policy';
 import { SizePolicy } from '@shared/policies/size-policy';
 import { from } from 'rxjs/observable/from';
 import { mergeMap, retry, take } from 'rxjs/operators';
-import { SET_CHAT_CONVERSATIONS } from '@core/store/chat/conversations.reducer';
+import { CHAT_CONVERSATIONS_SET } from '@core/store/chat/conversations.reducer';
 import { ChatConversationService } from './chat-conversation.service';
 import { ChatMessageService } from './chat-message.service';
 
@@ -410,7 +410,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     return this.apiBaseService
       .put('zone/chat/group_user/' + groupId, data)
       .toPromise().then((res: any) => {
-        this.store.dispatch({type: SET_CHAT_CONVERSATIONS, payload: res});
+        this.store.dispatch({type: CHAT_CONVERSATIONS_SET, payload: res});
         return res;
       });
   }

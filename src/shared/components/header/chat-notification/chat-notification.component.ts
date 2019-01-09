@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { CHAT_CONVERSATIONS, Constants, STORE_CONVERSATIONS } from '@shared/constant';
+import { Constants } from '@shared/constant';
 import { WTHNavigateService } from '@shared/services/wth-navigate.service';
 import { Router } from '@angular/router';
 import { ConnectionNotificationService } from '@shared/services/connection-notification.service';
@@ -14,10 +14,8 @@ import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { Observable } from 'rxjs/Observable';
 import { AuthService, ChatCommonService, CommonEventHandler, CommonEventService } from '@shared/services';
 import { Subject } from 'rxjs';
-import { Store } from '@ngrx/store';
 import { takeUntil, map, switchMap } from 'rxjs/operators';
 import { Conversations } from '@shared/shared/models/chat/conversations.list.model';
-import { SET_CHAT_CONVERSATIONS } from '@core/store/chat/conversations.reducer';
 
 declare var $: any;
 
@@ -45,7 +43,6 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     public commonEventService: CommonEventService,
     private router: Router,
     private storageService: StorageService,
-    private store: Store<any>,
     public connectionService: ConnectionNotificationService,
     public notificationService: NotificationService,
     public handlerService: HandlerService,
@@ -58,13 +55,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   }
 
   ngOnInit() {
-    // in chat only
-    this.store.select(STORE_CONVERSATIONS).pipe(takeUntil(this.destroy$)).subscribe((conversations: Conversations) => {
-      if (conversations) {
-        this.inChat = true;
-        this.notificationCount = conversations.getAllNotifications();
-      }
-    })
+    //
   }
 
   updateNotificationCount(data: any){
@@ -77,7 +68,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   }
 
   addNotification(res: any){
-    if(!this.inChat) this.notificationCount += 1;
+    this.notificationCount += 1;
   }
 
   gotoChat() {
@@ -98,7 +89,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
       .subscribe(res => {
         this.notificationCount = 0;
         this.conversations.markAllAsRead();
-        if (this.inChat) this.updateChatStore();
+        this.updateChatStore();
       });
   }
 
@@ -109,7 +100,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
       .subscribe((res: any) => {
         this.conversations.markAsRead(group_id);
         this.notificationCount = this.conversations.getAllNotifications();
-        if (this.inChat) this.updateChatStore();
+        this.updateChatStore();
       });
   }
 
@@ -125,12 +116,17 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
       .subscribe((res: any) => {
         c.notification = res.data.notification;
         this.conversations.update(c);
-        if (this.inChat) this.updateChatStore();
+        this.updateChatStore();
       });
   }
 
   updateChatStore(): void {
-    this.store.dispatch({ type: SET_CHAT_CONVERSATIONS, payload: this.conversations})
+    this.commonEventService.broadcast({
+      channel: 'ChatConversationService',
+      action: 'updateStoreConversations',
+      payload: this.conversations
+    })
+    // this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: this.conversations})
   }
 
   getMore() {

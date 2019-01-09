@@ -3,11 +3,11 @@ import { ApiBaseService, StorageService } from '@shared/services';
 import { CONVERSATION_SELECT, STORE_MESSAGES } from '@shared/constant';
 import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { SET_CHAT_MESSAGES, SET_CHAT_CURRENT_MESSAGES, ADD_CHAT_CURRENT_MESSAGES, MORE_CHAT_CURRENT_MESSAGES } from '@core/store/chat/messages.reducer';
+import { CHAT_MESSAGES_SET, CHAT_MESSAGES_CURRENT_SET, CHAT_MESSAGES_CURRENT_ADD, CHAT_MESSAGES_CURRENT_MORE } from '@core/store/chat/messages.reducer';
 import { take, withLatestFrom, concatMap, map } from 'rxjs/operators';
 import { ChatConversationService } from './chat-conversation.service';
-import { SET_SELECTED_CONVERSATION } from '@core/store/chat/selected-conversation.reducer';
-import { SET_CHAT_CONVERSATIONS } from '@core/store/chat/conversations.reducer';
+import { CHAT_SELECTED_CONVERSATION_SET } from '@core/store/chat/selected-conversation.reducer';
+import { CHAT_CONVERSATIONS_SET } from '@core/store/chat/conversations.reducer';
 
 @Injectable()
 export class ChatMessageService {
@@ -66,7 +66,7 @@ export class ChatMessageService {
 
   getMessages(groupId: number, options: any = {}): Promise<any> {
     return this.apiBaseService.get('zone/chat/message/' + groupId, options).toPromise().then(res => {
-      this.store.dispatch({type: SET_CHAT_CURRENT_MESSAGES, payload: {
+      this.store.dispatch({type: CHAT_MESSAGES_CURRENT_SET, payload: {
         data: res.data,
         meta: res.meta
       }})
@@ -78,7 +78,7 @@ export class ChatMessageService {
     this.store.select(STORE_MESSAGES).pipe(take(1)).subscribe(s => {
       this.apiBaseService.get(s.meta.links.next).toPromise().then(res => {
       this.store.dispatch({
-        type: MORE_CHAT_CURRENT_MESSAGES, payload: {
+        type: CHAT_MESSAGES_CURRENT_MORE, payload: {
           data: res.data,
           meta: res.meta
         }
@@ -101,14 +101,14 @@ export class ChatMessageService {
           return c;
         })
         this.store.dispatch({
-          type: SET_CHAT_CONVERSATIONS, payload: conversations
+          type: CHAT_CONVERSATIONS_SET, payload: conversations
         });
       });
 
       // check current group chat and add message into
       if (data.message.group_id == sc.group_id) {
         this.store.dispatch({
-          type: ADD_CHAT_CURRENT_MESSAGES, payload: {data: data.message}
+          type: CHAT_MESSAGES_CURRENT_ADD, payload: {data: data.message}
         });
       }
     })).toPromise().then(res => {
