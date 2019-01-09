@@ -296,13 +296,14 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  onCompleteSort(event: any) {
+  async onCompleteSort(event: any) {
     if (event) {
       this.nextLink = this.buildNextLink() + `&sort=${event.sortOrder}&sort_name=${event.sortBy}`;
       const mediaParent = this.mediaParent;
       this.mediaSelectionService.clear();
       this.mediaSelectionService.setMediaParent(mediaParent);
-      this.getObjects();
+      this.initLoading = true;
+      await this.getObjects();
     }
   }
 

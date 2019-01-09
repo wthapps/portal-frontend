@@ -202,7 +202,6 @@ export class CommonNotificationInterface {
       .get(`${this.url}/get_latest`, options)
       .toPromise()
       .then(rs => {
-        console.log(`${this.url} rs: ${rs}`);
         this.notifications.push(...rs.data);
       });
   }

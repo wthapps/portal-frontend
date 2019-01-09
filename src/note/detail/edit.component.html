@@ -412,14 +412,14 @@
         <div [ngClass]="{'hidden': currentTab !== 'attachment'}" class="quill-toolbar-attachment">
           <div class="btn-group">
             <button type="button" class="btn btn-outline-default" (click)="selectPhotos()"
-                    [disabled]="note.permission == 'view'">
+                    [disabled]="note.permission === 'view'">
               <i class="fa fa-plus"></i> Photo
             </button>
             <button class="btn btn-outline-default can-click btn-style-1 fileinput-button"
                     pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top"
-                    [disabled]="note.permission == 'view'">
+                    [disabled]="note.permission === 'view'">
               <i class="fa fa-paperclip"></i> Attachment
-              <input id="files" #fileBrowse type="file" multiple="multiple" (click)="fileBrowse.value='';"
+              <input id="files" #fileBrowse type="file" *ngIf="note.permission !== 'view'" multiple="multiple" (click)="fileBrowse.value='';"
                      (change)="selectFiles($event)"
               />
             </button>
