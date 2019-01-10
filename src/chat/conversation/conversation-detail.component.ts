@@ -88,8 +88,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   ngOnInit() {
-    // this.contactSelect$ = this.chatService.getContactSelectAsync();
-    // this.chatConversations$ = this.chatService.getConversationsAsync();
     this.chatContactList$ = this.chatService.getChatConversationsAsync();
     // SELECTED CONVERSATION
     this.chatConversationService.getStoreConversations().pipe(

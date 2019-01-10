@@ -77,7 +77,7 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
     if (this.type === 'addMember') {
       this.addMember();
     }
-    if (this.type === 'shareContact') {
+    if (this.type === 'shareContacts') {
       this.shareContact();
     }
   }

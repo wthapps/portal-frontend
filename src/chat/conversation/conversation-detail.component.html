@@ -4,6 +4,8 @@
   <z-chat-share-toolbar [contactSelect]="selectedConversation" [chatContactList]="chatContactList$ | async" class="page-body-control"></z-chat-share-toolbar>
 
   <div class="page-body-content has-page-body-control" (drop)="drop($event)" (dragover)="drag($event)" (dragenter)="drag($event)">
+    <z-chat-share-item-request *ngIf="selectedConversation.status == 'sent_request' || selectedConversation.status == 'pending'" [selectedConversation]="selectedConversation"
+      [message]="(currentMessages$ | async)?.data[0]"></z-chat-share-item-request>
     <message-list [currentMessages]="(currentMessages$ | async)?.data" [contactItem]="selectedConversation"
       [currentUser]="currentUser$ | async" class="message-list-body" #messageList></message-list>
     <message-editor #messageEditor [isDisabled]="!selectedConversation.active || selectedConversation.blacklist || !(networkOnline$ | async)"

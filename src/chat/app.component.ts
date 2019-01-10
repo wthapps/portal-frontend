@@ -116,7 +116,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private getOutOfDateData() {
-    // this.chatService.getConversationsAsync({forceFromApi: true}).subscribe();
     this.chatConversationService.apiGetConversations();
     this.chatService.getOutOfDateMessages();
   }

@@ -6,7 +6,7 @@
 
     </div>
     <span *ngIf="data.display?.id" class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}">
-      <i *ngIf="isStranger" class="fa fa-question-circle"></i>
+      <i *ngIf="isPending" class="fa fa-question-circle"></i>
     </span>
   </div>
   <div *ngIf="displayUserName" class="media-avatar-body">
@@ -19,11 +19,11 @@
     <ng-container *ngIf="!displayAvatar">
 
       <ng-container *ngIf="data.group.group_type == 'couple'">
-        <div *ngIf="isStranger">
+        <div *ngIf="isPending">
           <span class="media-avatar-status"><i class="fa fa-question-circle"></i></span>
-          This user isn't in your Contacts
+          Pending request
         </div>
-        <div *ngIf="!isStranger">
+        <div *ngIf="!isPending">
           <span class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>
           <span *ngIf="usersOnlineItem?.includes(data.display?.id)">Online</span>
           <span *ngIf="!usersOnlineItem?.includes(data.display?.id)">Offline</span>

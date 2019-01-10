@@ -65,7 +65,6 @@ export class ZChatSidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.contactItem$ = this.chatService.getConversationsAsync();
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
     this.contactSelect$ = this.chatService.getContactSelectAsync();
     this.conversations$ = this.store.select(STORE_CONVERSATIONS);
@@ -73,25 +72,25 @@ export class ZChatSidebarComponent implements OnInit {
 
   doFilter(param) {
     if (param === 'unread') {
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][gt][notification_count]=0' })
-        .subscribe((res: any) => {
+      this.chatConversationService.apiGetConversations({ 'filter[where][gt][notification_count]': 0})
+        .then((res: any) => {
           this.filter = 'Unread';
         });
     }
     if (param === 'all') {
-      this.chatService.getConversationsAsync({ forceFromApi: true }).subscribe((res: any) => {
+      this.chatConversationService.apiGetConversations().then((res: any) => {
         this.filter = 'All';
       });
     }
     if (param === 'sent') {
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=sent_request' })
-        .subscribe((res: any) => {
+      this.chatConversationService.apiGetConversations({ 'filter[where][status]': 'sent_request' })
+        .then((res: any) => {
           this.filter = 'Sent Request';
         });
     }
     if (param === 'pending') {
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=pending' })
-        .subscribe((res: any) => {
+      this.chatConversationService.apiGetConversations({ 'filter[where][status]': 'pending' })
+        .then((res: any) => {
           this.filter = 'Pending Request';
         });
     }

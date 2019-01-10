@@ -51,7 +51,7 @@ export class ChatConversationService extends CommonEventHandler {
   }
 
   apiGetConversations(option: any = {}): Promise<any> {
-    return this.apiBaseService.get('zone/chat/contacts').toPromise().then((res: any) => {
+    return this.apiBaseService.get('zone/chat/contacts', option).toPromise().then((res: any) => {
       this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: res });
       return res;
     });

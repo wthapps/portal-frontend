@@ -1,5 +1,5 @@
 <!-- Template message -->
-<div *ngIf="['text', 'file', 'share_contact_message', 'request'].includes(message.message_type)">
+<div *ngIf="['text', 'file', 'share_contact_message'].includes(message.message_type)">
   <div class="message-item row" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
     <div class="message-item-date" *ngIf="hasShowDate()">
       <span>{{ message.created_at | timeFormat:'day' }}</span>
@@ -20,7 +20,7 @@
       <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemContentText : ''"></ng-container>
       <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemContentFile : ''"></ng-container>
       <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemContentContact : ''"></ng-container>
-      <ng-container *ngTemplateOutlet="message.message_type == 'request' ? messageItemContentRequest : ''"></ng-container>
+      <!-- <ng-container *ngTemplateOutlet="message.message_type == 'request' ? messageItemContentRequest : ''"></ng-container> -->
     </div>
     <div class="message-item-menu dropdown col-sm-1 col-xs-1" *ngIf="byMe" style="padding: 5px !important">
       <!-- container template dynamic here -->

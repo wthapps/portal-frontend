@@ -5,9 +5,9 @@
       <img *ngIf="data.group.group_type == 'support'" [src]="data.display.image" alt="">
       <img *ngIf="data.group.group_type == 'multiple'" [src]="data.group.profile_image" alt="">
     </div>
-    <span *ngIf="!isStranger && data.display?.id" class="media-user-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id), 'blacklist': data.blacklist}">
+    <span *ngIf="!isPending && data.display?.id" class="media-user-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id), 'blacklist': data.blacklist}">
     </span>
-    <span *ngIf="isStranger" class="media-user-status media-user-stranger">
+    <span *ngIf="isPending" class="media-user-status media-user-stranger">
       <i class="fa fa-question-circle"></i>
     </span>
   </div>

@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
-import { ApiBaseService, WMessageService, StorageService, PhotoUploadService } from '@wth/shared/services';
+import { ApiBaseService, WMessageService, StorageService, PhotoUploadService, CommonEventService } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
@@ -71,6 +71,7 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     private addContactService:  ZChatShareAddContactService,
     private messageService: WMessageService,
     private chatMessageService: ChatMessageService,
+    private commonEventService: CommonEventService,
     private uploadService: PhotoUploadService,
     private uploader: WUploader,
     private emojiService: WTHEmojiService
@@ -216,7 +217,12 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   shareContacts() {
-    this.addContactService.open('shareContact');
+    // this.addContactService.open('shareContact');
+    this.commonEventService.broadcast({
+      channel: 'ZChatShareAddContactComponent',
+      action: 'open',
+      payload: {option: 'shareContacts'}
+    })
   }
 
   sendMessage(type: string) {

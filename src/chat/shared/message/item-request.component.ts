@@ -11,6 +11,7 @@ import { takeUntil, take } from 'rxjs/operators';
 })
 export class ZChatShareItemRequestComponent {
   @Input() message: any;
+  @Input() selectedConversation: any;
 
   constructor(
     private chatService: ChatService,
