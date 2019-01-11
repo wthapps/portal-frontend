@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter, ContentChild, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'w-dataView',
@@ -9,6 +9,7 @@ import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angu
 export class WDataViewComponent {
   @Input() data: any;
   @Output() loadMoreCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @ContentChild('viewBody') viewBodyTmpl: TemplateRef<any>;
   selectedDocuments: any;
 
   constructor() {

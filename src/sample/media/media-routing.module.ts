@@ -11,6 +11,14 @@ const routes: Routes = [
       {
         path: '',
         component: SampleMediaListComponent
+      },
+      {
+        path: ':type',
+        component: SampleMediaListComponent
+      },
+      {
+        path: ':type/:id',
+        component: SampleMediaListComponent
       }
     ]
   }

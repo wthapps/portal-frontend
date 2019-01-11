@@ -1,7 +1,8 @@
 <dts-select-container #container="dts-select-container"
                       [(selectedItems)]="selectedDocuments"
                       (select)="someMethod($event)"
-                      infinite-scroll [infiniteScrollDistance]="2"
+                      infinite-scroll
+                      [infiniteScrollDistance]="2"
                       [infiniteScrollThrottle]="50"
                       [scrollWindow]="scrollWindow"
                       (scrolled)="onLoadMore()">
@@ -12,16 +13,7 @@
           <i (mouseover)="container.selectMode = true" class="form-checkbox"></i>
         </div>
         <div (mouseover)="container.selectMode = false" class="item-select"></div>
-        <div class="item-media-img">
-          <img [src]="item.thumbnail_url" alt="">
-          <i class="fa fa-play-circle-o" aria-hidden="true"></i>
-          <div class="item-media-img-over">
-            7 items
-          </div>
-        </div>
-        <div class="item-media-name">
-          <span>{{ item.name }}</span>
-        </div>
+        <ng-template [ngTemplateOutlet]="viewBodyTmpl" [ngTemplateOutletContext]="{$implicit: item}"></ng-template>
       </div>
     </div>
   </div>

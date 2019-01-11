@@ -18,5 +18,9 @@ export class WDataViewService {
   changeView(view: string) {
     this.viewSubject.next(view);
   }
+
+  addItem(item: any) {
+
+  }
 }
 

@@ -1,5 +1,7 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { SampleMediaService } from '../shared/media.service';
+import { ActivatedRoute } from '@angular/router';
+import { WDataViewComponent } from '../../shared/w-dataView/w-dataView.component';
 
 @Component({
   selector: 's-media-list',
@@ -8,14 +10,21 @@ import { SampleMediaService } from '../shared/media.service';
 })
 export class SampleMediaListComponent implements OnInit {
   @HostBinding('class') class = 'main-page-body';
+  @ViewChild('dataView') dataView: WDataViewComponent;
+
   sliderView = 3;
   data: any[] = null;
   next: string;
 
-  constructor(private mediaService: SampleMediaService) {
+  constructor(private mediaService: SampleMediaService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      console.log(params.get('type'));
+    });
+
     this.getDataAsync().then();
   }
 
@@ -26,7 +35,7 @@ export class SampleMediaListComponent implements OnInit {
   }
 
   onLoadMoreCompleted(event: any) {
-    console.log(this.next);
+    console.log(this.next, this.dataView);
     if (event && this.next) {
       this.getDataAsync().then();
     }

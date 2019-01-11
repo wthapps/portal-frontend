@@ -9,12 +9,14 @@ import { CommonModule } from '@angular/common';
 import { SampleMediaService } from './shared/media.service';
 import { ApiBaseService } from '@shared/services';
 import { CookieModule } from 'ngx-cookie';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     CookieModule.forRoot(),
     SliderModule,
+    FormsModule,
     SampleMediaRoutingModule,
     WDataViewModule
   ],
