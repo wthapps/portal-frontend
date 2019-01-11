@@ -48,8 +48,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   networkOnline$: Observable<boolean>;
   tokens: any;
   sub: any;
-  sub2: any;
-  sub3: any;
   destroy$ = new Subject<any>();
 
   constructor(
@@ -99,26 +97,24 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       }
     })
     // Get messages when select
-    this.sub3 = this.chatConversationService.getStoreSelectedConversation().pipe(takeUntil(this.destroy$)).subscribe(res => {
+    this.chatConversationService.getStoreSelectedConversation().pipe(takeUntil(this.destroy$)).subscribe(res => {
       let tmp = this.selectedConversation || {};
       this.selectedConversation = res;
       if (tmp.group_id !== this.selectedConversation.group_id) {
         this.chatMessageService.getMessages(this.selectedConversation.group_id);
       }
+      this.commonEventService.broadcast({
+        channel: 'MessageEditorComponent',
+        action: 'focus'
+      });
     });
     // sync current message
     this.currentMessages$ = this.chatMessageService.getCurrentMessages();
   }
 
-  updateCurrent() {
-    // this.currentMessages$ = this.storage.getAsync(CHAT_MESSAGES_GROUP_ + this.groupId);
-  }
-
   ngOnDestroy() {
     if (this.commonEventSub) { this.commonEventSub.unsubscribe(); }
     if (this.sub) { this.sub.unsubscribe(); }
-    if (this.sub2) { this.sub2.unsubscribe(); }
-    if (this.sub3) { this.sub3.unsubscribe(); }
     this.destroy$.next();
     this.destroy$.complete();
   }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input, OnChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input, OnChanges, AfterViewInit, AfterContentInit, DoCheck, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Subject, Subscription,  Observable, from, merge } from 'rxjs';
@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
-import { ApiBaseService, WMessageService, StorageService, PhotoUploadService, CommonEventService } from '@wth/shared/services';
+import { ApiBaseService, WMessageService, StorageService, PhotoUploadService, CommonEventService, CommonEventHandler } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
@@ -31,14 +31,14 @@ declare var _: any;
   styleUrls: ['message-editor.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild(MiniEditorComponent) editor: MiniEditorComponent;
+export class MessageEditorComponent extends CommonEventHandler implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+  @ViewChild('miniEditor') editor: MiniEditorComponent;
   @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
   @ViewChild('longMessageModal') longMessageModal: LongMessageModalComponent;
-  @ViewChild('miniEditor') miniEditor: MiniEditorComponent;
   @Input() isDisabled = false;
   @Input() contactSelect;
   @Input() maxLengthAllow = 2000;
+  channel = 'MessageEditorComponent';
 
   readonly tooltip: any = Constants.tooltip;
   emojiData: any = [];
@@ -71,11 +71,12 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
     private addContactService:  ZChatShareAddContactService,
     private messageService: WMessageService,
     private chatMessageService: ChatMessageService,
-    private commonEventService: CommonEventService,
+    public commonEventService: CommonEventService,
     private uploadService: PhotoUploadService,
     private uploader: WUploader,
     private emojiService: WTHEmojiService
   ) {
+    super(commonEventService);
     this.createForm();
     this.stripHtml = new StripHtmlPipe();
 
@@ -106,6 +107,11 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
       this.setPlaceholder(this.placeholder);
     }
   }
+
+  ngAfterViewInit(){
+    this.focus();
+  }
+
   noteSelectOpen() {
     this.notesListModal.open();
   }
@@ -136,8 +142,8 @@ export class MessageEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setPlaceholder(message: any = this.placeholder) {
-    if (this.miniEditor) {
-      this.miniEditor.quill.root.dataset.placeholder = message;
+    if (this.editor) {
+      this.editor.quill.root.dataset.placeholder = message;
     }
   }
 

@@ -49,8 +49,6 @@ $message-item-content-card-right-xs: 25px;
 
   .wapper {
     word-break: break-word;
-    max-width: 85%;
-    // width: 80%;
   }
 
   .nopadding {
@@ -71,11 +69,13 @@ $message-item-content-card-right-xs: 25px;
       max-width: 90%;
     }
   }
-
-  .message-item-owner-avatar {
-    position: absolute;
+  .message-item-owner {
+    display: flex;
+  }
+  .message-item-avatar {
+    position: relative;
     left: 0;
-    top: 30px;
+    // top: 20px;
     width: 50px;
     @media (max-width: $screen-xs-max) {
       width: 30px;
@@ -95,7 +95,13 @@ $message-item-content-card-right-xs: 25px;
     }
   }
 
-  .message-item-content-card {
+  .message-item-card-main {
+    display: flex;
+  }
+
+  .message-item-card {
+    display: flex;
+    flex-direction: column;
     padding-right: $message-item-content-card-right;
     @media (max-width: $screen-xs-max) {
       padding-right: $message-item-content-card-right-xs;
@@ -148,9 +154,6 @@ $message-item-content-card-right-xs: 25px;
       margin-bottom: 0;
       word-wrap: break-word;
     }
-  }
-
-  .message-item-content-contact-sharing {
   }
 
   .message-item-content-photo {
@@ -262,8 +265,21 @@ $message-item-content-card-right-xs: 25px;
     .message-item-status {
       text-align: right;
     }
-    .icon-edited {
-      float: right;
+    .message-item-card-main-notify {
+      order: 2;
+    }
+    .message-item-card-main-content {
+      order: 1;
+    }
+    .message-item-card-main {
+      flex-direction: row-reverse;
+    }
+    .message-item-avatar {
+        order: 3;
+    }
+    .message-item-owner {
+      flex-direction: row-reverse;
+      margin-right: 30px;
     }
   }
   &.message-item-left {
@@ -274,24 +290,23 @@ $message-item-content-card-right-xs: 25px;
     .message-item-owner {
       margin-right: $message-item-content-card-right-xs;
       .message-item-owner-name {
-        margin-left: 25px;
+        margin-left: 30px;
         @media (min-width: $screen-sm-min) {
-          margin-left: 40px;
+          margin-left: 50px;
         }
       }
-
     }
 
     .message-item-content {
-      @include border-right-radius(0);
-      @include border-left-radius(8px);
+      @include border-left-radius(0);
+      @include border-right-radius(8px);
       @include border-bottom-radius(8px);
       text-align: left;
-      float: left;
+      // float: left;
       background-color: #ffffff;
-      margin-left: 25px;
+      // margin-left: 25px;
       @media (min-width: $screen-sm-min) {
-        margin-left: 40px;
+        // margin-left: 40px;
       }
     }
     .message-item-file {
@@ -299,7 +314,7 @@ $message-item-content-card-right-xs: 25px;
       @include border-left-radius(8px);
       @include border-bottom-radius(8px);
       text-align: left;
-      float: left;
+      // float: left;
       background-color: #ffffff;
       margin-left: 25px;
       @media (min-width: $screen-sm-min) {
@@ -313,6 +328,8 @@ $message-item-content-card-right-xs: 25px;
 
   .icon-edited {
     padding: 0 5px;
+    position: relative;
+    // top: 20px;
   }
 }
 

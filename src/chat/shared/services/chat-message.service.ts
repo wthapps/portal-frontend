@@ -66,24 +66,24 @@ export class ChatMessageService {
 
   getMessages(groupId: number, options: any = {}): Promise<any> {
     return this.apiBaseService.get('zone/chat/message/' + groupId, options).toPromise().then(res => {
-      this.store.dispatch({type: CHAT_MESSAGES_CURRENT_SET, payload: {
-        data: res.data,
-        meta: res.meta
-      }})
+      this.store.dispatch({type: CHAT_MESSAGES_CURRENT_SET, payload: res})
       return res;
     })
   }
 
   loadMoreMessages(){
     this.store.select(STORE_MESSAGES).pipe(take(1)).subscribe(s => {
-      this.apiBaseService.get(s.meta.links.next).toPromise().then(res => {
-      this.store.dispatch({
-        type: CHAT_MESSAGES_CURRENT_MORE, payload: {
-          data: res.data,
-          meta: res.meta
-        }
-      })
-     })});
+      if (s.meta.links.next){
+        this.apiBaseService.get(s.meta.links.next).toPromise().then(res => {
+          this.store.dispatch({
+            type: CHAT_MESSAGES_CURRENT_MORE, payload: {
+              data: res.data,
+              meta: res.meta
+            }
+          })
+        })
+      }
+    });
   }
 
   getCurrentMessages(){

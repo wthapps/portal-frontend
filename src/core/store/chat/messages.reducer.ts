@@ -1,3 +1,5 @@
+import { Messages } from "@shared/shared/models/chat/messages.model";
+
 export const CHAT_MESSAGES_SET = 'CHAT_MESSAGES_SET';
 export const CHAT_MESSAGES_CURRENT_SET = 'CHAT_MESSAGES_CURRENT_SET';
 export const CHAT_MESSAGES_CURRENT_ADD = 'CHAT_MESSAGES_CURRENT_ADD';
@@ -18,9 +20,11 @@ export function reducer(state: any = empty(), action: any) {
     case CHAT_MESSAGES_SET:
       return stateClone;
     case CHAT_MESSAGES_CURRENT_SET:
-      stateClone.data = [...action.payload.data];
-      stateClone.meta = action.payload.meta;
-      return stateClone;
+      let messages = new Messages(action.payload);
+      messages.addShowInfoAttribute();
+      // stateClone.data = action.payload.data;
+      // stateClone.meta = action.payload.meta;
+      return messages;
     case CHAT_MESSAGES_CURRENT_MORE:
       stateClone.data = [...action.payload.data, ...stateClone.data];
       stateClone.meta = action.payload.meta;

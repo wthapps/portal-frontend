@@ -1,42 +1,50 @@
 <!-- Template message -->
-<div *ngIf="['text', 'file', 'share_contact_message'].includes(message.message_type)">
+<ng-container *ngIf="['text', 'file', 'share_contact_message'].includes(message.message_type)">
   <div class="message-item row" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
     <div class="message-item-date" *ngIf="hasShowDate()">
       <span>{{ message.created_at | timeFormat:'day' }}</span>
     </div>
-    <div class="message-item-content-container col-sm-11 col-xs-11 nopadding">
-      <div *ngIf="!byMe" class="message-item-owner">
-        <h6 class="message-item-owner-name">
-          <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength: 50}} </a>
-          <small class="text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
+    <div class="message-item-card">
+      <div *ngIf="message.showInfo" class="message-item-owner">
+        <h6 *ngIf="!byMe" class="message-item-owner-name">
+          <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength:50}} </a>
         </h6>
-        <figure class="message-item-owner-avatar">
-          <span class="avatar-xs">
-            <img [src]="message.user?.profile_image" alt="">
-          </span>
-        </figure>
+        <small class="message-item-owner-time text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
       </div>
-      <!-- container template dynamic here -->
-      <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemContentText : ''"></ng-container>
-      <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemContentFile : ''"></ng-container>
-      <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemContentContact : ''"></ng-container>
-      <!-- <ng-container *ngTemplateOutlet="message.message_type == 'request' ? messageItemContentRequest : ''"></ng-container> -->
-    </div>
-    <div class="message-item-menu dropdown col-sm-1 col-xs-1" *ngIf="byMe" style="padding: 5px !important">
-      <!-- container template dynamic here -->
-      <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemMenuText : ''"></ng-container>
-      <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemMenuFile : ''"></ng-container>
-      <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemMenuContact : ''"></ng-container>
+
+      <div class="message-item-card-main">
+        <div class="message-item-avatar">
+          <figure *ngIf="!byMe" class="message-item-avatar">
+            <span class="avatar-xs">
+              <img [src]="message.user?.profile_image" alt="">
+            </span>
+          </figure>
+        </div>
+        <div class="message-item-card-main-content">
+          <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemContentText : ''"></ng-container>
+          <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemContentFile : ''"></ng-container>
+          <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemContentContact : ''"></ng-container>
+        </div>
+        <div class="message-item-menu dropdown" *ngIf="byMe" style="padding: 5px !important">
+          <!-- container template dynamic here -->
+          <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemMenuText : ''"></ng-container>
+          <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemMenuFile : ''"></ng-container>
+          <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemMenuContact : ''"></ng-container>
+        </div>
+        <div class="message-item-card-main-notify">
+          <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</ng-container>
 
 <!-- Text message -->
 <ng-template #messageItemContentText>
   <div class="wapper message-item-content message-padding">
     <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
   </div>
-  <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i>
+  <!-- <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i> -->
   <div *ngFor="let link of message.links" style="clear: both">
     <div *ngIf="link.image && link.title && !message.deleted" class="message-padding">
       <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
