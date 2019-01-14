@@ -90,6 +90,8 @@ export class ZNoteDetailEditComponent
   attachments: AbstractControl;
   files: Array<any> = new Array<any>();
   editStatus = this.EDIT_STATUS.idle;
+  disabled = false;
+  noSave = false;
 
   private closeSubject: Subject<any> = new Subject<any>();
   private noSaveSubject: Subject<any> = new Subject<any>();
@@ -167,11 +169,18 @@ export class ZNoteDetailEditComponent
       ).subscribe((user) => {
         if (!user || Object.keys(user).length === 0) {
           this.messageService.clear();
+
+          if (this.note.permission !== 'view') {
+            this.customEditor.enable();
+            this.customEditor.focus();
+            this.disabled = false;
+          }
           return;
         }
         const {user_uuid, user_name} = user;
         if (user_uuid !== this.userService.getSyncProfile().uuid) {
           this.customEditor.disable();
+          this.disabled = true;
         }
 
         if (user_name) {
@@ -191,11 +200,11 @@ export class ZNoteDetailEditComponent
         this.note = noteContent;
         this.store.dispatch(new note.NoteUpdated(this.note));
 
-        // TODO: sync note name
-        // this.updateFormValue(this.note);
+        this.noSave = true;
+        this.updateFormValue(this.note);
         // Reset content of elemenet div.ql-editor to prevent HTML data loss
         document.querySelector('.ql-editor').innerHTML = this.note.content;
-        this.editStatus = this.EDIT_STATUS.saved;
+        _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400) ;
       });
   }
 
@@ -226,7 +235,7 @@ export class ZNoteDetailEditComponent
         ([noteContent, currentFolder]: any) => {
           // Subscribe user to this note channel
           this.noteChannel.subscribe(noteContent.uuid);
-          
+
           this.note = noteContent;
           this.store.dispatch(new note.NoteUpdated(this.note));
           this.initQuill();
@@ -270,10 +279,11 @@ export class ZNoteDetailEditComponent
       fromEvent(this.customEditor, 'text-change')
     ).pipe(
       skip(1),
-      // skipWhile(() => this.editStatus !== this.EDIT_STATUS.editing),
-      takeUntil(merge(this.noSave$, this.closeSubject))
+      takeUntil(this.closeSubject)
     ).subscribe(() => {
-      this.editing();
+      if (this.editStatus !== this.EDIT_STATUS.reloading) {
+        this.editing();
+      }
     });
   }
 
@@ -286,16 +296,18 @@ export class ZNoteDetailEditComponent
       .pipe(
         skip(1),
         debounceTime(DEBOUNCE_MS),
-        takeUntil(merge(this.noSave$, this.closeSubject))
+        takeUntil(this.closeSubject)
       )
       .subscribe(() => {
         this.noteChanged = true;
         if (this.editMode === Constants.modal.add && !this.note.id) {
           this.onFirstSave();
         } else {
-          this.updateNote();
+          if (!this.noSave) {
+            this.updateNote();
+          }
         }
-
+        _.delay(() => this.noSave = false, 400);
         this.editStatus = this.EDIT_STATUS.saved;
       });
   }
@@ -415,7 +427,6 @@ export class ZNoteDetailEditComponent
   }
 
   onSort(name: any) {
-    // console.log('name:', name, this.note.attachments);
     this.note.attachments = this.orderDesc
       ? _.sortBy(this.note.attachments, [name])
       : _.sortBy(this.note.attachments, [name]).reverse();
