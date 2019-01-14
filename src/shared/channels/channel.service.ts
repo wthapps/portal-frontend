@@ -34,7 +34,6 @@ export class ChannelService extends CableService {
             console.log('disconnected');
           },
           received: (data: any) => {
-            console.log('received', data);
             const factory = new ChannelActionFactoryService();
             const action = factory.create(data, self.serviceManager);
             if (action) {

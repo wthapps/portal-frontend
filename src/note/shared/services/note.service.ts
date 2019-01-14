@@ -26,7 +26,8 @@ export class ZNoteService extends BaseEntityService<any> {
 
   private apiUrl = '/api/zone/note/note.json';
 
-  constructor(protected apiBaseService: ApiBaseService) {
+  constructor(protected apiBaseService: ApiBaseService
+    ) {
     super(apiBaseService);
     this.url = 'note/notes';
 
@@ -60,7 +61,7 @@ export class ZNoteService extends BaseEntityService<any> {
   }
 
   getNoteAvailable(id: any) {
-    return this.apiBaseService.get(this.url + '/get_note_available/' + id)
+    return this.apiBaseService.get(this.url + '/get_note_available/' + id);
   }
 
   deleteNote(body?: any) {
@@ -75,7 +76,7 @@ export class ZNoteService extends BaseEntityService<any> {
      }
      });*/
 
-    let collection: any = this.notesSubject.getValue();
+    const collection: any = this.notesSubject.getValue();
     if (body) { // deleted 1 note
       collection.data = collection.data.filter(
         (v: any) => v.id !== body.id
@@ -90,7 +91,7 @@ export class ZNoteService extends BaseEntityService<any> {
     } else { // deleted selectedObjects
 
       // remove item from notesSubject
-      _.map(this.selectedObjectsSubject.getValue(), (v: any)=> {
+      _.map(this.selectedObjectsSubject.getValue(), (v: any) => {
         _.remove(collection.data, {'id': v.id});
       });
 
@@ -99,7 +100,7 @@ export class ZNoteService extends BaseEntityService<any> {
     }
 
     // set onSelectAll is false
-    if (collection.data.length == 0) {
+    if (collection.data.length === 0) {
       this.isSelectAllSubject.next(false);
     }
   }
@@ -109,7 +110,7 @@ export class ZNoteService extends BaseEntityService<any> {
   }
 
   addItemSelectedObjects(item: any) {
-    let data: any = this.selectedObjectsSubject.getValue();
+    const data: any = this.selectedObjectsSubject.getValue();
     data.unshift(item);
     this.selectedObjectsSubject.next(data);
     this.checkSelectAll();
@@ -122,13 +123,13 @@ export class ZNoteService extends BaseEntityService<any> {
     );
     this.selectedObjectsSubject.next(collection);
 
-    if (collection.length == 0) {
+    if (collection.length === 0) {
       this.isSelectAllSubject.next(false);
     }
   }
 
   changeSortOption(name: string, descending: boolean) {
-    let collection: any = this.notesSubject.getValue();
+    const collection: any = this.notesSubject.getValue();
     collection.data = _.orderBy(collection.data, [name], [(descending ? 'desc' : 'asc')]);
     this.notesSubject.next(collection);
   }
@@ -140,14 +141,14 @@ export class ZNoteService extends BaseEntityService<any> {
       this.isSelectAllSubject.next(false);
     } else {
       this.isSelectAllSubject.next(true);
-      let notesData: any = this.notesSubject.getValue();
+      const notesData: any = this.notesSubject.getValue();
       this.selectedObjectsSubject.next(_.cloneDeep(notesData.data));
     }
   }
 
   checkSelectAll() {
-    let notesData: any = this.notesSubject.getValue();
-    let selectedObjectsData: any = this.selectedObjectsSubject.getValue();
+    const notesData: any = this.notesSubject.getValue();
+    const selectedObjectsData: any = this.selectedObjectsSubject.getValue();
     if (selectedObjectsData.length === notesData.data.length) {
       this.isSelectAllSubject.next(true);
     }
