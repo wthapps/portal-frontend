@@ -4,7 +4,6 @@ import { MPhotosService } from '../shared/services/photos.service';
 import { Observable } from 'rxjs';
 import { MMediaService } from '../shared/media.service';
 import { Constants } from '@shared/constant';
-import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 
 declare let _: any;
 
@@ -63,8 +62,7 @@ export class MPhotosComponent implements OnInit {
   ];
 
   constructor(public mediaService: MMediaService,
-              private dataService: MPhotosService,
-              private confirmService: WthConfirmService) {
+              private dataService: MPhotosService) {
     this.data$ = this.dataService.data$;
   }
 
