@@ -1,3 +1,4 @@
+/*
 import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { SampleMediaService } from '../shared/media.service';
 import { ActivatedRoute } from '@angular/router';
@@ -16,6 +17,8 @@ export class SampleMediaListComponent implements OnInit {
   data: any[] = null;
   next: string;
 
+  type: string = 'photo';
+
   constructor(private mediaService: SampleMediaService,
               private route: ActivatedRoute) {
   }
@@ -23,6 +26,7 @@ export class SampleMediaListComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       console.log(params.get('type'));
+      this.type = params.get('type');
     });
 
     this.getDataAsync().then();
@@ -40,4 +44,9 @@ export class SampleMediaListComponent implements OnInit {
       this.getDataAsync().then();
     }
   }
+
+  onDelete(item: any) {
+    this.mediaService.delete(item, this.type);
+  }
 }
+*/

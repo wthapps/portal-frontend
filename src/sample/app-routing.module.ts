@@ -6,7 +6,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/media', pathMatch: 'full' },
   {
     path: 'media',
-    loadChildren: './media/media.module#SampleMediaModule'
+    loadChildren: './media/media.module#MediaModule'
   }
 ];
 

@@ -1,12 +1,12 @@
 <dts-select-container #container="dts-select-container"
                       [(selectedItems)]="selectedDocuments"
-                      (select)="someMethod($event)"
+                      (select)="onSelect($event)"
                       infinite-scroll
                       [infiniteScrollDistance]="2"
                       [infiniteScrollThrottle]="50"
                       [scrollWindow]="scrollWindow"
                       (scrolled)="onLoadMore()">
-  <div class="content-view content-grid content-grid-3">
+  <div class="content-view content-grid content-grid-{{ sliderView }}">
     <div *ngFor="let item of data" [dtsSelectItem]="item" class="content-item">
       <div class="item-media">
         <div class="item-actions">

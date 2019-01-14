@@ -6,5 +6,5 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styleUrls: ['media.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SampleMediaComponent {
+export class MediaComponent {
 }

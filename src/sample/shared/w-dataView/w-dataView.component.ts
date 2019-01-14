@@ -1,4 +1,15 @@
-import { Component, ViewEncapsulation, Input, Output, EventEmitter, ContentChild, TemplateRef } from '@angular/core';
+import {
+  Component,
+  ViewEncapsulation,
+  Input,
+  Output,
+  EventEmitter,
+  ContentChild,
+  TemplateRef,
+  ViewChild,
+  HostBinding
+} from '@angular/core';
+import { SelectContainerComponent } from 'ngx-drag-to-select';
 
 @Component({
   selector: 'w-dataView',
@@ -7,20 +18,24 @@ import { Component, ViewEncapsulation, Input, Output, EventEmitter, ContentChild
   encapsulation: ViewEncapsulation.None
 })
 export class WDataViewComponent {
+  @HostBinding('class') class = 'objects-main-content';
   @Input() data: any;
+  @Input() sliderView = 3;
+  @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadMoreCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ContentChild('viewBody') viewBodyTmpl: TemplateRef<any>;
+  @ViewChild('container') container: SelectContainerComponent;
+
   selectedDocuments: any;
 
   constructor() {
   }
 
-  someMethod(e: any) {
-    // console.log(e);
+  onSelect(e: any) {
+    this.selectCompleted.emit(e);
   }
 
   onLoadMore() {
-    console.log('onLoadMore');
     this.loadMoreCompleted.emit(true);
   }
 }

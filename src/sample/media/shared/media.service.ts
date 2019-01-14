@@ -1,13 +1,32 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService } from '@wth/shared/services';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { LocalStorageService } from 'angular-2-local-storage';
 
 @Injectable()
-export class SampleMediaService {
-  constructor(protected api: ApiBaseService) {
+export class MMediaService {
+
+  sliderView$: Observable<number>;
+  private sliderViewSubject: BehaviorSubject<number> = new BehaviorSubject<number>(3);
+
+  viewMode$: Observable<string>;
+  private viewModeSubject: BehaviorSubject<string> = new BehaviorSubject<string>('grid');
+
+  constructor(public localStorageService: LocalStorageService) {
+    this.viewMode$ = this.viewModeSubject.asObservable().pipe(distinctUntilChanged());
+    this.viewModeSubject.next(this.localStorageService.get('media_view_mode') || 'grid');
+
+    this.sliderView$ = this.sliderViewSubject.asObservable().pipe(distinctUntilChanged());
+    this.sliderViewSubject.next(this.localStorageService.get('media_slider_val') || 3);
   }
 
-  getData(next: string) {
-    const url = next ? next : 'media/media/index_combine';
-    return this.api.get(url);
+  changeView(view: string) {
+    this.viewModeSubject.next(view);
+    this.localStorageService.set('media_view_mode', view);
+  }
+
+  changeSliderView(num: number) {
+    this.sliderViewSubject.next(num);
+    this.localStorageService.set('media_slider_val', num);
   }
 }

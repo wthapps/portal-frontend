@@ -1,0 +1,59 @@
+<div class="objects-main">
+  <w-dataView-nav [sliderView]="mediaService.sliderView$ | async"
+                  (sliderViewCompleted)="mediaService.changeSliderView($event)"
+                  (sortComplete)="onSortComplete($event)">
+  </w-dataView-nav>
+  <ng-container *ngIf="data$ | async as list; else templateloading">
+    <ng-container *ngIf="list?.length > 0; else templateNodata">
+      <w-dataView [data]="list"
+                  [sliderView]="mediaService.sliderView$ | async"
+                  (loadMoreCompleted)="onLoadMoreCompleted($event)"
+                  (selectCompleted)="onSelectCompleted()"
+                  #dataView>
+        <ng-template #viewBody let-item>
+          <div class="item-media-img">
+            <img [src]="item.thumbnail_url" alt="">
+            <i class="fa fa-play-circle-o"></i>
+            <div class="item-media-img-over">
+              7 items
+            </div>
+          </div>
+          <div class="item-media-name">
+            <span>{{ item.name }}</span>
+          </div>
+        </ng-template>
+      </w-dataView>
+      <w-dataView-selected *ngIf="dataView.selectedDocuments?.length"
+                           [selectedObjects]="dataView.selectedDocuments"
+                           (clear)="dataView.container.clearSelection()">
+        <ul class="nav-selection-actions">
+          <li *ngFor="let menu of menuActions">
+            <button (click)="onMenuAction(menu.action)" class="btn btn-icon" type="button"><i [class]="menu.icon"></i></button>
+          </li>
+          <li class="dropdown">
+            <button class="btn btn-icon" type="button" data-toggle="dropdown">
+              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li *ngFor="let menu of otherActions">
+                <a (click)="onMenuAction(menu.action)" href="#"><i [class]="menu.icon"></i> {{ menu.text }}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </w-dataView-selected>
+    </ng-container>
+    <ng-template #templateNodata>
+      <div class="text-center">
+        <box-no-data [icon]="'fa fa-picture-o'" [subTitle]="'There is no photo'"></box-no-data>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-template #templateloading>
+    <div class="text-center">
+      <box-loading></box-loading>
+    </div>
+  </ng-template>
+</div>
+
+

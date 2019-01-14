@@ -1,24 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SampleMediaComponent } from './media.component';
-import { SampleMediaListComponent } from './list/list.component';
+import { MediaComponent } from './media.component';
+import { MPhotosComponent } from './list/photos.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: SampleMediaComponent,
+    component: MediaComponent,
     children: [
+      // { path: '', redirectTo: 'photos', pathMatch: 'full' },
       {
         path: '',
-        component: SampleMediaListComponent
-      },
-      {
-        path: ':type',
-        component: SampleMediaListComponent
-      },
-      {
-        path: ':type/:id',
-        component: SampleMediaListComponent
+        component: MPhotosComponent
       }
     ]
   }
@@ -28,5 +21,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SampleMediaRoutingModule {
+export class MediaRoutingModule {
 }
