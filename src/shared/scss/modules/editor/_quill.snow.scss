@@ -678,7 +678,8 @@
 
 .ql-snow .ql-formats {
   display: inline-block;
-  vertical-align: middle;
+  // vertical-align: middle;
+  border-right: 1px solid #ccc;
 }
 
 .ql-snow .ql-formats:after {

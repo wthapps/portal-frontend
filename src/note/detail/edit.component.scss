@@ -42,7 +42,8 @@ $note-editor-aside-w: 400px;
   .note-editor-header-action-right {
     @include order(1);
     ul:not(.dropdown-menu) {
-      margin: 0 15px 0 0;
+      // margin: 0 15px 0 0;
+      margin: 0;
       padding: 0;
       list-style-type: none;
       > li {
@@ -61,6 +62,15 @@ $note-editor-aside-w: 400px;
       margin: 0;
       @include flexbox;
       @include align-items(center);
+    }
+
+    input.form-control {
+      border: none;
+      
+      &:focus {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
     }
   }
 }
@@ -98,7 +108,12 @@ $note-editor-aside-w: 400px;
       }
     }
     .quill-toolbar-attachment {
-      padding: 8px 0;
+      padding: 8px;
+
+      .title {
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+      }
     }
   }
   .note-editor-body {
@@ -292,6 +307,38 @@ $note-editor-aside-w: 400px;
   }
 }
 
+.bdl1 {
+  border-left: 1px;
+}
+
 .mb4 {
   margin-bottom: 4px;
+}
+
+.mb15 {
+  margin-bottom: 15px;
+}
+
+.pl12 {
+  padding-left: 12px;
+}
+
+.pr12 {
+  padding-right: 12px;
+}
+
+.pt12 {
+  padding-top: 12px;
+}
+
+.p10 {
+  padding: 10px;
+}
+
+.bb {
+  border-bottom: 1px solid #ccc;
+}
+
+.fwb {
+  font-weight: bold;
 }

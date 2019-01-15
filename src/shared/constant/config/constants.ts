@@ -474,6 +474,7 @@ export class ConstantsBase {
     addToBlacklist: 'Add to blacklist',
     addToFavorites: 'Add to favorites',
     addAttachments: 'Add attachments',
+    attachments: 'Attachments',
     back: 'Back',
     cancelUploading: 'Cancel uploading',
     changeView: 'Change view',

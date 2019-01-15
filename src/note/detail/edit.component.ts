@@ -90,6 +90,7 @@ export class ZNoteDetailEditComponent
   attachments: AbstractControl;
   files: Array<any> = new Array<any>();
   editStatus = this.EDIT_STATUS.idle;
+  visibleTab: 'comment' | 'attachment' | undefined = undefined;
   disabled = false;
   noSave = false;
 
@@ -206,6 +207,24 @@ export class ZNoteDetailEditComponent
         document.querySelector('.ql-editor').innerHTML = this.note.content;
         _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400) ;
       });
+  }
+
+  handleActionEvents(event) {
+    const {action} = event;
+
+    switch (action) {
+      case 'showComments': {
+        this.visibleTab = (this.visibleTab === 'comment') ? undefined : 'comment';
+        break;
+      }
+      case 'openAttactments': {
+        this.visibleTab = (this.visibleTab === 'attachment') ? undefined : 'attachment';
+        break;
+      }
+      default: {
+
+      }
+    }
   }
 
   ngAfterViewInit() {

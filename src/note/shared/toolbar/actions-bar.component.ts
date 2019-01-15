@@ -4,7 +4,9 @@ import {
   Input,
   ChangeDetectionStrategy,
   OnChanges,
-  OnDestroy
+  OnDestroy,
+  Output,
+  EventEmitter
 } from '@angular/core';
 
 
@@ -39,6 +41,7 @@ export class ZNoteSharedActionBarComponent
   @Input() permission: any = 'edit';
   @Input() detectChange: boolean;
   @Input() toolbarPosition: any = 'top';
+  @Output() outEvent: EventEmitter<any> = new EventEmitter<any>();
 
   readonly tooltip: any = Constants.tooltip;
   show = true;
@@ -48,10 +51,32 @@ export class ZNoteSharedActionBarComponent
   detectMenu: any = false;
 
   actionsMenu: any = {
+    attachments: {
+      show: true,
+      needPermission: 'view',
+      inDropDown: false,
+      action: this.openAttactments.bind(this),
+      class: 'btn btn-default',
+      tooltip: this.tooltip.attachments,
+      tooltipPosition: 'bottom',
+      title: 'Attachments',
+      iconClass: 'fa fa-paperclip'
+    },
+    chat: {
+      show: true,
+      needPermission: 'view',
+      inDropDown: false,
+      action: this.showComments.bind(this),
+      class: 'btn btn-default',
+      tooltip: this.tooltip.chat,
+      tooltipPosition: 'bottom',
+      title: 'Chat',
+      iconClass: 'fa fa-comment'
+    },
     favourite: {
       show: true,
       needPermission: 'view',
-      inDropDown: false, // Outside dropdown list
+      inDropDown: true,
       action: this.favourite.bind(this),
       class: 'btn btn-default',
       tooltip: this.tooltip.favourite,
@@ -72,12 +97,12 @@ export class ZNoteSharedActionBarComponent
     delete: {
       show: true,
       needPermission: 'view',
-      inDropDown: false, // Outside dropdown list
+      inDropDown: true,
       action: this.deleteOrRemove.bind(this),
       class: 'btn btn-default',
       tooltip: this.tooltip.remove,
       tooltipPosition: 'bottom',
-      title: 'Remove',
+      title: 'Delete',
       iconClass: 'fa fa-trash-o'
     },
     edit: {
@@ -92,7 +117,8 @@ export class ZNoteSharedActionBarComponent
       needPermission: 'edit',
       inDropDown: true, // Inside dropdown list
       action: this.makeACopy.bind(this),
-      title: 'Make copy'
+      title: 'Make copy',
+      iconClass: 'fa fa-files-o'
     },
     findFolder: {
       show: true,
@@ -113,14 +139,16 @@ export class ZNoteSharedActionBarComponent
       needPermission: 'view',
       inDropDown: true, // Inside dropdown list
       action: this.print.bind(this),
-      title: 'Print'
+      title: 'Print',
+      iconClass: 'fa fa-print'
     },
     exportPdf: {
       show: true,
       needPermission: 'view',
       inDropDown: true, // Inside dropdown list
       action: this.exportPdf.bind(this),
-      title: 'Export as PDF'
+      title: 'Export as PDF',
+      iconClass: 'fa fa-cloud-download'
     },
     stopSharing: {
       show: true,
@@ -130,6 +158,7 @@ export class ZNoteSharedActionBarComponent
       title: 'Stop Sharing'
     }
   };
+  attactments: any;
 
   constructor(
     public noteService: ZNoteService,
@@ -154,6 +183,16 @@ export class ZNoteSharedActionBarComponent
     this.toolbarSetup(e);
     // On Off toolbar menu actions
     this.toolbarActionsSetup(e);
+  }
+
+  openAttactments() {
+    console.log('open attachments ...');
+    this.outEvent.emit({action: 'openAttactments'});
+  }
+
+  showComments() {
+    console.log('open chat ...');
+    this.outEvent.emit({action: 'showComments'});
   }
 
   validatePermission(objects) {

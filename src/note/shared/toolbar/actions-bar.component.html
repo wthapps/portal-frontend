@@ -17,7 +17,7 @@
       <ng-template ngFor let-menu [ngForOf]="actionsMenu | mapToIterable: detectMenu">
         <li *ngIf="menu.val.show && menu.val.inDropDown">
           <a tabindex="-1" href="javascript:;"
-          (click)="menu.val.action()">{{menu.val.title}}</a>
+          (click)="menu.val.action()"><i class="{{menu.val.iconClass}}"></i> {{menu.val.title}}</a>
         </li>
       </ng-template>
     </ul>
