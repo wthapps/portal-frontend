@@ -40,7 +40,7 @@ export function reducer(state: any = empty(), action: any) {
       // repalce action
       let isReplaced = false;
       stateClone.data = stateClone.data.map(message => {
-        if (message.id == action.payload.data.id || message.client_id == action.payload.data.client_id) {
+        if (message.id == action.payload.data.id || (action.payload.data.client_id && message.client_id == action.payload.data.client_id)) {
           isReplaced = true;
           return action.payload.data;
         } else {
