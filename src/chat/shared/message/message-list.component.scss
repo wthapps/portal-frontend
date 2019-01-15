@@ -194,9 +194,29 @@ $message-item-content-card-right-xs: 25px;
     }
   }
 
-  .message-item-content-other-files {
-    background-color: #ffffff;
+  .message-item-content-files, .message-item-content-contact-sharing {
+    background-color: white !important;
     padding: 10px;
+    display: flex;
+  }
+
+  .message-item-content-contact-sharing-info {
+    display: flex;
+  }
+
+  .message-padding {
+    padding: 10px;
+  }
+
+  .message-error {
+    color: red;
+  }
+
+
+  .message-item-content-other-files {
+    background-color: white !important;
+    padding: 10px;
+    display: flex;
     a {
       display: block;
       color: inherit;
@@ -217,7 +237,7 @@ $message-item-content-card-right-xs: 25px;
     }
   }
   .message-item-content-note {
-    background-color: #ffffff;
+    background-color: #ffffff !important;
     padding: 10px;
     a {
       color: inherit;
@@ -253,14 +273,6 @@ $message-item-content-card-right-xs: 25px;
       text-align: left;
       float: right;
       background-color: #ADE4FF;
-    }
-    .message-item-file {
-      @include border-right-radius(0);
-      @include border-left-radius(8px);
-      @include border-bottom-radius(8px);
-      text-align: left;
-      background-color: #ffffff;
-      float: right;
     }
     .message-item-status {
       text-align: right;
@@ -307,18 +319,6 @@ $message-item-content-card-right-xs: 25px;
       // margin-left: 25px;
       @media (min-width: $screen-sm-min) {
         // margin-left: 40px;
-      }
-    }
-    .message-item-file {
-      @include border-right-radius(0);
-      @include border-left-radius(8px);
-      @include border-bottom-radius(8px);
-      text-align: left;
-      // float: left;
-      background-color: #ffffff;
-      margin-left: 25px;
-      @media (min-width: $screen-sm-min) {
-        margin-left: 40px;
       }
     }
     .message-item-status {

@@ -111,6 +111,10 @@ export class ZChatSidebarComponent implements OnInit {
         this.chatConversationService.navigateToConversation(contact.group_id);
       })
     }
+    this.commonEventService.broadcast({
+      channel: 'MessageEditorComponent',
+      action: 'resetEditor'
+    })
   }
 
   onAddContact() {

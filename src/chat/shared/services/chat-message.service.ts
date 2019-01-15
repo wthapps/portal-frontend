@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService, StorageService } from '@shared/services';
+import { ApiBaseService, StorageService, UserService } from '@shared/services';
 import { CONVERSATION_SELECT, STORE_MESSAGES } from '@shared/constant';
 import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { CHAT_MESSAGES_SET, CHAT_MESSAGES_CURRENT_SET, CHAT_MESSAGES_CURRENT_ADD, CHAT_MESSAGES_CURRENT_MORE } from '@core/store/chat/messages.reducer';
+import { CHAT_MESSAGES_SET, CHAT_MESSAGES_CURRENT_SET, CHAT_MESSAGES_CURRENT_ADD, CHAT_MESSAGES_CURRENT_MORE, CHAT_MESSAGES_CURRENT_TIMEOUT } from '@core/store/chat/messages.reducer';
 import { take, withLatestFrom, concatMap, map } from 'rxjs/operators';
 import { ChatConversationService } from './chat-conversation.service';
 import { CHAT_SELECTED_CONVERSATION_SET } from '@core/store/chat/selected-conversation.reducer';
 import { CHAT_CONVERSATIONS_SET } from '@core/store/chat/conversations.reducer';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ChatMessageService {
-  constructor(private apiBaseService: ApiBaseService, private storage: StorageService, private store: Store<any>, private chatConversationService: ChatConversationService) {}
+  constructor(private apiBaseService: ApiBaseService,
+    private store: Store<any>,
+    private userService: UserService,
+    private chatConversationService: ChatConversationService) {}
 
   create(groupId: any = null, data: any, option: any = {}) {
     return this.apiBaseService
@@ -19,18 +23,20 @@ export class ChatMessageService {
   }
 
   createTextMessage(message: any, option: any = {}) {
-    this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(sc => {
-      if (sc) {
-        this.create(
-          sc.group_id,
-          { message: message, type: 'text' },
-          option
-        ).then(res => {
-          // handel in channel
-        })
-      }
+    of(message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([message, sc]) => {
+      let id: any = uuid();
+      this.addCurrentMessages({ message: { status: 'pending', client_id: id, group_id: sc.group_id, message_type: 'text', message: message, user_id: this.userService.getSyncProfile().id}});
+      setTimeout(() => {
+        this.store.dispatch({type: CHAT_MESSAGES_CURRENT_TIMEOUT})
+      }, 5000)
+      return this.create(sc.group_id, { message: message, type: 'text', client_id: id}, option);
+    })).toPromise().then(res => {
+      // apiCall.then(message => {
+      //   // handel in channel
+      // })
     });
   }
+
   createFileMessage(file: any) {
     this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(sc => {
       if (sc) {
