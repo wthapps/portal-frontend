@@ -13,7 +13,7 @@ export class WMessageService extends BaseEntityService<any> {
 
   constructor(private api: ApiBaseService) {
     super(api);
-    this.url = 'zone/chat/message';
+    this.url = 'chat/message';
     this.scrollToBottom$ = this.scrollToBottomSubject.asObservable();
   }
 

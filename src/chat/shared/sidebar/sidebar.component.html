@@ -68,23 +68,23 @@
       [scrollWindow]="false"
 >
   <ng-container *ngIf="!searching">
-    <ng-container *ngIf="((conversations$ | async)?.data | chatGroupFavorite)?.length > 0">
+    <ng-container *ngIf="((conversations$ | async) | chatGroupFavorite)?.length > 0">
       <div class="text-bold conversation-label">
         <p>Favorites</p>
       </div>
-      <ng-container *ngIf="((conversations$ | async)?.data | chatGroupFavorite)?.length > 0; else templateNoMessage">
-        <div *ngFor="let contact of ((conversations$ | async)?.data | chatGroupFavorite)" class="menu-left-item">
-          <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
+      <ng-container *ngIf="((conversations$ | async) | chatGroupFavorite)?.length > 0; else templateNoMessage">
+        <div *ngFor="let conversation of ((conversations$ | async) | chatGroupFavorite)" class="menu-left-item">
+          <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
         </div>
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="((conversations$ | async)?.data | chatGroupRecent)?.length > 0">
+    <ng-container *ngIf="((conversations$ | async) | chatGroupRecent)?.length > 0">
       <div class="text-bold conversation-label">
         <p>Chats</p>
       </div>
-      <ng-container *ngIf="((conversations$ | async)?.data | chatGroupRecent)?.length > 0; else templateNoMessage">
-        <div *ngFor="let contact of ((conversations$ | async)?.data | chatGroupRecent)" class="menu-left-item">
-          <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
+      <ng-container *ngIf="((conversations$ | async) | chatGroupRecent)?.length > 0; else templateNoMessage">
+        <div *ngFor="let conversation of ((conversations$ | async) | chatGroupRecent)" class="menu-left-item">
+          <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
         </div>
       </ng-container>
     </ng-container>
@@ -100,7 +100,7 @@
 </div>
 
 <ng-template #conversationTemplate let-conversation="conversation">
-  <div class="media-chat-user" [routerLink]="['/conversations', conversation.group_id]" [routerLinkActive]="['active']">
+  <div class="media-chat-user" [routerLink]="['/conversations', conversation.uuid]" [routerLinkActive]="['active']">
     <z-chat-share-user-avatar class="media-chat-user-row"
                               [isPending]="conversation.group_type == 'couple' && conversation?.status == 'sent_request'"
                               [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">

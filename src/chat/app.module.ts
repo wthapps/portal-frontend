@@ -25,6 +25,7 @@ import { environment } from '@env/environment';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
 import { ZChatProfileModule } from '@chat/profile/profile.module';
+import { AppStoreModule } from '@chat/store';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { ZChatProfileModule } from '@chat/profile/profile.module';
 
     AppRoutingModule,
     ModalModule,
+    AppStoreModule,
     ZChatSharedModule.forRoot(),
     SharedServicesModule.forRoot(),
     StoreModule.forRoot(ChatStore),

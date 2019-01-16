@@ -14,6 +14,11 @@ import { ChatConversationService } from '../services/chat-conversation.service';
 import { Store } from '@ngrx/store';
 import { STORE_CONVERSATIONS } from '@shared/constant';
 import { Conversations } from '@shared/shared/models/chat/conversations.model';
+import {
+  AppState,
+  ConversationActions,
+  ConversationSelectors
+} from '@chat/store';
 
 
 @Component({
@@ -48,7 +53,7 @@ export class ZChatSidebarComponent implements OnInit {
     public chatService: ChatService,
     public chatConversationService: ChatConversationService,
     private router: Router,
-    private store: Store<any>,
+    private store$: Store<AppState>,
     private renderer: Renderer2,
     private commonEventService: CommonEventService,
     private wthEmojiService: WTHEmojiService,
@@ -60,7 +65,10 @@ export class ZChatSidebarComponent implements OnInit {
   ngOnInit() {
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
     this.contactSelect$ = this.chatService.getContactSelectAsync();
-    this.conversations$ = this.store.select(STORE_CONVERSATIONS);
+    // this.conversations$ = this.store.select(STORE_CONVERSATIONS);
+    this.conversations$ = this.store$.select(ConversationSelectors.getItems);
+
+    this.store$.dispatch(new ConversationActions.GetAll({}));
   }
 
   doFilter(param) {
@@ -90,30 +98,30 @@ export class ZChatSidebarComponent implements OnInit {
   }
 
   onSelect(event: any, contact: any) {
-    event.preventDefault();
-    event.stopPropagation();
-    $('#chat-message-text').focus();
-    if (contact.deleted) {
-      this.chatConversationService.apiUpdateGroupUser(contact.group_id, { deleted: false, notification_count: 0 }).then(res => {
-        this.chatConversationService.apiGetConversations().then(r2 => {
-          this.chatConversationService.navigateToConversation(contact.group_id);
-        })
-      });
-    } else {
-      const last = contact.notification_count;
-      this.chatConversationService.apiUpdateGroupUser(contact.group_id, { notification_count: 0 }).then(res => {
-        this.commonEventService.broadcast({
-          channel: 'ChatNotificationComponent',
-          action: 'addNotificationEvent',
-          payload: { notification_count: 0, last_notification_count: last }
-        });
-        this.chatConversationService.navigateToConversation(contact.group_id);
-      })
-    }
-    this.commonEventService.broadcast({
-      channel: 'MessageEditorComponent',
-      action: 'resetEditor'
-    })
+    // event.preventDefault();
+    // event.stopPropagation();
+    // $('#chat-message-text').focus();
+    // if (contact.deleted) {
+    //   this.chatConversationService.apiUpdateGroupUser(contact.group_id, { deleted: false, notification_count: 0 }).then(res => {
+    //     this.chatConversationService.apiGetConversations().then(r2 => {
+    //       this.chatConversationService.navigateToConversation(contact.group_id);
+    //     })
+    //   });
+    // } else {
+    //   const last = contact.notification_count;
+    //   this.chatConversationService.apiUpdateGroupUser(contact.group_id, { notification_count: 0 }).then(res => {
+    //     this.commonEventService.broadcast({
+    //       channel: 'ChatNotificationComponent',
+    //       action: 'addNotificationEvent',
+    //       payload: { notification_count: 0, last_notification_count: last }
+    //     });
+    //     this.chatConversationService.navigateToConversation(contact.group_id);
+    //   })
+    // }
+    // this.commonEventService.broadcast({
+    //   channel: 'MessageEditorComponent',
+    //   action: 'resetEditor'
+    // })
   }
 
   onAddContact() {

@@ -5,7 +5,7 @@ export class ConversationApiCommands extends ApiCommand {
   static markAsRead(id: any) {
     return this.createRequest(
       'post',
-      'zone/chat/notification/mark_as_read',
+      'notification/mark_as_read',
       id
     );
   }

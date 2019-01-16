@@ -1,5 +1,5 @@
 import { Injectable }             from '@angular/core';
-import { Effect, Actions }        from '@ngrx/effects';
+import { Effect, ofType, Actions }        from '@ngrx/effects';
 import { Action }                 from '@ngrx/store';
 import { Observable,  of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
@@ -44,8 +44,8 @@ export class AccountEffects {
    * Photo
    */
   @Effect()
-  get$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.GET)
+  get$: Observable<Action> = this.actions$.pipe(
+    ofType(ActionTypes.GET))
     .pipe(
       map((action: Get) => action.payload),
       switchMap((state: any) => {
@@ -57,8 +57,8 @@ export class AccountEffects {
       }));
 
   @Effect()
-  getAccounts$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.GET_ACCOUNTS).pipe(
+  getAccounts$: Observable<Action> = this.actions$.pipe(
+    ofType(ActionTypes.GET_ACCOUNTS)).pipe(
     map((action: GetAccounts) => action.payload),
     switchMap(state => {
       this.loadingService.start();
@@ -75,8 +75,8 @@ export class AccountEffects {
     }));
 
   @Effect()
-  add$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.ADD).pipe(
+  add$: Observable<Action> = this.actions$.pipe(
+    ofType(ActionTypes.ADD)).pipe(
     map((action: Add) => action.payload),
     switchMap((state: any) => {
       return this.accountService.create(state).pipe(
@@ -88,8 +88,8 @@ export class AccountEffects {
     }));
 
   @Effect()
-  addMany$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.ADD_MANY).pipe(
+  addMany$: Observable<Action> = this.actions$.pipe(
+    ofType(ActionTypes.ADD_MANY)).pipe(
     map((action: AddMany) => action.payload),
     switchMap((state: any) => {
       this.loadingService.start();
@@ -107,8 +107,8 @@ export class AccountEffects {
     }));
 
   @Effect()
-  update$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.UPDATE).pipe(
+  update$: Observable<Action> = this.actions$.pipe(
+    ofType(ActionTypes.UPDATE)).pipe(
     map((action: Update) => action.payload),
     switchMap((state: any) => {
       this.loadingService.start();
@@ -126,8 +126,8 @@ export class AccountEffects {
     }));
 
   @Effect()
-  delete$: Observable<Action> = this.actions$
-    .ofType(ActionTypes.DELETE).pipe(
+  delete$: Observable<Action> = this.actions$.pipe(
+    ofType(ActionTypes.DELETE)).pipe(
     map((action: Delete) => action.payload),
     switchMap((state: any) => {
       this.loadingService.start();

@@ -70,7 +70,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
 
   initalize() {
     // Init get data
-    this.chatConversationService.apiGetConversations();
+    // this.chatConversationService.apiGetConversations();
   }
 
   getOutOfDateMessages() {
@@ -98,7 +98,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
       this.disconnectApiMap[group_id] = retry_num ? retry_num - 1 : MAX_RETRY;
       if (this.disconnectApiMap[group_id] <= 0) { return; }
       this.apiBaseService
-        .get('zone/chat/message/' + group_id, { last_message })
+        .get('chat/message/' + group_id, { last_message })
         .toPromise().then((res: any) => {
           console.log('get messages from success: ', res);
           res.data.forEach(message => {
@@ -155,7 +155,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   getLatestConversation(groupId: number) {
-    return this.apiBaseService.get('zone/chat/message/' + groupId);
+    return this.apiBaseService.get('chat/message/' + groupId);
   }
 
   sendMessage(groupId: any = null, data: any, option: any = {}): Promise<any> {
@@ -163,7 +163,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group.id;
 
     return this.apiBaseService
-      .post('zone/chat/message', { group_id: conversationId, data: data })
+      .post('chat/message', { group_id: conversationId, data: data })
       .toPromise();
   }
 

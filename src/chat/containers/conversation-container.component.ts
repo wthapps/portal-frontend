@@ -6,9 +6,9 @@ import { ChatConversationService } from '@chat/shared/services/chat-conversation
 import { Subject } from 'rxjs';
 
 @Component({
-  templateUrl: 'conversation-list.component.html'
+  templateUrl: 'conversation-container.component.html'
 })
-export class ConversationListComponent implements OnInit, OnDestroy {
+export class ConversationContainerComponent implements OnInit, OnDestroy {
   conversations: any;
   destroy$ = new Subject();
 
@@ -22,19 +22,19 @@ export class ConversationListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.chatConversationService.apiGetConversations().then((res: any) => {
-    //   this.conversations = res.data.filter(c => !c.blacklist && !c.left && !c.deleted);
-    //   if (this.conversations && this.conversations.length > 0) {
-    //     this.chatService.router.navigate([
-    //       `${this.chatService.constant.conversationUrl}/${
-    //         this.conversations[0].group_id
-    //         }`
-    //     ]);
-    //   }
-    // });
+    this.chatConversationService.apiGetConversations().then((res: any) => {
+      this.conversations = res.data.filter(c => !c.blacklist && !c.left && !c.deleted);
+      if (this.conversations && this.conversations.length > 0) {
+        this.chatService.router.navigate([
+          `${this.chatService.constant.conversationUrl}/${
+            this.conversations[0].group_id
+            }`
+        ]);
+      }
+    });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(){
     this.destroy$.next();
     this.destroy$.complete();
   }

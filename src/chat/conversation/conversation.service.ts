@@ -1,11 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiBaseService } from '@wth/shared/services';
+import { WHttpClientService } from '@shared/services/w-http-client.service';
+import { HttpClient } from '@angular/common/http';
+import { Conversation } from '@chat/store';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ConversationService {
-  constructor(private api: ApiBaseService) {}
-  url = 'chat/conversations';
+  constructor(private api: WHttpClientService, private httpClient: HttpClient) {}
+  url = 'http://localhost:5000/v1/chat/conversations';
+  // url = 'chat/conversations';
+
+
+  get(id: any): Observable<any> {
+    return this.api.get(`${this.url}/${id}`);
+  }
+
+  getAll(query: any): Observable<any> {
+    // return this.api.get(this.url, query);
+    return this.httpClient.get<any>(`${this.url}`, {headers: {Accept: 'application/json'}}).pipe(
+      map(response => response.json())
+    );
+  }
 
   create(payload: any): Observable<any> {
     const conversation = {
@@ -54,15 +70,4 @@ export class ConversationService {
   open() {
 
   }
-  // getLatestConversation(groupId: number) {
-  //   return this.api
-  //     .get('zone/chat/messages/' + groupId)
-  //     .toPromise()
-  //     .then((response: any) => {
-  //       this.chatService.storage.save(
-  //         'chat_messages_group_' + groupId,
-  //         response
-  //       );
-  //     });
-  // }
 }
