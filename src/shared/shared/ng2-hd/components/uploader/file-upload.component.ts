@@ -12,7 +12,7 @@ import { FileUpload } from 'primeng/components/fileupload/fileupload';
 })
 export class FileUploadComponent extends FileUpload {
   @Input() icon = 'fa-plus';
-  constructor(el: ElementRef, domHandler: DomHandler, sanitizer: DomSanitizer, zone: NgZone) {
-    super(el, domHandler, sanitizer, zone);
+  constructor(el: ElementRef, sanitizer: DomSanitizer, zone: NgZone) {
+    super(el, sanitizer, zone);
   }
 }
