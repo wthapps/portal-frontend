@@ -84,6 +84,12 @@
       }
     }
   }
+  .modal-body-content {
+    @include flex(1);
+    margin-right: -$modal-inner-padding;
+    padding-right: $modal-inner-padding;
+    overflow: auto;
+  }
 }
 
 .modal-header-nav {

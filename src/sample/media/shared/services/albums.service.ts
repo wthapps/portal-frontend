@@ -9,8 +9,8 @@ import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model
 declare let _: any;
 
 @Injectable()
-export class MPhotosService {
-  apiUrl = 'media/media/index_combine';
+export class MAlbumsService {
+  apiUrl = 'media/albums';
 
   data$: Observable<Media[]>;
   private dataSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>(null);
@@ -73,12 +73,16 @@ export class MPhotosService {
   }
 
   delete(items?: any) {
-    return this.api.post(`media/media/delete`, { objects: items }).pipe(
+    return this.api.post(`${this.apiUrl}/delete`, { objects: items }).pipe(
       tap(() => {
         const newData = this.dataSubject.getValue();
         const filteredItems = newData.filter(item => !items.includes(item));
         this.dataSubject.next(filteredItems);
       })
     );
+  }
+
+  addToAlbum(albumID: number, photos: Media[]) {
+    return this.api.post(`${this.apiUrl}/${albumID}/photos`, { photos });
   }
 }

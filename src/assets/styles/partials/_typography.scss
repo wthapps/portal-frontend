@@ -39,6 +39,23 @@ a.disabled {
   }
 }
 
+.img-object-fit {
+  object-fit: cover;
+}
+
+.img-sm {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+  }
+}
+
 .d-block {
   display: block;
 }

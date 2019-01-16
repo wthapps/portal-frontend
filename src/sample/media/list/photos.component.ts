@@ -1,9 +1,16 @@
 import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
-import { WDataViewComponent } from '../../shared/w-dataView/w-dataView.component';
-import { MPhotosService } from '../shared/services/photos.service';
 import { Observable } from 'rxjs';
-import { MMediaService } from '../shared/media.service';
+
 import { Constants } from '@shared/constant';
+
+import { MMediaService } from '../shared/media.service';
+import { MPhotosService } from '../shared/services/photos.service';
+
+import { WDataViewComponent } from '../../shared/w-dataView/w-dataView.component';
+import { MSharedAddToAlbumComponent } from '../shared/components/add-to-album/add-to-album.component';
+import { MAlbumsService } from '../shared/services/albums.service';
+import { Media } from '@shared/shared/models/media.model';
+import { MessageService } from 'primeng/api';
 
 declare let _: any;
 
@@ -15,6 +22,7 @@ declare let _: any;
 export class MPhotosComponent implements OnInit {
   @HostBinding('class') class = 'main-page-body';
   @ViewChild('dataView') dataView: WDataViewComponent;
+  @ViewChild('modalAddToAlbum') modalAddToAlbum: MSharedAddToAlbumComponent;
 
   tooltip: any = Constants.tooltip;
   data$: Observable<any>;
@@ -62,7 +70,9 @@ export class MPhotosComponent implements OnInit {
   ];
 
   constructor(public mediaService: MMediaService,
-              private dataService: MPhotosService) {
+              private dataService: MPhotosService,
+              private albumsService: MAlbumsService,
+              private messageService: MessageService) {
     this.data$ = this.dataService.data$;
   }
 
@@ -95,11 +105,34 @@ export class MPhotosComponent implements OnInit {
       case 'delete':
         this.onDelete();
         break;
+      case 'add_to_album':
+        this.onAddToAlbum();
+        break;
     }
   }
 
   onSelectCompleted() {
     this.updateMenuFavorite(_.every(this.dataView.selectedDocuments, 'favorite'));
+  }
+
+  async onAddToAlbum() {
+    const data = await this.albumsService.getData().toPromise();
+    this.modalAddToAlbum.data = data.data;
+    this.modalAddToAlbum.next = data.meta.links.next;
+
+    this.modalAddToAlbum.modal.open();
+  }
+
+  async onModalAddCompleted(album: Media) {
+    await this.albumsService.addToAlbum(album.id, this.dataView.selectedDocuments).toPromise()
+      .then(() => this.modalAddToAlbum.modal.close())
+      .then(() => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Add To Album',
+          detail: 'You just added to Album success'
+        });
+      });
   }
 
   async onToggleFavorite() {

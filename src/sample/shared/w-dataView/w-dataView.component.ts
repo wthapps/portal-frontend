@@ -20,6 +20,7 @@ import { SelectContainerComponent } from 'ngx-drag-to-select';
 export class WDataViewComponent {
   @HostBinding('class') class = 'objects-main-content';
   @Input() data: any;
+  @Input() scrollWindow: false;
   @Input() sliderView = 3;
   @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadMoreCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();

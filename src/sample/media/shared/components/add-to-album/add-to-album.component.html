@@ -1,0 +1,41 @@
+<bs-modal #modal cssClass="modal-full-height" [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title"> Add To Album</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div class="mb10">
+      <button class="btn btn-outline-primary" type="button"><i class="fa fa-plus"></i> Create New Album</button>
+    </div>
+    <div class="modal-body-content"
+         infinite-scroll
+         [infiniteScrollDistance]="2"
+         [infiniteScrollThrottle]="50"
+         [scrollWindow]="false"
+         (scrolled)="onLoadMore($event)">
+      <div class="list-group" *ngIf="data?.length > 0; else templateNodata">
+        <a *ngFor="let item of data" (click)="onChoose(item)" href="#" class="list-group-item">
+          <div class="media-center">
+            <div class="media-center-left">
+              <div class="pull-left img-sm">
+                <img class="media-object" [src]="item.thumbnail_url" alt="...">
+              </div>
+            </div>
+            <div class="media-center-body">
+              <span>{{ item.name }}</span>
+            </div>
+            <div class="media-center-right">
+              <span class="d-block text-right" style="width: 100px">
+                {{ item.child_count }} photo<ng-container *ngIf="item.child_count > 1">s</ng-container>
+              </span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <ng-template #templateNodata>
+        <div class="text-center">
+          <box-no-data [icon]="'fa fa-picture-o'" [subTitle]="'There is no photo'"></box-no-data>
+        </div>
+      </ng-template>
+    </div>
+  </bs-modal-body>
+</bs-modal>
