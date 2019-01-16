@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild, View
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable ,  Subject ,  Subscription ,  of, fromEvent, merge } from 'rxjs';
+import { Observable ,  Subject ,  Subscription ,  of, fromEvent, merge, interval } from 'rxjs';
 import {
   takeUntil,
   switchMap,
@@ -204,7 +204,9 @@ export class ZNoteDetailEditComponent
         this.noSave = true;
         this.updateFormValue(this.note);
         // Reset content of elemenet div.ql-editor to prevent HTML data loss
-        document.querySelector('.ql-editor').innerHTML = this.note.content;
+        if (document.querySelector('.ql-editor')) {
+          document.querySelector('.ql-editor').innerHTML = this.note.content;
+        }
         _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400) ;
       });
   }
@@ -252,6 +254,8 @@ export class ZNoteDetailEditComponent
       )
       .subscribe(
         ([noteContent, currentFolder]: any) => {
+          if (!noteContent) { return; }
+
           // Subscribe user to this note channel
           this.noteChannel.subscribe(noteContent.uuid);
 
@@ -261,10 +265,11 @@ export class ZNoteDetailEditComponent
           if (currentFolder) { this.parentId = currentFolder.id; }
           this.updateFormValue(this.note);
           // Reset content of elemenet div.ql-editor to prevent HTML data loss
-          document.querySelector('.ql-editor').innerHTML = this.note.content;
+          if (document.querySelector('.ql-editor')) {
+            document.querySelector('.ql-editor').innerHTML = this.note.content;
+          }
 
-
-          this.broadcastEditing();
+          this.broadcastViewing();
           if (this.note.permission !== 'view') { this.registerAutoSave(); }
         },
         (error: any) => {
@@ -282,26 +287,33 @@ export class ZNoteDetailEditComponent
   }
 
   ngOnDestroy() {
+    // Clear lock modal
+    this.noteChannel.idle(this.note.uuid);
+    this.messageService.clear();
+
     this.closeSubject.next('');
     this.closeSubject.unsubscribe();
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
+
+
     if (this.timeInterval) { clearInterval(this.timeInterval); }
 
     // Unsubscribe user from this note channel
     this.noteChannel.unsubscribe(this.note.uuid);
   }
 
-  broadcastEditing() {
+  broadcastViewing() {
     merge(
-      this.form.valueChanges,
-      fromEvent(this.customEditor, 'text-change')
+      // this.form.valueChanges,
+      // fromEvent(this.customEditor, 'text-change')
+      interval(1000)
     ).pipe(
-      skip(1),
+      // skip(1),
       takeUntil(this.closeSubject)
     ).subscribe(() => {
-      if (this.editStatus !== this.EDIT_STATUS.reloading) {
-        this.editing();
+      if (this.editStatus !== this.EDIT_STATUS.reloading && !this.disabled && this.note.permission !== 'view') {
+        this.viewing();
       }
     });
   }
@@ -314,6 +326,7 @@ export class ZNoteDetailEditComponent
     )
       .pipe(
         skip(1),
+        tap(() => { this.editStatus = this.EDIT_STATUS.editing; }),
         debounceTime(DEBOUNCE_MS),
         takeUntil(this.closeSubject)
       )
@@ -331,9 +344,14 @@ export class ZNoteDetailEditComponent
       });
   }
 
-  editing() {
-    this.editStatus = this.EDIT_STATUS.editing;
+  // editing() {
+  //   this.editStatus = this.EDIT_STATUS.editing;
 
+  //   this.noteChannel.editing(this.note.uuid);
+  //   this.checkIdle();
+  // }
+
+  viewing() {
     this.noteChannel.editing(this.note.uuid);
     this.checkIdle();
   }
@@ -865,9 +883,11 @@ export class ZNoteDetailEditComponent
       value.name.length > 0 ||
       value.tags.length > 0 ||
       value.attachments.length > 0 ||
-      (this.editorElement.innerHTML.length > 0 &&
+      (this.editorElement && this.editorElement.innerHTML.length > 0 &&
         this.editorElement.innerHTML !== '<p><br></p>')
     ) {
+      if (!this.editorElement) { return; }
+
       if (this.editMode === Constants.modal.add) {
         if (this.note.permission !== 'view') {
           this.store.dispatch(
@@ -1008,7 +1028,7 @@ export class ZNoteDetailEditComponent
   }
 
   private async updateNote() {
-    if (!this.note.id) { return; }
+    if (!this.note.id || !this.editorElement) { return; }
     const noteObj: any = Object.assign({}, this.note, this.form.value, {
       content: this.editorElement.innerHTML
     });
@@ -1022,6 +1042,7 @@ export class ZNoteDetailEditComponent
     }
 
     this.timeout = setTimeout(() => {
+      console.log('Goes idle now for note channel: ', this.note.uuid);
       this.noteChannel.idle(this.note.uuid);
     }, DEBOUNCE_MS);
   }
