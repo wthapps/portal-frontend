@@ -35,6 +35,7 @@ export class NoteChannelService extends CableService {
   subscribe(uuid) {
     console.log('subscribe channel for note: ', uuid);
 
+    if (!uuid) { return; }
     if (this.userService.loggedIn && this.profile) {
       this.createConnectionInstance(this.profile.uuid);
 

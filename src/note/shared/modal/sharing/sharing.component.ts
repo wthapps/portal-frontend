@@ -21,16 +21,6 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('auto') auto: AutoComplete;
 
-  // operation: any = {
-  //   read: 0,
-  //   edit: 2,
-  //   editing: 20,
-  //   create: 1,
-  //   creating: 10,
-  //   delete: 9,
-  //   deleting: 90
-  // };
-
   users: any = [];
   selectedUsers: any = [];
   sharings: any = [];
@@ -45,7 +35,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
   loading = false;
   contactTerm$ = new Subject<string>();
 
-  roles = [
+  readonly roles = [
     {id: 1, name: 'view', display_name: 'Can view'},
     {id: 2, name: 'download', display_name: 'Can download'},
     {id: 3, name: 'edit', display_name: 'Can edit'}
@@ -117,7 +107,8 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
     this.modal.open();
     this.loading = true;
     if (this.sharedObjects.length === 1) {
-      this.apiBaseService.post(`note/sharings/get_sharing_info_object`, {object_id: this.sharedObjects[0].id, object_type: this.sharedObjects[0].object_type}).subscribe((res: any) => {
+      this.apiBaseService.post(`note/sharings/get_sharing_info_object`,
+       {object_id: this.sharedObjects[0].id, object_type: this.sharedObjects[0].object_type}).subscribe((res: any) => {
         this.store.dispatch({type: fromShareModal.SET_SHARED_SHARINGS, payload: res.data});
         if (res.data.length > 0) {
           this.mode = 'edit';
@@ -166,6 +157,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
   changeRole(role: any, sharing: any = null) {
     if (!sharing) {
       this.role = role;
+      this.newUsers = this.newUsers.map(user => ({...user, permission: this.role.name}));
     } else if (role.name !== sharing.permission) {
       sharing = {...sharing, permission: role.name};
       this.store.dispatch({type: fromShareModal.UPDATE_SHARING, payload: sharing});
@@ -201,14 +193,14 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
         }
         this.store.dispatch({type: fromShareModal.SET_SHARED_SHARINGS, payload: res.data});
         this.store.dispatch({type: fromShareModal.SAVE});
-        if(this.sharedObjects.length > 1) {
+        if (this.sharedObjects.length > 1) {
           this.modal.close();
         }
       });
     } else {
       // Only update single object
       this.store.dispatch({type: fromShareModal.SAVE});
-      for (let object of this.sharedObjects) {
+      for (const object of this.sharedObjects) {
         this.apiBaseService.put(`note/sharings/${object.id}`, {
           object: object,
           sharings: this.sharings,
