@@ -41,6 +41,7 @@ export class AlbumAddMixin implements AlbumCreateMixin {
       buttonTitle: 'Create New Album',
       unit: 'photo'
     });
+    // this.com
     this.subAddAlbum = this.mediaAddModalService.onAdd$.pipe(take(1)).pipe(takeUntil(this.destroy$)).subscribe(e => {
       this.onAddToAlbum({parents: [e], children: selectedObjects});
     });

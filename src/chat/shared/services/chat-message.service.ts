@@ -23,8 +23,6 @@ export class ChatMessageService {
   }
 
   createTextMessage(message: any, option: any = {}) {
-    console.log('aaaaaaaaaaaaaaaaaaaa');
-
     of(message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([message, sc]) => {
       let id: any = uuid();
       this.addCurrentMessages({ message: { status: 'pending', client_id: id, group_id: sc.group_id, message_type: 'text', message: message, user_id: this.userService.getSyncProfile().id}});
