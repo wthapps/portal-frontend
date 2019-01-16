@@ -34,6 +34,6 @@ export class ConversationApiCommands extends ApiCommand {
   }
 
   static notificationsCount() {
-    return this.createRequest('post', 'zone/chat/notification/count');
+    return this.createRequest('post', 'chat/notification/count');
   }
 }

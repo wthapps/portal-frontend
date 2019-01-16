@@ -11,9 +11,13 @@ export function conversationReducer(state = INITIAL_CONVERSATION_STATE, action: 
       };
     }
     case ActionTypes.GET_ALL_SUCCESS: {
+      const items = [];
+      action.payload.data.forEach(item => {
+        items.push(item.attributes);
+      });
       return {
         ...state,
-        items: action.payload.data,
+        items: items,
         isLoading: false,
         error: null
       };

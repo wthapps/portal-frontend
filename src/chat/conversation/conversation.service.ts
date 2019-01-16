@@ -18,9 +18,7 @@ export class ConversationService {
 
   getAll(query: any): Observable<any> {
     // return this.api.get(this.url, query);
-    return this.httpClient.get<any>(`${this.url}`, {headers: {Accept: 'application/json'}}).pipe(
-      map(response => response.json())
-    );
+    return this.httpClient.get<any>(`${this.url}`, {headers: {Accept: 'application/json'}});
   }
 
   create(payload: any): Observable<any> {
