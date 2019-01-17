@@ -13,9 +13,9 @@
 </div>
 
 <div *ngIf="selectedConversation.status == 'pending'" class="message-item-content-request">
-  <div class="media-avatar" *ngIf="message && message.display">
+  <div class="media-avatar">
     <div class="media-avatar-img avatar-sm">
-      <img [src]="message.display.image" alt="">
+      <img [src]="selectedConversation.display.image" alt="">
     </div>
     <div class="media-avatar-body">
       <h4 class="media-avatar-heading">

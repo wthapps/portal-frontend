@@ -6,12 +6,12 @@
 }
 
 .message-item-wrapper {
-  max-width: 730px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
-  padding: 15px;
+  // padding: 15px;
   .message-item-dv {
-    padding: 3px;
+    padding: 1px;
   }
   .message-item-dv:not(:first-child):last-child {
     .dropdown-menu {
@@ -206,6 +206,9 @@ $message-item-content-card-right-xs: 25px;
 
   .message-padding {
     padding: 10px;
+    p {
+      margin: 0px;
+    }
   }
 
   .message-error {
@@ -277,6 +280,10 @@ $message-item-content-card-right-xs: 25px;
     .message-item-status {
       text-align: right;
     }
+    .message-item-card {
+      padding: 0px;
+      margin-right: -10px;
+    }
     .message-item-card-main-notify {
       order: 2;
     }
@@ -307,6 +314,9 @@ $message-item-content-card-right-xs: 25px;
           margin-left: 50px;
         }
       }
+    }
+    .message-item-card {
+      margin-left: 10px;
     }
 
     .message-item-content {

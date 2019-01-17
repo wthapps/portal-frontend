@@ -3,7 +3,7 @@ import { FileUtil } from '@shared/shared/utils/file/file.util';
 const MAX_SIZE_IN_MB = 35;
 export class SizePolicy {
   opts: any;
-  fileType: any = 'file';
+  fileType: any = 'File';
   private sizeInMb: number;
 
   constructor(sizeInMb: any = 35, opts: any = {}) {
@@ -17,9 +17,9 @@ export class SizePolicy {
         return file;
       }
     }
-    if (file.type.match(/video/g)) {
-      this.fileType = 'Video';
-    }
+    // if (file.type.match(/video/g)) {
+    //   this.fileType = 'Video';
+    // }
     if (file.size > FileUtil.mbyte_to_byte(this.sizeInMb)) {
       file.allow = false;
       file.validateErrors = file.validateErrors

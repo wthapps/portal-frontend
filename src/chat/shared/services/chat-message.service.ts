@@ -25,9 +25,13 @@ export class ChatMessageService {
   createTextMessage(message: any, option: any = {}) {
     of(message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([message, sc]) => {
       let id: any = uuid();
-      this.addCurrentMessages({ message: { status: 'pending', client_id: id, group_id: sc.group_id, message_type: 'text', message: message, user_id: this.userService.getSyncProfile().id}});
+      console.log(id);
+
+      const data: any = { status: 'pending', client_id: id, group_id: sc.group_id, message_type: 'text', message: message, user_id: this.userService.getSyncProfile().id };
+      // add pending message
+      this.addCurrentMessages({ message: data});
       setTimeout(() => {
-        this.store.dispatch({type: CHAT_MESSAGES_CURRENT_TIMEOUT})
+        this.store.dispatch({ type: CHAT_MESSAGES_CURRENT_TIMEOUT, payload: data })
       }, 5000)
       return this.create(sc.group_id, { message: message, type: 'text', client_id: id}, option);
     })).toPromise().then(res => {

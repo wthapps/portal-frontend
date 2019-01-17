@@ -32,7 +32,7 @@ export function reducer(state: any = empty(), action: any) {
     case CHAT_MESSAGES_CURRENT_TIMEOUT:
       stateClone.data = stateClone.data.map(d => {
         let item = {...d}
-        if (item.status == 'pending') item.message = '<span class="message-error"><i class="fa fa-exclamation-triangle"></i> This message couldn\'t send. Please check your Internet connection.<span>';
+        if (item.status == 'pending' && item.client_id == action.payload.client_id) item.status = 'fail';
         return item;
       })
       return stateClone;
@@ -40,7 +40,7 @@ export function reducer(state: any = empty(), action: any) {
       // repalce action
       let isReplaced = false;
       stateClone.data = stateClone.data.map(message => {
-        if (message.id == action.payload.data.id || (action.payload.data.client_id && message.client_id == action.payload.data.client_id)) {
+        if ((message.id && message.id == action.payload.data.id) || (action.payload.data.client_id && message.client_id == action.payload.data.client_id)) {
           isReplaced = true;
           return action.payload.data;
         } else {
