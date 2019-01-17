@@ -214,8 +214,8 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
         meta_data: {}
       });
 
-    const fakeMessage = this.chatMessageService.create(null, message);
-    const uploadedMessage = this.uploadService.uploadPhotos([file]);
+    const fakeMessage = this.chatMessageService.create(this.contactSelect.group_id, message);
+    const uploadedMessage = this.uploadService.uploadPhotos([file]).toPromise();
     Promise.all([fakeMessage, uploadedMessage]).then(([fake, uploaded]) => {
     const updateMessage = {...fake.data, file: uploaded['data'], content_type: type};
     this.messageService.update(updateMessage).toPromise();
