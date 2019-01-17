@@ -1,4 +1,3 @@
-import { Edit } from './../shared/actions/note';
 import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 
@@ -14,8 +13,7 @@ import {
   debounceTime,
   tap,
   distinctUntilChanged,
-  skip,
-  skipWhile
+  skip
 } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
@@ -107,6 +105,7 @@ export class ZNoteDetailEditComponent
   private timeInterval: any;
   private EXCLUDE_FORMATS: string[] = ['link'];
   private timeout;
+  private initRetry = 0; // number of times this component will try to init Quill editor, default max tries is 3
   resize: any;
   context$: any;
   profile$: Observable<User>;
@@ -261,7 +260,15 @@ export class ZNoteDetailEditComponent
 
           this.note = noteContent;
           this.store.dispatch(new note.NoteUpdated(this.note));
-          this.initQuill();
+          try {
+            this.initQuill();
+          } catch (e) {
+            if (this.initRetry < 3) {
+              this.initQuill();
+              this.initRetry ++;
+            }
+            console.warn('exception: ', e );
+          }
           if (currentFolder) { this.parentId = currentFolder.id; }
           this.updateFormValue(this.note);
           // Reset content of elemenet div.ql-editor to prevent HTML data loss
