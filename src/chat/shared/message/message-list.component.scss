@@ -97,6 +97,9 @@ $message-item-content-card-right-xs: 25px;
 
   .message-item-card-main {
     display: flex;
+    .message-item-card-main-content {
+      max-width: 70%;
+    }
   }
 
   .message-item-card {
@@ -282,7 +285,6 @@ $message-item-content-card-right-xs: 25px;
     }
     .message-item-card {
       padding: 0px;
-      margin-right: -10px;
     }
     .message-item-card-main-notify {
       order: 2;

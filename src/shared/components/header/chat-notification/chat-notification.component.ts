@@ -68,7 +68,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   }
 
   addNotification(res: any){
-    this.notificationCount += 1;
+    this.notificationCount = this.notificationCount + (res.notification_count - res.last_notification_count);
   }
 
   gotoChat() {
@@ -84,8 +84,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   }
 
   markAllAsRead() {
-    this.apiBaseService
-      .addCommand(ConversationApiCommands.markAllAsRead())
+    this.apiBaseService.post('zone/chat/notification/mark_all_as_read')
       .subscribe(res => {
         this.notificationCount = 0;
         this.conversations.markAllAsRead();
@@ -96,10 +95,10 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   markAsRead(c: Conversation) {
     const group_id = c.group.id;
     this.apiBaseService
-      .addCommand(ConversationApiCommands.markAsRead({ id: group_id }))
+      .post('zone/chat/notification/mark_as_read', {id: group_id})
       .subscribe((res: any) => {
         this.conversations.markAsRead(group_id);
-        this.notificationCount = this.conversations.getAllNotifications();
+        this.notificationCount = this.notificationCount + res.data.notification_count - res.data.last_notification_count;
         this.updateChatStore();
       });
   }
@@ -112,8 +111,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
           id: group_id,
           notification: !c.notification
         })
-      )
-      .subscribe((res: any) => {
+      ).subscribe((res: any) => {
         c.notification = res.data.notification;
         this.conversations.update(c);
         this.updateChatStore();

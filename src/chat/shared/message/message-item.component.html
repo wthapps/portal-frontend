@@ -13,8 +13,8 @@
       </div>
 
       <div class="message-item-card-main">
-        <div *ngIf="!byMe && message.showInfo"class="message-item-avatar">
-          <figure class="message-item-avatar">
+        <div class="message-item-avatar">
+          <figure *ngIf="!byMe && message.showInfo" class="message-item-avatar">
             <span class="avatar-xs">
               <img [src]="message.user?.profile_image" alt="">
             </span>

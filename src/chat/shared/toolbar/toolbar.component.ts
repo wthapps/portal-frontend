@@ -96,7 +96,6 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   onEditConversation() {
-    this.editConversation.conversation = this.chatService.getContactSelect().value;
     this.editConversation.open();
   }
 

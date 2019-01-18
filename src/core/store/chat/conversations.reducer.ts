@@ -20,7 +20,7 @@ export function reducer(state: Conversations = empty(), action: any) {
     case CHAT_CONVERSATIONS_ADD_NOTIFICATION:
       stateClone.data = stateClone.data.map(c => {
         if(c.group_id == action.payload.group_id) {
-          c.notification_count = action.payload.count;
+          c.notification_count = action.payload.notification_count;
         }
         return c;
       });

@@ -55,9 +55,14 @@
       -webkit-border-radius: 0;
       -moz-border-radius: 0;
       border-radius: 0;
+      padding: 6px 10px;
     }
     .chat-message-action-send {
       @include border-right-radius($btn-border-radius-base);
+    }
+    i {
+      font-size: 20px;
+      color: gray;
     }
   }
 }

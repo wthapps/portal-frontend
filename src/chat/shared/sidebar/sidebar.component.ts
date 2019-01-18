@@ -107,7 +107,13 @@ export class ZChatSidebarComponent implements OnInit {
         })
       });
     } else {
+      const last = contact.notification_count;
       this.chatConversationService.apiUpdateGroupUser(contact.group_id, { notification_count: 0 }).then(res => {
+        this.commonEventService.broadcast({
+          channel: 'ChatNotificationComponent',
+          action: 'addNotification',
+          payload: { notification_count: 0, last_notification_count: last}
+        });
         this.chatConversationService.navigateToConversation(contact.group_id);
       })
     }
