@@ -114,11 +114,13 @@ export class NoteChannelService extends CableService {
 
   editing( note_uuid) {
     const {uuid, name} = this.profile;
+    if (!App[`note_${note_uuid}`]) { return; }
     App[`note_${note_uuid}`].editing({ user_uuid: uuid, user_name: name, note_uuid });
   }
 
   idle(note_uuid) {
     const {uuid, name} = this.profile;
+    if (!App[`note_${note_uuid}`]) { return; }
     App[`note_${note_uuid}`].idle({ user_uuid: uuid, user_name: name, note_uuid });
   }
 }

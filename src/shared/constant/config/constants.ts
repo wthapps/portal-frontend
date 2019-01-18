@@ -94,6 +94,7 @@ export class ConstantsBase {
       link: '/my-note',
       icon: 'icon-zone-note'
     },
+    { name: 'Settings', value: 'settings', icon: 'fa fa-cog'},
     { name: 'Recent', value: 'recent', link: '/recent', icon: 'fa fa-clock-o' },
     {
       name: 'Favourite',
@@ -114,7 +115,6 @@ export class ConstantsBase {
       icon: 'fa fa-share-alt'
     },
     { name: 'Trash', value: 'Trash', link: '/trash', icon: 'fa fa-trash-o' }
-    // {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},
   ];
   notePageType: any = {
     MY_NOTE: 'MY_NOTE',

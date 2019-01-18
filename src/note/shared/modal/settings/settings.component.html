@@ -1,0 +1,39 @@
+<form [formGroup]="form" novalidate>
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
+    </bs-modal-header>
+
+    <bs-modal-body>
+      <p class="bold text-fade">Set default font and font size for your note. You can change them in note.</p>
+      <p class="bold">Default font</p>
+      <div class="row">
+        <div class="col-sm-6">
+            <p-dropdown [options]="FONTS" optionLabel="name" formControlName="selected_font" [style]="{'width':'250px'}">
+                
+            </p-dropdown>
+        </div>
+      </div>
+      <p class="bold mt15">Default font size</p>
+      <div class="row">
+        <div class="col-sm-6">
+            
+            <p-dropdown [options]="FONT_SIZES" optionLabel="name" formControlName="selected_font_size" [style]="{'width':'250px'}">
+                
+              </p-dropdown>
+        </div>
+      </div>
+
+
+    </bs-modal-body>
+
+    <bs-modal-footer>
+      <button class="btn btn-link pull-left" (click)="resetSettings()">Reset Default</button>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+
+      <button type="submit" (click)="submit(form.value)" [disabled]="!form.valid"
+              class="btn btn-outline-primary btn-min">Save
+      </button>
+    </bs-modal-footer>
+  </bs-modal>
+</form>

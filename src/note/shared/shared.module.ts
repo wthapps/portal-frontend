@@ -28,12 +28,20 @@ import { ZNoteContainerComponent } from '@notes/shared/containers/note-container
 import { StoreModule } from '@ngrx/store/store';
 import { ZNoteShareProgressComponent } from '@notes/shared/progress/note-progress.component';
 import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit.component';
+import { ZNoteSharedSettingModule } from './modal/settings/settings.module';
+import { ZNoteSharedSettingsService } from './services/settings.service';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [Ng2HdModule, CommonModule, ModalModule, SharedModule],
+  imports: [
+    Ng2HdModule,
+    CommonModule,
+    ModalModule,
+    ZNoteSharedSettingModule,
+    SharedModule
+  ],
   declarations: [
     ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
@@ -57,6 +65,7 @@ import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit
   exports: [
     SharedModule,
     ModalModule,
+    ZNoteSharedSettingModule,
     ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
     NoteListComponent,
@@ -81,7 +90,12 @@ export class ZNoteSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZNoteSharedModule,
-      providers: [ZNoteService, ZFolderService, MixedEntityService]
+      providers: [
+        ZNoteService,
+        ZFolderService,
+        ZNoteSharedSettingsService,
+        MixedEntityService
+      ]
     };
   }
 }

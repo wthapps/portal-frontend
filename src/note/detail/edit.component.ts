@@ -44,6 +44,7 @@ import { SizePolicy } from '@shared/policies/size-policy';
 import { NoteChannelService } from '@shared/channels/note-channel.service';
 import { User } from '@shared/shared/models/user.model';
 import { MessageService } from 'primeng/api';
+import { ZNoteSharedSettingsService, NoteSetting } from '@notes/shared/services/settings.service';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -74,6 +75,10 @@ export class ZNoteDetailEditComponent
     saved: 3,
     reloading: 4
   };
+
+  readonly FONTS = noteConstants.FONTS;
+  readonly FONT_SIZES = noteConstants.FONT_SIZES;
+  readonly HEADINGS = noteConstants.HEADINGS;
 
   showFormatGroupMobile = false;
 
@@ -109,6 +114,7 @@ export class ZNoteDetailEditComponent
   resize: any;
   context$: any;
   profile$: Observable<User>;
+  setting$: Observable<NoteSetting>;
 
   private uploadSubscriptions: { [filename: string]: Subscription } = {};
 
@@ -127,6 +133,7 @@ export class ZNoteDetailEditComponent
     private fileUploaderService: FileUploaderService,
     private noteChannel: NoteChannelService,
     private messageService: MessageService,
+    public noteSetting: ZNoteSharedSettingsService,
     public userService: UserService,
     private commonEventService: CommonEventService
   ) {
@@ -137,6 +144,7 @@ export class ZNoteDetailEditComponent
       this.closeSubject
     );
     this.profile$ = this.userService.profile$;
+    this.setting$ = this.noteSetting.setting$;
 
     const getOs: any = this.clientDetectorService.getOs();
     this.buttonControl = getOs.name === 7 ? '⌘' : 'ctrl';
@@ -359,6 +367,7 @@ export class ZNoteDetailEditComponent
   // }
 
   viewing() {
+    if (!this.noteChannel) { return; }
     this.noteChannel.editing(this.note.uuid);
     this.checkIdle();
   }

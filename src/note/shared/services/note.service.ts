@@ -65,17 +65,6 @@ export class ZNoteService extends BaseEntityService<any> {
   }
 
   deleteNote(body?: any) {
-    /*return this.apiBaseService.delete(`${this.url}/${body.id}`)
-     .do(deletedNote => {
-     if (deletedNote) {
-     let collection: any = this.notesSubject.getValue();
-     collection.data = collection.data.filter(
-     (v: any) => v.id !== body.id
-     );
-     this.notesSubject.next(collection);
-     }
-     });*/
-
     const collection: any = this.notesSubject.getValue();
     if (body) { // deleted 1 note
       collection.data = collection.data.filter(

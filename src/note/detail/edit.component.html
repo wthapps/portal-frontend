@@ -83,33 +83,18 @@
             <div [ngClass]="{'hidden': !showFormatGroupMobile}" class="ql-format-group-mobile-content">
               <div class="ql-formats no-right-margin">
                 <select class="ql-header left-border-radius" title="Styles">
-                  <option value="0" selected="">Normal</option>
-                  <option value="1">Heading 1</option>
-                  <option value="2">Heading 2</option>
-                  <option value="3">Heading 3</option>
-                  <option value="4">Heading 4</option>
-                  <option value="5">Heading 5</option>
-                  <option value="6">Heading 6</option>
+                  <option *ngFor="let h of HEADINGS" [value]="h?.value" 
+                  [attr.selected]="h?.value === '0' ? '' : null">{{ h?.name}}</option>
                 </select>
 
-                <select class="ql-font no-border-radius" title="Font">
-                  <option value="gotham" selected="">Gotham</option>
-                  <option value="georgia">Georgia</option>
-                  <option value="helvetica">Helvetica</option>
-                  <option value="courier-new">Courier New</option>
-                  <option value="times-new-roman">Times New Roman</option>
-                  <option value="trebuchet">Trebuchet</option>
-                  <option value="verdana">Verdana</option>
+                <select class="ql-font no-border-radius w150" title="Font">
+                  <option *ngFor="let font of FONTS" [value]="font?.value" 
+                  [attr.selected]="font?.value === (setting$ | async)?.font ? '' : null">{{ font?.name}}</option>
                 </select>
 
                 <select class="ql-size ql-size-sm no-border-radius" title="Font size">
-                  <option value="8pt">8</option>
-                  <option value="10pt">10</option>
-                  <option value="12pt">12</option>
-                  <option selected value="14pt">14</option>
-                  <option value="18pt">18</option>
-                  <option value="24pt">24</option>
-                  <option value="36pt">36</option>
+                  <option *ngFor="let size of FONT_SIZES" [value]="size?.value"  
+                  [attr.selected]="size?.value === '14pt' ? (setting$ | async)?.font_size : null">{{ size?.name}}</option>
                 </select>
 
               </div>
@@ -203,37 +188,22 @@
 
             <div class="ql-formats bdl1">
               <select class="ql-header left-border-radius" title="Styles">
-                <option value="0" selected="">Normal</option>
-                <option value="1">Heading 1</option>
-                <option value="2">Heading 2</option>
-                <option value="3">Heading 3</option>
-                <option value="4">Heading 4</option>
-                <option value="5">Heading 5</option>
-                <option value="6">Heading 6</option>
+                <option *ngFor="let h of HEADINGS" [value]="h?.value" 
+                [attr.selected]="h?.value === '0' ? '' : null">{{ h?.name}}</option>
               </select>
             </div>
 
             <div class="ql-formats bdl1">
-                <select class="ql-font no-border-radius" title="Font">
-                  <option value="gotham" selected="">Gotham</option>
-                  <option value="georgia">Georgia</option>
-                  <option value="helvetica">Helvetica</option>
-                  <option value="courier-new">Courier New</option>
-                  <option value="times-new-roman">Times New Roman</option>
-                  <option value="trebuchet">Trebuchet</option>
-                  <option value="verdana">Verdana</option>
+                <select class="ql-font w150 no-border-radius" title="Font">
+                  <option *ngFor="let font of FONTS" [value]="font?.value" 
+                  [attr.selected]="font?.value === (setting$ | async)?.font ? '' : null">{{ font?.name}}</option>
                 </select>
               </div>
 
               <div class="ql-formats bdl1 no-right-margin">
                   <select class="ql-size ql-size-sm no-border-radius" title="Font size">
-                    <option value="8pt">8</option>
-                    <option value="10pt">10</option>
-                    <option value="12pt">12</option>
-                    <option selected value="14pt">14</option>
-                    <option value="18pt">18</option>
-                    <option value="24pt">24</option>
-                    <option value="36pt">36</option>
+                    <option *ngFor="let size of FONT_SIZES" [value]="size?.value"  
+                    [attr.selected]="size?.value === (setting$ | async)?.font_size ? '' : null">{{size?.name}}</option>
                   </select>
     
                 </div>

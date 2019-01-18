@@ -24,3 +24,11 @@
     </a>
   </div>
 </ng-container>
+
+<div class="menuleft-item" >
+    <a (click)="setting.modal.open()" href="javascript:void(0);">
+      <i class="{{ settingMenu?.icon }}"></i> {{ settingMenu?.name }}
+    </a>
+  </div>
+
+<z-note-shared-setting #setting></z-note-shared-setting>
