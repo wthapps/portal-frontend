@@ -57,12 +57,12 @@ export class ZNoteSettingsModalComponent implements OnInit, OnDestroy {
   onCompleteChange(country: any) {
   }
 
-  async submit(value: any) {
+  submit(value: any) {
     console.log('submit value:', value);
     const body = {font: this.selected_font.value.value,
     font_size: this.selected_font_size.value.value };
-    const res = await this.noteSetting.updateSettings(body).toPromise();
-    this.setFormValue(res.data);
+    this.noteSetting.updateSettings(body).toPromise()
+    .then(res => this.setFormValue(res.data));
   }
 
   async resetSettings() {

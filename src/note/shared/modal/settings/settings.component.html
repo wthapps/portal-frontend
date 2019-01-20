@@ -31,7 +31,7 @@
       <button class="btn btn-link pull-left" (click)="resetSettings()">Reset Default</button>
       <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
 
-      <button type="submit" (click)="submit(form.value)" [disabled]="!form.valid"
+      <button type="submit" (click)="submit(form.value); modal.close();" [disabled]="!form.valid"
               class="btn btn-outline-primary btn-min">Save
       </button>
     </bs-modal-footer>

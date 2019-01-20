@@ -10,7 +10,7 @@ import { ZNoteHomeModule } from './home/home.module';
 import { ZNoteFoldersModule } from './folders/folders.module';
 import { ZNoteSharedModule } from './shared/shared.module';
 import { SharedModule } from '@shared/shared.module';
-import { ZNoteSettingsModule } from './settings/settings.module';
+// import { ZNoteSettingsModule } from './settings/settings.module';
 import { ZNoteMyNoteModule } from './my-note/my-note.module';
 import { ZNoteSearchModule } from './search/search.module';
 import { ZNoteSharedWithMeModule } from './shared-with-me/shared-with-me.module';
@@ -45,7 +45,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ZNoteSearchModule,
     ZNoteSharedWithMeModule,
     // ZNoteMyProfileModule,
-    ZNoteSettingsModule,
+    // ZNoteSettingsModule,
     ZNoteTrashModule,
     ZNotePhotoModule,
     ModalModule,

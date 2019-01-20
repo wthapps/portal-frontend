@@ -396,6 +396,7 @@ export class ZNoteDetailEditComponent
       'gotham',
       'georgia',
       'helvetica',
+      'lato',
       'courier-new',
       'times-new-roman',
       'trebuchet',
@@ -477,6 +478,16 @@ export class ZNoteDetailEditComponent
 
     this.listenImageChanges();
     this.registerSelectionChange();
+    //  Format quill based on default setting
+    setTimeout(() => this.applyDefaultFormat(), 1000);
+  }
+
+
+  applyDefaultFormat() {
+    const {font, font_size} = this.noteSetting.setting;
+
+    this.customEditor.format('font', font);
+    this.customEditor.format('size', font_size);
   }
 
   onSort(name: any) {
