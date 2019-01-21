@@ -1,7 +1,7 @@
 <form [formGroup]="form" novalidate>
   <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
     <bs-modal-header [showDismiss]="true">
-      <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
+      <h4 class="modal-title"> Settings</h4>
     </bs-modal-header>
 
     <bs-modal-body>
@@ -29,7 +29,7 @@
 
     <bs-modal-footer>
       <button class="btn btn-link pull-left" (click)="resetSettings()">Reset Default</button>
-      <button type="button" class="btn btn-outline-default btn-min" (click)="modal.close()">Cancel</button>
+      <button type="button" class="btn btn-outline-default btn-min" (click)="onCancel()">Cancel</button>
 
       <button type="submit" (click)="submit(form.value); modal.close();" [disabled]="!form.valid"
               class="btn btn-outline-primary btn-min">Save
