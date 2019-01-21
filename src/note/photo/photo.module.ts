@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '@shared/shared.module';
 import { NotePhotoDetailComponent } from './photo-detail.component';
 import { ZNotePhotoRoutingModule } from './photo-routing.module';
+import { PhotoDetailPartialModule } from '@shared/shared/components/photo/detail/photo-detail-partial.module';
 
 @NgModule({
-  imports: [ReactiveFormsModule, ZNotePhotoRoutingModule, SharedModule],
+  imports: [
+    ReactiveFormsModule,
+    ZNotePhotoRoutingModule,
+    PhotoDetailPartialModule
+  ],
   declarations: [NotePhotoDetailComponent],
   exports: [NotePhotoDetailComponent],
   providers: []

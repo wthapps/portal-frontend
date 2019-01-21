@@ -9,6 +9,7 @@ import { MediaAddModalService } from '@shared/shared/components/photo/modal/medi
 import { MediaAddModalComponent } from '@shared/shared/components/photo/modal/media/media-add-modal.component';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { MediaCreateModalComponent } from '@shared/shared/components/photo/modal/media/media-create-modal.component';
+import { MediaRenameModalComponent } from './media-rename-modal.component';
 
 @NgModule({
   imports: [
@@ -19,8 +20,16 @@ import { MediaCreateModalComponent } from '@shared/shared/components/photo/modal
     PartialsPhotoTaggingModule,
     AutoCompleteModule
   ],
-  declarations: [MediaAddModalComponent, MediaCreateModalComponent],
-  exports: [MediaAddModalComponent, MediaCreateModalComponent],
+  declarations: [
+    MediaAddModalComponent,
+    MediaCreateModalComponent,
+    MediaRenameModalComponent
+  ],
+  exports: [
+    MediaAddModalComponent,
+    MediaCreateModalComponent,
+    MediaRenameModalComponent
+  ],
   providers: [MediaAddModalService, MediaCreateModalService]
 })
 export class MediaModalModule {}

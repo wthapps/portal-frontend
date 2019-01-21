@@ -37,6 +37,7 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
     @Input() styleClass: string;
     @Input() placeholder: string;
     @Input() formats: string[];
+    @Input() validators;
 
     @Input() modules: any;
 

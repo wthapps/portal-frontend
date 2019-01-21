@@ -12,29 +12,22 @@ import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.modul
 import { AlbumModalModule } from '@shared/components/modal/album/album-modal.module';
 import { ZMediaPreviewComponent } from './media-preview.component';
 
-
 @NgModule({
-    imports: [
-        CommonModule,
-        ImageCropperModule,
-        PipeModule,
-        TooltipModule,
-        PartialsPhotoModule,
-        AlbumModalModule
-    ],
-    declarations: [
-        ZMediaPreviewComponent
-    ],
-    exports: [
-        ZMediaPreviewComponent
-    ],
-    providers: [
-    ],
-    entryComponents: [
-        MediaRenameModalComponent,
-        PhotoEditModalComponent,
-        AddToAlbumModalComponent
-    ]
+  imports: [
+    CommonModule,
+    ImageCropperModule,
+    PipeModule,
+    TooltipModule,
+    PartialsPhotoModule,
+    AlbumModalModule
+  ],
+  declarations: [ZMediaPreviewComponent],
+  exports: [ZMediaPreviewComponent],
+  providers: [],
+  entryComponents: [
+    MediaRenameModalComponent,
+    PhotoEditModalComponent,
+    AddToAlbumModalComponent
+  ]
 })
-export class WMediaPreviewV1Module {
-}
+export class WMediaPreviewV1Module {}
