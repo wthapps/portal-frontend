@@ -491,22 +491,23 @@ export class ZNoteDetailEditComponent
     if (this.customEditor.getLength() <= 1) {
       console.log('this editor is blank', this.customEditor);
       this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
-      this.customEditor.setSelection(range.index + 1, Quill.sources.SILENT);
+      this.customEditor.setSelection(range.index, 1, Quill.sources.SILENT);
+      this.customEditor.format('font', font);
+      this.customEditor.format('size', font_size);
     } else {
-      this.customEditor.setSelection(0);
+      // Insert a blank character in case default font differ from first character's format
+      const firstFormat = this.customEditor.getFormat(1);
+      const f_font = firstFormat.font;
+      const f_size = firstFormat.size;
+      if (f_font !== font || f_size !== font_size) {
+        this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
+        this.customEditor.setSelection(range.index, 1, Quill.sources.SILENT);
+        this.customEditor.format('font', font);
+        this.customEditor.format('size', font_size);
+      }
     }
 
-    this.customEditor.format('font', font);
-    this.customEditor.format('size', font_size);
 
-    // Insert a blank character in case default font differ from first character's format
-    const firstFormat = this.customEditor.getFormat(1);
-    const f_font = firstFormat.font;
-    const f_size = firstFormat.size;
-    if (f_font !== font || f_size !== font_size) {
-      this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
-      this.customEditor.setSelection(range.index, Quill.sources.SILENT);
-    }
     this.noSaveSubject.next('');
   }
 
