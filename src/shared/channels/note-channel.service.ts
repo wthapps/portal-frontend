@@ -86,7 +86,7 @@ export class NoteChannelService extends CableService {
                 break;
               }
               case 'notify_update': {
-                if (this.profile.uuid !== user_uuid) {
+                if (user_uuid && this.profile.uuid !== user_uuid) {
                   this.reloadSubject.next('');
                 }
                 break;

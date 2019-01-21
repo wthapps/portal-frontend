@@ -10,6 +10,7 @@ import { MediaAddModalComponent } from '@shared/shared/components/photo/modal/me
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { MediaCreateModalComponent } from '@shared/shared/components/photo/modal/media/media-create-modal.component';
 import { MediaRenameModalComponent } from './media-rename-modal.component';
+import { PlaylistModalModule } from '../playlist/playlist-modal.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { MediaRenameModalComponent } from './media-rename-modal.component';
     FormsModule,
     BsModalModule,
     PartialsPhotoTaggingModule,
+    PlaylistModalModule,
     AutoCompleteModule
   ],
   declarations: [

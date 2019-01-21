@@ -6,14 +6,14 @@ import { Observable ,  Subject ,  Subscription ,  of, fromEvent, merge, interval
 import {
   takeUntil,
   switchMap,
-  combineLatest,
   filter,
   mergeMap,
   map,
   debounceTime,
   tap,
   distinctUntilChanged,
-  skip
+  skip,
+  withLatestFrom
 } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
@@ -240,7 +240,7 @@ export class ZNoteDetailEditComponent
     // Merge with get current folder - this.store.select(fromRoot.getCurrentFolder)
     this.route.paramMap
       .pipe(
-        combineLatest(this.context$),
+        withLatestFrom(this.context$),
         switchMap(([paramMap, ctx]: any) => {
           const noteId = paramMap.get('id');
           this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
@@ -256,7 +256,7 @@ export class ZNoteDetailEditComponent
             return of(new Note());
           }
         }),
-        combineLatest(this.store.select(fromRoot.getCurrentFolder)),
+        withLatestFrom(this.store.select(fromRoot.getCurrentFolder)),
         takeUntil(this.destroySubject)
       )
       .subscribe(
@@ -264,7 +264,7 @@ export class ZNoteDetailEditComponent
           if (!noteContent) { return; }
 
           // Subscribe user to this note channel
-          this.noteChannel.subscribe(noteContent.uuid);
+          this.noteChannel.subscribe(noteContent.uuid || this.note.uuid);
 
           this.note = noteContent;
           this.store.dispatch(new note.NoteUpdated(this.note));
@@ -479,15 +479,22 @@ export class ZNoteDetailEditComponent
     this.listenImageChanges();
     this.registerSelectionChange();
     //  Format quill based on default setting
-    setTimeout(() => this.applyDefaultFormat(), 1000);
+    setTimeout(() => this.applyDefaultFormat(), 500);
   }
 
 
   applyDefaultFormat() {
     const {font, font_size} = this.noteSetting.setting;
 
-    this.customEditor.format('font', font);
-    this.customEditor.format('size', font_size);
+    if (this.customEditor.getLength() <= 1) {
+      console.log('this editor is blank', this.customEditor);
+      const range = this.customEditor.getSelection(true);
+      this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
+      this.customEditor.setSelection(range.index + 1, Quill.sources.SILENT);
+      this.customEditor.format('font', font);
+      this.customEditor.format('size', font_size);
+    }
+    this.noSaveSubject.next('');
   }
 
   onSort(name: any) {
@@ -964,9 +971,9 @@ export class ZNoteDetailEditComponent
         this.editMode = Constants.modal.edit;
         this.store.dispatch(new note.MultiNotesAdded([res['data']]));
 
-        return await this.router.navigate([
-          { outlets: { detail: ['notes', this.note.id] } }
-        ]);
+        // return await this.router.navigate([
+        //   { outlets: { detail: ['notes', this.note.id] } }
+        // ]);
   }
 
   download(file: any) {

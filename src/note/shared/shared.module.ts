@@ -32,7 +32,7 @@ import { ModalDockModule } from '@shared/shared/components/modal/dock.module';
 import { FileModule } from '@shared/shared/components/file/file.module';
 import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
 import { ComponentsModule } from '@shared/components/components.module';
-import { ZSharedMenuModule } from '@shared/shared/components/menu/menu.module';
+// import { ZSharedMenuModule } from '@shared/shared/components/menu/menu.module';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 import { TagInputModule } from 'ngx-chips';
@@ -47,7 +47,6 @@ import {
 } from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from '@shared/components/modal/modal.module';
-import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.module';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -69,9 +68,8 @@ import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.modul
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
-    ZSharedMenuModule,
+    // ZSharedMenuModule,
     BoxNoDataModule,
-    PartialsPhotoModule,
     WNavTabModule,
 
     // third party libs
@@ -115,7 +113,7 @@ import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.modul
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
-    ZSharedMenuModule,
+    // ZSharedMenuModule,
     BoxNoDataModule,
     // PhotoDetailPartialModule,
     WNavTabModule,
