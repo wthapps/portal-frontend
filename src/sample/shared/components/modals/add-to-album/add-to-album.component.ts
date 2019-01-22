@@ -5,12 +5,12 @@ import { Media } from '@shared/shared/models/media.model';
 import { ApiBaseService } from '@shared/services';
 
 @Component({
-  selector: 'media-shared-add-to-album',
+  selector: 'shared-modals-addToAlbum',
   templateUrl: 'add-to-album.component.html',
   styleUrls: ['add-to-album.component.scss']
 })
 
-export class MSharedAddToAlbumComponent implements OnInit {
+export class WModalsAddToAlbumComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
   @Output() chooseCompleted: EventEmitter<Media> = new EventEmitter<Media>();
   next: string;

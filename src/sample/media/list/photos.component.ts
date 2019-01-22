@@ -6,11 +6,12 @@ import { Constants } from '@shared/constant';
 import { MMediaService } from '../shared/media.service';
 import { MPhotosService } from '../shared/services/photos.service';
 
-import { WDataViewComponent } from '../../shared/w-dataView/w-dataView.component';
-import { MSharedAddToAlbumComponent } from '../shared/components/add-to-album/add-to-album.component';
 import { MAlbumsService } from '../shared/services/albums.service';
 import { Media } from '@shared/shared/models/media.model';
 import { MessageService } from 'primeng/api';
+import { WDataViewComponent } from '../../shared/components/w-dataView/w-dataView.component';
+import { WModalsAddToAlbumComponent } from '../../shared/components/modals/add-to-album/add-to-album.component';
+import { WModalsShareComponent } from '../../shared/components/modals/share/share.component';
 
 declare let _: any;
 
@@ -22,7 +23,8 @@ declare let _: any;
 export class MPhotosComponent implements OnInit {
   @HostBinding('class') class = 'main-page-body';
   @ViewChild('dataView') dataView: WDataViewComponent;
-  @ViewChild('modalAddToAlbum') modalAddToAlbum: MSharedAddToAlbumComponent;
+  @ViewChild('modalAddToAlbum') modalAddToAlbum: WModalsAddToAlbumComponent;
+  @ViewChild('modalShare') modalShare: WModalsShareComponent;
 
   tooltip: any = Constants.tooltip;
   data$: Observable<any>;
@@ -30,21 +32,25 @@ export class MPhotosComponent implements OnInit {
 
   menuActions = [
     {
+      active: true,
       icon: 'fa fa-eye',
       text: this.tooltip.preview,
       action: 'view'
     },
     {
+      active: true,
       icon: 'fa fa-share-alt',
       text: this.tooltip.share,
       action: 'share'
     },
     {
+      active: true,
       icon: 'fa fa-star-o',
       text: this.tooltip.favourite,
       action: 'favorite'
     },
     {
+      active: true,
       icon: 'fa fa-trash-o',
       text: this.tooltip.delete,
       action: 'delete'
@@ -53,16 +59,19 @@ export class MPhotosComponent implements OnInit {
 
   otherActions = [
     {
+      active: true,
       icon: 'fa fa-eye',
       text: 'Add to Album',
       action: 'add_to_album'
     },
     {
+      active: true,
       icon: 'fa fa-pencil',
       text: 'Edit information',
       action: 'edit'
     },
     {
+      active: true,
       icon: 'fa fa-download',
       text: 'Download',
       action: 'download'
@@ -108,11 +117,22 @@ export class MPhotosComponent implements OnInit {
       case 'add_to_album':
         this.onAddToAlbum();
         break;
+      case 'share':
+        this.onShare();
+        break;
     }
   }
 
   onSelectCompleted() {
+
+    // update icon favorite
     this.updateMenuFavorite(_.every(this.dataView.selectedDocuments, 'favorite'));
+
+    // check menu view
+    if (this.dataView.selectedDocuments.length > 1) {
+      const otherActionsEdit = _.find(this.otherActions, ['action', 'edit']);
+      otherActionsEdit.active = false;
+    }
   }
 
   async onAddToAlbum() {
@@ -133,6 +153,11 @@ export class MPhotosComponent implements OnInit {
           detail: 'You just added to Album success'
         });
       });
+  }
+
+  onShare() {
+    this.modalShare.getRoles('Media');
+    this.modalShare.modal.open();
   }
 
   async onToggleFavorite() {

@@ -27,25 +27,29 @@
                            [selectedObjects]="dataView.selectedDocuments"
                            (clear)="dataView.container.clearSelection()">
         <ul class="nav-selection-actions">
-          <li *ngFor="let menu of menuActions">
-            <button (click)="onMenuAction(menu.action)" class="btn btn-icon" type="button"><i [class]="menu.icon"></i>
-            </button>
-          </li>
+          <ng-container *ngFor="let menu of menuActions">
+            <li *ngIf="menu.active">
+              <button (click)="onMenuAction(menu.action)" class="btn btn-icon" type="button"><i [class]="menu.icon"></i>
+              </button>
+            </li>
+          </ng-container>
           <li class="dropdown">
             <button class="btn btn-icon" type="button" data-toggle="dropdown">
               <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li *ngFor="let menu of otherActions">
-                <a (click)="onMenuAction(menu.action)" href="#"><i [class]="menu.icon"></i> {{ menu.text }}</a>
-              </li>
+              <ng-container *ngFor="let menu of otherActions">
+                <li *ngIf="menu.active">
+                  <a (click)="onMenuAction(menu.action)" href="#"><i [class]="menu.icon"></i> {{ menu.text }}</a>
+                </li>
+              </ng-container>
             </ul>
           </li>
         </ul>
       </w-dataView-selected>
-      <media-shared-add-to-album #modalAddToAlbum (chooseCompleted)="onModalAddCompleted($event)">
-      </media-shared-add-to-album>
-      <!--<media-shared-add-to-album #modalAddToAlbum [selectedDocuments]="dataView.selectedDocuments"></media-shared-add-to-album>-->
+      <shared-modals-addToAlbum #modalAddToAlbum (chooseCompleted)="onModalAddCompleted($event)">
+      </shared-modals-addToAlbum>
+      <shared-modals-share #modalShare></shared-modals-share>
     </ng-container>
     <ng-template #templateNodata>
       <div class="text-center">

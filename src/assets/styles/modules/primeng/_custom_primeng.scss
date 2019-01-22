@@ -212,6 +212,7 @@ body {
     overflow: hidden;
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
+    max-width: 120px;
   }
 
   .ui-tooltip {
