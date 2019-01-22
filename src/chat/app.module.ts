@@ -13,7 +13,6 @@ import { ZChatContactSearchModule } from './search-new-contacts/contact-search.m
 import { ZChatHistoryModule } from './history/history.module';
 import { ZChatPhotoModule } from './photo/photo.module';
 import { HttpClientModule } from '@angular/common/http';
-import { SharedModule } from '@wth/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { StoreModule } from '@ngrx/store';
@@ -24,6 +23,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
 import { ZChatProfileModule } from '@chat/profile/profile.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 @NgModule({
   imports: [
@@ -50,7 +50,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ZChatSharedModule.forRoot(),
     SharedServicesModule.forRoot(),
     StoreModule.forRoot(ChatStore),
-    SharedModule.forRoot(),
+    ScrollToModule.forRoot(),
     ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: false
     }),

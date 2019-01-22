@@ -55,7 +55,6 @@ import { ModalModule } from '@shared/components/modal/modal.module';
   imports: [
     Ng2HdModule,
     CommonModule,
-    ModalModule,
     FormsModule,
     ReactiveFormsModule,
     ZNoteSharedSettingModule,
@@ -90,7 +89,6 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     FolderItemComponent,
     ZNoteContainerComponent,
 
-    // NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
@@ -113,9 +111,7 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
-    // ZSharedMenuModule,
     BoxNoDataModule,
-    // PhotoDetailPartialModule,
     WNavTabModule,
     ZNoteSharedSettingModule,
 

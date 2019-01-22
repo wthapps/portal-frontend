@@ -130,7 +130,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
         this.tabs = this.tabsMember;
       }
       this.tabAction(this.tabs[0]);
-    })
+    });
 
     this.medias$ = this.messageAssetsService.medias$;
     this.objectListService.setMultipleSelection(false);
