@@ -72,6 +72,10 @@ export class MPhotosService {
     );
   }
 
+  update(item: Media) {
+    return this.api.put(`media/photos/${item.id}`, item);
+  }
+
   delete(items?: any) {
     return this.api.post(`media/media/delete`, { objects: items }).pipe(
       tap(() => {
@@ -80,5 +84,9 @@ export class MPhotosService {
         this.dataSubject.next(filteredItems);
       })
     );
+  }
+
+  download(file: any) {
+    return this.api.download('media/files/download', { id: file.id, model: file.model });
   }
 }

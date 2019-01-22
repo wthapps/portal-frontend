@@ -1,5 +1,9 @@
 import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
+
+import { MessageService } from 'primeng/api';
 
 import { Constants } from '@shared/constant';
 
@@ -8,10 +12,10 @@ import { MPhotosService } from '../shared/services/photos.service';
 
 import { MAlbumsService } from '../shared/services/albums.service';
 import { Media } from '@shared/shared/models/media.model';
-import { MessageService } from 'primeng/api';
 import { WDataViewComponent } from '../../shared/components/w-dataView/w-dataView.component';
 import { WModalsAddToAlbumComponent } from '../../shared/components/modals/add-to-album/add-to-album.component';
 import { WModalsShareComponent } from '../../shared/components/modals/share/share.component';
+import { WModalsPhotoEditInfoComponent } from '../../shared/components/modals/photo-edit-info/photo-edit-info.component';
 
 declare let _: any;
 
@@ -22,9 +26,11 @@ declare let _: any;
 })
 export class MPhotosComponent implements OnInit {
   @HostBinding('class') class = 'main-page-body';
+
   @ViewChild('dataView') dataView: WDataViewComponent;
   @ViewChild('modalAddToAlbum') modalAddToAlbum: WModalsAddToAlbumComponent;
   @ViewChild('modalShare') modalShare: WModalsShareComponent;
+  @ViewChild('modalPhotoEditInfo') modalPhotoEditInfo: WModalsPhotoEditInfoComponent;
 
   tooltip: any = Constants.tooltip;
   data$: Observable<any>;
@@ -114,11 +120,17 @@ export class MPhotosComponent implements OnInit {
       case 'delete':
         this.onDelete();
         break;
+      case 'share':
+        this.onShare();
+        break;
       case 'add_to_album':
         this.onAddToAlbum();
         break;
-      case 'share':
-        this.onShare();
+      case 'edit':
+        this.onEditInfo();
+        break;
+      case 'download':
+        this.onDownload();
         break;
     }
   }
@@ -129,10 +141,8 @@ export class MPhotosComponent implements OnInit {
     this.updateMenuFavorite(_.every(this.dataView.selectedDocuments, 'favorite'));
 
     // check menu view
-    if (this.dataView.selectedDocuments.length > 1) {
-      const otherActionsEdit = _.find(this.otherActions, ['action', 'edit']);
-      otherActionsEdit.active = false;
-    }
+    const otherActionsEdit = _.find(this.otherActions, ['action', 'edit']);
+    otherActionsEdit.active = !(this.dataView.selectedDocuments.length > 1);
   }
 
   async onAddToAlbum() {
@@ -160,6 +170,16 @@ export class MPhotosComponent implements OnInit {
     this.modalShare.modal.open();
   }
 
+  onEditInfo() {
+    this.modalPhotoEditInfo.updateForm(this.dataView.selectedDocuments[0]);
+    this.modalPhotoEditInfo.open()
+      .pipe(
+        take(1),
+        switchMap((photo: Media) => this.dataService.update(photo))
+      )
+      .subscribe();
+  }
+
   async onToggleFavorite() {
     const data = await this.dataService.toggleFavorite(this.dataView.selectedDocuments).toPromise();
     this.updateMenuFavorite(_.every(data.data, 'favorite'));
@@ -167,6 +187,14 @@ export class MPhotosComponent implements OnInit {
 
   async onDelete() {
     await this.dataService.delete(this.dataView.selectedDocuments).toPromise();
+  }
+
+  onDownload() {
+    this.dataView.selectedDocuments.forEach(async file => {
+      const res = await this.dataService.download(file).toPromise();
+      const blob = new Blob([res], { type: file.content_type });
+      saveAs(blob, file.name + '.' + file.extension);
+    });
   }
 
   private updateMenuFavorite(isFavorite: boolean) {
