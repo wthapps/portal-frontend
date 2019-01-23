@@ -97,7 +97,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
     this.keySearchSubscription = this.keySearchSubject.pipe(
       debounceTime(40),
       takeUntil(this.destroy$),
-      distinctUntilChanged(),
+      // distinctUntilChanged(),
       switchMap(key => {
         this.loading = true;
         return this.apiBaseService.get(`chat/contacts/new/search?q=${key}`);
@@ -239,8 +239,6 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-
-    console.log('check keySearchSubscription status: ', this.keySearchSubscription);
   }
 
   private mapResponseToContacts(response: any) {

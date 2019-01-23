@@ -62,8 +62,8 @@
   </ng-container>
   <!-- <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i> -->
   <div *ngFor="let link of message.links" style="clear: both">
-    <div *ngIf="link.image && link.title && !message.deleted" class="message-padding">
-      <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
+    <div *ngIf="link.image && !message.deleted" class="message-padding">
+      <display-link class="message-item-content-link" [data]="link" *ngIf="link.image"></display-link>
     </div>
   </div>
 </ng-template>
