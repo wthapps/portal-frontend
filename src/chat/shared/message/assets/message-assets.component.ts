@@ -1,21 +1,21 @@
 import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { Constants, STORE_CONVERSATIONS } from '@shared/constant';
 import { ChatService } from '@chat/shared/services/chat.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService, AuthService, ChatCommonService, CommonEventService, UserService } from '@shared/services';
+import { ApiBaseService, AuthService, ChatCommonService, UserService } from '@shared/services';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
-import { Observable } from 'rxjs/Observable';
-import { Media } from '@shared/shared/models/media.model';
+
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { ConversationService } from '@chat/conversation/conversation.service';
-import { Subject } from 'rxjs/Subject';
-import { takeUntil, take } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 
 
@@ -122,7 +122,9 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     //     this.tabAction(this.tabs[0]);
       // });
 
-    this.chatConversationService.getStoreSelectedConversation().subscribe(sc => {
+    this.chatConversationService.getStoreSelectedConversation().pipe(
+      distinctUntilChanged((p, q) => p.id === q.id)
+    ).subscribe(sc => {
       this.conversation = sc;
       if (this.conversation && this.conversation.group_type === 'couple') {
         this.tabs = this.tabsPhoto;
