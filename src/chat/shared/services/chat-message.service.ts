@@ -111,8 +111,6 @@ export class ChatMessageService {
           }
           return c;
         })
-        console.log(data);
-
         // move to first
         conversations.moveToFirstByGroupId(data.group_id);
         this.store.dispatch({

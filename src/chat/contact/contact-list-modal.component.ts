@@ -189,7 +189,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
   sendRequest(contact: any) {
     this.chatContactService.addContact([contact.id]).then(res => {
       this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
-        this.chatCommonService.moveFirstRecentList(res2.data.group_id);
+        this.chatConversationService.moveToFirst(res2.data);
       });
       this.chatConversationService.navigateToConversation(res.data.group_id);
     });
