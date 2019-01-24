@@ -13,6 +13,7 @@ import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-da
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WModalsShareService } from './share/share.service';
 import { WModalsPhotoEditInfoComponent } from './photo-edit-info/photo-edit-info.component';
+import { CreateAlbumComponent } from './create-album/create-album.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { WModalsPhotoEditInfoComponent } from './photo-edit-info/photo-edit-info
   declarations: [
     WModalsAddToAlbumComponent,
     WModalsShareComponent,
-    WModalsPhotoEditInfoComponent
+    WModalsPhotoEditInfoComponent,
+    CreateAlbumComponent
   ],
   exports: [
     WModalsAddToAlbumComponent,

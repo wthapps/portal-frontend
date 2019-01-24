@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnChanges, Input, ViewChild } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable, from } from 'rxjs';
@@ -11,7 +11,6 @@ import { Media } from '@shared/shared/models/media.model';
 })
 export class WModalsPhotoEditInfoComponent implements OnChanges {
   @Input() data: Media = null;
-  @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('modal') modal: BsModalComponent;
 
   form: FormGroup;
@@ -45,10 +44,6 @@ export class WModalsPhotoEditInfoComponent implements OnChanges {
     return from(this.modal.onClose).pipe(
       map(() => this.data)
     );
-  }
-
-  close() {
-    this.modal.close();
   }
 
   updateForm(values: any) {
