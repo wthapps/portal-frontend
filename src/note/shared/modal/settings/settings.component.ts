@@ -73,20 +73,20 @@ export class ZNoteSettingsModalComponent implements OnInit, OnDestroy {
 
   async resetSettings() {
     const res = await this.noteSetting.resetSettings().toPromise();
-    this.setFormValue(res.data);
+    this.setFormValue(res.data, false);
   }
 
   open() {
     this.modal.open();
   }
 
-  private setFormValue(data) {
+  private setFormValue(data, permanent = true) {
     const font = this.FONTS.find(f => f.value === data.font);
     const font_size = this.FONT_SIZES.find(f => f.value === data.font_size);
     console.log('set form value: ', data, font, font_size);
     this.selected_font.setValue(font);
     this.selected_font_size.setValue(font_size);
 
-    this.noteSetting.setting = data;
+    if (permanent) { this.noteSetting.setting = data; }
   }
 }

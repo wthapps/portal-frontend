@@ -106,6 +106,18 @@ $note-editor-aside-w: 400px;
           width: 112px;
         }
       }
+
+      .ql-formats {
+        .ql-size,.ql-font {
+          .ql-active {
+            color: #444;
+
+            .ql-stroke {
+              stroke: #444;
+            }
+          }
+        }
+      }
     }
     .quill-toolbar-attachment {
       padding: 8px;

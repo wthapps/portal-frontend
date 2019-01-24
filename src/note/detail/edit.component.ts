@@ -507,9 +507,16 @@ export class ZNoteDetailEditComponent
       // }
 
       this.customEditor.setSelection(range, Quill.sources.SILENT);
-      this.customEditor.format('font', font);
-      this.customEditor.format('size', font_size);
+      // this.customEditor.format('font', font);
+      // this.customEditor.format('size', font_size);
     }
+
+    // // Unhighlight font, size setting by removing ql.active class
+    // const font_els = document.querySelectorAll('.ql-font > .ql-active');
+    // font_els.forEach(f => f.classList.remove('ql-active'));
+
+    // const size_els = document.querySelectorAll('.ql-size > .ql-active');
+    // size_els.forEach(f => f.classList.remove('ql-active'));
 
 
     this.noSaveSubject.next('');
