@@ -4,11 +4,12 @@
   background-color: #E9EDF1;
 }
 
-.main-page-body .page-body-content.has-page-body-control {
-  height: calc(100vh - #{$header-height} - #{$page-body-control-height});
-  @include flexbox;
-  @include flex-direction(column);
-  overflow: auto;
+.main-page-body {
+  .page-body-content-chat {
+    overflow: hidden;
+    @include flexbox;
+    @include flex-direction(column);
+  }
 }
 
 .message-list-body {

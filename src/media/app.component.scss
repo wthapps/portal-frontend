@@ -14,15 +14,6 @@
 
   .info-toggle {
     color: $theme-color !important;
-    &:click{
-      color: $theme-color !important;
-    }
-  }
-
-  .page-body-content {
-    overflow: auto;
-    height: calc(100vh - 64px);
-    //height: calc(100vh - $page-body-control-height);
   }
 
   .page-over-full-info {

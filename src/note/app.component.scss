@@ -1,13 +1,1 @@
 @import '../shared/scss/global';
-
-.main-page-body {
-  @include flex(1);
-
-  .page-body-content {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: auto;
-    top: 0;
-}}
