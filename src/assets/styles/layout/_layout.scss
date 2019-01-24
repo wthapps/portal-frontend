@@ -2,7 +2,7 @@
   overflow: hidden;
   @include flexbox;
   @include flex-direction(column);
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .main {
@@ -12,7 +12,6 @@
   @include flexbox;
   @include flex-direction(column);
   padding-top: $header-height;
-  height: 100vh;
   .main-page {
     @include flex(1);
     @include flex-basis(auto);
@@ -22,9 +21,11 @@
 
 .main-page-body {
   position: relative;
-  @include flexbox;
   height: 100%;
+  @include flexbox;
   @include flex-direction(column);
+  @include flex(1);
+  @include flex-basis(auto);
   @media (min-width: $screen-md-min) {
     margin-left: $main-page-left;
   }
