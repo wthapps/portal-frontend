@@ -19,7 +19,8 @@ export class Messages {
       if (
         acc.length == 0 ||
         acc[acc.length - 1].user_id !== curr.user_id ||
-        acc[acc.length - 1].message_type !== 'text'
+        (acc[acc.length - 1].message_type !== 'text' &&
+          acc[acc.length - 1].message_type !== 'file')
       ) {
         curr.showInfo = true;
       } else {

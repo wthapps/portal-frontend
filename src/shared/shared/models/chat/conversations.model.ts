@@ -40,4 +40,20 @@ export class Conversations {
       return d;
     });
   }
+
+  moveToFirst(sc: any) {
+    this.data = this.data.filter(c => {
+      return c.group_id !== sc.group_id;
+    });
+    this.data = [sc, ...this.data];
+  }
+
+  moveToFirstByGroupId(group_id: any) {
+    const sc = this.data.find(c => {
+      return c.group_id == group_id;
+    });
+    if (sc) {
+      this.moveToFirst(sc);
+    }
+  }
 }

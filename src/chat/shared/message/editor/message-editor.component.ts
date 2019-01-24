@@ -90,8 +90,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   ngOnInit() {
     this.emojiData = ZChatEmojiService.emojis;
     // this.photoModal.action = 'UPLOAD';
-
-
     // capture event while upload
     this.uploader.event$.pipe(
       takeUntil(this.destroy$)
@@ -223,7 +221,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   shareContacts() {
-    // this.addContactService.open('shareContact');
     this.commonEventService.broadcast({
       channel: 'ZChatShareAddContactComponent',
       action: 'open',
@@ -231,14 +228,14 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     })
   }
 
-  sendMessage(type: string) {
-    if (type === 'file') {
-      this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-        allowedFileTypes: null,
-        willCreateMessage: true,
-        module: 'chat'
-      });
-    }
+  openAddFile(){
+    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      allowedFileTypes: null,
+      beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
+      afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
+      payload: {group_id: this.contactSelect.group_id},
+      module: 'chat'
+    });
   }
 
   onEmojiClick(e: any) {
@@ -251,7 +248,13 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   onOpenSelectPhotos() {
-    this.mediaSelectionService.open({ allowSelectMultiple: true, hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true });
+    this.mediaSelectionService.open({
+      allowSelectMultiple: true,
+      hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
+      beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
+      afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
+      payload: { group_id: this.contactSelect.group_id },
+  });
 
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.close$), filter((items: any[]) => items.length > 0))
@@ -293,25 +296,36 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   private sendFileEvent(event: any) {
-
     switch (event.action) {
       case 'file-added': {
-        const file = event.payload.file;
-        const { id, name, progress, meta } = file;
-          const message = new Message({
-            message: 'Sending file.....',
-            message_type: 'file',
-            content_type: meta.type,
-            meta_data: {file: {id, name, progress, meta }}
-          });
+        // const file = event.payload.file;
+        // const { id, name, progress, meta } = file;
+        // const message = new Message({
+        //   message: meta.name,
+        //   message_type: 'file',
+        //   client_id: meta.file_upload_id + '-' + meta.current_date,
+        //   status: 'pending',
+        //   content_type: meta.type,
+        //   meta_data: { file: { id, name, progress, meta } }
+        // });
 
-        this.chatMessageService.create(this.contactSelect.group_id, message).then(res => {
-          this.uploadingMessages[id] = { ...res.data, content_type: meta.type};
-          this.updateUploadingMessage(id);
-        });
+        // this.chatMessageService.create(this.contactSelect.group_id, message).then(res => {
+
+        // });
       }
         break;
       case 'start':
+        break;
+      case 'before-upload': {
+        let wait = (ms) =>
+        {
+          let d: any = new Date();
+          let d2 = null;
+          do { d2 = new Date(); }
+          while (d2 - d < ms);
+        }
+        wait(1000);
+      }
         break;
       case 'progress': {
         break;
@@ -319,9 +333,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       case 'success': {
         const { id } = event.payload.file;
         this.uploadedFiles[id] = event.payload.resp;
-        setTimeout(() => {
-          // send message channel will do it
-        }, 2000);
         if (!this.uploadingMessages[id]) {
           return;
         }
@@ -338,9 +349,9 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     }
     const uploadingMessage = {...this.uploadingMessages[fileId], file: this.uploadedFiles[fileId]};
     this.messageService.update(uploadingMessage).toPromise().then(response => {
-          delete this.uploadingMessages[fileId];
-          delete this.uploadedFiles[fileId];
-        });
+      delete this.uploadingMessages[fileId];
+      delete this.uploadedFiles[fileId];
+    });
   }
 
   private send() {

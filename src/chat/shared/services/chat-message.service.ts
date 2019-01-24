@@ -9,6 +9,7 @@ import { ChatConversationService } from './chat-conversation.service';
 import { CHAT_SELECTED_CONVERSATION_SET } from '@core/store/chat/selected-conversation.reducer';
 import { CHAT_CONVERSATIONS_SET } from '@core/store/chat/conversations.reducer';
 import { v4 as uuid } from 'uuid';
+import { Conversations } from '@shared/shared/models/chat/conversations.model';
 
 @Injectable()
 export class ChatMessageService {
@@ -35,11 +36,7 @@ export class ChatMessageService {
       return sc;
     })).toPromise().then(sc => {
       // move first list
-      this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe(conversations => {
-        conversations.data = conversations.data.filter(c => {
-          return c.group_id !== sc.group_id;
-        })
-        conversations.data = [sc, ...conversations.data];
+      this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe((conversations: Conversations) => {
         this.chatConversationService.updateStoreConversations(conversations);
       })
     });
@@ -101,28 +98,32 @@ export class ChatMessageService {
   }
 
   getCurrentMessages(){
-    return this.store.select(STORE_MESSAGES)
+    return this.store.select(STORE_MESSAGES);
   }
 
   addCurrentMessages(res: any){
-    of(res).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([data, sc]) => {
-      // update deleted and hide conversation to show
-      this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe(conversations => {
+    of(res.message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([data, sc]) => {
+      // update deleted and hide conversation to show, move to first
+      this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe((conversations: Conversations) => {
         conversations.data = conversations.data.map(c => {
           if(c.group_id == data.group_id && c.deleted) {
             c.deleted = false;
           }
           return c;
         })
+        console.log(data);
+
+        // move to first
+        conversations.moveToFirstByGroupId(data.group_id);
         this.store.dispatch({
           type: CHAT_CONVERSATIONS_SET, payload: conversations
         });
       });
 
       // check current group chat and add message into
-      if (data.message.group_id == sc.group_id) {
+      if (data.group_id == sc.group_id) {
         this.store.dispatch({
-          type: CHAT_MESSAGES_CURRENT_ADD, payload: {data: data.message}
+          type: CHAT_MESSAGES_CURRENT_ADD, payload: {data: data}
         });
       }
     })).toPromise().then(res => {

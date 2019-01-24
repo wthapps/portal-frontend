@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiBaseService, ChatCommonService, StorageService, UserService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
 import { CONVERSATION_SELECT, STORE_CONVERSATIONS, STORE_CONTEXT, STORE_SELECTED_CONVERSATION, STORE_MESSAGES } from '@shared/constant';
-import { takeUntil, filter, map, withLatestFrom } from 'rxjs/operators';
+import { takeUntil, filter, map, withLatestFrom, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { CHAT_CONVERSATIONS_SET, CHAT_CONVERSATIONS_ADD_NOTIFICATION, CHAT_CONVERSATIONS_UPDATE } from '@core/store/chat/conversations.reducer';
 import { of } from 'rxjs';
+import { Conversations } from '@shared/shared/models/chat/conversations.model';
 
 
 declare var _: any;
@@ -107,7 +108,8 @@ export class ChatConversationService extends CommonEventHandler {
     return this.apiBaseService
       .put('zone/chat/group_user/' + groupId, data)
       .toPromise().then((res: any) => {
-        this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: res });
+        // this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: res });
+        this.store.dispatch({ type: CHAT_CONVERSATIONS_UPDATE, payload: res.data });
         return res;
       });
   }
@@ -129,5 +131,11 @@ export class ChatConversationService extends CommonEventHandler {
       { status: 'decline'})
       // .then(res => this.apiGetConversations())
       .then(r2 => this.router.navigate(['/conversations']));
+  }
+
+  moveToFirst(sc: any) {
+    this.getStoreConversations().pipe(take(1)).subscribe((conversations: Conversations) => {
+      conversations.moveToFirst(sc);
+    })
   }
 }

@@ -114,6 +114,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   subFilter: 'photo' | 'album' = 'photo';
 
   private allowedFileTypes: any;
+  private beforeCallBackUrl: any;
+  private afterCallBackUrl: any;
+  private payload: any;
   private sub: any;
 
   constructor(
@@ -172,6 +175,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     } else {
       this.allowedFileTypes = options.allowedFileTypes;
     }
+    this.beforeCallBackUrl = options.beforeCallBackUrl;
+    this.afterCallBackUrl = options.afterCallBackUrl;
+    this.payload = options.payload;
 
     if (options.filter) {
       this.filter = options.filter;
@@ -352,7 +358,10 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   upload() {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-      allowedFileTypes: this.allowedFileTypes
+      allowedFileTypes: this.allowedFileTypes,
+      beforeCallBackUrl: this.beforeCallBackUrl,
+      afterCallBackUrl: this.afterCallBackUrl,
+      payload: this.payload,
     });
 
     this.sub = this.uploader.event$.subscribe(event => {

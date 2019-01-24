@@ -43,12 +43,7 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   onSelect(contact: any) {
-    if (this.config.history) {
-      this.chatService.updateHistory(contact);
-    }
     $('#chat-message-text').focus();
-    // this.chatService.selectContact(contact);
-
     this.router.navigate([this.conversationUrl, contact.id]);
   }
 

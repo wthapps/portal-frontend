@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { AuthService, ChatCommonService, CommonEventHandler, CommonEventService } from '@shared/services';
 import { Subject } from 'rxjs';
 import { takeUntil, map, switchMap } from 'rxjs/operators';
-import { Conversations } from '@shared/shared/models/chat/conversations.list.model';
+import { Conversations } from '@shared/shared/models/chat/conversations.model';
 
 declare var $: any;
 

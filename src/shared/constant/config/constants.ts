@@ -1,7 +1,7 @@
 import { Config } from './env.config';
 export class ConstantsBase {
   baseUrls: any = {
-    apiBaseService: Config.API + '/',
+    apiUrl: Config.API + '/',
     domain: Config.DOMAIN,
     app: Config.SUB_DOMAIN.APP,
     myAccount: Config.SUB_DOMAIN.MYACCOUNT,

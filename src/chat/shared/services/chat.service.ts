@@ -69,26 +69,9 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   initalize() {
-    this.subscribeNotification();
     // Init get data
     this.chatConversationService.apiGetConversations();
   }
-
-  // getConversations(option: any = {}) {
-  //   // const res: any = this.storage.find(CHAT_CONVERSATIONS);
-  //   // if (res && res.value && !option.forceFromApi) {
-  //   //   return res;
-  //   // } else {
-  //   //   this.apiBaseService.get('zone/chat/contacts').toPromise().then((conv: any) => {
-  //   //     this.storage.save(CHAT_CONVERSATIONS, conv);
-  //   //     this.chatCommonService.setRecentConversations();
-  //   //     this.chatCommonService.setFavouriteConversations();
-  //   //     this.chatCommonService.setHistoryConversations();
-  //   //     this.chatCommonService.setDefaultSelectContact();
-  //   //   });
-  //   //   return res;
-  //   // }
-  // }
 
   getOutOfDateMessages() {
     this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe((converstions: any) => {
@@ -130,50 +113,10 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     })
   }
 
-  // For detecting users in Chat contact in order to detect online / offline user status
-  getChatConversationsAsync(): Observable<{[partner_id: string]: any}> {
-    const currentUser = this.userService.getSyncProfile();
-    return this.storage.getAsync(CHAT_CONVERSATIONS).pipe(
-      map((item: any) => (!_.get(item, 'data') ? {}
-      : item.data.reduce((r, a) => ({...r, [a.partner_id]: a}), {}))),
-      // includes all contacts that have couple conversation with current user
-      map((item: any) => ({...item, [currentUser.id]: currentUser})) // includes current user id as well
-    );
-  }
-
-  getUserContacts(option: any = {}): Observable<any> {
-    return this.apiBaseService.get('contact/wcontacts/internal_contacts');
-  }
-
-  getRecentConversations(): Observable<any> {
-    return this.storage.getAsync(CHAT_RECENT_CONVERSATIONS);
-  }
-
-  getFavouriteConversations(): Observable<any> {
-    return this.storage.getAsync(CHAT_FAVOURITE_CONVERSATIONS);
-  }
-
-  getHistoryConversations(): Observable<any> {
-    // return this.storage.find('chat_history_conversations');
-    return this.storage.getAsync(CHAT_HISTORY_CONVERSATIONS);
-  }
-
   selectContact(contact: any) {
     if (contact.notification_count > 0) {
       this.markAsRead(contact.group.id);
     }
-  }
-
-  subscribeNotification() {
-    this.handler.addListener(
-      'remove_notification_after_select',
-      'on_conversation_select',
-      (contact: any) => {
-        if (contact.notification_count > 0) {
-          this.markAsRead(contact.group.id);
-        }
-      }
-    );
   }
 
   selectContactByPartnerId(id: any) {
@@ -198,14 +141,6 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     return this.storage.getAsync(CONVERSATION_SELECT);
   }
 
-  isExistingData(key: string) {
-    const data = this.storage.find(key);
-    if (data == null) {
-      return false;
-    }
-    return true;
-  }
-
   setValue(key: string, data: any) {
     this.storage.save(key, data);
   }
@@ -223,12 +158,6 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     return this.apiBaseService.get('zone/chat/message/' + groupId);
   }
 
-  createMessage(groupId: any = null, data: any, option: any = {}): Observable<any> {
-    // TODO this will be remvoe after getting groupId from UI
-    const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group.id;
-    return this.apiBaseService.post('zone/chat/message', { group_id: conversationId, data: data });
-  }
-
   sendMessage(groupId: any = null, data: any, option: any = {}): Promise<any> {
     // TODO this will be remvoe after getting groupId from UI
     const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group.id;
@@ -238,27 +167,10 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
       .toPromise();
   }
 
-  sendTextMessage(message: any, option: any = {}): Promise<any> {
-    const item = this.storage.find(CONVERSATION_SELECT);
-    if (item && item.value && message) {
-      return this.sendMessage(
-        item.value.group.id,
-        { message: message, type: 'text' },
-        option
-      );
-    }
-    return Promise.resolve(null);
-  }
-
   updateMessage(conversationId: any, message: any): Observable<any> {
     return this.apiBaseService.put(   `zone/chat/conversations/${conversationId}/messages`,
       { message: message }
     );
-  }
-
-  uploadMediaOnWeb(media: any): Promise<any> {
-    const groupId = this.storage.find(CONVERSATION_SELECT).value.group.id;
-    return this.sendMessage(groupId, { type: 'file', id: media.id, object: media.object_type || 'Photo' });
   }
 
   createUploadingFile(files?: any) {
@@ -268,7 +180,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
       message_type: 'file',
       content_type: 'media/generic'
     });
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35, { only: /video\//g })]);
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35)]);
     const validFiles = filesAddedPolicy.filter((item: any) => item.allow);
 
     // upload multiple files in batch of CONCURRENT_UPLOAD, usually set as 4
@@ -336,10 +248,6 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
       .then((res: any) => {
       return this.updateDisplayNotification(contact.group.id);
     });
-  }
-
-  updateHistory(contact: any) {
-    this.updateGroupUser(contact.group_id, { history: false });
   }
 
   removeFromConversation(contact: any, userId: any): Promise<any> {
@@ -470,23 +378,5 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
 
   getOwnUserProfile() {
     return this.userService.getSyncProfile();
-  }
-
-  updatePhotoMessage(
-    messageId: any,
-    groupId: any,
-    fileJson: any
-  ): Promise<any> {
-    return this.apiBaseService
-      .put('zone/chat/message/' + messageId, {
-        group_id: groupId,
-        file_json: fileJson,
-        id: messageId
-      })
-      .toPromise()
-      .then((res: any) => {
-        console.log('updatePhotoMessage: ', res);
-        return res;
-      });
   }
 }

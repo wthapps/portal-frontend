@@ -1,4 +1,4 @@
-import { Conversations } from "@shared/shared/models/chat/conversations.list.model";
+import { Conversations } from "@shared/shared/models/chat/conversations.model";
 
 export const CHAT_CONVERSATIONS_SET = 'CHAT_CONVERSATIONS_SET';
 export const CHAT_CONVERSATIONS_ADD = 'CHAT_CONVERSATIONS_ADD';

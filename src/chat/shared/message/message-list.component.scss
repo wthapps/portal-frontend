@@ -75,8 +75,7 @@ $message-item-content-card-right-xs: 25px;
   .message-item-avatar {
     position: relative;
     left: 0;
-    // top: 20px;
-    width: 50px;
+    width: 40px;
     @media (max-width: $screen-xs-max) {
       width: 30px;
       .avatar-xs {
@@ -218,6 +217,19 @@ $message-item-content-card-right-xs: 25px;
     color: red;
   }
 
+  .fa-file-archive-o {
+    font-size: 18px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    padding: 0;
+    line-height: 38px;
+    background-color: #fff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: $text-color;
+  }
 
   .message-item-content-other-files {
     background-color: white !important;
@@ -226,20 +238,6 @@ $message-item-content-card-right-xs: 25px;
     a {
       display: block;
       color: inherit;
-    }
-    .fa-file-o {
-      font-size: 18px;
-      width: 40px;
-      height: 40px;
-      text-align: center;
-      padding: 0;
-      line-height: 38px;
-      background-color: #fff;
-      -webkit-border-radius: 5px;
-      -moz-border-radius: 5px;
-      border-radius: 5px;
-      color: $text-color;
-      border: 1px solid $line;
     }
   }
   .message-item-content-note {
@@ -313,12 +311,12 @@ $message-item-content-card-right-xs: 25px;
       .message-item-owner-name {
         margin-left: 30px;
         @media (min-width: $screen-sm-min) {
-          margin-left: 50px;
+          margin-left: 40px;
         }
       }
     }
     .message-item-card {
-      margin-left: 10px;
+      margin-left: 15px;
     }
 
     .message-item-content {

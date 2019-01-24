@@ -34,7 +34,7 @@ export class UploadCropImageComponent implements AfterViewInit {
 
     var myDropzoneOptions = {
       // CONFIGURATION,
-      url: Constants.baseUrls.apiBaseService + 'users/1',
+      url: Constants.baseUrls.apiUrl + 'users/1',
       paramName: 'file', // The name that will be used to transfer the file
       maxFilesize: 2, // MB
       maxFiles: 1,

@@ -118,8 +118,8 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
 
   addContact() {
     this.chatContactService.addContact(this.selectedUsers.map(user => user.id)).then(res => {
-      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res => {
-        this.chatCommonService.moveFirstRecentList(res.data.group_id);
+      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
+        this.chatConversationService.moveToFirst(res.data);
       });
       this.chatConversationService.navigateToConversation(res.data.group_id);
     });

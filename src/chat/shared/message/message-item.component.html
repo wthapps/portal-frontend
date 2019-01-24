@@ -87,7 +87,7 @@
 <!-- File message -->
 <ng-template #messageItemContentFile>
   <!-- photo type-->
-  <div class="wapper message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
+  <div class="wapper message-item-content-photo" *ngIf="message.file?.object_type == 'Media::Photo'">
     <figure>
       <a href="javascript:void(0);" (click)="onPreviewPhoto(message)">
         <img [src]="message.file?.url" alt="">
@@ -95,7 +95,7 @@
     </figure>
   </div>
   <!-- video type-->
-  <div class="wapper message-item-content-photo" *ngIf="message.file_type == 'Media::Video'">
+  <div class="wapper message-item-content-photo" *ngIf="message.file?.object_type == 'Media::Video'">
     <figure>
       <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
         <img [src]="message.file?.thumbnail_url" alt="">
@@ -104,7 +104,7 @@
     </figure>
   </div>
   <!-- file type-->
-  <div class="wapper message-item-content message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
+  <div class="wapper message-item-content message-item-content-other-files" *ngIf="message.file?.object_type == 'Common::GenericFile' && message.sending_status !== -1">
     <a class="media-div link-text" [href]="message.file?.url" target="_blank" download>
       <div class="pull-left">
         <i class="fa fa-file-archive-o"></i>
@@ -127,23 +127,21 @@
 
   <!--show sending -->
   <ng-container *ngIf="message.sending_status == 1" class="">
-    <div class="wapper message-item-content  message-item-content-files media-div link-text message-padding">
-      <div class="pull-left">
-        <i class="fa fa-spinner fa-spin fa-fw"></i>
-      </div>
-      <div class="media-div-body">
-        <div class="media-div-heading">{{ message.message }}</div>
+    <i class="fa fa-spinner fa-spin fa-fw message-padding"></i>
+    <div class="wapper message-item-content message-item-content-files text-fade">
+      <div>
+        <div>{{message.message}}</div>
+        <small>{{message.meta_data?.bytesTotal | bytes:0}}</small>
       </div>
     </div>
   </ng-container>
-  <!--show failed sending -->
-  <ng-container *ngIf="message.sending_status == -1" class="">
-    <div class="media-div link-text message-padding">
-      <div class="pull-left">
-        <i class="fa fa-file-o"></i>
-      </div>
-      <div class="media-div-body">
-        <div class="media-div-heading">Failed sending file</div>
+  <ng-container *ngIf="message.sending_status == -1">
+    <i class="fa fa-exclamation-triangle message-error message-padding"></i>
+    <div class="wapper message-item-content message-item-content-files text-fade">
+      <i class="fa fa-file-archive-o"></i>
+      <div>
+        <div>{{message.message}}</div>
+        <small>{{message.meta_data?.bytesTotal | bytes:0}}</small>
       </div>
     </div>
   </ng-container>
@@ -151,7 +149,7 @@
   <ng-container *ngIf="message.sending_status == 2" class="">
     <div class="media-div link-text message-padding">
       <div class="pull-left">
-        <i class="fa fa-file-o"></i>
+        <i class="fa fa-file-archive-o"></i>
       </div>
       <div class="media-div-body">
         <span>Cancelled sending a file</span>
@@ -161,7 +159,7 @@
   <ng-container *ngIf="message.sending_status == 3" class="">
     <div class="media-div link-text message-padding">
       <div class="pull-left">
-        <i class="fa fa-file-o"></i>
+        <i class="fa fa-file-archive-o"></i>
       </div>
       <div class="media-div-body">
         <span>{{ message.message }}</span>
