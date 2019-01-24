@@ -78,6 +78,8 @@ export class ZNoteSettingsModalComponent implements OnInit, OnDestroy {
 
   open() {
     this.modal.open();
+    const { setting } = this.noteSetting;
+    this.setFormValue(setting);
   }
 
   private setFormValue(data, permanent = true) {
