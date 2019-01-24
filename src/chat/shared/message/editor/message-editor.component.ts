@@ -298,33 +298,13 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   private sendFileEvent(event: any) {
     switch (event.action) {
       case 'file-added': {
-        // const file = event.payload.file;
-        // const { id, name, progress, meta } = file;
-        // const message = new Message({
-        //   message: meta.name,
-        //   message_type: 'file',
-        //   client_id: meta.file_upload_id + '-' + meta.current_date,
-        //   status: 'pending',
-        //   content_type: meta.type,
-        //   meta_data: { file: { id, name, progress, meta } }
-        // });
 
-        // this.chatMessageService.create(this.contactSelect.group_id, message).then(res => {
-
-        // });
       }
         break;
       case 'start':
         break;
       case 'before-upload': {
-        let wait = (ms) =>
-        {
-          let d: any = new Date();
-          let d2 = null;
-          do { d2 = new Date(); }
-          while (d2 - d < ms);
-        }
-        wait(1000);
+
       }
         break;
       case 'progress': {

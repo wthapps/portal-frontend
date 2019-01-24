@@ -43,7 +43,7 @@
 <ng-template #messageItemContentText>
   <ng-container *ngIf="message.status !== 'fail'" class="wapper message-item-content message-padding">
     <ng-container *ngIf="message.status == 'pending'">
-      <i class="message-padding text-fade fa fa-spinner fa-spin fa-fw"></i>
+      <i class="message-margin text-fade fa fa-spinner fa-spin fa-fw"></i>
       <div class="text-fade wapper message-item-content message-padding">
         <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
       </div>
@@ -127,7 +127,7 @@
 
   <!--show sending -->
   <ng-container *ngIf="message.sending_status == 1" class="">
-    <i class="fa fa-spinner fa-spin fa-fw message-padding"></i>
+    <i class="fa fa-spinner fa-spin fa-fw message-margin"></i>
     <div class="wapper message-item-content message-item-content-files text-fade">
       <div>
         <div>{{message.message}}</div>

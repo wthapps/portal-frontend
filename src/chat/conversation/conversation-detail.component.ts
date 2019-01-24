@@ -97,11 +97,10 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       }
     })
     // Get messages when select
-    this.chatConversationService.getStoreSelectedConversation().pipe(takeUntil(this.destroy$)).subscribe(res => {
-      let tmp = this.selectedConversation || {};
-      this.selectedConversation = res;
-      if (tmp.group_id !== this.selectedConversation.group_id) {
-        this.chatMessageService.getMessages(this.selectedConversation.group_id);
+    this.chatConversationService.getStoreSelectedConversationFull().pipe(takeUntil(this.destroy$)).subscribe(res => {
+      this.selectedConversation = res.selectedConversation;
+      if (res.isDifference) {
+        this.chatMessageService.getMessages(res.selectedConversation.group_id);
       }
       this.commonEventService.broadcast({
         channel: 'MessageEditorComponent',

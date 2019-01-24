@@ -68,7 +68,11 @@ export class ChatConversationService extends CommonEventHandler {
       filter(cx => {
       return cx.selectedConversation && cx.selectedConversation.group_id;}),
       // map to selected Convervarion
-      map(cx => cx.selectedConversation))
+      map(cx => cx.selectedConversation));
+  }
+
+  getStoreSelectedConversationFull(){
+    return this.store.select(STORE_SELECTED_CONVERSATION);
   }
 
   addNotification(data: any){
