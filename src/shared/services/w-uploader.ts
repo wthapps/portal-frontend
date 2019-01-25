@@ -13,16 +13,10 @@ import { SizePolicy } from '@shared/policies/size-policy';
 @Injectable()
 export class WUploader {
 
-
-  // subjects
-
-
-
-  apiUrl = Constants.baseUrls.apiBaseService;
+  apiUrl = Constants.baseUrls.apiUrl;
   cdnUrl = Constants.baseUrls.cdn;
 
   uploadPath = 'common/files/upload';
-
   select$ = new Subject<any>();
   start$ = new Subject<any>();
   event$ = new Subject<any>();
@@ -40,11 +34,9 @@ export class WUploader {
     allowedFileTypes: null,
     preventedFileTypes: null,
     maxNumberOfFiles: null,
+    afterCallBackUrl: null,
+    beforeCallBackUrl: null,
     maxFileSize: null,
-    willCreateMessage: false,
-    willCreatePost: false,
-    willCreateNote: false,
-    video: false,
     module: 'chat' || 'social' || 'notes' || 'contacts' || 'media'
   }) {
 
@@ -55,14 +47,14 @@ export class WUploader {
         maxNumberOfFiles: options.maxNumberOfFiles,
         maxFileSize: options.maxFileSize
       },
-      onBeforeFileAdded: (currentFile, files) => this.verifyUpload(currentFile, files, options.maxFileSize,
-         options.allowedFileTypes, options.preventedFileTypes),
+      onBeforeFileAdded: (currentFile, files) => this.event$.next({ action: 'before-file-added', payload: { file: currentFile } }),
+      onBeforeUpload: (files) => { this.event$.next({ action: 'before-upload', payload: { files: files } }) },
     };
 
     this.uppy = Core(opts);
 
     if (mode === 'FileInput') {
-      const policies: any = [new BlackListPolicy(), new SizePolicy(35, {only: /video\//g})];
+      const policies: any = [new BlackListPolicy(), new SizePolicy(35)];
       this.uppy.use(FileInputCustom, {
         target: selector,
         replaceTargetContent: true,
@@ -90,8 +82,21 @@ export class WUploader {
     });
 
     this.uppy.on('file-added', (file) => {
+      // data: File(7775842) { allow: true, validateErrors: Array(0), name: "400.pdf", lastModified: 1538536306875, lastModifiedDate: Wed Oct 03 2018 10: 11: 46 GMT + 0700(Indochina Time), … }
+      // extension: "pdf"
+      // id: "uppy-400pdf-application/pdf-7775842-1538536306875"
+      // isRemote: false
+      // meta: { name: "400.pdf", type: "application/pdf", file_upload_id: "uppy-400pdf-application/pdf-7775842-1538536306875-1548046078282" }
+      // name: "400.pdf"
+      // preview: "http://localhost:4000/assets/thumbnails/generic_file_default.png"
+      // progress: { percentage: 0, bytesUploaded: 0, bytesTotal: 7775842, uploadComplete: false, uploadStarted: false }
+      // remote: ""
+      // size: 7775842
+      // source: "FileInput"
+      // type: "application/pdf"
       // add more files that you need to pass to server here
-      file.meta = {...file.meta, file_upload_id: file.id, current_date: + new Date()};
+      file.meta = {
+        ...file.meta, file_upload_id: file.id + '-' + new Date().getTime(), after_callback_url: options.afterCallBackUrl, before_callback_url: options.beforeCallBackUrl, payload: JSON.stringify({ ...options.payload, ...file.progress})};
       this.event$.next({action: 'file-added', payload: {file: file}});
     });
 
@@ -143,41 +148,6 @@ export class WUploader {
       const info = this.uppy.getState().info;
       this.event$.next({action: 'info-visible', payload: {info: info}});
     });
-  }
-
-  verifyUpload(currentFile: any, files: Array<any>, maxFileSize: number, allowedFileTypes: Array<any>|null,
-     preventedFileTypes: Array<any>|null) {
-    if (maxFileSize) {
-      const maxTotalFileSize = maxFileSize;
-      let TotalFileSize = 0;
-
-      // tslint:disable-next-line:forin
-      for (const key in files) {
-        TotalFileSize = TotalFileSize + files[key].size;
-      }
-
-      const grandTotalFileSize = currentFile.data.size + TotalFileSize;
-      console.log('current file:::', currentFile);
-      if (allowedFileTypes && allowedFileTypes.length > 0) {
-        if (!allowedFileTypes.includes(currentFile.type)) {
-          this.event$.next({action: 'error', payload: {file: currentFile, error: `Not allowed file type ${currentFile.type}`}});
-          return false;
-        }
-      }
-
-      if (preventedFileTypes && preventedFileTypes.length > 0) {
-        if (!preventedFileTypes.includes(currentFile.type)) {
-          this.event$.next({action: 'error', payload: {file: currentFile, error: `Not allowed file type ${currentFile.type}`}});
-          return false;
-        }
-      }
-
-      if (grandTotalFileSize >= maxTotalFileSize) {
-        this.event$.next({action: 'error', payload: {file: currentFile, error: `Max filesize exceeded::: ${maxFileSize}`}});
-        return false;
-      }
-    }
-    return true;
   }
 
   retryUpload(fileId) {

@@ -1,116 +1,64 @@
-<!--<account-list-edit-modal #modal></account-list-edit-modal>-->
-
-
-<!--<div> {{ (user | async) | json }}</div>-->
-
 <div class="box-panel">
-  <h3 class="box-panel-title">
-    Accounts
-  </h3>
-    <!--<div>-->
-      <!--<h4 class="box-panel-subtitle">Accounts</h4>-->
-    <!--</div>-->
-    <!--<hr>-->
-
-  <!--<hr class="line">-->
-
-  <div id="loading"></div>
-
-
-  <!--sub account-->
-  <div *ngIf="currentUser.creator_id > 0">
-    <div>
-      Your account type dose not have the ability to create and manage additional accounts
-    </div>
-    <div>
-      In order to create and manage additional accounts, please request to upgrade into pro account
-    </div>
-    <div class="box-panel-subtitle">
-      <a class="btn btn-outline-primary btn-min" (click)="openAccountAddModal()">
-        Upgrade to full account</a>
-
-    </div>
+  <h3 class="box-panel-title">Manage accounts</h3>
+  <div class="form-group">
+    <a class="btn btn-outline-primary" (click)="openAccountAddModal()">
+      <i class="fa fa-plus"></i> Add account
+    </a>
   </div>
-  <!--full account without sub-->
+  <table class="table table-middle">
+    <thead>
+    <tr>
+      <th class="ma-table-name">Name</th>
+      <th class="ma-table-email">Email</th>
+      <th class="ma-table-llogin">Last Login</th>
+      <th class="ma-table-action">&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody *ngIf="user$ | async as user;else templateLoading">
+    <tr *ngFor="let item of user">
+      <td>{{ item.name }}
+        <span *ngIf="item?.parent_id == null && item.creator_id == null" class="label label-default">
+          Admin
+        </span>
+      </td>
+      <td>{{ item.email }}</td>
+      <td>
+        <ng-container *ngIf="item.last_sign_in_at">{{ item.last_sign_in_at | timeFormat }}</ng-container>
+        <ng-container *ngIf="!item.last_sign_in_at">N/A</ng-container>
+      </td>
+      <td class="text-right">
+        <ng-container *ngIf="!item?.removing">
+          <button *ngIf="item?.requested_full_account && item?.parent_id != null"
+                  (click)="acceptRequest(item)"
+                  class="btn btn-inline" type="button"
+                  pTooltip="Ownership request" tooltipPosition="bottom">
+            <i class="fa fa-check-circle text-danger"></i>
+          </button>
 
-  <div *ngIf="(authService.user$|async)?.parent_id != null">
+          <button class="btn btn-default ml5" (click)="view(item)"
+                  pTooltip="View account" tooltipPosition="bottom">
+            <i class="fa fa-eye"></i>
+          </button>
+          <button [disabled]="item?.parent_id == null"
+                  class="btn btn-default ml5"
+                  (click)="delete(item)"
+                  pTooltip="Remove account" tooltipPosition="bottom">
+            <i class="fa fa-trash"></i>
+          </button>
 
-    <div>
-      Your account type dose not have the ability to create and manage additional accounts
-    </div>
-    <div>
-      In order to create and manage additional accounts, please request to full ownership account to upgrade into pro account
-    </div>
-    <div class="box-panel-subtitle">
-      <a class="btn btn-outline-primary btn-min" (click)="openRequestOwnershipModal(modal)">
-        Request ownership</a>
-    </div>
-  </div>
-
-  <!--full account with sub-->
-
-  <div *ngIf="(authService.user$ | async)?.parent_id == null">
-    <div class="box-panel-subtitle">
-      <a class="btn btn-outline-primary btn-min" (click)="openAccountAddModal(modal)">
-        <i class="fa fa-plus"></i> Add account</a>
-      <!--<button class="btn btn-outline-secondary"-->
-              <!--(click)="delete()" [disabled]="selectedItems.length === 0">-->
-        <!--<i class="fa fa-trash" aria-hidden="true" ></i> Delete</button>-->
-    </div>
-    <br/>
-
-    <table class="table table-striped table-middle">
-      <thead>
-      <tr>
-        <!--<th>-->
-          <!--<div>-->
-            <!--<p-checkbox value="" label=""-->
-                        <!--[(ngModel)]="isSelectAll" binary="true" (onChange)="selectAll($event)"></p-checkbox>-->
-          <!--</div>-->
-        <!--</th>-->
-        <th>Full name</th>
-        <th>Email</th>
-        <th>Last logged in</th>
-        <th class="text-right">Action</th>
-
-      </tr>
-      </thead>
+        </ng-container>
+        <ng-container *ngIf="item?.removing">
+          <span class="text-muted">Removed</span>
+        </ng-container>
+      </td>
+    </tr>
+    </tbody>
+    <ng-template #templateLoading>
       <tbody>
-        <tr *ngFor="let item of (user | async)">
-          <!--<th>-->
-            <!--<div>-->
-              <!--<p-checkbox value="" label=""-->
-                          <!--[(ngModel)]="item.selected" binary="true" (onChange)="select(item)"></p-checkbox>-->
-            <!--</div>-->
-          <!--</th>-->
-          <td>
-            <a href="javascript:void(0);" (click)="view(item)">{{ item.name }}</a>
-            <label *ngIf="item?.parent_id == null && item.creator_id == null" class="admin-mark">Master</label>
-          </td>
-          <td><a rel="nofollow" target="_top"
-                 href="mailto:{{ item.email }}">{{ item.email }}</a></td>
-          <td *ngIf="item.last_sign_in_at"> {{ item.last_sign_in_at | date: 'MMM d, y' }} </td>
-          <td *ngIf="!item.last_sign_in_at"> N/A </td>
-
-          <td>
-            <div class="text-right">
-              <label *ngIf="item?.removing">Removed</label>
-              <button *ngIf="item?.requested_full_account && !item?.removing && item?.parent_id != null" class="btn btn-default"
-                      (click)="acceptRequest(item)" title="Accept Request">
-                <i class="fa fa-check-circle requested-full-account"></i></button>
-
-              <button *ngIf="!item?.removing" class="btn btn-default" (click)="edit(item)" title="Edit">
-                <i class="fa fa-pencil"></i></button>
-              <button *ngIf="!item?.removing" [disabled]="item?.parent_id == null"
-                      class="btn btn-default" title="Remove"
-                      (click)="delete(item)"><i class="fa fa-trash"></i></button>
-            </div>
-          </td>
-        </tr>
+      <tr>
+        <td colspan="4">Loading...</td>
+      </tr>
       </tbody>
-    </table>
-
-  </div>
-
+    </ng-template>
+  </table>
 </div>
-

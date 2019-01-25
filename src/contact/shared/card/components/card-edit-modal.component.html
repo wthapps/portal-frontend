@@ -100,8 +100,8 @@
               <p-checkbox name="emails" [value]="'email:' + item.category"
                           [label]="item.category | keyToValue: emailType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
             </dt>
-            <dd>
-              <div><p><a style="text-transform: lowercase;" href="mailto:{{ item.value }}">{{ item.value }}</a></p></div>
+            <dd [ngClass]="{'not-first-item' : i > 0 }">
+              <div><a style="text-transform: lowercase;" href="mailto:{{ item.value }}">{{ item.value }}</a></div>
             </dd>                
           </ng-template>
         </ng-container>
@@ -116,7 +116,7 @@
               <p-checkbox name="phones" [value]="'phone:' + item.category" 
                           [label]="item.category | keyToValue:phoneType:'category':'name'" [(ngModel)]="selectedFields"></p-checkbox>
             </dt>
-            <dd>
+            <dd [ngClass]="{'not-first-item' : i > 0 }">
               <div> {{ item.country_alpha_code | phoneDialCode }} {{ item.value }} </div>
             </dd>                
           </ng-template>
@@ -154,8 +154,8 @@
                     
                 </p-checkbox>
               </dt>
-              <dd>
-                <div><p><a href="{{ item.value }}" target="_blank" rel="noopener" style="text-transform: lowercase">{{ item.value }}</a></p></div>
+              <dd [ngClass]="{'not-first-item' : i > 0 }">
+                <div><a href="{{ item.value }}" target="_blank" rel="noopener" style="text-transform: lowercase">{{ item.value }}</a></div>
               </dd>
           </ng-template>  
         </ng-container>      

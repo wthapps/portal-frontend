@@ -1,0 +1,14 @@
+.ui-table {
+  table {
+    @extend .table;
+  }
+  .ui-table-thead > tr > th,
+  .ui-table-tbody > tr > td,
+  .ui-table-tfoot > tr > td {
+    padding: $table-cell-padding;
+  }
+  tr, td, th {
+
+  }
+}
+

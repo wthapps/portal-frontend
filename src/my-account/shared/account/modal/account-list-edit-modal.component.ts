@@ -48,7 +48,13 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   maxDate: Date = new Date(moment().subtract(13, 'years').calendar());
   subscription: any;
 
+  yearRange: string;
+
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService) {
+    const d = this.maxDate;
+    const yearRangeEnd = d.getFullYear();
+    const yearRangestar = yearRangeEnd - 100;
+    this.yearRange = `${yearRangestar}:${yearRangeEnd}`;
   }
 
   ngOnInit() {
@@ -64,7 +70,7 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   * @data: array of item
   * @mode: add or edit or view. default is add
   * */
-  open(options: any = {mode: 'add', data: undefined, subscription: {}}) {
+  open(options: any = { mode: 'add', data: undefined, subscription: {} }) {
     this.subAccountCount = 0;
     this.fullAccountCount = 0;
     this.accounts = options.accounts;
@@ -148,7 +154,7 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
     });
     // status to current object
     _.forEach(this.data, (item: any, index: number) => {
-      this.data[index] = {...item, status: 'new'};
+      this.data[index] = { ...item, status: 'new' };
     });
     this.modal.close(null).then();
     this.commonEventService.broadcast({
@@ -171,6 +177,7 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
   hide(event: any) {
     console.log('hide:::', event);
   }
+
   done(values: any) {
     this.data = _.concat(this.deleteObjects, values);
     this.event.emit(this.data);
@@ -212,7 +219,7 @@ export class AccountListEditModalComponent implements OnInit, AfterViewInit {
       return this.form.valid;
     }
     _.forEach((<FormArray>this.form.get(this.type)).controls, (item: any) => {
-      if (item.controls.firstName.valid && item.controls.lastName.valid &&item.controls.email.valid && item.controls.birthday.valid) {
+      if (item.controls.firstName.valid && item.controls.lastName.valid && item.controls.email.valid && item.controls.birthday.valid) {
         result = true;
         // this.countNoOfSubAndMaster(item.value);
       }

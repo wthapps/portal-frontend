@@ -1,83 +1,150 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { MessageService } from 'primeng/components/common/messageservice';
+
+import { ModalModule } from '@shared/components/modal/modal.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { TagInputModule } from 'ngx-chips';
+import {
+  InputSwitchModule,
+  CheckboxModule,
+  RadioButtonModule,
+  AutoCompleteModule,
+  CalendarModule,
+  PanelMenuModule,
+  TooltipModule
+} from 'primeng/primeng';
+
+import { ZChatShareItemRequestComponent } from './message/item-request.component';
+import { PartialModule } from './../../shared/partials/partial.module';
+
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
-import { ZChatShareEditConversationComponent } from './modal/edit-conversation.component';
-import { ZChatShareAddContactComponent } from './modal/add-contact.component';
-import { ZChatShareAddToConversationComponent } from './modal/add-to-conversation.component';
 import { ZChatContactActionsComponent } from './contact-action/contact-actions.component';
-import { ChatMonthDayYearPipe } from './pipe/chat-month-day-year.pipe';
-import { ChatGroupCouplePipe } from './pipe/chat-group-couple.pipe';
-import { ChatGroupMultiplePipe } from './pipe/chat-group-multiple.pipe';
-import { ChatGroupBlackListPipe } from './pipe/chat-group-black-list.pipe';
-import { ChatGroupNamePipe } from './pipe/chat-group-name.pipe';
-import { ChatUserNewPipe } from './pipe/chat-user-new.pipe';
-import { ChatGroupMembersPipe } from './pipe/chat-group-members.pipe';
-import { ChatGroupSentRequestPipe } from './pipe/chat-group-sent-request.pipe';
-import { ChatGroupPendingPipe } from './pipe/chat-group-pending.pipe';
-import { ChatUserOnlinePipe } from './pipe/chat-user-online.pipe';
-import { ChatGroupHistoryPipe } from './pipe/chat-group-history.pipe';
 import { ConversationService } from '../conversation/conversation.service';
 import { ChatService } from './services/chat.service';
-import { ZChatMessageModule } from './message/message.module';
 import { ChatContactService } from './services/chat-contact.service';
 import { ZChatSharedHeaderComponent } from './header/header.component';
-import { SharedModule } from '@wth/shared/shared.module';
 import { ChatCommonService } from '@wth/shared/services';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 import { ChatMessageService } from './services/chat-message.service';
+import { ChatConversationService } from './services/chat-conversation.service';
+import { WthCommonModule } from '@shared/common/wth-common.module';
+import { ModalDockModule } from '@shared/shared/components/modal/dock.module';
+import { FileModule } from '@shared/shared/components/file/file.module';
+import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
+import { ComponentsModule } from '@shared/components/components.module';
+import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
+import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
+
+import { ZChatShareUserModule } from './user/user.module';
+import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
+import { ZSharedReportModule } from '@shared/shared/components/zone/report/report.module';
+// import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
+import { ZChatSharedModalModule } from './modal/chat-shared-modal.module';
+import { ZChatPipeModule } from './pipe/chat-pipe.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [SharedModule, ZChatMessageModule],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    WthCommonModule,
+
+    // custom component
+    ModalDockModule,
+    ModalModule,
+    FileModule,
+    PartialModule,
+    WMediaSelectionModule,
+    ComponentsModule,
+    // ZSharedMenuModule,
+    BoxNoDataModule,
+    WNavTabModule,
+    WTHEmojiModule,
+    ZSharedReportModule,
+
+    // Chat scoped modules
+    MessagesModule,
+    MessageModule,
+    ZChatSharedModalModule,
+    ZChatShareUserModule,
+    ZChatPipeModule,
+    // ZChatMessageModule,
+
+    // third party libs
+    TagInputModule,
+    InputSwitchModule,
+    CheckboxModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    CalendarModule,
+    PanelMenuModule,
+    TooltipModule
+  ],
   declarations: [
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    ZChatShareEditConversationComponent,
-    ZChatShareAddContactComponent,
-    ZChatShareAddToConversationComponent,
+    // ZChatShareEditConversationComponent,
+    // ZChatShareAddContactComponent,
+    // ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
     ContactListModalComponent,
-
-    ChatMonthDayYearPipe,
-    ChatGroupCouplePipe,
-    ChatGroupMultiplePipe,
-    ChatGroupBlackListPipe,
-    ChatGroupNamePipe,
-    ChatUserNewPipe,
-    ChatGroupMembersPipe,
-    ChatGroupSentRequestPipe,
-    ChatGroupPendingPipe,
-    ChatUserOnlinePipe,
-    ChatGroupHistoryPipe
+    ZChatShareItemRequestComponent
+    // ZChatShareRequestContactComponent,
   ],
   exports: [
-    ZChatMessageModule,
+    WthCommonModule,
+
+    // custom component
+    ModalDockModule,
+    ModalModule,
+    FileModule,
+    PartialModule,
+    WMediaSelectionModule,
+    ComponentsModule,
+    // ZSharedMenuModule,
+    BoxNoDataModule,
+    WNavTabModule,
+    WTHEmojiModule,
+    ZSharedReportModule,
+
+    // Chat scoped modules
+    MessagesModule,
+    MessageModule,
+    ZChatShareItemRequestComponent,
+    // ZChatShareRequestContactComponent,
+    ZChatSharedModalModule,
+    ZChatShareUserModule,
+    ZChatPipeModule,
+    // ZChatMessageModule,
+
+    // third party libs
+    TagInputModule,
+    InputSwitchModule,
+    CheckboxModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    CalendarModule,
+    PanelMenuModule,
+    TooltipModule,
+
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    ZChatShareEditConversationComponent,
-    ZChatShareAddContactComponent,
-    ZChatShareAddToConversationComponent,
+    // ZChatShareEditConversationComponent,
+    // ZChatShareAddContactComponent,
+    // ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
-    ContactListModalComponent,
-
-    ChatMonthDayYearPipe,
-    ChatGroupCouplePipe,
-    ChatGroupMultiplePipe,
-    ChatGroupBlackListPipe,
-    ChatGroupNamePipe,
-    ChatUserNewPipe,
-    ChatGroupSentRequestPipe,
-    ChatGroupPendingPipe,
-    ChatGroupMembersPipe,
-    ChatUserOnlinePipe,
-    ChatGroupHistoryPipe
+    ContactListModalComponent
   ]
 })
 export class ZChatSharedModule {
@@ -89,7 +156,9 @@ export class ZChatSharedModule {
         ChatService,
         ChatMessageService,
         ChatContactService,
+        ChatConversationService,
         ChatCommonService,
+        MessageService,
         ZChatShareAddContactService
       ]
     };

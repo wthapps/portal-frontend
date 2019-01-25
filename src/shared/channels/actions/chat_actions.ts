@@ -1,5 +1,7 @@
 import { ServiceManager } from '../../services';
-import { CHAT_ACTIONS } from '../../constant';
+import { CHAT_ACTIONS, CHAT_CONVERSATIONS, Constants } from '../../constant';
+
+declare var _: any;
 
 export class ChatActions {
   constructor(private serviceManager: ServiceManager) {
@@ -7,19 +9,51 @@ export class ChatActions {
   }
 
   process(response: any) {
-    const data = response.data;
-
-    switch (response.action) {
-      case CHAT_ACTIONS.CHAT_MESSAGE_DELETE:
-      case CHAT_ACTIONS.CHAT_MESSAGE_UPDATE:
-        data['file'] = data.file || data.file_json;
-        // this.serviceManager.getChatCommonService().updateItemInList(data.group_id, data);
-        break;
-      default:
-        // this.serviceManager.getChatCommonService().addMessage(data.group_id, data);
-        break;
+    if (response.action === 'chat_send_message') {
+      this.serviceManager.getCommonEventService().broadcast({
+        channel: 'ConversationDetailComponent',
+        action: 'updateMessageHandler',
+        payload: response.data
+      })
+    }
+    if (response.action === 'chat_notification' && response.data.type == 'notification_count') {
+      ['ChatConversationService', 'ChatNotificationComponent'].forEach(component => {
+        this.serviceManager.getCommonEventService().broadcast({
+          channel: component,
+          action: 'addNotification',
+          payload: response.data
+        })
+      })
     }
 
-    // this.serviceManager.getStorageService().save('users_online', response.data);
+    if (response.action === 'chat_notification' && response.data.type == 'added_contact') {
+      this.serviceManager.getCommonEventService().broadcast({
+        channel: 'ChatConversationService',
+        action: 'addRemoveMember',
+        payload: response.data
+      });
+    }
+
+    if (response.action === 'chat_notification' && response.data.type == 'update_display') {
+      this.serviceManager.getCommonEventService().broadcast({
+        channel: 'ChatConversationService',
+        action: 'updateStoreConversation',
+        payload: response.data.group_user
+      });
+    }
+    if (response.action === 'chat_notification' && response.data.type == 'update_conversation_list') {
+      this.serviceManager.getCommonEventService().broadcast({
+        channel: 'ChatConversationService',
+        action: 'updateStoreConversations',
+        payload: response.data.group_users
+      });
+    }
+    if (response.action === 'chat_notification' && response.data.type == 'notification_message') {
+      this.serviceManager.getCommonEventService().broadcast({
+        channel: 'ConversationDetailComponent',
+        action: 'updateMessageHandler',
+        payload: response.data
+      })
+    }
   }
 }

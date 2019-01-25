@@ -26,22 +26,16 @@ import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
 import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
-import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
-import { PhotoEditModalComponent } from '@shared/shared/components/photo/modal/photo/photo-edit-modal.component';
-import { AddToAlbumModalComponent } from '@shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 import { Subject } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 
-@Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin, MediaListDetailMixin])
+@Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin,
+   MediaListDetailMixin])
 @Component({
   selector: 'photo-detail',
   templateUrl: './item-detail.component.html',
-  styleUrls: ['photo-detail.component.scss'],
-  entryComponents: [
-    // MediaRenameModalComponent,
-    // PhotoEditModalComponent,
-    // AddToAlbumModalComponent
-  ]
+  styleUrls: ['photo-detail.component.scss']
 })
 export class PhotoDetailComponent implements OnInit, OnDestroy,
   MediaAdditionalListMixin,
@@ -88,11 +82,11 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
   openCreateAlbumModal: (selectedObjects: any) => void;
   onDoneAlbum: (e: any) => void;
   onAddedToAlbum(data: any) {
-    this.apiBaseService.get(`media/media/${this.object.uuid}`, { model: 'Media::Photo' }).toPromise()
+    this.apiBaseService.get(`media/media/${this.object.uuid}`, { model: _.get(this.object, 'object_type', 'Media::Photo') }).toPromise()
       .then(res => {
         this.object = res.data;
-      })
-  };
+      });
+  }
 
 
   constructor(public apiBaseService: ApiBaseService,
@@ -114,9 +108,9 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     this.menuActions = this.getMenuActions();
     this.returnUrls = this.route.snapshot.queryParams.returnUrls;
     this.route.params.pipe(
-      combineLatest(this.route.queryParams)
+      withLatestFrom(this.route.queryParams)
       ).subscribe(([p, params]) => {
-      this.model = this.route.snapshot.queryParams.model || 'Media::Photo';
+      this.model = this.route.snapshot.queryParams.model || _.get(this.object, 'object_type', 'Media::Photo');
       this.apiBaseService.get(`media/media/${p.id}`, { model: this.model }).toPromise()
         .then(res => {
           this.object = res.data;
@@ -126,28 +120,28 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
             this.menuActions.favorite.iconClass = 'fa fa-star-o';
           }
           // reload video
-          if (this.model == 'Media::Video' && $('#video')[0]) $('#video')[0].load();
+          if (this.model === 'Media::Video' && $('#video')[0]) { $('#video')[0].load(); }
           this.validateActions(this.menuActions, this.object.permission.role_id);
           if (!this.listIds && params.preview) {
             if (params.objects) {
               // this.listIds = new DoublyLinkedLists(params.ids.split(','));
               // this.listIds.setCurrent(this.object.id);
-              let objects = params.objects.map(ob => {
-                let tmp = ob.split(',');
+              const objects = params.objects.map(ob => {
+                const tmp = ob.split(',');
                 return {
                   id: tmp[0],
                   model: tmp[1]
-                }
+                };
               });
               this.listIds = new DoublyLinkedLists(objects);
               this.listIds.setCurrent(this.object.uuid);
             } else {
-              let query: any = {};
-              if (params.parent_id) query.parent = params.parent_id;
+              const query: any = {};
+              if (params.parent_id) { query.parent = params.parent_id; }
               this.apiBaseService.get(`media/media/ids_combine`, query).toPromise()
                 .then(res2 => {
                   if (res2.data) {
-                    this.listIds = new DoublyLinkedLists(res2.data.map(d => {return {id: d.uuid, model: d.model}}));
+                    this.listIds = new DoublyLinkedLists(res2.data.map(d => ({id: d.uuid, model: d.model})));
                     this.listIds.setCurrent(this.object.uuid);
                   }
                 });
@@ -162,9 +156,9 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     this.destroy$.complete();
   }
 
-  loadObject:(input?: any) => void;
+  loadObject: (input?: any) => void;
 
-  toggleInfo:() => void;
+  toggleInfo: () => void;
 
   openModalShareCustom() {
     this.openModalShare([this.object]);
@@ -185,7 +179,9 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
       switch (e.action) {
         case 'editInfo':
           this.apiBaseService.put(`media/photos/${this.object.id}`, e.params.selectedObject).subscribe(res => {
+            const parents = this.object.parents;
             this.object = res.data;
+            this.object.parents = parents;
           });
           break;
         default:
@@ -369,14 +365,15 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
       info: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
-        inDropDown: true, // Outside dropdown list
+        inDropDown: false, // Outside dropdown list
         action: () => {
           this.showDetailsInfo = !this.showDetailsInfo;
-          this.apiBaseService.get(`media/object/${this.object.id}/sharings`, { model: 'Media::Photo' }).subscribe(res => {
+          this.apiBaseService.get(`media/object/${this.object.id}/sharings`,
+           { model: _.get(this.object, 'object_type', 'Media::Photo') }).subscribe(res => {
             this.sharings = res.data;
           });
         },
-        class: '',
+        class: 'btn btn-default',
         liclass: '',
         title: 'View Information',
         tooltip: this.tooltip.info,
@@ -411,20 +408,20 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-edit'
       }
-    }
+    };
   }
 
   onPrev() {
     this.listIds.prev();
-    const url = '/photos/';
-    this.router.navigate([`${url + this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model }, queryParamsHandling: 'merge' });
+    this.router.navigate([`../${this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model },
+      relativeTo: this.route, queryParamsHandling: 'merge'});
   }
 
   onNext() {
     this.listIds.next();
-    const url = '/photos/';
-    this.router.navigate([`${url + this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model}, queryParamsHandling: 'merge' });
+    this.router.navigate([`../${this.listIds.current.data.id}`],
+     { queryParams: { model: this.listIds.current.data.model}, relativeTo: this.route, queryParamsHandling: 'merge' });
   }
 
-  back:() => void;
+  back: () => void;
 }

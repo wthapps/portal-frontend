@@ -1,0 +1,24 @@
+.ui-dialog {
+  background-color: #ffffff;
+  .ui-dialog-titlebar {
+    @extend .modal-header;
+  }
+  .ui-dialog-title {
+    @extend .modal-title;
+    @extend .h4;
+  }
+  .ui-dialog-titlebar-close {
+    @extend .close;
+  }
+  .ui-dialog-content {
+    @extend .modal-body;
+  }
+  .ui-dialog-footer {
+    @extend .modal-footer;
+  }
+}
+
+.ui-widget-overlay {
+  @extend .modal-backdrop;
+  @extend .in;
+}

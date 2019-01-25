@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 export class CommonEventHandler implements OnDestroy {
   commonEventSub: any;
-  channel: string = 'CommonEventHandler';
+  channel = 'CommonEventHandler';
   destroy$ = new Subject();
   constructor(public commonEventService: CommonEventService) {
     this.listen();

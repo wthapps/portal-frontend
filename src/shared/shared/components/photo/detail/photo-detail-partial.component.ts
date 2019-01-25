@@ -22,6 +22,8 @@ import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { TaggingModalComponent } from '@shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 declare let $: any;
 declare let _: any;
@@ -83,6 +85,7 @@ export class PhotoDetailPartialComponent
   showMore = false;
   index = 0;
   objects = [];
+  destroySubject: Subject<any> = new Subject<any>();
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -144,6 +147,8 @@ export class PhotoDetailPartialComponent
   ngOnDestroy() {
     this.renderer.removeClass(document.body, 'modal-open');
     this.event.emit({ action: 'destroy' });
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
   loadMenu() {
@@ -411,7 +416,7 @@ export class PhotoDetailPartialComponent
       modalComponentFactory
     );
     this.modal = this.modalComponent.instance;
-    this.modal.event.takeUntil(this.ngOnDestroy).subscribe((event: any) => {
+    this.modal.event.pipe(takeUntil(this.destroySubject)).subscribe((event: any) => {
       this.doAction(event);
     });
   }

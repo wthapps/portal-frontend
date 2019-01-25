@@ -14,24 +14,24 @@
     margin: 0;
     padding: 0;
     i {
-      font-size: 120px;
-      &.xs{
+      font-size: 72px;
+      &.xs {
         font-size: 60px;
       }
     }
   }
   h3 {
-    font-size: 28px;
+    font-size: 26px;
   }
   h4 {
-    font-size: 16px;
+    font-size: 18px;
     margin: 0 0 30px;
     font-weight: 400;
   }
   @media (max-width: $screen-xs-max) {
     h2 {
       i {
-        font-size: 80px;
+        font-size: 60px;
       }
     }
     h3 {

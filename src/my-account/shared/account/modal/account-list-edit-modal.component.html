@@ -1,191 +1,164 @@
 <form [formGroup]="form" novalidate>
 
   <bs-modal #modal
-         [cssClass]="'modal-lg modal-account-list-edit'"
-         [keyboard]="false"
-         [animation]="false"
-         [backdrop]="'static'" style="display: inline;">
+            [cssClass]="'modal-lg modal-account-list-edit'"
+            [keyboard]="false"
+            [animation]="false"
+            [backdrop]="'static'" style="display: inline;">
     <bs-modal-header>
       <button aria-label="Close" class="close" (click)="close()" type="button">
         <span aria-hidden="false">×</span>
       </button>
       <h4 class="modal-title">Add account</h4>
-
     </bs-modal-header>
     <bs-modal-body>
-<div>
-
-</div>
-       <div class="pb5 bold">
-        <div class="row row-12">
-          <div class="col-sm-3">
-            First name
+      <div class="ma-account-list text-bold d-flex hidden-xs">
+        <div class="flex-1">
+          <div class="row row-10">
+            <div class="col-sm-3">First name</div>
+            <div class="col-sm-3">Last name</div>
+            <div class="col-sm-3">Email address</div>
+            <div class="col-sm-3">Date of birth</div>
           </div>
-          <div class="col-sm-3">
-            Last name
-          </div>
-          <div class="col-sm-3">
-            Email address
-          </div>
-          <div class="col-sm-3">
-            Date of birth
-          </div>
-
+        </div>
+        <div class="action">
+          <button type="button" class="btn btn-default visibility-hidden"><i class="fa fa-trash"></i></button>
         </div>
       </div>
+      <ng-container formArrayName="items">
+        <ng-container *ngFor="let item of form.get('items')['controls']; let i=index;">
+          <div *ngIf="item['controls'].parent_id.value == 0" [formGroupName]="i" class="ma-account-list d-flex">
+            <div class="flex-1">
+              <div class="row row-10">
+                <div class="col-sm-3">
 
-      <div formArrayName="items">
-
-        <div *ngFor="let item of form.get('items')['controls']; let i=index;" class="mt0">
-          <div *ngIf="item['controls'].parent_id.value == 0" [formGroupName]="i">
-
-            <div class="row row-12">
-
-              <div class="col-sm-3 pr0">
-                <div class="form-group no-label" [ngClass]="{
+                  <div class="form-group no-label" [ngClass]="{
                     'has-error': (!item['controls'].firstName.valid
                                 && item['controls'].firstName.touched),
                     'has-success': (item['controls'].firstName.valid
                                 && item['controls'].firstName.touched
                                 && form.value.items[i].firstName.length > 0)}">
-                  <input type="text" class="form-control" formControlName="firstName"
-                         (change)="changed(item.controls)" placeholder="First name">
-                  <div *ngIf="!item['controls'].firstName.valid && item['controls'].firstName.touched">
-                      <span class="help-block text-danger" *ngIf="item['controls'].firstName.dirty && item['controls'].firstName.errors.required">
+                    <input type="text" class="form-control" formControlName="firstName"
+                           (change)="changed(item.controls)" placeholder="First name">
+                    <div *ngIf="!item['controls'].firstName.valid && item['controls'].firstName.touched">
+                      <span class="help-block text-danger"
+                            *ngIf="item['controls'].firstName.dirty && item['controls'].firstName.errors.required">
                         First name is required
                       </span>
-                      <span class="help-block text-danger" *ngIf="item['controls'].firstName.dirty && item['controls'].firstName.errors.blanked">
+                      <span class="help-block text-danger"
+                            *ngIf="item['controls'].firstName.dirty && item['controls'].firstName.errors.blanked">
                         First name is blanked
                       </span>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="col-sm-3 pr0">
-                <div class="form-group no-label" [ngClass]="{
+                </div>
+                <div class="col-sm-3">
+
+                  <div class="form-group no-label" [ngClass]="{
                     'has-error': (!item['controls'].lastName.valid
                                 && item['controls'].lastName.touched),
                     'has-success': (item['controls'].lastName.valid
                                 && item['controls'].lastName.touched
                                 && form.value.items[i].lastName.length > 0)}">
-                  <input type="text" class="form-control" formControlName="lastName"
-                         (change)="changed(item.controls)" placeholder="Last name">
-                  <div *ngIf="!item['controls'].lastName.valid && item['controls'].lastName.touched">
-                      <span class="help-block text-danger" *ngIf="item['controls'].lastName.dirty && item['controls'].lastName.errors.required">
+                    <input type="text" class="form-control" formControlName="lastName"
+                           (change)="changed(item.controls)" placeholder="Last name">
+                    <div *ngIf="!item['controls'].lastName.valid && item['controls'].lastName.touched">
+                      <span class="help-block text-danger"
+                            *ngIf="item['controls'].lastName.dirty && item['controls'].lastName.errors.required">
                         Last name is required
                       </span>
-                      <span class="help-block text-danger" *ngIf="item['controls'].lastName.dirty && item['controls'].lastName.errors.blanked">
+                      <span class="help-block text-danger"
+                            *ngIf="item['controls'].lastName.dirty && item['controls'].lastName.errors.blanked">
                         Last name is blanked
                       </span>
+                    </div>
                   </div>
+
                 </div>
-              </div>
+                <div class="col-sm-3">
 
-              <div class="col-sm-3">
-
-                <div class="form-group no-label"
-                     [ngClass]="{
+                  <div class="form-group no-label"
+                       [ngClass]="{
                     'has-error': (!item['controls'].email.valid
                                 && item['controls'].email.touched),
                     'has-success': (item['controls'].email.valid
                                 && item['controls'].email.touched
                                 && form.value.items[i].email.length > 0)}">
-                  <input type="email" email class="form-control" formControlName="email"
-                         (change)="changed(item.controls)"
-                         placeholder="user-name@example.com">
-                  <div *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
+                    <input type="email" email class="form-control" formControlName="email"
+                           (change)="changed(item.controls)"
+                           placeholder="user-name@example.com">
+                    <div *ngIf="!item['controls'].email.valid && item['controls'].email.touched">
                       <span
                         *ngIf="!item['controls'].email.valid && item['controls'].email.errors.emailFormat"
                         class="help-block text-danger">
                         Email is not valid
                       </span>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-sm-2">
 
-                <div class="form-group no-label"
-                     [ngClass]="{
+                </div>
+                <div class="col-sm-3">
+
+                  <div class="form-group no-label"
+                       [ngClass]="{
                     'has-error': (!item['controls'].birthday.valid
                                 && item['controls'].birthday.touched),
                     'has-success': (item['controls'].birthday.valid
-                                && item['controls'].birthday.touched
-                                && form.value.items[i].birthday.length > 0)}">
-                  <p-calendar class="input-block"
-                              inputStyleClass="form-control"
-                              [yearRange]="'1900:'+maxDate?.getFullYear()"
-                              [maxDate]="maxDate" required="true"
-                              [defaultDate]="maxDate"
-                              [monthNavigator]="true"
-                              [yearNavigator]="true"
-                              formControlName="birthday"></p-calendar>
+                                && item['controls'].birthday.touched)}">
+                    <p-calendar class="input-block" formControlName="birthday" [monthNavigator]="true" [yearNavigator]="true"
+                                yearRange="{{ yearRange }}"></p-calendar>
 
-                  <div *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.touched">
+                    <div *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.touched">
                       <span
                         *ngIf="!item['controls'].birthday.valid && item['controls'].birthday.errors.required"
                         class="help-block text-danger">
                         Birthday is required
                       </span>
+                    </div>
                   </div>
+
                 </div>
               </div>
-              <div class="col-sm-1">
-                <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == 0"
-                        type="button"
-                        class="btn btn-default"
-                        (click)="remove(i, item.controls)">
-                  <i class="fa fa-trash-o"></i>
-                </button>
-              </div>
+            </div>
+            <div class="action">
+              <button *ngIf="this.form.value.items.length > 1 && item['controls'].parent_id.value == 0"
+                      type="button"
+                      class="btn btn-default"
+                      (click)="remove(i, item.controls)">
+                <i class="fa fa-trash-o"></i>
+              </button>
             </div>
           </div>
-
-        </div>
-      </div>
-      <div class="mb10">
-        <button type="button" class="btn btn-outline-default btn-min" (click)="add(true)">
+        </ng-container>
+      </ng-container>
+      <div class="form-group">
+        <button type="button" class="btn btn-outline-default" (click)="add(true)">
           <i class="fa fa-plus"></i> Add Account
         </button>
-        <div class="pull-right pr20">
-          <div>
-            {{ subAccountCount }} new accounts x ${{ subPrice }} = ${{ subAmount }}
-          </div>
-        </div>
       </div>
-
-      <div> *User needs to be at least 13 years old</div>
-
-
-      <div class="panel panel-default mb0">
-        <div class="row row-12 panel-body text-right">
-          <div class="col-sm-10" >
-            <div>New accounts:</div>
-          </div>
-          <div class="col-sm-2">
-            <div>${{ subAmount }}</div>
-          </div>
-
-          <div class="col-sm-10">
-            <div>Current accounts:</div>
-          </div>
-          <div class="col-sm-2">
-            <div>${{ subscription?.amount | number }}</div>
-          </div>
-
-          <div class="col-sm-10">
-            <div class="bold">Total:</div>
-          </div>
-          <div class="col-sm-2 bold">
-            <div>${{ (subscription?.amount | number) + accountAmount }}</div>
-          </div>
-        </div>
+      <p class="text-muted">*User needs to be at least 13 years old.</p>
+      <div class="ma-account-list-total">
+        <dl class="d-flex">
+          <dt class="flex-1">Additional accounts</dt>
+          <dd>{{ subAccountCount }}</dd>
+        </dl>
+        <dl class="d-flex">
+          <dt class="flex-1">Account cost</dt>
+          <dd>${{ subPrice | number }}/account</dd>
+        </dl>
+        <dl class="d-flex">
+          <dt class="flex-1 text-bold">Total cost</dt>
+          <dd>${{ subAmount }}</dd>
+        </dl>
       </div>
     </bs-modal-body>
 
     <bs-modal-footer>
       <div>
         <button type="button" class="btn btn-outline-default btn-min"
-                (click)="close()">Cancel</button>
+                (click)="close()">Cancel
+        </button>
 
         <button [disabled]="!validItems()" type="submit" class="btn btn-outline-primary btn-min pull-right"
                 (click)="continue()">Continue

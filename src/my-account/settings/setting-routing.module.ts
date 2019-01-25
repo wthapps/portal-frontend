@@ -1,13 +1,14 @@
+import { DeleteAccountComponent } from '@account/settings/delete-account/delete-account.component';
+import { SettingsPasswordComponent } from '@account/settings/password/password.component';
+import { MyStorageComponent } from '@account/settings/storage/storage.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AuthGuard } from '@wth/shared/services';
-import { MySettingComponent } from './setting.component';
-import { MyProfileComponent } from './profile/profile.component';
 import { MyAccountComponent } from './account/account.component';
 import { MyPreferencesComponent } from './preferences/preferences.component';
-import { SettingsPasswordComponent } from '@account/settings/password/password.component';
-import { DeleteAccountComponent } from '@account/settings/delete-account/delete-account.component';
+import { MyProfileComponent } from './profile/profile.component';
+import { MySettingComponent } from './setting.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { DeleteAccountComponent } from '@account/settings/delete-account/delete-
         component: MySettingComponent,
         canActivate: [AuthGuard],
         children: [
+          { path: 'storage', component: MyStorageComponent },
           { path: 'preferences', component: MyPreferencesComponent },
           { path: 'account', component: MyAccountComponent },
           { path: 'profile', component: MyProfileComponent },
@@ -30,4 +32,5 @@ import { DeleteAccountComponent } from '@account/settings/delete-account/delete-
   ],
   exports: [RouterModule]
 })
-export class MySettingRoutingModule {}
+export class MySettingRoutingModule {
+}

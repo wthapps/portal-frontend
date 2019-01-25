@@ -12,7 +12,6 @@ import { LoadingService } from '@wth/shared/shared/components/loading/loading.se
 })
 
 export class MyBillingHistoryComponent implements OnInit {
-  pageTitle: string = 'Billing History';
   transactions: any[] = [];
 
   constructor(private userService: UserService,

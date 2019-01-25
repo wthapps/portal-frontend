@@ -1,13 +1,7 @@
-import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Output, Input, ViewChild, OnInit, EventEmitter } from '@angular/core';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
-
-declare var _: any;
-declare var $: any;
-
 
 @Component({
   moduleId: module.id,
@@ -33,7 +27,7 @@ export class AccountDeleteModalComponent implements OnInit {
   * @data: array of item
   * @mode: add or edit or view. default is add
   * */
-  open(options: any = {data: undefined, mode: 'edit'}) {
+  open(options: any = { data: undefined, mode: 'edit' }) {
     this.item = options.data;
     this.options = options;
     this.modal.open(options).then();
@@ -47,7 +41,7 @@ export class AccountDeleteModalComponent implements OnInit {
     this.commonEventService.broadcast({
       channel: 'my_account',
       action: 'my_account:subscription:update',
-      payload: {mode: 'delete', accounts: this.item}
+      payload: { mode: 'delete', accounts: this.item }
     });
     this.modal.close().then();
   }

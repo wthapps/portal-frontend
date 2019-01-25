@@ -1,12 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-
-import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable } from 'rxjs/Observable';
 import { ApiBaseService } from '@wth/shared/services';
-import { TaggingElComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-el.component';
-import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 
 
@@ -37,32 +31,32 @@ export class MediaCreateModalComponent implements OnInit {
   constructor(private apiBaseService: ApiBaseService,
               private fb: FormBuilder,
               private mediaCreateModalService: MediaCreateModalService
-            ) {
+  ) {
   }
 
   ngOnInit() {
     this.form = this.fb.group({
       // 'name': "",
-      name: ["", Validators.compose([Validators.required])],
-      'description': ""
+      name: ['', Validators.compose([Validators.required])],
+      'description': ''
     });
     this.name = this.form.controls['name'];
     this.description = this.form.controls['description'];
 
     this.mediaCreateModalService.onOpen$.subscribe(e => {
-      this.open(e)
-    })
+      this.open(e);
+    });
     this.mediaCreateModalService.onClose$.subscribe(e => {
       this.close(e);
       this.name.setValue('');
       this.description.setValue('');
-    })
+    });
   }
 
   open(options: any = {}) {
     this.modal.open().then();
-    if(options) {
-      ({title: this.title, namePlaceholder: this.namePlaceholder, selectedObjects: this.arrayItems} = options);
+    if (options) {
+      ({ title: this.title, namePlaceholder: this.namePlaceholder, selectedObjects: this.arrayItems } = options);
     }
     this.form.setControl('edit', this.name);
   }
@@ -76,11 +70,11 @@ export class MediaCreateModalComponent implements OnInit {
     //   this.modal.close().then();
     //   this.mediaCreateModalService.created.next(res.data);
     // });
-    this.mediaCreateModalService.create.next({parents: [e], children: this.arrayItems});
+    this.mediaCreateModalService.create.next({ parents: [e], children: this.arrayItems });
   }
 
   onAction(action: string, data: any) {
-    let options = {action: action, data: data};
+    let options = { action: action, data: data };
     this.event.emit(options);
   }
 

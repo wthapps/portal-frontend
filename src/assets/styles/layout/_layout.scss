@@ -2,16 +2,16 @@
   overflow: hidden;
   @include flexbox;
   @include flex-direction(column);
+  min-height: 100vh;
 }
 
 .main {
-  padding-top: $header-height;
-  min-height: 100vh;
   @include flex(1);
   @include flex-basis(auto);
   position: relative; //for child
   @include flexbox;
   @include flex-direction(column);
+  padding-top: $header-height;
   .main-page {
     @include flex(1);
     @include flex-basis(auto);
@@ -21,6 +21,11 @@
 
 .main-page-body {
   position: relative;
+  height: 100%;
+  @include flexbox;
+  @include flex-direction(column);
+  @include flex(1);
+  @include flex-basis(auto);
   @media (min-width: $screen-md-min) {
     margin-left: $main-page-left;
   }
@@ -78,6 +83,13 @@
     height: $page-body-control-sub-height;
   }
   .page-body-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+
     &.has-page-body-sidebar {
       left: $main-page-left-sm;
       @media (min-width: $screen-md-min) {

@@ -21,6 +21,7 @@
 @import 'partials/colors';
 @import 'partials/grid';
 @import 'partials/flex';
+@import 'partials/card';
 @import 'partials/typography';
 @import 'partials/forms';
 @import 'partials/buttons';
@@ -43,6 +44,7 @@
 @import 'partials/accordions';
 @import 'partials/display';
 @import 'partials/progress-bars';
+@import 'partials/w-uploader';
 //
 // =Third parties
 // --------------------------------------------------
@@ -57,7 +59,6 @@
 //
 // =modules
 // --------------------------------------------------
-@import 'modules/card';
 @import 'modules/list';
 @import 'modules/breadcrumb';
 @import 'modules/nav-menuleft';

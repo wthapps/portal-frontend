@@ -1,0 +1,46 @@
+/*
+@mixin card() {
+  position: relative;
+  background: #FFFFFF;
+  border: 2px solid #D7D7D7;
+  @include box-shadow(0 2px 4px 0 rgba(164, 164, 164, 0.40));
+}
+
+@mixin box-content() {
+  position: relative;
+  border: 1px solid #D8D8D8;
+  border-radius: 4px;
+  padding: 15px;
+  @include box-shadow(0 2px 4px 0 rgba(164, 164, 164, 0.40));
+}
+
+.card {
+  @include card;
+}
+
+.box-content {
+  @include box-content;
+}
+*/
+
+.card {
+  position: relative;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, .125);
+  border-radius: .25rem;
+  & + .card {
+    margin-top: 20px;
+  }
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.card-line {
+  clear: both;
+  margin: 10px -10px;
+}

@@ -7,7 +7,6 @@ import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { ApiBaseService, StorageService, UrlService, WMessageService, CommonEventService } from '@shared/services';
-import { CONVERSATION_SELECT } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { Conversation } from '@chat/shared/models/conversation.model';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
@@ -15,6 +14,9 @@ import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { ModalService } from '@shared/components/modal/modal-service';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
 import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
+import { ChatConversationService } from '../services/chat-conversation.service';
+import { Store } from '@ngrx/store';
+import { STORE_CONVERSATIONS } from '@shared/constant';
 
 
 @Component({
@@ -33,6 +35,8 @@ export class ZChatSidebarComponent implements OnInit {
   favouriteContacts$: Observable<any>;
   historyContacts$: Observable<any>;
   recentContacts$: Observable<any>;
+  contactItem$: Observable<any>;
+  conversations$: any;
   contactSelect$: Observable<any>;
   historyShow: any = true;
   isRedirect: boolean;
@@ -45,9 +49,11 @@ export class ZChatSidebarComponent implements OnInit {
 
   constructor(
     public chatService: ChatService,
+    public chatConversationService: ChatConversationService,
     private router: Router,
     private urlService: UrlService,
     private storageService: StorageService,
+    private store: Store<any>,
     private renderer: Renderer2,
     private commonEventService: CommonEventService,
     private addContactService: ZChatShareAddContactService,
@@ -59,34 +65,32 @@ export class ZChatSidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.recentContacts$ = this.chatService.getRecentConversations();
-    this.favouriteContacts$ = this.chatService.getFavouriteConversations();
-    this.historyContacts$ = this.chatService.getHistoryConversations();
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
     this.contactSelect$ = this.chatService.getContactSelectAsync();
+    this.conversations$ = this.store.select(STORE_CONVERSATIONS);
   }
 
   doFilter(param) {
     if (param === 'unread') {
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][gt][notification_count]=0' })
-        .subscribe((res: any) => {
+      this.chatConversationService.apiGetConversations({ 'filter[where][gt][notification_count]': 0})
+        .then((res: any) => {
           this.filter = 'Unread';
         });
     }
     if (param === 'all') {
-      this.chatService.getConversationsAsync({ forceFromApi: true }).subscribe((res: any) => {
+      this.chatConversationService.apiGetConversations().then((res: any) => {
         this.filter = 'All';
       });
     }
     if (param === 'sent') {
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=sent_request' })
-        .subscribe((res: any) => {
+      this.chatConversationService.apiGetConversations({ 'filter[where][status]': 'sent_request' })
+        .then((res: any) => {
           this.filter = 'Sent Request';
         });
     }
     if (param === 'pending') {
-      this.chatService.getConversationsAsync({ forceFromApi: true, url: 'zone/chat/contacts?filter[where][status]=pending' })
-        .subscribe((res: any) => {
+      this.chatConversationService.apiGetConversations({ 'filter[where][status]': 'pending' })
+        .then((res: any) => {
           this.filter = 'Pending Request';
         });
     }
@@ -97,19 +101,34 @@ export class ZChatSidebarComponent implements OnInit {
     event.stopPropagation();
     $('#chat-message-text').focus();
     if (contact.deleted) {
-      this.chatService.updateGroupUser(contact.group_id, { deleted: false }).then(res => {
-        this.chatService.getConversationsAsync({ forceFromApi: true }).toPromise().then(res => {
-          this.router.navigate(['/conversations', contact.group_id]);
+      this.chatConversationService.apiUpdateGroupUser(contact.group_id, { deleted: false, notification_count: 0 }).then(res => {
+        this.chatConversationService.apiGetConversations().then(r2 => {
+          this.chatConversationService.navigateToConversation(contact.group_id);
         })
       });
     } else {
-      this.router.navigate(['/conversations', contact.group_id]);
-      this.chatService.selectContact(contact);
+      const last = contact.notification_count;
+      this.chatConversationService.apiUpdateGroupUser(contact.group_id, { notification_count: 0 }).then(res => {
+        this.commonEventService.broadcast({
+          channel: 'ChatNotificationComponent',
+          action: 'addNotification',
+          payload: { notification_count: 0, last_notification_count: last}
+        });
+        this.chatConversationService.navigateToConversation(contact.group_id);
+      })
     }
+    this.commonEventService.broadcast({
+      channel: 'MessageEditorComponent',
+      action: 'resetEditor'
+    })
   }
 
   onAddContact() {
-    this.addContactService.open('addContact');
+    this.commonEventService.broadcast({
+        channel: 'ZChatShareAddContactComponent',
+        action: 'open',
+        payload: {option: 'addChat'}
+    });
   }
 
   openContactModal() {
@@ -139,7 +158,7 @@ export class ZChatSidebarComponent implements OnInit {
    */
 
   search(keyword: string) {
-    if (keyword == '') {
+    if (keyword === '') {
       this.clearSearch({});
       return;
     }

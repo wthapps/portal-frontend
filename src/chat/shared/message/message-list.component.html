@@ -20,7 +20,7 @@
       <box-loading class="message-item-dv"></box-loading>
     </ng-template>
   </div>
-  <z-chat-share-item-request *ngIf="!contactItem.active && currentUser?.uuid !== currentMessages[0]?.display?.uuid" [message]="currentMessages"></z-chat-share-item-request>
+  <!-- <z-chat-share-item-request *ngIf="!contactItem.active && currentMessages && currentUser?.uuid !== currentMessages[0]?.display?.uuid" [message]="currentMessages"></z-chat-share-item-request> -->
 </ng-container>
 <z-chat-share-request-contact #request></z-chat-share-request-contact>
 <lock-upload-modal></lock-upload-modal>

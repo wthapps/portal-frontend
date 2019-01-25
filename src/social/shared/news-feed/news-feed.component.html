@@ -110,7 +110,7 @@
                 </small>
               </div>
               <div class="media-right">
-                <button class="btn btn-sm btn-outline-default" type="button" (click)="toogleFollow(channel)">{{channel.subscription == null? 'Follow': 'Following'}}</button>
+                <button class="btn btn-sm btn-outline-default" type="button" (click)="toggleFollow(channel)">{{channel.subscription == null? 'Follow': 'Following'}}</button>
               </div>
             </div>
           </ng-container>
@@ -189,7 +189,7 @@
                 </div>
                 <div class="media-right">
                   <!-- <button class="btn btn-sm btn-outline-default" type="button">Following</button> -->
-                  <button class="btn btn-sm btn-outline-default" type="button" (click)="toogleFollow(channel)">{{channel.subscription == null? 'Follow': 'Following'}}</button>
+                  <button class="btn btn-sm btn-outline-default" type="button" (click)="toggleFollow(channel)">{{channel.subscription == null? 'Follow': 'Following'}}</button>
                 </div>
               </div>
             </ng-container>

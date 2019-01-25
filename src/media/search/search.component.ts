@@ -14,7 +14,7 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, DateService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
@@ -89,6 +89,7 @@ export class ZMediaSearchComponent implements
     public resolver: ComponentFactoryResolver,
     public confirmService: WthConfirmService,
     public localStorageService: LocalStorageService,
+    public dateService: DateService,
     // public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public route: ActivatedRoute,
@@ -99,7 +100,7 @@ export class ZMediaSearchComponent implements
   onAddedToPlaylist: (data: any) => void;
 
   ngOnInit() {
-    this.route.queryParams.subscribe(p => {
+    this.route.queryParams.subscribe((p: any) => {
       this.loadObjects(p);
     });
     this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
@@ -160,6 +161,12 @@ export class ZMediaSearchComponent implements
   }
 
   loadObjects(input: any) {
+    let new_input = { ...input};
+    if(input.searchFrom || input.searchTo) {
+      new_input.searchFrom = new Date(input.searchFrom)
+      new_input.searchTo = new Date(input.searchTo)
+    }
+
     this.apiBaseService.get(`media/search`, input).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
@@ -174,10 +181,12 @@ export class ZMediaSearchComponent implements
   loadingEnd: (input?: any) => void;
 
   viewDetail(input?: any) {
-    if (this.selectedObjects[0].model === 'Media::Photo') {
+    if (this.selectedObjects[0].object_type === 'Media::Photo') {
       this.router.navigate([`photos/`, this.selectedObjects[0].uuid]);
-    } else {
+    } else if (this.selectedObjects[0].object_type === 'Media::Video') {
       this.router.navigate([`videos/`, this.selectedObjects[0].uuid]);
+    } else {
+      this.router.navigate([`albums/`, this.selectedObjects[0].uuid]);
     }
   }
 
@@ -549,211 +558,4 @@ export class ZMediaSearchComponent implements
       }
     };
   }
-
-  // getSubMenuActions() {
-  //   return {
-  //     // active_drop: true,
-  //     preview: {
-  //       active: true,
-  //       permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
-  //       inDropDown: false, // Outside dropdown list
-  //       action: this.viewDetail.bind(this),
-  //       class: 'btn btn-default',
-  //       liclass: 'hidden-xs',
-  //       tooltip: this.tooltip.preview,
-  //       tooltipPosition: 'bottom',
-  //       iconClass: 'fa fa-eye'
-  //     },
-  //     share: {
-  //       active: true,
-  //       permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
-  //       inDropDown: false, // Outside dropdown list
-  //       action: this.openModalShare.bind(this),
-  //       class: 'btn btn-default',
-  //       liclass: 'hidden-xs',
-  //       tooltip: this.tooltip.share,
-  //       tooltipPosition: 'bottom',
-  //       iconClass: 'fa fa-share-alt'
-  //     },
-  //     shareMobile: {
-  //       active: true,
-  //       permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
-  //       inDropDown: true, // Inside dropdown list
-  //       action: this.openModalShare.bind(this),
-  //       class: '',
-  //       liclass: 'visible-xs-block',
-  //       tooltip: this.tooltip.share,
-  //       title: 'Share',
-  //       tooltipPosition: 'bottom',
-  //       iconClass: 'fa fa-share-alt'
-  //     },
-  //     favorite: {
-  //       active: true,
-  //       permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
-  //       inDropDown: false, // Outside dropdown list
-  //       action: this.toggleFavorite.bind(this),
-  //       class: 'btn btn-default',
-  //       liclass: '',
-  //       tooltip: this.tooltip.addToFavorites,
-  //       tooltipPosition: 'bottom',
-  //       iconClass: 'fa fa-star'
-  //     },
-  //     edit: {
-  //       active: true,
-  //       permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
-  //       inDropDown: true, // Outside dropdown list
-  //       action: this.openModalAddToPlaylistCustom.bind(this),
-  //       class: '',
-  //       liclass: '',
-  //       title: 'Add To Playlist',
-  //       tooltip: this.tooltip.add,
-  //       tooltipPosition: 'bottom',
-  //       iconClass: 'fa fa-edit'
-  //     },
-  //     download: {
-  //       active: true,
-  //       permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
-  //       inDropDown: true, // Outside dropdown list
-  //       action: this.downloadMediaCustom.bind(this),
-  //       class: '',
-  //       liclass: '',
-  //       title: 'Download',
-  //       tooltip: this.tooltip.info,
-  //       tooltipPosition: 'bottom',
-  //       iconClass: 'fa fa-download'
-  //     },
-  //     remove: {
-  //       active: true,
-  //       permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
-  //       inDropDown: true, // Outside dropdown list
-  //       action: () => {
-  //         this.selectedObjects = this.selectedObjects.map(el => { el._destroy = true; return { id: el.id, model: el.model, _destroy: el._destroy } });
-  //         this.apiBaseService.put(`media/sharings/${this.object.id}/objects`, { objects: this.selectedObjects }).subscribe(res => {
-  //           this.selectedObjects = [];
-  //           this.hasSelectedObjects = false;
-  //           this.selectedObjectsChanged(this.selectedObjects);
-  //           this.loadObjects(this.object.uuid);
-  //         });
-  //       },
-  //       class: '',
-  //       liclass: '',
-  //       title: 'Remove from share',
-  //       tooltip: this.tooltip.remvoe,
-  //       tooltipPosition: 'bottom',
-  //       iconClass: 'fa fa-times'
-  //     }
-  //   }
-  // }
-
-
-// implements OnInit,
-// MediaBasicListMixin {
-//   objects: any;
-//   links: any;
-//   sorting: any;
-//   loading$: Observable<any>;
-//   nextLink$: Observable<any>;
-//   tooltip: any = Constants.tooltip;
-//   type = 'all';
-//   path = 'media/search';
-//   returnUrl = '';
-//   query = null;
-
-//   constructor(
-//     public apiBaseService: ApiBaseService,
-//     public router: Router,
-//     public sharingModalService: SharingModalService,
-//     public toastsService: ToastsService,
-//     public confirmService: WthConfirmService,
-//     public objectListService: WObjectListService,
-//     public locationCustomService: LocationCustomService,
-//     public mediaCreateModalService: MediaCreateModalService,
-//     public resolver: ComponentFactoryResolver
-//   ) {
-//   }
-
-//   ngOnInit() {
-//     this.loadObjects();
-//   }
-
-//   loadObjects(input?: any) {
-//     this.apiBaseService.get('media/search').subscribe(res => {
-//       this.objects = [...this.objects, ...res.data];
-//       this.links = res.meta.links;
-//       this.loadingEnd();
-//     })
-//   }
-
-//   loadingEnd:() => void;
-
-//   doListEvent(event: any) {
-//     switch (event.action) {
-//       case 'viewDetails':
-//         // this.viewDetail(event.payload.selectedObject.uuid);
-//         break;
-//       case 'favorite':
-//         // this.toggleFavorite(event.payload);
-//         break;
-//       case 'getMore':
-//         // this.loadMoreObjects();
-//         break;
-//       case 'openModal':
-//         if (event.payload.modalName == "editNameModal") {
-//           // this.openEditModal(event.payload.selectedObject)
-//         };
-//         if (event.payload.modalName == "createAlbumModal") {
-//           // this.openCreateAlbumModal([]);
-//         };
-//       case 'sort':
-//         this.sorting = event.payload.queryParams;
-//         this.loadObjects();
-//         break;
-//       case 'clickOnItem':
-//       case 'clickOnCircle':
-//         this.selectedObjectsChanged();
-//         break;
-//     }
-//   }
-//   selectedObjectsChanged:(objectsChanged?: any) => void;
-
-//   preview(payload: any) {
-//     const objects = payload.selectedObjects;
-//     const ids = _.map(objects, 'id');
-
-//     this.router.navigate([`photos`, objects[0].id, {ids: ids, mode: 0}], {queryParams: {returnUrl: this.router.url}});
-//   }
-
-//   viewDetails(payload: any) {
-//     const object = payload.selectedObject;
-//     if (object.object_type === 'album') {
-//       this.router.navigate(['albums', object.uuid], {queryParams: {returnUrl: this.router.url}});
-//     } else {
-//       this.router.navigate([`photos`,
-//         object.id, {ids: [object.id], mode: 0}], {queryParams: {returnUrl: this.router.url}});
-//     }
-//   }
-
-//   validateObjects(objects: Array<any>): boolean {
-//     let result = true;
-//     if (!!objects.length === false) {
-//       return false;
-//     }
-//     if (objects.length === 1) {
-//       if (objects[0].object_type === 'sharing') {
-//         return false;
-//       }
-//     }
-
-//     if (objects.length > 1) {
-//       objects.forEach(object => {
-//         if (object.object_type === 'album') {
-//           result = false;
-//           return;
-//         }
-//       });
-//     }
-
-//     return result;
-//   }
-
 }

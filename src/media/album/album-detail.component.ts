@@ -217,9 +217,8 @@ export class ZMediaAlbumDetailComponent
     this.mediaSelectionService.open({
       hiddenTabs: ['videos', 'playlists'],
       selectedTab: 'photos',
-      filter: 'photo',
+      filter: 'all',
       allowCancelUpload: true,
-      maxNumberOfFiles: 4,
       allowedFileTypes: ['image/*']
     });
     if (this.subSelect) { this.subSelect.unsubscribe(); }
@@ -275,27 +274,6 @@ export class ZMediaAlbumDetailComponent
     }
   }
 
-  onListChanges(e: any) {
-    switch (e.action) {
-      case 'favorite':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
-        break;
-      case 'selectedObjectsChanged':
-        if (this.object.sharing_type === 'Media::Playlist' || this.object.sharing_type === 'Media::Video') {
-          this.subMenuActions.edit.title = 'Add to Playlist';
-          this.subMenuActions.remove.title = 'Remove from Playlist';
-        } else {
-          this.subMenuActions.edit.title = 'Add to Album';
-          this.subMenuActions.remove.title = 'Remove from Album';
-        }
-        this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
-        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
-        break;
-      default:
-        break;
-    }
-  }
-
   loadObjects(input: any, opts: any = {}) {
     this.loading = true;
     opts = { ...opts, model: 'Media::Album' };
@@ -344,9 +322,11 @@ export class ZMediaAlbumDetailComponent
   loadingEnd: () => void;
 
   viewDetail() {
-    const data: any = { returnUrls: [...this.returnUrls, `/albums/${this.object.uuid}`] , preview: true, parent_id: this.object.id };
+    const data: any = { returnUrls: [...this.returnUrls, `/albums/${this.object.uuid}`], model: this.selectedObjects[0].object_type,
+     preview: true, parent_id: this.object.id };
     if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
-    this.router.navigate([`/photos/${this.selectedObjects[0].uuid}`], { queryParams: data });
+    this.router.navigate([`/photos/${this.selectedObjects[0].uuid}`],
+     { queryParams: data });
   }
 
   doNoData() {
@@ -365,6 +345,28 @@ export class ZMediaAlbumDetailComponent
   }
 
   selectedObjectsChanged: (objectsChanged?: any) => void;
+
+  onListChanges(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      case 'selectedObjectsChanged':
+        if (this.object.sharing_type === 'Media::Playlist' || this.object.sharing_type === 'Media::Video') {
+          this.subMenuActions.edit.title = 'Add to Playlist';
+          this.subMenuActions.remove.title = 'Remove from Playlist';
+        } else {
+          this.subMenuActions.edit.title = 'Add to Album';
+          this.subMenuActions.remove.title = 'Remove from Album';
+        }
+        this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
+        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
+        if(this.selectedObjects.length > 0) this.showDetailsInfo = false;
+        break;
+      default:
+        break;
+    }
+  }
 
   loadModalComponent: (component: any) => void;
   toggleInfo: () => void;
@@ -619,14 +621,14 @@ export class ZMediaAlbumDetailComponent
       info: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
-        inDropDown: true, // Outside dropdown list
+        inDropDown: false, // Outside dropdown list
         action: () => {
           this.toggleInfo();
           if (this.object.sharing_object) {
             this.getSharingParentInfo(this.object.sharing_object.sharing_id);
           }
         },
-        class: '',
+        class: 'btn btn-default',
         liclass: '',
         title: 'View Information',
         tooltip: this.tooltip.info,

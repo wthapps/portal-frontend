@@ -1,13 +1,11 @@
-import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter, ViewContainerRef, ComponentFactoryResolver, OnInit } from '@angular/core';
+import { Component, ViewChild, Output, EventEmitter, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
 import { PlaylistCreateModalComponent } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.component';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-declare var $: any;
-declare var _: any;
 
 @Mixins([LoadModalAble])
 @Component({
@@ -45,7 +43,7 @@ export class MediaAddModalComponent implements OnInit {
   ngOnInit() {
     this.mediaAddModalService.onOpen$.subscribe(e => {
       this.open(e);
-    })
+    });
   }
 
   close() {
@@ -53,15 +51,15 @@ export class MediaAddModalComponent implements OnInit {
   }
 
   open(options?: any) {
-    if(options) {
-     ({title: this.title, buttonTitle: this.buttonTitle, unit: this.unit, selectedObjects: this.selectedObjects} = options);
+    if (options) {
+      ({ title: this.title, buttonTitle: this.buttonTitle, unit: this.unit, selectedObjects: this.selectedObjects } = options);
     }
-    if(options && options.getParents) {
+    if (options && options.getParents) {
       this.loading = true;
       options.getParents.subscribe(res => {
         this.loading = false;
         this.parents = res.data;
-      })
+      });
     }
     this.modal.open().then();
   }
@@ -76,6 +74,6 @@ export class MediaAddModalComponent implements OnInit {
 
   onCreateNew() {
     this.modal.close().then();
-    this.mediaAddModalService.openCreateNew.next()
+    this.mediaAddModalService.openCreateNew.next();
   }
 }

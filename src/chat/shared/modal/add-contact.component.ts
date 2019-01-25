@@ -7,10 +7,12 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { Constants } from '@shared/constant';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, ChatCommonService, CommonEventHandler, CommonEventService } from '@shared/services';
 import { ChatService } from '../services/chat.service';
 import { ConversationService } from '@chat/conversation/conversation.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
+import { ChatContactService } from '../services/chat-contact.service';
+import { ChatConversationService } from '../services/chat-conversation.service';
 
 
 declare var _: any;
@@ -21,7 +23,7 @@ declare var _: any;
   styleUrls: ['contact-selection.component.scss']
 })
 
-export class ZChatShareAddContactComponent implements OnInit {
+export class ZChatShareAddContactComponent extends CommonEventHandler implements OnInit {
 
   @ViewChild('modal') modal: BsModalComponent;
   contacts: any;
@@ -32,6 +34,7 @@ export class ZChatShareAddContactComponent implements OnInit {
   loading = false;
   selectedUsers: Array<any> = [];
   suggestedUsers: Array<any> = [];
+  channel = 'ZChatShareAddContactComponent';
 
   users: any = [];
   search$ = new Subject<string>();
@@ -42,12 +45,14 @@ export class ZChatShareAddContactComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
+    private chatContactService: ChatContactService,
     private apiBaseService: ApiBaseService,
-    private conversationService: ConversationService,
-    private router: Router,
-    private addContactService: ZChatShareAddContactService
+    private chatConversationService: ChatConversationService,
+    private chatCommonService: ChatCommonService,
+    public commonEventService: CommonEventService,
+    private router: Router
   ) {
-
+    super(commonEventService);
   }
 
   ngOnInit() {
@@ -63,61 +68,46 @@ export class ZChatShareAddContactComponent implements OnInit {
           console.log('error', error);
         }
       );
-
-    this.addContactService.open$.subscribe((res: any) => {
-      if (res) {
-        this.type = res;
-        this.open();
-      } else {
-        this.modal.close();
-      }
-    });
   }
 
   add() {
-    if (this.type === 'addContact') {
+    if (this.type === 'addChat') {
       this.addContact();
     }
     if (this.type === 'addMember') {
       this.addMember();
     }
-    if (this.type === 'shareContact') {
+    if (this.type === 'shareContacts') {
       this.shareContact();
     }
   }
 
-  open() {
-    this.title = this.type === 'addContact' ? 'New Chat' :
-    this.type === 'addMember' ? 'Add Members' : 'Choose Contact';
+  open(data: any) {
+    const options: any = {
+      addMember: {
+        title: 'Add Members'
+      },
+      addChat: {
+        title: 'New Chat'
+      },
+      shareContacts: {
+        title: 'Choose Contact'
+      },
+    }
+    Object.keys(options).forEach(key => {
+      if(key == data.option) {
+        this.title = options[key].title;
+        this.type = key;
+      }
+    });
     this.loading = true;
     this.resetData();
     this.modal.open().then();
 
-    // this.chatService.getUserContacts().toPromise().then((res: any) => {
-    this.apiBaseService.get(`account/get_my_contacts_accounts?size=1000`)
-    .toPromise().then(res => {
-
+    this.apiBaseService.get(`account/get_my_contacts_accounts?size=1000`).subscribe(res => {
       this.contacts = res.data;
       this.users = res.data;
       this.loading = false;
-      // if (this.title == 'Add To Conversation') {
-      //   this.conversationSelect = this.chatService.getContactSelect().value;
-      //   if (this.conversationSelect && this.conversationSelect.group_json.users_json) {
-      //
-      //     this.contacts = _.map(this.contacts, (contact: any) => {
-      //       for (let user of this.conversationSelect.group_json.users_json) {
-      //         contact.checked = false;
-      //         contact.inConversation = false;
-      //         if (contact.id === user.id) {
-      //           contact.checked = true;
-      //           contact.inConversation = true;
-      //           break;
-      //         }
-      //       }
-      //       return contact;
-      //     });
-      //   }
-      // }
     });
   }
 
@@ -127,15 +117,21 @@ export class ZChatShareAddContactComponent implements OnInit {
   }
 
   addContact() {
-    this.chatService.chatContactService.addContact(this.selectedUsers.map(user => user.id));
-    // this.chatService.createConversation(this.selectedUsers);
+    this.chatContactService.addContact(this.selectedUsers.map(user => user.id)).then(res => {
+      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
+        this.chatConversationService.moveToFirst(res2.data);
+      });
+      this.chatConversationService.navigateToConversation(res.data.group_id);
+    });
     this.close();
   }
 
   addMember() {
-    // const ids = this.selectedUsers.map(user => user.id);
-    // this.chatService.addMembersGroup(ids);
-    this.addContactService.addMembers(this.selectedUsers);
+    this.commonEventService.broadcast({
+      channel: 'ChatConversationService',
+      action: 'apiAddMembers',
+      payload: this.selectedUsers
+    })
     this.modal.close();
   }
 

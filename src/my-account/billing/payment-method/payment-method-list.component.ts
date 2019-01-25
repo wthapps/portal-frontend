@@ -55,7 +55,7 @@ export class PaymentMethodListComponent implements OnInit, AfterViewInit {
         } else if (mode === 'add') {
           pm = response.data;
         }
-        this.addModal.open({data: pm, mode: mode});
+        this.addModal.open({ data: pm, mode: mode });
       });
   }
 
@@ -83,7 +83,7 @@ export class PaymentMethodListComponent implements OnInit, AfterViewInit {
   }
 
   update(paymentMethod: any): void {
-    this.apiBaseService.patch(`account/payment_methods/${paymentMethod.uuid}`, {paymentMethod: paymentMethod}).subscribe(
+    this.apiBaseService.patch(`account/payment_methods/${paymentMethod.uuid}`, { paymentMethod: paymentMethod }).subscribe(
       response => {
         this.toastsService.success('You updated payment method successfully');
         this.paymentMethod = response.data;
@@ -107,7 +107,7 @@ export class PaymentMethodListComponent implements OnInit, AfterViewInit {
       header: 'Set Default Payment Method',
       accept: () => {
         this.apiBaseService.patch(`account/payment_methods/${paymentMethod.uuid}`, {
-          paymentMethod: {uuid: paymentMethod.uuid, default: !paymentMethod.default}
+          paymentMethod: { uuid: paymentMethod.uuid, default: !paymentMethod.default }
         }).subscribe(
           response => {
             radio.target.checked = true;

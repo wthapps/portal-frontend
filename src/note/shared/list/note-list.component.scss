@@ -67,10 +67,11 @@ $note-action: 170px;
 .component-listbox-grid {
   display: block;
   margin: 0;
-  @include clearfix;
   overflow: initial;
+  background-color: #f6f6f6;
+  @include clearfix;
   @media (min-width: $screen-sm-min) {
-    margin: 20px;
+    padding: 20px;
   }
   .component-listbox-header {
     display: none !important;
@@ -103,6 +104,9 @@ $note-action: 170px;
         overflow: hidden;
         max-height: 36px;
         display: block;
+        white-space: nowrap;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
       }
     }
     .component-listbox-description {

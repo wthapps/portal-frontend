@@ -2,21 +2,22 @@ import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild, View
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable ,  Subject ,  Subscription ,  of, fromEvent, merge } from 'rxjs';
+import { Observable ,  Subject ,  Subscription ,  of, fromEvent, merge, interval } from 'rxjs';
 import {
   takeUntil,
   switchMap,
-  combineLatest,
   filter,
   mergeMap,
   map,
   debounceTime,
-  tap
+  tap,
+  distinctUntilChanged,
+  skip,
+  withLatestFrom
 } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../shared/reducers/index';
-import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
@@ -26,7 +27,7 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
-import { CommonEventService } from '@wth/shared/services';
+import { CommonEventService, UserService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
 import { noteConstants } from '@notes/shared/config/constants';
 import { Counter } from '@wth/core/quill/modules/counter';
@@ -40,6 +41,10 @@ import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit.component';
 import { BlackListPolicy } from '@shared/policies/black-list-policy';
 import { SizePolicy } from '@shared/policies/size-policy';
+import { NoteChannelService } from '@shared/channels/note-channel.service';
+import { User } from '@shared/shared/models/user.model';
+import { MessageService } from 'primeng/api';
+import { ZNoteSharedSettingsService, NoteSetting } from '@notes/shared/services/settings.service';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -64,6 +69,16 @@ export class ZNoteDetailEditComponent
   noteChanged = false;
   customEditor: any;
   readonly tooltip: any = Constants.tooltip;
+  readonly EDIT_STATUS = {
+    idle: 1,
+    editing: 2,
+    saved: 3,
+    reloading: 4
+  };
+
+  readonly FONTS = noteConstants.FONTS;
+  readonly FONT_SIZES = noteConstants.FONT_SIZES;
+  readonly HEADINGS = noteConstants.HEADINGS;
 
   showFormatGroupMobile = false;
 
@@ -77,6 +92,10 @@ export class ZNoteDetailEditComponent
   tags: AbstractControl;
   attachments: AbstractControl;
   files: Array<any> = new Array<any>();
+  editStatus = this.EDIT_STATUS.idle;
+  visibleTab: 'comment' | 'attachment' | undefined = undefined;
+  disabled = false;
+  noSave = false;
 
   private closeSubject: Subject<any> = new Subject<any>();
   private noSaveSubject: Subject<any> = new Subject<any>();
@@ -90,8 +109,12 @@ export class ZNoteDetailEditComponent
   private isCopied: boolean;
   private timeInterval: any;
   private EXCLUDE_FORMATS: string[] = ['link'];
+  private timeout;
+  private initRetry = 0; // number of times this component will try to init Quill editor, default max tries is 3
   resize: any;
   context$: any;
+  profile$: Observable<User>;
+  setting$: Observable<NoteSetting>;
 
   private uploadSubscriptions: { [filename: string]: Subscription } = {};
 
@@ -108,6 +131,10 @@ export class ZNoteDetailEditComponent
     private photoUploadService: PhotoUploadService,
     private mediaSelectionService: WMediaSelectionService,
     private fileUploaderService: FileUploaderService,
+    private noteChannel: NoteChannelService,
+    private messageService: MessageService,
+    public noteSetting: ZNoteSharedSettingsService,
+    public userService: UserService,
     private commonEventService: CommonEventService
   ) {
     this.renderer.addClass(document.body, 'modal-open');
@@ -116,6 +143,8 @@ export class ZNoteDetailEditComponent
       this.destroySubject,
       this.closeSubject
     );
+    this.profile$ = this.userService.profile$;
+    this.setting$ = this.noteSetting.setting$;
 
     const getOs: any = this.clientDetectorService.getOs();
     this.buttonControl = getOs.name === 7 ? '⌘' : 'ctrl';
@@ -139,13 +168,79 @@ export class ZNoteDetailEditComponent
             break;
         }
       });
+
+      // Lock note if other user are editing ..
+      this.noteChannel.lock$.pipe(
+        filter(val => !!val),
+        distinctUntilChanged((p, q) => p.user_uuid === q.user_uuid),
+        takeUntil(this.destroySubject)
+      ).subscribe((user) => {
+        if (!user || Object.keys(user).length === 0) {
+          this.messageService.clear();
+
+          if (this.note.permission !== 'view') {
+            this.customEditor.enable();
+            this.customEditor.focus();
+            this.disabled = false;
+          }
+          return;
+        }
+        const {user_uuid, user_name} = user;
+        if (user_uuid !== this.userService.getSyncProfile().uuid) {
+          this.customEditor.disable();
+          this.disabled = true;
+        }
+
+        if (user_name) {
+          this.messageService.add({severity: 'warn', detail: `User ${user_name} is editing`, life: 60000,
+            closable: false, sticky: true});
+        }
+      });
+
+      // Reload note if this note's content is updated by another user
+      this.noteChannel.reload$.pipe(
+        tap(() => this.editStatus = this.EDIT_STATUS.reloading),
+        switchMap(() =>
+        this.noteService.getNoteAvailable(this.route.snapshot.paramMap.get('id'))),
+        takeUntil(this.destroySubject)
+      ).subscribe(res => {
+        const noteContent = res.data;
+        this.note = noteContent;
+        this.store.dispatch(new note.NoteUpdated(this.note));
+
+        this.noSave = true;
+        this.updateFormValue(this.note);
+        // Reset content of elemenet div.ql-editor to prevent HTML data loss
+        if (document.querySelector('.ql-editor')) {
+          document.querySelector('.ql-editor').innerHTML = this.note.content;
+        }
+        _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400) ;
+      });
+  }
+
+  handleActionEvents(event) {
+    const {action} = event;
+
+    switch (action) {
+      case 'showComments': {
+        this.visibleTab = (this.visibleTab === 'comment') ? undefined : 'comment';
+        break;
+      }
+      case 'openAttactments': {
+        this.visibleTab = (this.visibleTab === 'attachment') ? undefined : 'attachment';
+        break;
+      }
+      default: {
+
+      }
+    }
   }
 
   ngAfterViewInit() {
     // Merge with get current folder - this.store.select(fromRoot.getCurrentFolder)
     this.route.paramMap
       .pipe(
-        combineLatest(this.context$),
+        withLatestFrom(this.context$),
         switchMap(([paramMap, ctx]: any) => {
           const noteId = paramMap.get('id');
           this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
@@ -161,22 +256,41 @@ export class ZNoteDetailEditComponent
             return of(new Note());
           }
         }),
-        combineLatest(this.store.select(fromRoot.getCurrentFolder)),
+        withLatestFrom(this.store.select(fromRoot.getCurrentFolder)),
         takeUntil(this.destroySubject)
       )
       .subscribe(
         ([noteContent, currentFolder]: any) => {
+          if (!noteContent) { return; }
+
+          // Subscribe user to this note channel
+          this.noteChannel.subscribe(noteContent.uuid || this.note.uuid);
+
           this.note = noteContent;
           this.store.dispatch(new note.NoteUpdated(this.note));
-          this.initQuill();
+          try {
+            this.initQuill();
+          } catch (e) {
+            if (this.initRetry < 3) {
+              this.initQuill();
+              this.initRetry ++;
+            }
+            console.warn('exception: ', e );
+          }
           if (currentFolder) { this.parentId = currentFolder.id; }
           this.updateFormValue(this.note);
           // Reset content of elemenet div.ql-editor to prevent HTML data loss
-          document.querySelector('.ql-editor').innerHTML = this.note.content;
+          if (document.querySelector('.ql-editor')) {
+            document.querySelector('.ql-editor').innerHTML = this.note.content;
+          }
+
+          this.broadcastViewing();
           if (this.note.permission !== 'view') { this.registerAutoSave(); }
         },
         (error: any) => {
-          this.onModalClose({ queryParams: { error: 'file_does_not_exist' } });
+          if (error.status === 403) {
+            this.onModalClose({ queryParams: { error: 'file_does_not_exist' } });
+          }
         }
       );
 
@@ -188,11 +302,35 @@ export class ZNoteDetailEditComponent
   }
 
   ngOnDestroy() {
+    // Clear lock modal
+    this.noteChannel.idle(this.note.uuid);
+    this.messageService.clear();
+
     this.closeSubject.next('');
     this.closeSubject.unsubscribe();
     this.destroySubject.next('');
     this.destroySubject.unsubscribe();
+
+
     if (this.timeInterval) { clearInterval(this.timeInterval); }
+
+    // Unsubscribe user from this note channel
+    this.noteChannel.unsubscribe(this.note.uuid);
+  }
+
+  broadcastViewing() {
+    merge(
+      // this.form.valueChanges,
+      // fromEvent(this.customEditor, 'text-change')
+      interval(1000)
+    ).pipe(
+      // skip(1),
+      takeUntil(this.closeSubject)
+    ).subscribe(() => {
+      if (this.editStatus !== this.EDIT_STATUS.reloading && !this.disabled && this.note.permission !== 'view') {
+        this.viewing();
+      }
+    });
   }
 
   registerAutoSave() {
@@ -202,18 +340,36 @@ export class ZNoteDetailEditComponent
       fromEvent(this.customEditor, 'text-change')
     )
       .pipe(
-        takeUntil(merge(this.noSave$, this.closeSubject)),
+        skip(1),
+        tap(() => { this.editStatus = this.EDIT_STATUS.editing; }),
         debounceTime(DEBOUNCE_MS),
-        takeUntil(merge(this.noSave$, this.closeSubject))
+        takeUntil(this.closeSubject)
       )
       .subscribe(() => {
         this.noteChanged = true;
         if (this.editMode === Constants.modal.add && !this.note.id) {
           this.onFirstSave();
         } else {
-          this.updateNote();
+          if (!this.noSave) {
+            this.updateNote();
+          }
         }
+        _.delay(() => this.noSave = false, 400);
+        this.editStatus = this.EDIT_STATUS.saved;
       });
+  }
+
+  // editing() {
+  //   this.editStatus = this.EDIT_STATUS.editing;
+
+  //   this.noteChannel.editing(this.note.uuid);
+  //   this.checkIdle();
+  // }
+
+  viewing() {
+    if (!this.noteChannel) { return; }
+    this.noteChannel.editing(this.note.uuid);
+    this.checkIdle();
   }
 
   initQuill() {
@@ -240,6 +396,7 @@ export class ZNoteDetailEditComponent
       'gotham',
       'georgia',
       'helvetica',
+      'lato',
       'courier-new',
       'times-new-roman',
       'trebuchet',
@@ -321,10 +478,51 @@ export class ZNoteDetailEditComponent
 
     this.listenImageChanges();
     this.registerSelectionChange();
+    //  Format quill based on default setting
+    setTimeout(() => this.applyDefaultFormat(), 500);
+  }
+
+
+  applyDefaultFormat() {
+    // Default font, size setting
+    const {font, font_size} = this.noteSetting.setting;
+
+    const range = this.customEditor.getSelection(true);
+    if (this.customEditor.getLength() <= 1) {
+      console.log('this editor is blank', this.customEditor);
+      this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
+      this.customEditor.setSelection(range.index, 1, Quill.sources.SILENT);
+      this.customEditor.format('font', font);
+      this.customEditor.format('size', font_size);
+    } else {
+      // // Insert a blank character in case default font differ from first character's format
+      // const firstFormat = this.customEditor.getFormat(1);
+      // const f_font = firstFormat.font;
+      // const f_size = firstFormat.size;
+      // if (f_font !== font || f_size !== font_size) {
+      //   this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
+      //   this.customEditor.setSelection(range.index, 1, Quill.sources.SILENT);
+      //   this.customEditor.format('font', font);
+      //   this.customEditor.format('size', font_size);
+      // }
+
+      this.customEditor.setSelection(range, Quill.sources.SILENT);
+      // this.customEditor.format('font', font);
+      // this.customEditor.format('size', font_size);
+    }
+
+    // // Unhighlight font, size setting by removing ql.active class
+    // const font_els = document.querySelectorAll('.ql-font > .ql-active');
+    // font_els.forEach(f => f.classList.remove('ql-active'));
+
+    // const size_els = document.querySelectorAll('.ql-size > .ql-active');
+    // size_els.forEach(f => f.classList.remove('ql-active'));
+
+
+    this.noSaveSubject.next('');
   }
 
   onSort(name: any) {
-    // console.log('name:', name, this.note.attachments);
     this.note.attachments = this.orderDesc
       ? _.sortBy(this.note.attachments, [name])
       : _.sortBy(this.note.attachments, [name]).reverse();
@@ -485,7 +683,7 @@ export class ZNoteDetailEditComponent
       componentDestroyed(this)
     );
     this.mediaSelectionService.selectedMedias$
-      .pipe(takeUntil(close$), filter((items: any[]) => items.length > 0))
+      .pipe(filter((items: any[]) => items.length > 0), takeUntil(close$))
       .subscribe(photos => {
         photos.forEach((photo: any) =>
           this.insertInlineImage(null, photo.url, photo.id)
@@ -495,14 +693,14 @@ export class ZNoteDetailEditComponent
     const ids: string[] = [];
     this.mediaSelectionService.uploadingMedias$
       .pipe(
-        takeUntil(close$),
         map(([file, dataUrl]) => [file]),
         mergeMap((files: any[]) => {
           const randId = `img_${new Date().getTime()}`;
           this.insertFakeImage(randId);
           ids.push(randId);
           return this.photoUploadService.uploadPhotos(files);
-        })
+        }),
+        takeUntil(close$)
       )
       .subscribe((res: any) => {
         const randId = ids.shift();
@@ -734,7 +932,6 @@ export class ZNoteDetailEditComponent
   }
 
   selectPhotos() {
-    // this.photoSelectDataService.open({return: true});
     this.mediaSelectionService.open({ allowSelectMultiple: true });
 
     this.selectPhotos4Attachments();
@@ -745,9 +942,11 @@ export class ZNoteDetailEditComponent
       value.name.length > 0 ||
       value.tags.length > 0 ||
       value.attachments.length > 0 ||
-      (this.editorElement.innerHTML.length > 0 &&
+      (this.editorElement && this.editorElement.innerHTML.length > 0 &&
         this.editorElement.innerHTML !== '<p><br></p>')
     ) {
+      if (!this.editorElement) { return; }
+
       if (this.editMode === Constants.modal.add) {
         if (this.note.permission !== 'view') {
           this.store.dispatch(
@@ -785,24 +984,21 @@ export class ZNoteDetailEditComponent
   /**
    * Save post and change to EDIT mode
    */
-  onFirstSave() {
-    if (this.editMode === Constants.modal.add) {
-      this.noteService
+  async onFirstSave() {
+      const res = await this.noteService
         .create({
           ...this.form.value,
           content: this.editorElement.innerHTML,
           parent_id: this.parentId
         })
-        .toPromise()
-        .then((res: any) => {
-          this.note = res.data;
-          this.editMode = Constants.modal.edit;
-          this.store.dispatch(new note.MultiNotesAdded([res['data']]));
-          return this.router.navigate([
-            { outlets: { detail: ['notes', this.note.id] } }
-          ]);
-        });
-    }
+        .toPromise();
+        this.note = res.data;
+        this.editMode = Constants.modal.edit;
+        this.store.dispatch(new note.MultiNotesAdded([res['data']]));
+
+        // return await this.router.navigate([
+        //   { outlets: { detail: ['notes', this.note.id] } }
+        // ]);
   }
 
   download(file: any) {
@@ -863,14 +1059,14 @@ export class ZNoteDetailEditComponent
       componentDestroyed(this)
     );
     this.mediaSelectionService.selectedMedias$
-      .pipe(takeUntil(close$), filter((items: any[]) => items.length > 0))
+      .pipe(filter((items: any[]) => items.length > 0), takeUntil(close$))
       .subscribe(photos => {
         this.note.attachments.push(...photos);
         this.form.controls['attachments'].setValue(this.note.attachments);
       });
 
     this.mediaSelectionService.uploadingMedias$
-      .pipe(takeUntil(close$), map(([file, dataUrl]) => [file]))
+      .pipe(map(([file, dataUrl]) => [file]), takeUntil(close$))
       .subscribe((files: any) => {
         this.note.attachments.push(...files);
         _.forEach(files, (file: any) => {
@@ -890,11 +1086,24 @@ export class ZNoteDetailEditComponent
       });
   }
 
-  private updateNote() {
-    if (!this.note.id) { return; }
+  private async updateNote() {
+    if (!this.note.id || !this.editorElement) { return; }
     const noteObj: any = Object.assign({}, this.note, this.form.value, {
       content: this.editorElement.innerHTML
     });
     this.store.dispatch(new note.Update(noteObj));
+    return Promise.resolve();
   }
+
+  private checkIdle() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
+    this.timeout = setTimeout(() => {
+      console.log('Goes idle now for note channel: ', this.note.uuid);
+      this.noteChannel.idle(this.note.uuid);
+    }, DEBOUNCE_MS);
+  }
+
 }

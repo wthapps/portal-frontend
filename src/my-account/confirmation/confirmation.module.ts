@@ -9,7 +9,11 @@ import { CommonModule } from '@angular/common';
     ConfirmationRoutingModule,
     CommonModule
   ],
-  declarations: [ConfirmationComponent],
-  exports: [ConfirmationComponent]
+  declarations: [
+    ConfirmationComponent,
+  ],
+  exports: [
+    ConfirmationComponent,
+  ]
 })
 export class ConfirmationModule {}

@@ -1,5 +1,5 @@
 <ng-container *ngIf="objects && objects.length > 0">
-  <div class="page-body-content has-page-body-control gray-light" infinite-scroll [infiniteScrollDistance]="2"
+  <div class="page-body-content has-page-body-control" infinite-scroll [infiniteScrollDistance]="2"
     [infiniteScrollThrottle]="500" [scrollWindow]="scrollWindow" (scrolled)="doEvent({action: 'getMore', payload: { nextLink: nextLink }})">
     <div class="page-body-content-in">
       <w-grid-list-header [data]="objects" [view]="view" [field]="sorting.sort_name" [direction]="sorting.sort" (event)="doEvent($event)"

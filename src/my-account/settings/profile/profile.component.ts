@@ -1,25 +1,19 @@
-import { Component, OnInit, ViewChild, OnDestroy }    from '@angular/core';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import {
-  FormGroup,
-  AbstractControl,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
-
-import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ApiBaseService, UrlService } from '@shared/services';
+import { Constants } from '@wth/shared/constant/config/constants';
+import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
 import { UserService } from '@wth/shared/services/user.service';
 import { CountryService } from '@wth/shared/shared/components/countries/countries.service';
-import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
-import { CommonEventService } from '@wth/shared/services/common-event/common-event.service';
-import { Constants } from '@wth/shared/constant/config/constants';
-import { ApiBaseService, UrlService } from '@shared/services';
 
-declare var $: any;
-declare var _: any;
+import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
+import { MessageService } from 'primeng/api';
+
+import { Subject } from 'rxjs';
+import { BsModalComponent } from 'ng2-bs3-modal';
+import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
 
 @Component({
   selector: 'my-setting-profile',
@@ -27,19 +21,16 @@ declare var _: any;
 })
 
 export class MyProfileComponent implements OnInit, OnDestroy {
-  // @ViewChild('uploadProfile') uploadProfile: UploadCropImageComponent;
+  @ViewChild('modal') modal: BsModalComponent;
+  @ViewChild('passwordConfirmationModal') passwordConfirmationModal: PasswordConfirmationModalComponent;
 
-  pageTitle = 'Profile';
+
   errorMessage = Constants.errorMessage.default;
-  defaultAvatar = Constants.img.avatar;
   profile_image = '';
 
   sex = 0;
-  birthdayDate: any = {
-    day: 0,
-    month: 0,
-    year: 0
-  };
+
+  yearRange: string;
 
   formValue: any;
 
@@ -48,45 +39,52 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   form: FormGroup;
   first_name: AbstractControl;
   last_name: AbstractControl;
+  user_name: AbstractControl;
   email: AbstractControl;
   phone_prefix: AbstractControl;
   phone_number: AbstractControl;
-  birthday_day: AbstractControl;
-  birthday_month: AbstractControl;
-  birthday_year: AbstractControl;
+  birthday: AbstractControl;
 
-  validDays: number[] = [];
-  // validMonths: number[] = [];
-  validYears: number[] = [];
+  changedEmailForm: FormGroup = new FormGroup({
+    email: new FormControl ('', Validators.compose([Validators.required, CustomValidator.emailFormat]))
+  });
+
   submitted = false;
   confirmedEmail: any = null;
   verified = false;
   phoneChanged = false;
+  currentDate = new Date().toISOString().split('T')[0];
+
+  checkTakenEmail$ = new Subject<string>();
+  checkTakenUsername$ = new Subject<string>();
+
+  checkCorrectPassword$ = new Subject<string>();
+
+
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(public userService: UserService,
               private fb: FormBuilder,
               private countryService: CountryService,
-              private toastsService: ToastsService,
+              private messageService: MessageService,
               private apiBaseService: ApiBaseService,
               private urlService: UrlService,
               private commonEventService: CommonEventService,
               private loadingService: LoadingService) {
-
     this.sex = this.userService.getSyncProfile().sex === null ? 0 : this.userService.getSyncProfile().sex;
-    this.validDays = this.range(1, 31);
-    this.validYears = this.range(2016, 1905);
+
+    const d = new Date();
+    const yearRangeEnd = d.getFullYear();
+    const yearRangestart = yearRangeEnd - 100;
+    this.yearRange = `${yearRangestart}:${yearRangeEnd}`;
 
     if (!this.userService.getSyncProfile().profile_image) {
       this.userService.getSyncProfile().profile_image = Constants.img.avatar;
     }
-    this.handleSelectCropEvent();
 
+    let birthday: any = '';
     if (this.userService.getSyncProfile().birthday !== null) {
-      const birthday = new Date(this.userService.getSyncProfile().birthday);
-      this.birthdayDate.day = birthday.getDate();
-      this.birthdayDate.month = birthday.getMonth() + 1;
-      this.birthdayDate.year = birthday.getUTCFullYear();
+      birthday = new Date(this.userService.getSyncProfile().birthday);
     }
 
     this.form = fb.group({
@@ -96,34 +94,44 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       'last_name': [this.userService.getSyncProfile().last_name,
         Validators.compose([Validators.required, CustomValidator.blanked])
       ],
+      'user_name': [this.userService.getSyncProfile().user_name,
+        Validators.compose([Validators.required, CustomValidator.blanked])
+      ],
       'email': [
-        {value: this.userService.getSyncProfile().email, disabled: true},
+        { value: this.userService.getSyncProfile().email, disabled: true },
         Validators.compose([Validators.required, CustomValidator.emailFormat])
       ],
       'phone_prefix': [this.userService.getSyncProfile().nationality],
       'phone_number': [this.userService.getSyncProfile().phone_number],
-      'birthday_day': [this.birthdayDate.day],
-      'birthday_month': [this.birthdayDate.month],
-      'birthday_year': [this.birthdayDate.year]
+      'birthday': [new Date(this.userService.getSyncProfile().birthday || null).toISOString().split('T')[0]]
     });
 
     this.first_name = this.form.controls['first_name'];
     this.last_name = this.form.controls['last_name'];
+    this.user_name = this.form.controls['user_name'];
     this.email = this.form.controls['email'];
     this.phone_prefix = this.form.controls['phone_prefix'];
     this.phone_number = this.form.controls['phone_number'];
-    this.birthday_day = this.form.controls['birthday_day'];
-    this.birthday_month = this.form.controls['birthday_month'];
-    this.birthday_year = this.form.controls['birthday_year'];
+    this.birthday = this.form.controls['birthday'];
+
+    this.initializeChangedEmailForm();
   }
 
   ngOnInit(): void {
     // verified email
     if (this.urlService.getQuery() && this.urlService.getQuery().verified === 'true') {
-      this.toastsService.success('You have successfully verify your email address');
+      this.messageService.add({
+        severity: 'success',
+        summary: '',
+        detail: 'You have successfully verify your email address'
+      });
     }
     if (this.urlService.getQuery() && this.urlService.getQuery().verified === 'false') {
-      this.toastsService.danger('Cannot verify your email address. Please try again');
+      this.messageService.add({
+        severity: 'error',
+        summary: '',
+        detail: 'Cannot verify your email address. Please try again'
+      });
     }
     this.apiBaseService.post('users/get_user').subscribe((res: any) => {
       this.confirmedEmail = res.data.confirmed_at;
@@ -135,6 +143,37 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.countryService.getCountries().subscribe(
       (data: any) => this.countriesCode = data,
       (error: any) => this.errorMessage = <any>error);
+
+
+    // verify taken email address
+
+    this.checkTakenEmail$.pipe(
+      debounceTime(Constants.searchDebounceTime),
+      distinctUntilChanged(),
+      switchMap((queryValue: any) => this.apiBaseService.get(`account/accounts/check_taken?key=email&value=${queryValue}`)))
+      .subscribe((response: any) => {
+          if (response.data.taken) {
+            this.changedEmailForm.controls['email'].setErrors({taken: response.data.taken});
+          }
+        },
+        (error: any) => {
+          console.log('error', error);
+        }
+      );
+
+    this.checkTakenUsername$.pipe(
+      debounceTime(Constants.searchDebounceTime),
+      distinctUntilChanged(),
+      switchMap((queryValue: any) => this.apiBaseService.get(`account/accounts/check_taken?key=user_name&value=${queryValue}`)))
+      .subscribe((response: any) => {
+          if (response.data.taken) {
+            this.form.controls['user_name'].setErrors({taken: response.data.taken});
+          }
+        },
+        (error: any) => {
+          console.log('error', error);
+        }
+      );
   }
 
   ngOnDestroy() {
@@ -143,6 +182,9 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(values: any): void {
+    const birthday_c = new Date(values.birthday);
+    // console.log(birthday_c.getDate(), birthday_c.getMonth() + 1, birthday_c.getUTCFullYear());
+
     // Set value after updating form (checking user leave this page)
     this.formValue = values;
 
@@ -157,11 +199,10 @@ export class MyProfileComponent implements OnInit, OnDestroy {
       const body = JSON.stringify({
         first_name: values.first_name,
         last_name: values.last_name,
+        user_name: values.user_name,
         nationality: values.phone_prefix,
         phone_number: values.phone_number,
-        birthday_day: values.birthday_day.toString(),
-        birthday_month: values.birthday_month.toString(),
-        birthday_year: values.birthday_year.toString(),
+        birthday: values.birthday,
         sex: values.sex
       });
 
@@ -169,72 +210,86 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         .subscribe((result: any) => {
             // stop loading
             this.loadingService.stop();
-            this.toastsService.success(result.message);
+            this.messageService.add({
+              severity: 'success',
+              summary: '',
+              detail: 'Updated successfully'
+            });
           },
           error => {
             // stop loading
             this.loadingService.stop();
-            this.toastsService.danger(this.errorMessage);
+            this.messageService.add({
+              severity: 'error',
+              summary: '',
+              detail: this.errorMessage
+            });
             console.log(error);
           }
         );
     }
   }
 
-  uploadImage(event: any): void {
-    event.preventDefault();
-    // this.uploadProfile.modal.open();
-    this.commonEventService.broadcast({channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN',
-     payload: {currentImage: this.userService.getSyncProfile().profile_image} });
-  }
-
-  handleSelectCropEvent() {
-    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe((event: any) => {
-        this.doEvent(event);
-      });
-  }
-
-
-  doEvent(event: any) {
-    // console.log(event);
-    switch (event.action) {
-      case 'SELECT_CROP:DONE':
-        // Change user profile
-        this.updateProfileImageBase64(event.payload);
-        break;
-      default:
-        break;
-    }
-  }
-
-  updateProfileImageBase64(img: string): void {
-    this.updateUser(JSON.stringify({image: img}));
-  }
-
-  private updateUser(body: string): void {
-    this.userService.update(body)
-      .subscribe((result: any) => {
-          // stop loading
-          this.loadingService.stop();
-          this.toastsService.success(result.message);
-
-        //  reload profile image
-          $('img.lazyloaded').addClass('lazyload');
-        },
-        error => {
-          // stop loading
-          this.loadingService.stop();
-          this.toastsService.danger(this.errorMessage);
-          console.log(error);
-        }
-      );
-  }
-
   sendVerifyEmail() {
     this.apiBaseService.post(`users/confirmation`).subscribe((res: any) => {
-      this.toastsService.success('A verification email was sent to your email address');
+      this.messageService.add({
+        severity: 'success',
+        summary: '',
+        detail: 'A verification email was sent to your email address'
+      });
+    });
+  }
+
+  openChangeEmailModal() {
+    this.initializeChangedEmailForm();
+    this.modal.open();
+  }
+
+  closeChangeEmailModal() {
+    this.modal.close();
+  }
+
+  openPasswordConfirmationModal() {
+    this.closeChangeEmailModal();
+    this.passwordConfirmationModal.open({email: this.userService.getSyncProfile().email});
+  }
+
+  checkTakenUsername(event: any) {
+
+    const username = event.target.value.toString().trim();
+    if (!this.form.controls.user_name.valid) {
+      return;
+    }
+    this.checkTakenUsername$.next(username);
+  }
+
+  checkTakenEmail(event: any) {
+
+    const keyword = event.target.value;
+    if (!this.changedEmailForm.controls.email.valid) {
+      return;
+    }
+    this.checkTakenEmail$.next(keyword);
+  }
+
+  changeEmail(payload: any) {
+    this.passwordConfirmationModal.close();
+    this.apiBaseService.post(`account/users/email/change`, {
+      email: this.changedEmailForm.value.email,
+      password: payload.password
+    }).subscribe(response => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Changed email successfully',
+        detail: `A confirmation email sent out to new email address.</br>
+          Click on Update Email Address link in that email to finish changing`
+      });
+    }, error => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Changed email failed',
+        detail: 'You changed email address unsuccessfully'
+      });
     });
   }
 
@@ -243,9 +298,12 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.phoneChanged = true;
   }
 
-  private range (start: number, end: number) {
-    const f: number = (end > start) ? start : end;
-    const res: number[] = Array.from(Array(Math.abs(end - start) + 1).keys()).map((i: number) => (i + f));
-    return (end > start) ? res : res.reverse();
+  private initializeChangedEmailForm() {
+    // changed emaill form initialization
+    this.changedEmailForm = this.fb.group({
+      email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])]
+    });
+    this.changedEmailForm.markAsUntouched();
   }
+
 }

@@ -8,9 +8,10 @@ import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal
 import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
-import { Observable, EMPTY } from 'rxjs';
+import { Observable, EMPTY, Subject } from 'rxjs';
 
 import { AlbumCreateModalComponent, AlbumEditModalComponent, AlbumDeleteModalComponent } from '@shared/components/modal/album';
+import { takeUntil } from 'rxjs/operators';
 
 
 export class MediaActionHandler implements OnDestroy {
@@ -19,6 +20,7 @@ export class MediaActionHandler implements OnDestroy {
   modal: any;
   sub: any;
   subSelect: any;
+  destroySubject: Subject<any> = new Subject();
 
   constructor(
     protected resolver: ComponentFactoryResolver,
@@ -34,14 +36,16 @@ export class MediaActionHandler implements OnDestroy {
     this.modal = this.modalComponent.instance;
 
     // handle all of action from modal all
-    this.modal.event.takeUntil(this.destroySubject).subscribe((event: any) => {
+    this.modal.event.pipe(takeUntil(this.destroySubject)).subscribe((event: any) => {
       this.doEvent(event);
     });
   }
 
   ngOnDestroy() {
-    if (this.sub) this.sub.unsubscribe();
-    if (this.subSelect) this.subSelect.unsubscribe();
+    if (this.sub) { this.sub.unsubscribe(); }
+    if (this.subSelect) { this.subSelect.unsubscribe(); }
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
   openModal(payload: any, mediaSelectionService: any) {
@@ -148,11 +152,11 @@ export class MediaActionHandler implements OnDestroy {
     this.store.dispatch(new mediaActions.GetMore({...event.payload}));
   }
 
-  protected destroySubject(): Observable<any> {
-    if (this.sub) {
-      return this.sub.unsubscribe();
-    } else {
-      return EMPTY;
-    }
-  }
+  // protected destroySubject(): Observable<any> {
+  //   if (this.sub) {
+  //     return this.sub.unsubscribe();
+  //   } else {
+  //     return EMPTY;
+  //   }
+  // }
 }

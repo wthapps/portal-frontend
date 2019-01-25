@@ -1,45 +1,69 @@
 <!-- Template message -->
-<div *ngIf="['text', 'file', 'share_contact_message', 'request'].includes(message.message_type)">
-  <div class="message-item row" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
-    <div class="message-item-date" *ngIf="hasShowDate()">
+<ng-container *ngIf="['text', 'file', 'share_contact_message'].includes(message.message_type)">
+  <div class="message-item" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
+    <div class="message-item-date" *ngIf="message.showDate">
       <span>{{ message.created_at | timeFormat:'day' }}</span>
     </div>
-    <div class="message-item-content-container col-sm-11 col-xs-11 nopadding">
-      <div *ngIf="!byMe" class="message-item-owner">
-        <h6 class="message-item-owner-name">
-          <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength: 50}} </a>
-          <small class="text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
+    <div class="message-item-card">
+      <div *ngIf="message.showInfo" class="message-item-owner">
+        <h6 *ngIf="!byMe" class="message-item-owner-name">
+          <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength:50}} </a>
         </h6>
-        <figure class="message-item-owner-avatar">
-          <span class="avatar-xs">
-            <img [src]="message.user?.profile_image" alt="">
-          </span>
-        </figure>
+        <small class="message-item-owner-time text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
       </div>
-      <!-- container template dynamic here -->
-      <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemContentText : ''"></ng-container>
-      <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemContentFile : ''"></ng-container>
-      <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemContentContact : ''"></ng-container>
-      <ng-container *ngTemplateOutlet="message.message_type == 'request' ? messageItemContentRequest : ''"></ng-container>
-    </div>
-    <div class="message-item-menu dropdown col-sm-1 col-xs-1" *ngIf="byMe" style="padding: 5px !important">
-      <!-- container template dynamic here -->
-      <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemMenuText : ''"></ng-container>
-      <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemMenuFile : ''"></ng-container>
-      <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemMenuContact : ''"></ng-container>
+
+      <div class="message-item-card-main">
+        <div class="message-item-avatar">
+          <figure *ngIf="!byMe && message.showInfo" class="message-item-avatar">
+            <span class="avatar-xs">
+              <img [src]="message.user?.profile_image" alt="">
+            </span>
+          </figure>
+        </div>
+        <div class="message-item-card-main-content">
+          <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemContentText : ''"></ng-container>
+          <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemContentFile : ''"></ng-container>
+          <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemContentContact : ''"></ng-container>
+        </div>
+        <div class="message-item-menu dropdown" *ngIf="byMe" style="padding: 5px !important">
+          <!-- container template dynamic here -->
+          <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemMenuText : ''"></ng-container>
+          <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemMenuFile : ''"></ng-container>
+          <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemMenuContact : ''"></ng-container>
+        </div>
+        <div class="message-item-card-main-notify">
+          <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</ng-container>
 
 <!-- Text message -->
 <ng-template #messageItemContentText>
-  <div class="wapper message-item-content message-padding">
-    <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
-  </div>
-  <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i>
+  <ng-container *ngIf="message.status !== 'fail'" class="wapper message-item-content message-padding">
+    <ng-container *ngIf="message.status == 'pending'">
+      <i class="message-margin text-fade fa fa-spinner fa-spin fa-fw"></i>
+      <div class="text-fade wapper message-item-content message-padding">
+        <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="message.status !== 'pending'">
+      <div class="wapper message-item-content message-padding">
+        <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="message.status == 'fail'">
+    <i class="fa fa-exclamation-triangle message-error message-padding"></i>
+    <div class="wapper message-item-content message-padding text-fade">
+      <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
+    </div>
+  </ng-container>
+  <!-- <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i> -->
   <div *ngFor="let link of message.links" style="clear: both">
-    <div *ngIf="link.image && link.title && !message.deleted" class="message-padding">
-      <display-link class="message-item-content-link" [data]="link" *ngIf="link.image && link.title"></display-link>
+    <div *ngIf="link.image && !message.deleted" class="message-padding">
+      <display-link class="message-item-content-link" [data]="link" *ngIf="link.image"></display-link>
     </div>
   </div>
 </ng-template>
@@ -63,7 +87,7 @@
 <!-- File message -->
 <ng-template #messageItemContentFile>
   <!-- photo type-->
-  <div class="wapper message-item-file message-item-content-photo" *ngIf="message.file_type == 'Media::Photo'">
+  <div class="wapper message-item-content-photo" *ngIf="message.file?.object_type == 'Media::Photo'">
     <figure>
       <a href="javascript:void(0);" (click)="onPreviewPhoto(message)">
         <img [src]="message.file?.url" alt="">
@@ -71,7 +95,7 @@
     </figure>
   </div>
   <!-- video type-->
-  <div class="wapper message-item-file message-item-content-photo" *ngIf="message.file_type == 'Media::Video'">
+  <div class="wapper message-item-content-photo" *ngIf="message.file?.object_type == 'Media::Video'">
     <figure>
       <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
         <img [src]="message.file?.thumbnail_url" alt="">
@@ -80,7 +104,7 @@
     </figure>
   </div>
   <!-- file type-->
-  <div class="wapper message-item-file message-item-content-other-files" *ngIf="message.file_type == 'Common::GenericFile'">
+  <div class="wapper message-item-content message-item-content-other-files" *ngIf="message.file?.object_type == 'Common::GenericFile' && message.sending_status !== -1">
     <a class="media-div link-text" [href]="message.file?.url" target="_blank" download>
       <div class="pull-left">
         <i class="fa fa-file-archive-o"></i>
@@ -92,7 +116,7 @@
     </a>
   </div>
   <!-- note type-->
-  <div class="wapper message-item-file message-item-content-note" *ngIf="message.file_type == 'Note::Note'">
+  <div class="wapper message-item-content message-item-content-note" *ngIf="message.file_type == 'Note::Note'">
     <a class="d-block" [href]="noteUrl + '/notes/public/' + message?.uuid" target="_blank">
       <h5>
         <i class="icon-zone-note"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
@@ -102,48 +126,46 @@
   </div>
 
   <!--show sending -->
-  <div *ngIf="message.sending_status == 1" class="message-item-file">
-    <div class="media-div link-text message-padding">
-      <div class="pull-left">
-        <i class="fa fa-spinner fa-spin fa-fw"></i>
-      </div>
-      <div class="media-div-body">
-        <div class="media-div-heading">{{ message.message }}</div>
-      </div>
-    </div>
-  </div>
-  <!--show failed sending -->
-  <div *ngIf="message.sending_status == -1" class="message-item-file">
-    <div class="media-div link-text message-padding">
-      <div class="pull-left">
-        <i class="fa fa-file-o"></i>
-      </div>
-      <div class="media-div-body">
-        <div class="media-div-heading">Failed sending file</div>
+  <ng-container *ngIf="message.sending_status == 1" class="">
+    <i class="fa fa-spinner fa-spin fa-fw message-margin"></i>
+    <div class="wapper message-item-content message-item-content-files text-fade">
+      <div>
+        <div>{{message.message}}</div>
+        <small>{{message.meta_data?.bytesTotal | bytes:0}}</small>
       </div>
     </div>
-  </div>
+  </ng-container>
+  <ng-container *ngIf="message.sending_status == -1">
+    <i class="fa fa-exclamation-triangle message-error message-padding"></i>
+    <div class="wapper message-item-content message-item-content-files text-fade">
+      <i class="fa fa-file-archive-o"></i>
+      <div>
+        <div>{{message.message}}</div>
+        <small>{{message.meta_data?.bytesTotal | bytes:0}}</small>
+      </div>
+    </div>
+  </ng-container>
   <!--cancel message type-->
-  <div *ngIf="message.sending_status == 2" class="message-item-file">
+  <ng-container *ngIf="message.sending_status == 2" class="">
     <div class="media-div link-text message-padding">
       <div class="pull-left">
-        <i class="fa fa-file-o"></i>
+        <i class="fa fa-file-archive-o"></i>
       </div>
       <div class="media-div-body">
         <span>Cancelled sending a file</span>
       </div>
     </div>
-  </div>
-  <div *ngIf="message.sending_status == 3" class="message-item-file">
+  </ng-container>
+  <ng-container *ngIf="message.sending_status == 3" class="">
     <div class="media-div link-text message-padding">
       <div class="pull-left">
-        <i class="fa fa-file-o"></i>
+        <i class="fa fa-file-archive-o"></i>
       </div>
       <div class="media-div-body">
         <span>{{ message.message }}</span>
       </div>
     </div>
-  </div>
+  </ng-container>
 </ng-template>
 <!-- File message menu-->
 <ng-template #messageItemMenuFile>
@@ -172,16 +194,18 @@
 
 <!--Share contact message-->
 <ng-template #messageItemContentContact>
-  <div class="wapper message-item-file message-item-content-contact-sharing">
-    <span class="avatar-xs pull-left" style="margin-right: 5px">
-      <img [src]="message?.display?.share_contact?.profile_image" alt="">
-    </span>
-    <span style="margin-right: 10px">
-      {{message?.display?.share_contact?.name}}
-    </span>
-    <span class="can-click">
+  <div class="wapper message-item-content message-item-content-contact-sharing">
+    <div class="message-item-content-contact-sharing-info" >
+      <span class="avatar-xs">
+        <img [src]="message?.display?.share_contact?.profile_image" alt="">
+      </span>
+      <span class="message-item-content-contact-sharing">
+        {{message?.display?.share_contact?.name}}
+      </span>
+    </div>
+    <div class="message-padding can-click">
       <i class="fa fa-comment-o" (click)="onAdd()"></i>
-    </span>
+    </div>
   </div>
 </ng-template>
 <!--Share contact menu-->
@@ -197,7 +221,7 @@
 
 <!--Request contact message-->
 <ng-template #messageItemContentRequest>
-  <div class="message-item-file message-item-content-contact-sharing" style="width: 100%; text-align: left">
+  <div class="message-item-content-contact-sharing" style="width: 100%; text-align: left">
     <span class="avatar-xs pull-left" style="margin-right: 5px">
       <img [src]="message.receiver?.profile_image" alt="">
     </span>

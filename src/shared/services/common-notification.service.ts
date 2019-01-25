@@ -14,12 +14,12 @@ declare var _: any;
 
 export class CommonNotificationInterface {
   notifications: Array<any> = new Array<any>();
-  latestNotifId: number = 0;
-  newNotifCount: number = 0;
+  latestNotifId = 0;
+  newNotifCount = 0;
   currentNotifId: any;
   nextLink: string;
-  loadingDone: boolean = false;
-  initLoad: boolean = false;
+  loadingDone = false;
+  initLoad = false;
   hasObjects: boolean;
   outEvent: EventEmitter<any> = new EventEmitter();
   url: string = Constants.urls.zoneSoNotifications;
@@ -35,12 +35,12 @@ export class CommonNotificationInterface {
   }
 
   doAction(action: any, notif_id: string) {
-    let link: string = action.link;
-    let method = action.method;
-    let params = action.params;
-    let method_name = action.name;
-    let module = action.module; // media, social, chat | 1, 2, 3 ...
-    let body = {
+    const link: string = action.link;
+    const method = action.method;
+    const params = action.params;
+    const method_name = action.name;
+    const module = action.module; // media, social, chat | 1, 2, 3 ...
+    const body = {
       url: link
       // method: method
     };
@@ -50,7 +50,7 @@ export class CommonNotificationInterface {
     switch (method) {
       case 'navigate':
         this.navigateService.navigateOrRedirect(link, module, body);
-        let currentNotif = _.find(this.notifications, {
+        const currentNotif = _.find(this.notifications, {
           id: this.currentNotifId
         });
         this.markAsRead(currentNotif);
@@ -63,12 +63,12 @@ export class CommonNotificationInterface {
           .then(
             (result: any) => {
               this.notifications = _.map(this.notifications, (notif: any) => {
-                if (notif.id === this.currentNotifId)
+                if (notif.id === this.currentNotifId) {
                   return Object.assign(notif, {
                     actions: _.get(result, 'data.actions', []),
                     response_actions: _.get(result, 'data.response_actions', [])
                   });
-                else return notif;
+                } else { return notif; }
               });
             },
             (error: any) => {
@@ -103,22 +103,22 @@ export class CommonNotificationInterface {
   }
 
   navigateTo(actions: any[], notif_id: string): void {
-    if (_.get(actions[0], 'name') == 'view') {
+    if (_.get(actions[0], 'name') === 'view') {
       this.doAction(actions[0], notif_id);
     }
   }
 
   navigateToSocial(urls: string[]) {
-    let link: string = urls.join('/');
+    const link: string = urls.join('/');
     this.navigateService.navigateOrRedirect(link, 'social');
   }
 
   markAsSeen() {
     // this.notificationService.markAsSeen(this.notifications)
-    let notif_ids = _.map(this.notifications, (i: any) => i.id);
-    let body = { ids: notif_ids };
+    const notif_ids = _.map(this.notifications, (i: any) => i.id);
+    const body = { ids: notif_ids };
 
-    if (!(this.authService.loggedIn && this.authService.user)) return;
+    if (!(this.authService.loggedIn && this.authService.user)) { return; }
     return this.api
       .post(`${this.url}/mark_as_seen`, body)
       .pipe(filter(() => this.authService.loggedIn)) // Do not call this API if user is not logged in
@@ -139,7 +139,7 @@ export class CommonNotificationInterface {
   addNewNofification(notification: any) {
     // Detect if this notification is new or an Undo notification
     if (
-      parseInt(_.get(JSON.parse(notification.data), 'id')) > this.latestNotifId
+      parseInt(_.get(JSON.parse(notification.data), 'id'), 10) > this.latestNotifId
     ) {
       this.notifications.unshift(JSON.parse(notification.data));
       this.newNotifCount++;
@@ -148,7 +148,7 @@ export class CommonNotificationInterface {
 
   toggleReadStatus(notification: any) {
     this.currentNotifId = notification.id;
-    let body = { ids: this.currentNotifId };
+    const body = { ids: this.currentNotifId };
     return this.api
       .post(`${this.url}/toggle_read_status`, body)
       .pipe(filter(() => this.authService.loggedIn)) // Do not call this API if user is not logged in
@@ -156,7 +156,7 @@ export class CommonNotificationInterface {
       .then(
         (result: any) => {
           _.each(this.notifications, (n: any) => {
-            if (n.id == this.currentNotifId) n.is_read = !n.is_read;
+            if (n.id === this.currentNotifId) { n.is_read = !n.is_read; }
           });
         },
         (error: any) => {
@@ -167,8 +167,9 @@ export class CommonNotificationInterface {
 
   markAsRead(notification: any) {
     // Mark this notification as read
-    if (notification && !notification.is_read)
+    if (notification && !notification.is_read) {
       this.toggleReadStatus(notification);
+    }
   }
 
   markAllAsRead() {
@@ -188,14 +189,32 @@ export class CommonNotificationInterface {
       );
   }
 
-  getLatestNotifications() {
+  getDisconnectedNotifications(): Promise<any> {
+    if (!(this.authService.loggedIn && this.authService.user)) {
+      return Promise.reject(new Error('user does not log in yet'));
+    }
+    const options = { sort_name: 'created_at' };
+    if (this.notifications.length > 0) {
+      const last = this.notifications[0];
+      Object.assign(options, {last_id: last.id});
+    }
+    return this.api
+      .get(`${this.url}/get_latest`, options)
+      .toPromise()
+      .then(rs => {
+        this.notifications.push(...rs.data);
+      });
+  }
+
+  getLatestNotifications(): Promise<any> {
     if (
       this.initLoad &&
       this.loadingDone &&
       !(this.authService.loggedIn && this.authService.user)
-    )
-      return; // Only load once at first time
-    this.api
+    ) {
+      return Promise.reject(new Error('user does not log in yet'));
+    } // Only load once at first time
+    return this.api
       .get(`${this.url}/get_latest`, { sort_name: 'created_at' })
       .toPromise()
       .then(
@@ -204,17 +223,16 @@ export class CommonNotificationInterface {
           this.notifications = [...result.data];
           this.newNotifCount = 0;
           this.nextLink = result.meta.links.next;
-          if (_.isEmpty(this.nextLink)) this.loadingDone = true;
+          if (_.isEmpty(this.nextLink)) { this.loadingDone = true; }
 
           // Get latest notification id
-          if (this.notifications.length != 0)
+          if (this.notifications.length !== 0) {
             this.latestNotifId = Math.max(
               ..._.map(this.notifications, (n: any) => +n.id)
             );
-          else this.latestNotifId = -99;
+          } else { this.latestNotifId = -99; }
 
-          console.log('latest Notif Id: ', this.latestNotifId);
-          if (result.data.length == 0) {
+          if (result.data.length === 0) {
             this.hasObjects = false;
           }
           this.initLoad = true;
@@ -234,7 +252,7 @@ export class CommonNotificationInterface {
     if (this.isLoadingDone() || this.nextLink === undefined) {
       return;
     }
-    if (!(this.authService.loggedIn && this.authService.user)) return;
+    if (!(this.authService.loggedIn && this.authService.user)) { return; }
     this.api
       .get(this.nextLink)
       .toPromise()
@@ -245,7 +263,7 @@ export class CommonNotificationInterface {
           this.newNotifCount = this.newNotifCount < 0 ? 0 : this.newNotifCount;
 
           this.nextLink = result.meta.links.next;
-          if (result.data.length == 0) {
+          if (result.data.length === 0) {
             this.hasObjects = false;
           }
           this.markAsSeen();
@@ -290,11 +308,11 @@ export class CommonNotificationInterface {
   }
 
   countNewNotifications() {
-    let temp_notif_count = _.filter(
+    const temp_notif_count = _.filter(
       this.notifications,
-      (n: any) => n.seen_state == Constants.seenStatus.new
+      (n: any) => n.seen_state === Constants.seenStatus.new
     ).length;
-    if (temp_notif_count > 0) this.newNotifCount -= temp_notif_count;
+    if (temp_notif_count > 0) { this.newNotifCount -= temp_notif_count; }
     this.newNotifCount = this.newNotifCount < 0 ? 0 : this.newNotifCount;
   }
 
@@ -303,8 +321,8 @@ export class CommonNotificationInterface {
       .post(`${this.url}/restore`, notification)
       .toPromise()
       .then(() => {
-        let idx = _.findIndex(this.notifications, ['id', +notification.id]);
-        if (idx > -1) this.notifications[idx].isHidden = false;
+        const idx = _.findIndex(this.notifications, ['id', +notification.id]);
+        if (idx > -1) { this.notifications[idx].isHidden = false; }
       });
   }
 }

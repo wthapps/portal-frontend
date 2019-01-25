@@ -5,6 +5,7 @@ export class ChatConstant {
   public static profileUrl = '/profile';
 }
 
+export const NETWORK_ONLINE = 'network_online';
 export const CHAT_CONVERSATIONS = 'chat_conversations';
 export const CHAT_MESSAGES_GROUP_ = 'chat_messages_group_';
 export const CHAT_RECENT_CONVERSATIONS = 'chat_recent_conversations';
@@ -13,6 +14,11 @@ export const CHAT_HISTORY_CONVERSATIONS = 'chat_history_conversations';
 export const CONVERSATION_SELECT = 'conversation_select';
 export const USERS_ONLINE = 'users_online';
 export const NUMBER_MESSAGE = 'number_message';
+
+export const STORE_CONVERSATIONS = 'conversations';
+export const STORE_SELECTED_CONVERSATION = 'selectedConversation';
+export const STORE_CONTEXT = 'context';
+export const STORE_MESSAGES = 'messages';
 
 export const ACTION = {
   ADD: 'ADD',

@@ -28,7 +28,7 @@ export class ApiBaseService {
     responseType?: 'json';
     withCredentials?: boolean;
   };
-  private baseUrl: string = Constants.baseUrls.apiBaseService;
+  private baseUrl: string = Constants.baseUrls.apiUrl;
   private headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -81,17 +81,6 @@ export class ApiBaseService {
   }
 
   addCommand(command: Observable<any>): Observable<any> {
-    // return Observable.create((observer: any) => {
-    //   command.take(1).subscribe((c: any) => {
-    //     this.call(c.method, c.path, c.body, c.options)
-    //       .take(1)
-    //       .catch(this.handleError)
-    //       .subscribe((res: any) => {
-    //         observer.next(res);
-    //       });
-    //   });
-    // });
-
     return command.pipe(
       take(1),
       switchMap(c => this.call(c.method, c.path, c.body, c.options)),

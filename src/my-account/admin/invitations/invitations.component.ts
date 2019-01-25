@@ -1,12 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
-import { Subject } from 'rxjs';
-import { switchMap, takeUntil, map } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { LoadingService } from '@shared/shared/components/loading/loading.service';
 
 import { InvitationService } from '@wth/shared/shared/components/invitation/invitation.service';
-import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
-import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
+import { MessageService } from 'primeng/api';
+import { map } from 'rxjs/operators';
 
 declare let _: any;
 
@@ -18,157 +15,92 @@ declare let _: any;
 })
 
 export class MyInvitationsComponent implements OnInit, OnDestroy {
-  data: Array<any>;
-  items: Array<any> = new Array<any>();
-  selectedItems: Array<any> = [];
-  isSelectAll: boolean;
-  modal: any;
-  totalPending: number;
-  totalAccepted: number;
-  currentTab: string;
-  currentTabTitle: any;
+  invPending: any[] = null;
+  invAccepted: any[] = null;
+  cols: any[];
+  selectedPending: any = [];
+  selectedAccepted: any = [];
+  currentTab: string; // pending, accepted
 
-  readonly TAB: any = {
-    PENDING: { value: 'pending', name: 'Pending'},
-    ACCEPTED: { value: 'accepted', name: 'Accepted invitation'}
-  };
-
-  private destroySubject: Subject<any> = new Subject<any>();
-  constructor(
-    private invitationService: InvitationService,
-    private toaster: ToastsService,
-    private route: ActivatedRoute,
-    private loadingService: LoadingService
-  ) {
+  constructor(private invitationService: InvitationService,
+              private messageService: MessageService,
+              private loadingService: LoadingService) {
+    this.currentTab = 'pending';
+    this.cols = [
+      { field: 'recipient_email', header: 'Email' },
+      { field: 'created_at', header: 'Sent date' }
+    ];
   }
 
   ngOnInit() {
-
-    this.currentTab = this.TAB.PENDING.value;
-    this.route.queryParams.pipe(
-      takeUntil(this.destroySubject.asObservable()),
-      map((queryParam: any) => {
-      this.currentTab = queryParam['tab'] || this.TAB.PENDING.value;
-      this.currentTabTitle = _.find(this.TAB, ['value', this.currentTab]);
-      this.selectedItems.length = 0;
-      return queryParam;
-    }),
-      switchMap(() => {
-      return this.invitationService.getByStatus({status: this.currentTab});
-    })
-    ).subscribe((response: any) => {
-      this.isSelectAll = false;
-      this.items = response.data;
-    });
+    this.getData().then();
   }
 
   ngOnDestroy() {
-    this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
   }
 
-  addRecipients(modal: any) {
-    this.modal = modal;
-    modal.open({data: this.data});
-  }
-
-  updateInvitations(event: any) {
-
+  async getData() {
+    this.invPending = await this.invitationService.getByStatus({ status: 'pending' })
+      .pipe(map(res => res.data))
+      .toPromise();
+    this.invAccepted = await this.invitationService.getByStatus({ status: 'accepted' })
+      .pipe(map(res => res.data))
+      .toPromise();
   }
 
   doEvent(event: any) {
-    // this.loadingService.start('#loading');
+    console.log(event);
+
     switch (event.action) {
       case 'invitation:send_successfully':
-        this.items = [...this.items, ...event.payload];
+        this.invPending = [...this.invPending, ...event.payload];
         break;
       case 'invitation:send_to_recipients':
-
-        console.log(event);
-        this.invitationService.create({recipients: event.payload}).subscribe((response: any) => {
-            if (this.currentTab === this.TAB.PENDING.value)
-              this.items = _.uniqBy([...this.items, ...response.data], 'recipient_email');
-            this.loadingService.stop('#loading');
-            // this.toaster.success('You have just sent invitation(s) successfully!');
-          },
-          (error: any) => {
-            this.loadingService.stop('#loading');
-            this.toaster.danger('There is a error when you sent invitation(s)!');
-          }
-        );
-        this.modal.close();
         break;
     }
   }
 
-  onSelect(item: any) {
-    let selectedItem = _.find(this.selectedItems, (i: any) => i.uuid === item.uuid);
-
-    if(!selectedItem) {
-      this.selectedItems.push(item);
-      item = Object.assign({},item, {selected: true});
-      if(this.selectedItems.length === this.items.length)
-        this.isSelectAll = true;
-    } else {
-      _.remove(this.selectedItems, (i: any) => i.uuid === item.uuid);
-      item = Object.assign({},item, {selected: false});
-      this.isSelectAll = false;
-    }
+  onResend(selectedItems: any) {
+    // console.log(selectedItems);
+    this.loadingService.start();
+    const ids = _.map(selectedItems, 'id');
+    this.invitationService.multiResend({ ids: ids }).toPromise()
+      .then(
+        () => {
+          this.loadingService.stop();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'You have just resent invitations successfully!'
+          });
+        },
+        () => {
+          this.loadingService.stop();
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'There is a error when you resent invitations!'
+          });
+        });
+    this.clear();
   }
 
-  onSelectAll() {
-    if(this.items.length === 0) {
-      return;
-    }
-    if(this.selectedItems.length !== this.items.length) {
-      this.selectedItems = [...this.items];
-      this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: true}));
-      this.isSelectAll = true;
-    } else {
-      this.selectedItems.length = 0;
-      this.items = _.map(this.items, (i: any) => Object.assign({}, i, {selected: false}));
-      this.isSelectAll = false;
-    }
+  onRemove(selectedItems: any) {
+    // console.log(selectedItems);
+    this.loadingService.start();
+    const ids = _.map(selectedItems, 'id');
+    this.invitationService.multiDelete({ 'ids': ids })
+      .subscribe(
+        () => {
+          this.loadingService.stop();
+          _.remove(this.invAccepted, (i: any) => ids.indexOf(i.id) !== -1);
+          _.remove(this.invPending, (i: any) => ids.indexOf(i.id) !== -1);
+        });
+    this.clear();
   }
 
-  onResend(item?: any) {
-    let ids: any[] = [];
-
-    if(item) {
-      ids = [item.id];
-    } else {
-      ids = _.map(this.selectedItems, 'id');
-    }
-    this.loadingService.start('#loading');
-
-    this.invitationService.multiResend({ids: ids}).toPromise().then((response: any) => {
-        this.loadingService.stop('#loading');
-        this.toaster.success('You have just resent invitations successfully!');
-      },
-      (error: any) => {
-        this.loadingService.stop('#loading');
-        this.toaster.danger('There is a error when you resent invitations!');
-      });
-  }
-
-
-  onRemove(item?: any) {
-    if(item) {
-      this.invitationService.multiDelete({'ids': [item.id]}).toPromise()
-        .then((res: any) => _.remove(this.items, (i: any) => i.uuid === item.uuid));
-    } else {
-      // Remove selected
-      let ids = _.map(this.selectedItems, 'id');
-      this.invitationService.multiDelete({'ids': ids}).toPromise()
-        .then((res: any) => _.remove(this.items, (i: any) => ids.indexOf(i.id) !== -1));
-    }
-  }
-
-  parseRecipient(item: any) {
-    return {
-      email: item.recipient_email,
-      fullName: item.recipient_full_name,
-      contactId: item.recipient_contact_id
-    };
+  clear() {
+    this.selectedPending.length = 0;
+    this.selectedAccepted.length = 0;
   }
 }

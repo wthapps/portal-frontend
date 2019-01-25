@@ -73,7 +73,6 @@ export class NoteConstants extends ConstantsBase {
       icon: 'fa fa-share-alt',
       title: 'There is match search result!',
       subTitle: 'Please try another keyword'
-
     }
   };
 
@@ -93,6 +92,37 @@ export class NoteConstants extends ConstantsBase {
     updated_at: 'Last modified',
     shared_date: 'Share date'
   };
+
+  FONTS = [
+    { name: 'Gotham', value: 'gotham' },
+    { name: 'Georgia', value: 'georgia' },
+    { name: 'Helvetica', value: 'helvetica' },
+    { name: 'Courier New', value: 'courier-new' },
+    { name: 'Lato', value: 'lato' },
+    { name: 'Times New Roman', value: 'times-new-roman' },
+    { name: 'Trebuchet', value: 'trebuchet' },
+    { name: 'Verdana', value: 'verdana' }
+  ];
+
+  FONT_SIZES = [
+    { name: '8', value: '8pt' },
+    { name: '10', value: '10pt' },
+    { name: '12', value: '12pt' },
+    { name: '14', value: '14pt' },
+    { name: '18', value: '18pt' },
+    { name: '24', value: '24pt' },
+    { name: '36', value: '36pt' }
+  ];
+
+  HEADINGS = [
+    { name: 'Normal', value: 0 },
+    { name: 'Heading 1', value: 1 },
+    { name: 'Heading 2', value: 2 },
+    { name: 'Heading 3', value: 3 },
+    { name: 'Heading 4', value: 4 },
+    { name: 'Heading 5', value: 5 },
+    { name: 'Heading 6', value: 6 }
+  ];
 }
 const noteConstants: NoteConstants = new NoteConstants();
 export { noteConstants };

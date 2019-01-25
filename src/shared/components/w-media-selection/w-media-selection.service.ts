@@ -11,6 +11,15 @@ import { map } from 'rxjs/operators/map';
 
 declare let _: any;
 
+const DEFAULT_OPTIONS = {
+  selectedTab: 'photos',
+  hiddenTabs: [],
+  allowSelectMultiple: true,
+  allowCancelUpload: false,
+  allowedFileTypes: ['image/*', 'video/mp4', 'video/x-m4v', 'video/*'],
+  uploadButtonText: 'Upload photos',
+  dragdropText: 'Drag your photos here'
+};
 @Injectable()
 export class WMediaSelectionService {
   medias$: Observable<any>;
@@ -31,15 +40,7 @@ export class WMediaSelectionService {
   multipleSelection$: Observable<any>;
   private multipleSelectionSubject: Subject<boolean> = new Subject<boolean>();
 
-  private defaultOptions: any = {
-    selectedTab: 'photos',
-    hiddenTabs: [],
-    allowSelectMultiple: true,
-    allowCancelUpload: false,
-    allowedFileTypes: ['image/*', 'video/mp4', 'video/x-m4v', 'video/*'],
-    uploadButtonText: 'Upload photos',
-    dragdropText: 'Drag your photos here'
-  };
+  private options = DEFAULT_OPTIONS;
   constructor(private apiBaseService: ApiBaseService,
               private objectListService: WObjectListService,
               private datePipe: DatePipe) {
@@ -56,10 +57,15 @@ export class WMediaSelectionService {
    * @param options
    */
   open(options: any = {}) {
-    options = Object.assign(this.defaultOptions, options);
+    this.options = Object.assign({}, DEFAULT_OPTIONS, options);
     this.clear();
-    this.objectListService.setMultipleSelection(options.allowSelectMultiple);
-    this.openSubject.next(options);
+    this.objectListService.setMultipleSelection(this.options.allowSelectMultiple);
+    this.objectListService.setGroupBy('');
+    this.openSubject.next(this.options);
+  }
+
+  getOptions() {
+    return this.options;
   }
 
   close() {

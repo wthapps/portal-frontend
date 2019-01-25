@@ -32,13 +32,12 @@
   dl {
     margin-bottom: 0;
     &:not(:last-child) {
-      //margin-bottom: 5px;
-      padding-bottom: 0px;
-      //border-bottom: 1px solid $line;
+      padding-bottom: 10px;
     }
   }
   dd:not(:last-child) {
-    margin-bottom: 0px;
+    padding-top: 6px;
+    //margin-bottom: 10px;
   }
 }
 
@@ -51,13 +50,16 @@
       .icon {
         width: 40px;
       }
+      button {
+        min-height: 34px;
+      }
     }
     dd {
       margin-left: 150px;
-      //div {
-      //  padding-top: 6px;
-      //}
-      padding-top: 7px;
+      padding-top: 6px;
+      &.not-first-item {
+        padding-top: 14px;
+      }
     }
   }
 }
@@ -77,3 +79,6 @@
     }
   }
 }
+
+
+

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatShareRequestContactComponent } from '../shared/modal/request-contact.component';
 import { Constants } from '@wth/shared/constant';
+import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 
 @Component({
   selector: 'z-chat-contact-search',
@@ -19,10 +20,10 @@ export class ZChatContactSearchComponent implements OnInit {
   newContacts: any;
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
 
-  constructor(private chatService: ChatService) {}
+  constructor(private chatService: ChatService, private chatConversationService: ChatConversationService) {}
 
   ngOnInit() {
-    this.contactItem$ = this.chatService.getConversationsAsync();
+    this.contactItem$ = this.chatConversationService.getStoreConversations();
   }
 
   search() {

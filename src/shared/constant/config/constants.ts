@@ -1,7 +1,7 @@
 import { Config } from './env.config';
 export class ConstantsBase {
   baseUrls: any = {
-    apiBaseService: Config.API + '/',
+    apiUrl: Config.API + '/',
     domain: Config.DOMAIN,
     app: Config.SUB_DOMAIN.APP,
     myAccount: Config.SUB_DOMAIN.MYACCOUNT,
@@ -13,7 +13,7 @@ export class ConstantsBase {
     cdn: Config.CDN
   };
   cdn: any = Config.CDN;
-  currentVersion = '2018 WTHApps - v1.6.0';
+  currentVersion = '2018 WTHApps - v1.8.0';
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
@@ -94,6 +94,7 @@ export class ConstantsBase {
       link: '/my-note',
       icon: 'icon-zone-note'
     },
+    { name: 'Settings', value: 'settings', icon: 'fa fa-cog'},
     { name: 'Recent', value: 'recent', link: '/recent', icon: 'fa fa-clock-o' },
     {
       name: 'Favourite',
@@ -114,7 +115,6 @@ export class ConstantsBase {
       icon: 'fa fa-share-alt'
     },
     { name: 'Trash', value: 'Trash', link: '/trash', icon: 'fa fa-trash-o' }
-    // {name: 'Settings', value: 'settings', link: '/settings', icon: 'fa fa-cog'},
   ];
   notePageType: any = {
     MY_NOTE: 'MY_NOTE',
@@ -474,6 +474,7 @@ export class ConstantsBase {
     addToBlacklist: 'Add to blacklist',
     addToFavorites: 'Add to favorites',
     addAttachments: 'Add attachments',
+    attachments: 'Attachments',
     back: 'Back',
     cancelUploading: 'Cancel uploading',
     changeView: 'Change view',

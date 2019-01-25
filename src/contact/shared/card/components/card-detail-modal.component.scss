@@ -32,7 +32,8 @@
     }
   }
   dd:not(:last-child) {
-    margin-bottom: 10px;
+    //padding-top: 15px;
+    //margin-bottom: 10px;
   }
 }
 
@@ -44,6 +45,7 @@
       clear: both;
     }
     dd {
+      padding-top: 6px;
       margin-left: 150px;
     }
   }

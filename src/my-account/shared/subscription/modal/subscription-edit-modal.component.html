@@ -1,62 +1,56 @@
-<form novalidate>
-
-  <bs-modal #modal
-         id="modal-subscription-edit"
-         [cssClass]="'modal-subscription-edit'"
-         [keyboard]="false"
-         [animation]="false"
-         [backdrop]="'static'" style="display: inline;">
-    <bs-modal-header>
-      <button aria-label="Close" class="close" (click)="close()" type="button">
-        <span aria-hidden="true">×</span>
-      </button>
-      <h4 class="modal-title">Update Subscription</h4>
-    </bs-modal-header>
-    <bs-modal-body>
-
-      <div class="panel panel-default pt0 mt0 mb0">
-        <div class="panel-body pt0 mt0 mb0">
-          <div class="row">
-            <div class="col-xs-4 text-right" >
-              <div>Plan type:</div>
-              <div>Number of accounts:</div>
-              <div>Total billing amount:</div>
-              <div>Payment method:</div>
-              <div>Next billing date:</div>
-            </div>
-
-            <div class="col-xs-3 text-left pl0">
-              <div> {{ plan?.description }} </div>
-              <div> {{ editing?.accountCount +  subscription?.accounts_count}} </div>
-              <div><b> ${{ editing?.accountCount * (editing?.accountPrice | number) + (subscription?.amount | number) }}/month </b></div>
-              <div>VISA</div>
-              <div><b> {{ subscription?.next_billing_date | date: 'MMM d, y' }} </b></div>
-            </div>
-
-          </div>
-        </div>
+<bs-modal #modal
+          id="modal-subscription-edit"
+          [cssClass]="'modal-subscription-edit'"
+          [keyboard]="false"
+          [animation]="false"
+          [backdrop]="'static'" style="display: inline;">
+  <bs-modal-header>
+    <button aria-label="Close" class="close" (click)="close()" type="button">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title">Update Subscription</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div class="card mb20">
+      <div class="card-body">
+        <dl class="dl-horizontal-plan">
+          <dt>Plan type:</dt>
+          <dd>{{ plan?.description }}</dd>
+          <dt>Number of accounts:</dt>
+          <dd>{{ editing?.accountCount + subscription?.accounts_count}}</dd>
+          <dt>Storage plan:</dt>
+          <dd>...</dd>
+          <dt>Total billing:</dt>
+          <dd>
+            ${{ editing?.accountCount * (editing?.accountPrice | number) + (subscription?.amount | number) }}/month
+          </dd>
+          <dt>Payment method:</dt>
+          <dd>VISA</dd>
+          <dt>Next billing date:</dt>
+          <dd>{{ subscription?.next_billing_date | date: 'MMM d, y' }}</dd>
+        </dl>
       </div>
+    </div>
+    <div class="clearfix">
+      <p-checkbox [(ngModel)]="checked" binary="true"></p-checkbox>
+      I have read and agree to the
+      <a target="_blank" [href]="constants.baseUrls.app + '/policies/terms'" rel="noopener">Term of Services</a> and
+      <a target="_blank" [href]="constants.baseUrls.app + '/policies/privacy'" rel="noopener">Privacy & Cookies Policy
+      </a>.
+    </div>
 
-      <div>
-        <p>
-          <input #chkAgree type="checkbox" checked> I have read and agreed to the
-          <a target="_blank" [href]="constants.baseUrls.app + '/policies/terms'" rel="noopener"> Term of service</a> -
-          <a target="_blank" [href]="constants.baseUrls.app + '/policies/privacy'" rel="noopener">Privacy &amp; policies</a>
-        </p>
-      </div>
+  </bs-modal-body>
 
-    </bs-modal-body>
+  <bs-modal-footer>
+    <button *ngIf="accountAction == 'add'" class="btn btn-outline-default btn-min pull-left"
+            (click)="edit()">Back
+    </button>
 
-    <bs-modal-footer>
-      <div>
-        <button *ngIf="accountAction == 'add'" class="btn btn-outline-default btn-min pull-left"
-                (click)="edit()">Back</button>
-        <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
-        <button class="btn btn-outline-primary btn-min pull-right" [disabled]="!chkAgree.checked"
-                *ngIf="mode == 'edit'"
-                (click)="update()">Continue</button>
-      </div>
-    </bs-modal-footer>
-  </bs-modal>
+    <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
+    <button class="btn btn-outline-primary btn-min" [disabled]="!checked"
+            *ngIf="mode == 'edit'"
+            (click)="update()">Continue
+    </button>
+  </bs-modal-footer>
+</bs-modal>
 
-</form>

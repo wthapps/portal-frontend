@@ -169,11 +169,15 @@ export class MediaUploaderV1Component implements OnInit, AfterViewInit, OnDestro
     this.uploader.cancelAll();
   }
 
-  close() {
+  close(e: any) {
+    e.preventDefault();
+    e.stopPropagation();
     const files = this.uploader.getFiles();
     const filesNotComplete = files.filter(f => !f.progress.uploadComplete);
     if (filesNotComplete && filesNotComplete.length > 0) {
       this.modal.open();
+    } else {
+      this.modalDock.close();
     }
   }
 

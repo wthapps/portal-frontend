@@ -8,6 +8,7 @@ import { EditNameModalComponent } from '@wth/shared/components/modal';
 import { LockUploadModalComponent } from '@shared/components/modal/lock-upload-modal.component';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { ModalService } from '@shared/components/modal/modal-service';
+import { LongMessageModalComponent } from './long-message-modal.component';
 
 
 @NgModule({
@@ -20,13 +21,15 @@ import { ModalService } from '@shared/components/modal/modal-service';
   ],
   declarations: [
     EditNameModalComponent,
-    LockUploadModalComponent
+    LockUploadModalComponent,
+    LongMessageModalComponent
   ],
   exports: [
     BsModalModule,
 
     EditNameModalComponent,
-    LockUploadModalComponent
+    LockUploadModalComponent,
+    LongMessageModalComponent
   ]
 })
 export class ModalModule {

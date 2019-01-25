@@ -11,7 +11,8 @@ import { Constants } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { UserService } from '@shared/services';
+import { UserService, CommonEventService } from '@shared/services';
+import { ChatConversationService } from '../services/chat-conversation.service';
 
 
 declare let $: any;
@@ -44,8 +45,10 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   constructor(
     public userService: UserService,
     private chatService: ChatService,
+    private chatConversationService: ChatConversationService,
     private wthConfirmService: WthConfirmService,
     private addContactService: ZChatShareAddContactService,
+    private commonEventService: CommonEventService,
     private renderer: Renderer2,
     private messageAssetsService: MessageAssetsService) {
     this.profileUrl = this.chatService.constant.profileUrl;
@@ -79,7 +82,13 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   onAddMember() {
-    this.addContactService.open('addMember');
+    // this.addContactService.open('addMember');
+    this.commonEventService.broadcast({
+      channel: 'ZChatShareAddContactComponent',
+      action: 'open',
+      payload: {option: 'addMember'}
+    })
+
   }
 
   sendContact() {
@@ -87,7 +96,6 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   onEditConversation() {
-    this.editConversation.conversation = this.chatService.getContactSelect().value;
     this.editConversation.open();
   }
 
@@ -95,21 +103,32 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     this.chatService.addGroupUserFavorite(this.contactSelect);
   }
 
-  toogleNotification() {
+  toggleNotification() {
     this.chatService.updateNotification(this.contactSelect, { notification: !this.contactSelect.notification });
   }
 
   leaveConversation() {
-    this.chatService.leaveConversation(this.contactSelect);
+    this.chatConversationService.leaveConversation(this.contactSelect);
+  }
+
+  onHideConversation() {
+    this.wthConfirmService.confirm({
+      acceptLabel: 'Hide',
+      message: 'Are you sure you want to hide this conversation?',
+      header: 'Hide Chat',
+      accept: () => {
+        this.chatConversationService.apHideConversation(this.contactSelect);
+      }
+    });
   }
 
   onDeleteConversation() {
     this.wthConfirmService.confirm({
-      acceptLabel: 'Hide',
-      message: 'Are you sure you want to hide this conversation?',
-      header: 'Hide Conversation',
+      acceptLabel: 'Delete',
+      message: 'This conversation will be deleted from your message list only. not everyone else.<br><br> This action can\'t be undone',
+      header: 'Delete Conversation',
       accept: () => {
-        this.chatService.deleteContact(this.contactSelect);
+        this.chatConversationService.apiDeleteConversation(this.contactSelect);
       }
     });
   }

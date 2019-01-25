@@ -2,7 +2,6 @@ import {
   Component, Input, Output, ContentChild, TemplateRef, AfterViewInit,
   AfterContentChecked, ViewEncapsulation, EventEmitter, OnDestroy, OnChanges, SimpleChanges
 } from '@angular/core';
-import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
@@ -39,7 +38,6 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   @ContentChild('columnAction') columnActionTmpl: TemplateRef<any>;
 
   dragSelect: any;
-  // view$: Observable<string>;
   selectedObjects: any;
 
   objectsDisabled: any;

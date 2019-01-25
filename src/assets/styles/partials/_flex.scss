@@ -123,6 +123,10 @@ $grid-breakpoints: (
     .align-self#{$infix}-stretch {
       align-self: stretch !important;
     }
+
+    .flex#{$infix}-1 {
+      @include flex(1);
+    }
   }
 }
 

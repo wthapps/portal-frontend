@@ -1,16 +1,13 @@
-import { ApiBaseService } from './../../services/apibase.service';
-import { UserService } from './../../services/user.service';
-import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Constants } from '../../constant/config/constants';
-import { WTHNavigateService } from '../../services/wth-navigate.service';
+import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { ChannelService } from '../../channels/channel.service';
-import { NotificationService } from '../../services/notification.service';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 import { User } from '@wth/shared/shared/models';
-import { Observable } from 'rxjs/Observable';
 import { SwUpdate } from '@angular/service-worker';
-import { AuthService } from '@shared/services';
 import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
+import { Constants } from '@shared/constant';
+import { ApiBaseService, AuthService, NotificationService, WTHNavigateService, CommonEventHandler, CommonEventService } from '@shared/services';
+import { PageVisibilityService } from '@shared/services/page-visibility.service';
+import { Subscription } from 'rxjs/Subscription';
 
 declare var $: any;
 declare var _: any;
@@ -24,12 +21,13 @@ declare var _: any;
   styleUrls: ['header.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @Input() user: User;
   @Input() loggedIn: boolean;
   @Input() hasSearch: Boolean = true;
   @Input() auth: any;
   @Input() showSideBar: Boolean = true;
+  channel = 'HeaderComponent';
 
   readonly tooltip: any = Constants.tooltip;
   readonly defaultAvatar: string = Constants.img.avatar;
@@ -41,6 +39,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   type = 'update'; // update , connection
   notificationCount = 0;
 
+  private hiddenSubscription: Subscription;
+
   @HostListener('document:click', ['$event'])
   clickedOutside($event: any) {
     // here you can hide your menu
@@ -48,35 +48,79 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private navigateService: WTHNavigateService,
     private channelService: ChannelService,
     private renderer: Renderer2,
     private swUpdate: SwUpdate,
     private authService: AuthService,
     private apiBaseService: ApiBaseService,
+    private visibilityService: PageVisibilityService,
     public connectionService: ConnectionNotificationService,
+    public commonEventService: CommonEventService,
     public notificationService: NotificationService
   ) {
+    super(commonEventService);
   }
 
   ngOnInit(): void {
     if (!this.swUpdate.isEnabled) {
-    this.subscribeChanneService();
+      this.subscribeChanneService();
     } else {
       this.swUpdate.checkForUpdate()
-      .then((res) => {
-        this.subscribeChanneService();
-      });
+        .then((res) => {
+          this.subscribeChanneService();
+        });
     }
 
     if (this.authService.isAuthenticated()) {
       this.countCommonNotification().then(() => this.countChatNotification());
     }
 
+    // Handle disconnected network use-case
+    this.handleOnlineOffline();
+
+    // Handle page hidden case
+    this.hiddenSubscription = this.visibilityService.hiddenState$.subscribe(hidden => {
+      this.handleBrowserState(!hidden);
+    });
   }
 
   ngOnDestroy(): void {
     this.channelService.unsubscribe();
+    this.hiddenSubscription.unsubscribe();
+  }
+
+  handleOnlineOffline() {
+    window.addEventListener('online', () => this.updateNotifications());
+    window.addEventListener('offline', () => this.updateNotifications());
+  }
+
+  updateNotifications() {
+    const online = navigator.onLine;
+    if (online) {
+      this.updateDisconnectedData();
+    }
+  }
+
+  handleBrowserState(isActive) {
+    console.log('handle browser state: ', isActive);
+    if (isActive) {
+      this.updateDisconnectedData();
+    }
+  }
+
+  updateDisconnectedData() {
+    console.log('update disconnected data ...');
+
+    // connection / update notitications count
+    this.countCommonNotification()
+    .then(() => {
+      // get disconnected connection notifications data
+      this.notificationService.getDisconnectedNotifications();
+      // get disconnected update notifications data
+      this.connectionService.getDisconnectedNotifications();
+    });
+
+    this.countChatNotification();
   }
 
   countCommonNotification(): Promise<any> {
@@ -89,21 +133,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   countChatNotification(): void {
     this.apiBaseService
-        .addCommand(ConversationApiCommands.notificationsCount())
-        .subscribe((res: any) => {
-          this.notificationCount = res.data.count;
-        });
+      .addCommand(ConversationApiCommands.notificationsCount())
+      .subscribe((res: any) => {
+        this.notificationCount = res.data.count;
+        this.commonEventService.broadcast({
+          channel: 'ChatNotificationComponent',
+          action: 'updateNotificationCount',
+          payload: this.notificationCount
+        })
+      });
   }
 
   subscribeChanneService() {
-    console.log('subscribe channel service');
     this.channelService.subscribe();
   }
 
   onShowSideBar(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    console.log('show sidebar');
     this.renderer.addClass(document.body, 'left-sidebar-open');
   }
 

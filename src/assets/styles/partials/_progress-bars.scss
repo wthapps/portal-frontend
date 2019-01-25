@@ -1,5 +1,8 @@
 .progress {
-  height: 8px;
   @include box-shadow(none);
   background-color: #DEDEDE;
+}
+
+.progress-sm {
+  height: 8px;
 }

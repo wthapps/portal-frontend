@@ -54,6 +54,7 @@ export class MessageItemComponent implements OnInit {
   }
 
   onPreviewPhoto(message: any) {
+    if (!_.get(message, 'file.uuid')) { return; }
     const currentConversation = this.storageService.get(CONVERSATION_SELECT);
     this.router.navigate([{
       outlets: {
@@ -162,20 +163,20 @@ export class MessageItemComponent implements OnInit {
     return true;
   }
 
-  hasShowDate(): boolean {
-    if (this.prevMessage == null) {
-      return true;
-    }
-    if (
-      this.message.created_at &&
-      this.prevMessage.created_at &&
-      this.message.created_at.slice(0, 10) ===
-        this.prevMessage.created_at.slice(0, 10)
-    ) {
-      return false;
-    }
-    return true;
-  }
+  // hasShowDate(): boolean {
+  //   if (this.prevMessage == null || this.message.status == 'pending') {
+  //     return true;
+  //   }
+  //   if (
+  //     this.message.created_at &&
+  //     this.prevMessage.created_at &&
+  //     this.message.created_at.slice(0, 10) ===
+  //       this.prevMessage.created_at.slice(0, 10)
+  //   ) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   onImgLoaded() {
     // setTimeout(() => {

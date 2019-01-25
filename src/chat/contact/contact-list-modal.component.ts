@@ -8,8 +8,9 @@ import { Constants } from '@wth/shared/constant';
 
 import { ApiBaseService, AuthService, ChatCommonService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil, debounceTime, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 
 @Component({
   selector: 'contact-list-modal',
@@ -22,7 +23,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
 
   contacts: any;
   currentContacts: Array<any>;
-  channel: string = 'ContactListModalComponent';
+  channel = 'ContactListModalComponent';
 
   tabs: Array<any> = [
     {
@@ -64,16 +65,18 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
   showSearch: boolean;
   keyword = '';
   loading: boolean;
-  tooltip = Constants.tooltip;
-  profileUrl = Constants.baseUrls.social + '/profile';
+  readonly tooltip = Constants.tooltip;
+  readonly profileUrl = Constants.baseUrls.social + '/profile';
   selectedTab: string;
+  keySearchSubject: Subject<string> = new Subject<string>();
+  keySearchSubscription: Subscription;
   destroy$ = new Subject();
 
   constructor(
     public apiBaseService: ApiBaseService,
     private chatContactService: ChatContactService,
     private modalService: ModalService,
-    private conversationService: ConversationService,
+    private chatConversationService: ChatConversationService,
     private chatCommonService: ChatCommonService,
     public commonEventService: CommonEventService,
     private authService: AuthService,
@@ -89,11 +92,27 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
       this.selectedTab = payload.selectedTab || 'all';
       this.selectCurrentTab(this.selectedTab);
     });
+
+    // Handle key search event
+    this.keySearchSubscription = this.keySearchSubject.pipe(
+      debounceTime(40),
+      takeUntil(this.destroy$),
+      // distinctUntilChanged(),
+      switchMap(key => {
+        this.loading = true;
+        return this.apiBaseService.get(`chat/contacts/new/search?q=${key}`);
+      })).subscribe(response => {
+            this.mapResponseToContacts(response);
+            this.loading = false;
+      });
   }
 
   open(payload: any) {
     this.modal.open(payload);
     this.selectedTab = payload.selectedTab || 'all';
+    this.showSearch = false;
+    this.keyword = '';
+    this.contacts = [];
     this.selectCurrentTab(this.selectedTab);
   }
 
@@ -103,7 +122,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
 
       case 'online':
         this.selectedTab = tab.id;
-        this.apiBaseService.get(`account/users/my_contacts/?online=true`)
+        this.apiBaseService.get(`account/users?category=my_contacts&online=true`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
           this.mapResponseToContacts(response);
           this.loading = false;
@@ -121,7 +140,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
 
       case 'blacklist':
         this.selectedTab = tab.id;
-        this.apiBaseService.get(`account/users/blacklist`)
+        this.apiBaseService.get(`account/users?category=blacklist`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
           this.mapResponseToContacts(response);
           this.loading = false;
@@ -132,7 +151,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
         this.loading = false;
         break;
       default:
-        this.apiBaseService.get(`account/users/my_contacts`)
+        this.apiBaseService.get(`account/users?category=my_contacts`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
           this.mapResponseToContacts(response);
           this.loading = false;
@@ -154,37 +173,27 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
   }
 
   search(event: any) {
-    this.keyword = event.search;
-    this.loading = true;
-    this.apiBaseService.get(`chat/contacts/new/search?q=${this.keyword}`)
-        .pipe(takeUntil(this.destroy$)).subscribe(response => {
-          this.mapResponseToContacts(response);
-          this.loading = false;
-    });
-
+    this.keySearchSubject.next(event.search);
   }
 
   // actions
 
   createConversation(contact: any) {
-    // this.conversationService.create([contact]).pipe(takeUntil(this.destroy$)).subscribe(response => {
-    //   // jump to created conversation
-    //   console.log('conversation created:::', response.data);
-    //   // close current modal
-    //   this.chatCommonService.updateConversationBroadcast(response.data.group_id);
-    //   this.modal.close();
-    // });
-    this.chatContactService.addContact([contact.id]);
-    this.modal.close();
+    this.sendRequest(contact);
+  }
 
+  handleKeyUp(event) {
+    this.keySearchSubject.next(event.search);
   }
 
   sendRequest(contact: any) {
-    // this.modalService.open({modalName: 'ChatRequestModal', contact: contact});
-    this.chatContactService.addContact([contact.id], '', (res: any)=> {
-      this.chatService.selectContactByPartnerId(contact.id);
-      this.modal.close();
-    })
+    this.chatContactService.addContact([contact.id]).then(res => {
+      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
+        this.chatConversationService.moveToFirst(res2.data);
+      });
+      this.chatConversationService.navigateToConversation(res.data.group_id);
+    });
+    this.modal.close();
   }
 
   toggleBlacklist(contact: any) {
@@ -202,7 +211,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
           return;
         }
       });
-      this.chatService.getConversations({ forceFromApi: true});
+      this.chatConversationService.apiGetConversations();
     });
   }
 
@@ -211,7 +220,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
   }
 
   remove(contact: any) {
-    let path = `chat/contacts/${contact.uuid}/remove`;
+    const path = `chat/contacts/${contact.uuid}/remove`;
     this.apiBaseService.post(path)
       .pipe(takeUntil(this.destroy$)).subscribe(response => {
         this.contacts.forEach((con: any, index: number) => {

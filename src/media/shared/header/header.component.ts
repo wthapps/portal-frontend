@@ -1,7 +1,7 @@
-import { Component, ViewChild, HostListener, OnInit } from '@angular/core';
+import { Component, ViewChild, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { TextBoxSearchComponent } from '@wth/shared/partials/search-box/textbox-search.component';
-import { ServiceManager } from '@wth/shared/services';
+import { ServiceManager, CommonEventService } from '@wth/shared/services';
 import { ActivatedRoute, Params } from '@angular/router';
 
 
@@ -14,6 +14,7 @@ declare var _: any;
   selector: 'media-shared-header',
   templateUrl: 'header.component.html',
   styleUrls: ['header.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ZMediaSharedHeaderComponent implements OnInit {
   constants: any;
@@ -30,11 +31,19 @@ export class ZMediaSharedHeaderComponent implements OnInit {
     {key: 'last_month', value: 'Last month'},
     {key: 'custom', value: 'Custom...'}
   ];
+
   searchDataOwner: any = [
     {key: 'anyone', value: 'Anyone'},
     {key: 'me', value: 'Me'},
     {key: 'not_m', value: 'Not me'},
     {key: 'specific_person', value: 'Specific person'}
+  ];
+
+  searchDataType: any = [
+    {key: 'video_photo', value: 'Videos and photos only'},
+    {key: 'photo', value: 'Photos only'},
+    {key: 'video', value: 'Videos only'},
+    {key: 'album', value: 'Albums only'}
   ];
 
   form: FormGroup;
@@ -53,7 +62,10 @@ export class ZMediaSharedHeaderComponent implements OnInit {
     this.searchAdvanced = false;
   }
 
-  constructor(public serviceManager: ServiceManager, private route: ActivatedRoute,
+  constructor(
+    public serviceManager: ServiceManager,
+    private route: ActivatedRoute,
+    private commonEventService: CommonEventService,
   ) {
     this.createForm();
   }
@@ -78,7 +90,13 @@ export class ZMediaSharedHeaderComponent implements OnInit {
 
   onEscape(e?: any) {
     console.log('inside onEscape', e);
+    this.commonEventService.broadcast({
+      channel: 'HeaderComponent',
+      action: 'clickedOutside',
+      payload: {}
+    })
     this.show = false;
+    this.search = '';
   }
 
   onKey(search: any) {
@@ -112,7 +130,7 @@ export class ZMediaSharedHeaderComponent implements OnInit {
       'searchDate': [this.searchDataDate[0].key],
       'searchFrom': [''],
       'searchTo': [''],
-      'searchFileTypes': [''],
+      'searchFileTypes': [this.searchDataType[0].key],
       'searchExcludeWord': [''],
       'searchLabels': [''],
       'searchOwner': [this.searchDataOwner[0].key],
@@ -130,6 +148,15 @@ export class ZMediaSharedHeaderComponent implements OnInit {
   }
 
   onSubmit(values: any) {
-    console.log(values);
+    this.suggestions = [];
+    this.show = false;
+    this.searchAdvanced = !this.searchAdvanced;
+    this.serviceManager.getRouter().navigate([`/search`], { queryParams: { q: this.search, searchDate: values.searchDate, searchFileTypes: values.searchFileTypes, searchFrom: values.searchFrom, searchTo: values.searchTo } });
+  }
+
+  onReset(){
+    this.form.reset();
+    this.searchDate.setValue(this.searchDataDate[0].key);
+    this.searchFileTypes.setValue(this.searchDataType[0].key);
   }
 }

@@ -1,55 +1,72 @@
-import { Component, OnInit } from '@angular/core';
-import { LoadingService } from "@shared/shared/components/loading/loading.service";
-import { UserService } from "@shared/services";
-import { ToastsService } from "@shared/shared/components/toast/toast-message.service";
-import { WthConfirmService } from "@shared/shared/components/confirmation/wth-confirm.service";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { ConfigByEnv } from '@env/environment';
+import { UserService } from '@shared/services';
+import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
+import { BsModalComponent } from 'ng2-bs3-modal';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-delete-account',
-  templateUrl: './delete-account.component.html',
-  styleUrls: ['./delete-account.component.css']
+  templateUrl: './delete-account.component.html'
 })
-export class DeleteAccountComponent {
+export class DeleteAccountComponent implements OnInit {
+  @ViewChild('passwordConfirmationModal') passwordConfirmationModal: PasswordConfirmationModalComponent;
+  @ViewChild('deleteAccountModal') deleteAccountModal: BsModalComponent;
 
-  constructor(private loadingService: LoadingService, private userService: UserService,
-    private toastsService: ToastsService, private wthConfirmService: WthConfirmService) { }
 
-  onDelete(): void {
-    let bodyText = `If you don't think you will not use WTHapps again and would like to delete you account,<br>
-     we will take care of that for you.<br>
-     Your account adn all details will be deleted after 14 days. If you change your mind <br>
-     within 14 days - log back in to restore your account
-     If you still want to delete your account, click "Delete My Account". <br>`;
-    let body = JSON.stringify({permanent_deleted: true});
+  host: string = ConfigByEnv.SUB_DOMAIN.APP;
+  successful = false;
+  constructor(private router: Router, private userService: UserService, private messageService: MessageService) {
+  }
 
-    this.wthConfirmService.confirm({
-      message: bodyText,
-      header: 'Delete Account',
-      accept: () => {
-        this.loadingService.start();
-        this.userService.update(body)
-          .subscribe((response: any) => {
-              this.toastsService.success(response.message);
-              this.loadingService.stop();
-              this.userService.logout('users/sign_out')
-                .subscribe(
-                  response => {
-                    // this.userService.deleteUserInfo();
-                    // this.appearancesChannelService.unsubscribe();
-                    // this.router.navigate(['/login']);
-                  },
-                  error => {
-                    // this.userService.deleteUserInfo();
-                    // this.router.navigate(['/login']);
-                    // console.log('logout error', error);
-                  }
-                );
+  ngOnInit(): void {
+    this.deleteAccountModal.onDismiss.subscribe(response => {
+      this.goToLoginPage();
+    });
+  }
+
+  openPasswordConfirmationModal() {
+    this.passwordConfirmationModal.open();
+  }
+
+  delete(payload: any): void {
+    this.userService.deleteAccount(payload.password).subscribe(
+(response: any) => {
+        this.successful = true;
+        this.userService.logout('users/sign_out')
+          .subscribe(
+            res => {
+              this.deleteAccountModal.open();
+
             },
             error => {
-              this.toastsService.danger(error);
-              this.loadingService.stop();
-            });
-      }
+              this.deleteAccountModal.open();
+            }
+          );
+      },
+      error => {
+        this.successful = false;
+        this.deleteAccountModal.open();
+      });
+  }
+
+  submit() {
+    this.goToLoginPage();
+    this.deleteAccountModal.close();
+  }
+
+  private goToLoginPage() {
+    if (this.successful) {
+      window.location.href = this.host + '/login';
+    }
+  }
+  private showErrorMessage() {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Deletion failed',
+      detail: 'An error occurred during the process. Please try again later.'
     });
   }
 }

@@ -15,6 +15,7 @@ import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { EditorModule } from 'primeng/components/editor/editor';
+import { TableModule } from 'primeng/table';
 
 import { PipeModule } from './shared/pipe/pipe.module';
 
@@ -54,6 +55,7 @@ import { PartialModule } from '@wth/shared/partials';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { ComponentsModule } from '@shared/components/components.module';
 import { AccordionModule } from 'primeng/components/accordion/accordion';
+import { ToastModule } from 'primeng/toast';
 import { ModalModule } from '@wth/shared/components/modal/modal.module';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 import { WEditorModule } from '@shared/components/w-editor/w-editor.module';
@@ -95,13 +97,14 @@ import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.modu
     ReactiveFormsModule,
     // BrowserAnimationsModule,
 
-    // Third parties modules
-    BsModalModule,
-
     // WTHApps modules
     LoadingModule,
     ToastsModule,
     ConfirmDialogModule,
+
+    // Third parties modules
+    BsModalModule,
+    ToastModule,
     InfiniteScrollModule,
     InputSwitchModule,
     CheckboxModule,
@@ -113,6 +116,7 @@ import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.modu
     PanelMenuModule,
     DataTableModule,
     AccordionModule,
+    TableModule,
 
     WthConfirmModule,
     BoxLoadingModule,

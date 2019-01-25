@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiBaseService, AuthService } from '@shared/services';
+
 declare let moment: any;
 
 @Component({
@@ -10,6 +11,7 @@ declare let moment: any;
 
 export class MySubscriptionComponent implements OnInit {
   subscription: any;
+  editing;
   plan: any;
   paymentMethod: any;
 
@@ -45,7 +47,9 @@ export class MySubscriptionComponent implements OnInit {
   getCurrentPaymentMethod(user: any) {
     this.apiBaseService.get(`account/accounts/${user.id}/payment_method`).subscribe(
       (response: any) => {
-        this.paymentMethod = response.data[0];
+        if (response && response.data && response.data.length > 0) {
+          this.paymentMethod = response.data[0];
+        }
       }
     );
   }

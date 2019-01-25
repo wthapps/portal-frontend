@@ -1,8 +1,8 @@
+import { PartialModule } from './../../shared/partials/partial.module';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Ng2HdModule } from '@shared/shared/ng2-hd/ng2-hd.module';
-import { SharedModule } from '@shared/shared.module';
 import { ZNoteSharedToolBarComponent } from './toolbar/toolbar.component';
 import { ZNoteSharedActionBarComponent } from './toolbar/actions-bar.component';
 import { NoteListComponent } from './list/note-list.component';
@@ -10,7 +10,6 @@ import { NoteItemComponent } from './list/item/note-item.component';
 import { FolderItemComponent } from './list/item/folder-item.component';
 
 import { ZNoteService } from './services/note.service';
-// import { NoteEditModalComponent } from './modal/note/note-edit-modal.component';
 import { ZNoteSharedModalNoteViewComponent } from './modal/note/view.component';
 
 import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.component';
@@ -23,17 +22,65 @@ import { ZNoteSharedTrashActionBarComponent } from './toolbar/trash/trash-action
 import { ZNoteSharedBreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { ZNoteSharedLeftMenuComponent } from './toolbar/left-menu.component';
 import { ZNoteSharedHeaderComponent } from './header/header.component';
-import { ModalModule } from '@shared/modals/modals.module';
 import { ZNoteContainerComponent } from '@notes/shared/containers/note-container.component';
-import { StoreModule } from '@ngrx/store/store';
 import { ZNoteShareProgressComponent } from '@notes/shared/progress/note-progress.component';
 import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit.component';
+import { ZNoteSharedSettingModule } from './modal/settings/settings.module';
+import { ZNoteSharedSettingsService } from './services/settings.service';
+import { WthCommonModule } from '@shared/common/wth-common.module';
+import { ModalDockModule } from '@shared/shared/components/modal/dock.module';
+import { FileModule } from '@shared/shared/components/file/file.module';
+import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
+import { ComponentsModule } from '@shared/components/components.module';
+// import { ZSharedMenuModule } from '@shared/shared/components/menu/menu.module';
+import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
+import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
+import { TagInputModule } from 'ngx-chips';
+import {
+  InputSwitchModule,
+  CheckboxModule,
+  TooltipModule,
+  RadioButtonModule,
+  AutoCompleteModule,
+  PanelMenuModule,
+  CalendarModule
+} from 'primeng/primeng';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalModule } from '@shared/components/modal/modal.module';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [Ng2HdModule, CommonModule, ModalModule, SharedModule],
+  imports: [
+    Ng2HdModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ZNoteSharedSettingModule,
+    WthCommonModule,
+
+    // custom component
+    ModalDockModule,
+    ModalModule,
+    FileModule,
+    PartialModule,
+    WMediaSelectionModule,
+    ComponentsModule,
+    // ZSharedMenuModule,
+    BoxNoDataModule,
+    WNavTabModule,
+
+    // third party libs
+    TagInputModule,
+    InputSwitchModule,
+    CheckboxModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    CalendarModule,
+    PanelMenuModule,
+    TooltipModule
+  ],
   declarations: [
     ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
@@ -42,7 +89,6 @@ import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit
     FolderItemComponent,
     ZNoteContainerComponent,
 
-    // NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
@@ -55,8 +101,31 @@ import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit
     ZNoteSharedModalEditNameComponent
   ],
   exports: [
-    SharedModule,
+    WthCommonModule,
     ModalModule,
+
+    // custom component
+    ModalDockModule,
+    ModalModule,
+    FileModule,
+    PartialModule,
+    WMediaSelectionModule,
+    ComponentsModule,
+    BoxNoDataModule,
+    WNavTabModule,
+    ZNoteSharedSettingModule,
+
+    // third party libs
+    TagInputModule,
+    InputSwitchModule,
+    CheckboxModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    CalendarModule,
+    PanelMenuModule,
+    TooltipModule,
+    // WCountriesModule,
+
     ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
     NoteListComponent,
@@ -65,7 +134,6 @@ import { ZNoteSharedModalEditNameComponent } from '@notes/shared/modal/name/edit
     ZNoteSharedHeaderComponent,
     ZNoteContainerComponent,
 
-    // NoteEditModalComponent,
     ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
@@ -81,7 +149,12 @@ export class ZNoteSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ZNoteSharedModule,
-      providers: [ZNoteService, ZFolderService, MixedEntityService]
+      providers: [
+        ZNoteService,
+        ZFolderService,
+        ZNoteSharedSettingsService,
+        MixedEntityService
+      ]
     };
   }
 }

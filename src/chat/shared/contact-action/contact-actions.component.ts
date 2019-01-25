@@ -6,6 +6,7 @@ import { ZChatShareAddToConversationComponent } from '../modal/add-to-conversati
 import { ZSharedReportService } from '@wth/shared/shared/components/zone/report/report.service';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
+import { ChatConversationService } from '../services/chat-conversation.service';
 
 
 declare let $: any;
@@ -29,6 +30,7 @@ export class ZChatContactActionsComponent implements OnInit {
 
   constructor(private router: Router,
               private chatService: ChatService,
+              private chatConversationService: ChatConversationService,
               private toastsService: ToastsService,
               private zoneReportService: ZSharedReportService,
               private wthConfirmService: WthConfirmService) {
@@ -41,12 +43,7 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   onSelect(contact: any) {
-    if (this.config.history) {
-      this.chatService.updateHistory(contact);
-    }
     $('#chat-message-text').focus();
-    // this.chatService.selectContact(contact);
-
     this.router.navigate([this.conversationUrl, contact.id]);
   }
 
@@ -103,8 +100,7 @@ export class ZChatContactActionsComponent implements OnInit {
   }
 
   leaveConversation() {
-    console.debug(this.contact);
-    this.chatService.leaveConversation(this.contact)
+    this.chatConversationService.leaveConversation(this.contact)
       .then(_ => this.toastsService.success(`You have left conversation '${this.contact.display.name}' successfully`));
   }
 }

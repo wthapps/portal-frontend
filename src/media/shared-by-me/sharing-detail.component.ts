@@ -179,29 +179,6 @@ export class ZMediaSharingDetailComponent
     }
   }
 
-  onListChanges(e: any) {
-    switch (e.action) {
-      case 'favorite':
-        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
-        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
-        break;
-      case 'selectedObjectsChanged':
-        if (['Media::Playlist', 'Media::Video'].includes(this.object.sharing_type)) {
-          this.subMenuActions.edit.title = 'Add to Playlist';
-          this.subMenuActions.remove.title = 'Remove from Playlist';
-        } else {
-          this.subMenuActions.edit.title = 'Add to Album';
-          this.subMenuActions.remove.title = 'Remove from Album';
-        }
-        this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
-        this.validateActions(this.menuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
-        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
-        break;
-      default:
-        break;
-    }
-  }
-
   loadObjects(input: any, opts: any = {}) {
     this.loading = true;
     this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
@@ -300,6 +277,30 @@ export class ZMediaSharingDetailComponent
 
   selectedObjectsChanged:(objectsChanged?: any) => void;
 
+  onListChanges(e: any) {
+    switch (e.action) {
+      case 'favorite':
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
+        break;
+      case 'selectedObjectsChanged':
+        if (['Media::Playlist', 'Media::Video'].includes(this.object.sharing_type)) {
+          this.subMenuActions.edit.title = 'Add to Playlist';
+          this.subMenuActions.remove.title = 'Remove from Playlist';
+        } else {
+          this.subMenuActions.edit.title = 'Add to Album';
+          this.subMenuActions.remove.title = 'Remove from Album';
+        }
+        this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
+        this.validateActions(this.menuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
+        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
+        if (this.selectedObjects.length > 0) this.showDetailsInfo = false;
+        break;
+      default:
+        break;
+    }
+  }
+
   loadModalComponent: (component: any) => void;
   getSharingParentInfo: (sharingId: any) => void;
   toggleInfo: () => void;
@@ -332,6 +333,7 @@ export class ZMediaSharingDetailComponent
     })
     this.selectedObjects = [];
     this.hasSelectedObjects = false;
+    this.selectedObjectsChanged();
   }
 
   deleteObjects(term: any = 'items') {
@@ -613,9 +615,9 @@ export class ZMediaSharingDetailComponent
       info: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
-        inDropDown: true, // Outside dropdown list
+        inDropDown: false, // Outside dropdown list
         action: this.toggleInfoCustom.bind(this),
-        class: '',
+        class: 'btn bt-default',
         liclass: '',
         title: 'View Information',
         tooltip: this.tooltip.info,

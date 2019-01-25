@@ -4,17 +4,17 @@ import { ZChatSharedModule } from '../shared/shared.module';
 import { ConversationListComponent } from './conversation-list.component';
 import { ZChatConversationRoutingModule } from './conversation-routing.module';
 import { ConversationDetailComponent } from './conversation-detail.component';
-import { SharedModule } from '@wth/shared/shared.module';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { ZChatNewConversationComponent } from './new-conversation.component';
+import { ZChatMessageModule } from '@chat/shared/message/message.module';
 
 @NgModule({
   imports: [
     ReactiveFormsModule,
     ModalModule,
     ZChatConversationRoutingModule,
-    ZChatSharedModule,
-    SharedModule
+    ZChatMessageModule,
+    ZChatSharedModule
   ],
   declarations: [
     ConversationListComponent,
@@ -22,6 +22,8 @@ import { ZChatNewConversationComponent } from './new-conversation.component';
     ZChatNewConversationComponent
   ],
   exports: [
+    ZChatMessageModule,
+
     ConversationListComponent,
     ConversationDetailComponent,
     ZChatNewConversationComponent

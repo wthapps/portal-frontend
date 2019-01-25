@@ -1,0 +1,99 @@
+<div class="box-panel">
+  <h3 class="box-panel-title">Manage storage</h3>
+  <div class="row">
+    <div class="col-sm-8">
+      <h4 class="mt-0">Total storage</h4>
+      <div class="progress mt10 mb10">
+        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+             style="width: 40%;">
+          <span class="sr-only">40%</span>
+        </div>
+      </div>
+      <h4 class="text-normal"><span class="text-danger">4GB used</span> | 10GB total storage</h4>
+      <a (click)="modal.open()" href="#">View details</a>
+      <br>
+      <h4>Storage Plans</h4>
+      <div class="card">
+        <div class="card-body">
+          <p class="text-bold">Current Plan</p>
+          <h3 class="mt10 mb10">10 GB storage</h3>
+          <ul class="list-unstyled text-muted">
+            <li>Need more data?</li>
+            <li>Upgrade your storage.</li>
+            <li>Click button below to upgrade your data Storage Plan</li>
+          </ul>
+          <button (click)="modalPlan.open()" class="btn btn-outline-primary">
+            <i class="fa fa-arrow-circle-o-up"></i> Upgrade storage
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Storage detail</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div class="progress mt10 mb10">
+      <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+           style="width: 40%;">
+        <span class="sr-only">40%</span>
+      </div>
+    </div>
+    <h4 class="text-normal">10 GB total storage</h4>
+    <dl class="dl-storage-dt">
+      <dt class="active">4 GB used</dt>
+      <dd>
+        <div class="d-flex justify-content-between">
+          <span class="text-bold"><i class="icon-zone-media"></i> WTH!Photos</span>
+          <span>2 GB</span>
+        </div>
+      </dd>
+      <dd>
+        <div class="d-flex justify-content-between">
+          <span class="text-bold"><i class="icon-zone-note"></i> WTH!Notes</span>
+          <span>2 GB</span>
+        </div>
+      </dd>
+      <dt>6 GB available</dt>
+    </dl>
+  </bs-modal-body>
+
+  <bs-modal-footer>
+    <button (click)="modal.close()" type="submit" class="btn btn-outline-primary btn-min">
+      Done
+    </button>
+  </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #modalPlan [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Upgrade storage</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p>Choose a plan to fit your personal storage needs</p>
+    <div class="list-group-radio">
+      <div class="list-group-radio-item">
+        <p-radioButton name="group1" value="1" label="50 GB - $1/user/month" [(ngModel)]="val1"></p-radioButton>
+      </div>
+      <div class="list-group-radio-item">
+        <p-radioButton name="group1" value="2" label="200 GB - $3/user/month" [(ngModel)]="val1"></p-radioButton>
+      </div>
+      <div class="list-group-radio-item">
+        <p-radioButton name="group1" value="3" label="2 TB - $10/user/month" [(ngModel)]="val1"></p-radioButton>
+      </div>
+    </div>
+  </bs-modal-body>
+
+  <bs-modal-footer>
+    <button (click)="modalPlan.close()" type="submit" class="btn btn-outline-default btn-min">
+      Cancel
+    </button>
+    <button [disabled]="!val1" (click)="openSubscriptionUpdateModal()" type="submit" class="btn btn-outline-primary btn-min">
+      Continue
+    </button>
+  </bs-modal-footer>
+</bs-modal>

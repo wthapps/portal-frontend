@@ -1,48 +1,45 @@
-<div class="chat-message-container">
-  <form [formGroup]="messageEditorForm" novalidate>
+<form [formGroup]="messageEditorForm" novalidate>
 
-    <mini-editor #miniEditor *ngIf="contactSelect" [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" [placeholder]="contactSelect.black_list ? placeholderBl : placeholder"
-      [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"
-      (onKeyUp)="handleKeyUp($event)" (onImagePaste)="handleImagePaste($event)">
-      <p-header>
-      </p-header>
-    </mini-editor>
-    <div *ngIf="contactSelect && !contactSelect.black_list" class="chat-message-action">
-      <div class="btn-group dropup">
-        <button type="button" class="btn btn-default dropdown-toggle" [attr.disabled]="isDisabled ? 'disabled' : null" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-plus-circle"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right" *ngIf="!isDisabled">
-          <li>
-            <a (click)="onOpenSelectPhotos()" href="javascript:;">
-              <i class="icon-zone-media"></i> Share photos</a>
-          </li>
-          <li>
-            <a (click)="noteSelectOpen()" href="javascript:;">
-              <i class="icon-zone-note"></i> Share notes</a>
-          </li>
-          <li>
-            <a (click)="shareContacts()" href="javascript:;">
-              <i class="fa fa-user-plus"></i> Share contacts</a>
-          </li>
-          <li>
-            <a (click)="sendMessage('file')" href="javascript:;">
-              <i class="fa fa-paperclip"></i> Add files</a>
-          </li>
-        </ul>
-      </div>
-      <button class="btn btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="showEmojiBtn($event)">
-        <i class="fa fa-smile-o"></i>
+  <mini-editor #miniEditor *ngIf="contactSelect" [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" [placeholder]="contactSelect.blacklist ? placeholderBl : placeholder"
+               [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"
+               (onKeyUp)="handleKeyUp($event)" (onImagePaste)="handleImagePaste($event)">
+    <p-header>
+    </p-header>
+  </mini-editor>
+  <div *ngIf="contactSelect && !contactSelect.blacklist" class="chat-message-action">
+    <div class="btn-group dropup">
+      <button type="button" class="btn btn-default dropdown-toggle" [attr.disabled]="isDisabled ? 'disabled' : null" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-plus-circle"></i>
       </button>
-      <button class="btn chat-message-action-send btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="validateAndSend()">
-        <i class="fa fa-send"></i>
-      </button>
+      <ul class="dropdown-menu dropdown-menu-right" *ngIf="!isDisabled">
+        <li>
+          <a (click)="onOpenSelectPhotos()" href="javascript:;">
+            <i class="icon-zone-media"></i> Share photos</a>
+        </li>
+        <li>
+          <a (click)="noteSelectOpen()" href="javascript:;">
+            <i class="icon-zone-note"></i> Share notes</a>
+        </li>
+        <li>
+          <a (click)="shareContacts()" href="javascript:;">
+            <i class="fa fa-user-plus"></i> Share contacts</a>
+        </li>
+        <li>
+          <a (click)="openAddFile()" href="javascript:;">
+            <i class="fa fa-paperclip"></i> Add files</a>
+        </li>
+      </ul>
     </div>
-  </form>
-  <chat-note-list-modal #noteList (insertNoteEvent)="noteSelectOnInsert()">
+    <button class="btn btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="showEmojiBtn($event)">
+      <i class="fa fa-smile-o"></i>
+    </button>
+    <a class="btn chat-message-action-send btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="validateAndSend()">
+      <i class="fa fa-send"></i>
+    </a>
+  </div>
+</form>
+<chat-note-list-modal #noteList (insertNoteEvent)="noteSelectOnInsert()">
+</chat-note-list-modal>
+<long-message-modal #longMessageModal></long-message-modal>
 
-  </chat-note-list-modal>
-
-  <long-message-modal #longMessageModal></long-message-modal>
-</div>

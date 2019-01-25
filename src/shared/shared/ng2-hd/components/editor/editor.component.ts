@@ -24,8 +24,8 @@ export const EDITOR_VALUE_ACCESSOR: any = {
 export class EditorComponent extends Editor implements AfterViewInit, ControlValueAccessor {
 
 
-  constructor(public el: ElementRef, public domHandler: DomHandler) {
-    super(el, domHandler);
+  constructor(public el: ElementRef) {
+    super(el);
   }
 
   ngAfterViewInit() {

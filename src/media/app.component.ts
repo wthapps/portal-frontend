@@ -1,24 +1,14 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  AfterViewInit,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Constants, Config } from '@wth/shared/constant';
+import { Constants } from '@wth/shared/constant';
 import { ConfirmDialogModel } from '@wth/shared/shared/models/confirm-dialog.model';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 // import { AppSandbox } from './app.sandbox';
-import { State } from './shared/store';
-import { Store } from '@ngrx/store';
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
-import { WUploader } from '@shared/services/w-uploader';
 
 /**
  * This class represents the main application component.
@@ -27,7 +17,10 @@ import { WUploader } from '@shared/services/w-uploader';
   moduleId: module.id,
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+  styleUrls: [
+    'app.component.scss',
+    'app-new.component.scss'
+  ],
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {

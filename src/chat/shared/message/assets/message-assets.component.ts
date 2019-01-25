@@ -1,20 +1,22 @@
 import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
-import { Constants } from '@shared/constant';
+import { Constants, STORE_CONVERSATIONS } from '@shared/constant';
 import { ChatService } from '@chat/shared/services/chat.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService, AuthService, ChatCommonService, CommonEventService, UserService } from '@shared/services';
+import { ApiBaseService, AuthService, ChatCommonService, UserService } from '@shared/services';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
-import { Observable } from 'rxjs/Observable';
-import { Media } from '@shared/shared/models/media.model';
+
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { ConversationService } from '@chat/conversation/conversation.service';
-import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
+import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 
 
 @Component({
@@ -71,6 +73,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   nextLink: string;
   isLoading: boolean;
   members: Array<any> = [];
+  conversations$: any;
   readonly noteUrl: any = `${Constants.baseUrls.note}/notes/public`;
   private destroy$ = new Subject<any>();
   private pageSize = 30;
@@ -83,9 +86,10 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private addContactService: ZChatShareAddContactService,
     private messageAssetsService: MessageAssetsService,
     private objectListService: WObjectListService,
-    private conversationService: ConversationService,
+    private chatConversationService: ChatConversationService,
     private apiBaseService: ApiBaseService,
     private chatCommonService: ChatCommonService,
+    private store: Store<any>,
     private router: Router,
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
@@ -107,26 +111,34 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   open() {
-    this.chatService.getContactSelectAsync()
-      .subscribe((res: any) => {
-        this.conversation = res;
-        if (this.conversation && this.conversation.group_type === 'couple') {
-          this.tabs = this.tabsPhoto;
-        } else {
-          this.tabs = this.tabsMember;
-        }
-        this.tabAction(this.tabs[0]);
-      });
+    // this.chatService.getContactSelectAsync()
+    //   .subscribe((res: any) => {
+    //     this.conversation = res;
+    //     if (this.conversation && this.conversation.group_type === 'couple') {
+    //       this.tabs = this.tabsPhoto;
+    //     } else {
+    //       this.tabs = this.tabsMember;
+    //     }
+    //     this.tabAction(this.tabs[0]);
+      // });
+
+    this.chatConversationService.getStoreSelectedConversation().pipe(
+      distinctUntilChanged((p, q) => p.id === q.id)
+    ).subscribe(sc => {
+      this.conversation = sc;
+      if (this.conversation && this.conversation.group_type === 'couple') {
+        this.tabs = this.tabsPhoto;
+      } else {
+        this.tabs = this.tabsMember;
+      }
+      this.tabAction(this.tabs[0]);
+    });
 
     this.medias$ = this.messageAssetsService.medias$;
     this.objectListService.setMultipleSelection(false);
-    this.addContactService.addMembers$.pipe(takeUntil(this.destroy$)).subscribe(users => {
-      this.onAddMember(users);
-    });
   }
 
   tabAction(event: WTab) {
-    console.log(event);
     this.currentTab = event.link;
     if (this.currentTab !== 'members') {
       this.isLoading = false;
@@ -138,10 +150,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       }
     } else {
       this.isLoading = true;
-      this.conversationService.getMembers(this.conversation.group_id, {}).subscribe(response => {
-        this.members = response.data;
-        this.isLoading = false;
-      });
+      this.conversations$ = this.store.select(STORE_CONVERSATIONS);
     }
   }
 
@@ -153,23 +162,11 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     this.chatService.selectContactByPartnerId(user.id);
   }
 
-  onAddMember(members: Array<any>) {
-    const body = { add_members: true, user_ids: members.map(user => user.id) };
-    this.apiBaseService
-      .put(`zone/chat/group/${this.conversation.group_id}`, body)
-      .subscribe((res: any) => {
-        // Update another conversations to update their status
-        this.chatCommonService.updateConversationBroadcast(this.conversation.group_id).then((response: any) => {
-          const conversation = response.data.own_group_user.group_json;
-          this.members = conversation.users_json;
-        });
-      });
-  }
-
   onRemoveMember(user: any) {
     this.chatService.removeFromConversation(this.conversation, user.id).then((response: any) => {
-      const conversation = response.data.own_group_user.group_json;
-      this.members = conversation.users_json;
+      console.log(response);
+      // const conversation = response.data.own_group_user.group;
+      // this.members = conversation.users_json;
     });
   }
 
@@ -188,7 +185,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       message: 'Are you sure you want to leave this conversation?',
       header: 'Leave Conversation',
       accept: () => {
-        this.chatService.leaveConversation(this.conversation);
+        this.chatConversationService.leaveConversation(this.conversation);
       }
     });
   }
@@ -261,13 +258,13 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     let urlAPI = '';
     switch (this.currentTab) {
       case 'photos':
-        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=photo&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=photo&per_page=${this.pageSize}`;
         break;
       case 'notes':
-        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=note&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=note&per_page=${this.pageSize}`;
         break;
       default:
-        urlAPI = `chat/conversations/${this.conversation.group_json.uuid}/resources?qt=file&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=file&per_page=${this.pageSize}`;
         break;
     }
     return urlAPI;

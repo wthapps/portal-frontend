@@ -81,31 +81,35 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
 
     // Navigate to notification page of social module
     if (this.navigateService.inSameModule([Constants.baseUrls.note,
-       Constants.baseUrls.social, Constants.baseUrls.media, Constants.baseUrls.contact]))
+       Constants.baseUrls.social, Constants.baseUrls.media, Constants.baseUrls.contact])) {
       this.navigateService.navigateTo(['/notifications'], {type: this.type});
-    else
+    } else {
       this.navigateService.navigateOrRedirect('notifications', 'social');
+    }
   }
 
   getMoreNotifications() {
-    if (this.type === 'connection')
+    if (this.type === 'connection') {
       this.connectionService.getMoreNotifications();
-    else
+    } else {
       this.notificationService.getMoreNotifications();
+    }
   }
 
   doAction(action: any, notif_id: string) {
-    if (this.type === 'connection')
+    if (this.type === 'connection') {
       this.connectionService.doAction(action, notif_id);
-    else
+    } else {
       this.notificationService.doAction(action, notif_id);
+    }
   }
 
   getLatestNotifications() {
-    if (this.type === 'connection')
+    if (this.type === 'connection') {
       this.connectionService.getLatestNotifications();
-    else
+    } else {
       this.notificationService.getLatestNotifications();
+    }
   }
 
   toggleViewNotifications() {
@@ -117,10 +121,11 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
   }
 
   markAsSeen() {
-    if (this.type === 'connection')
+    if (this.type === 'connection') {
       this.connectionService.markAsSeen();
-    else
+    } else {
       this.notificationService.markAsSeen();
+    }
   }
 
   onSelectedTab(tab: string) {

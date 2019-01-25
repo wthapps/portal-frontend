@@ -29,7 +29,8 @@ export class FileUploaderService {
           file: event.target.result,
           name: file.name,
           content_type: file.type,
-          parent: file.parent
+          parent: file.parent,
+          size: file.size
         });
       }),
       mergeMap(genericFile => this.genericFileService.create(genericFile))

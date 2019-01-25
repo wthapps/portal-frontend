@@ -6,12 +6,12 @@
 }
 
 .message-item-wrapper {
-  max-width: 730px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
-  padding: 15px;
+  // padding: 15px;
   .message-item-dv {
-    padding: 3px;
+    padding: 1px;
   }
   .message-item-dv:not(:first-child):last-child {
     .dropdown-menu {
@@ -49,8 +49,6 @@ $message-item-content-card-right-xs: 25px;
 
   .wapper {
     word-break: break-word;
-    max-width: 85%;
-    // width: 80%;
   }
 
   .nopadding {
@@ -71,12 +69,13 @@ $message-item-content-card-right-xs: 25px;
       max-width: 90%;
     }
   }
-
-  .message-item-owner-avatar {
-    position: absolute;
+  .message-item-owner {
+    display: flex;
+  }
+  .message-item-avatar {
+    position: relative;
     left: 0;
-    top: 30px;
-    width: 50px;
+    width: 40px;
     @media (max-width: $screen-xs-max) {
       width: 30px;
       .avatar-xs {
@@ -95,7 +94,16 @@ $message-item-content-card-right-xs: 25px;
     }
   }
 
-  .message-item-content-card {
+  .message-item-card-main {
+    display: flex;
+    .message-item-card-main-content {
+      max-width: 70%;
+    }
+  }
+
+  .message-item-card {
+    display: flex;
+    flex-direction: column;
     padding-right: $message-item-content-card-right;
     @media (max-width: $screen-xs-max) {
       padding-right: $message-item-content-card-right-xs;
@@ -150,9 +158,6 @@ $message-item-content-card-right-xs: 25px;
     }
   }
 
-  .message-item-content-contact-sharing {
-  }
-
   .message-item-content-photo {
     background-color: #E9EDF1;
     max-width: 430px;
@@ -191,30 +196,56 @@ $message-item-content-card-right-xs: 25px;
     }
   }
 
-  .message-item-content-other-files {
-    background-color: #ffffff;
+  .message-item-content-files, .message-item-content-contact-sharing {
+    background-color: white !important;
     padding: 10px;
+    display: flex;
+  }
+
+  .message-item-content-contact-sharing-info {
+    display: flex;
+  }
+
+  .message-padding {
+    padding: 10px;
+    p {
+      margin: 0px;
+    }
+  }
+
+  .message-margin {
+    margin: 10px;
+  }
+
+  .message-error {
+    color: red;
+  }
+
+  .fa-file-archive-o {
+    font-size: 18px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    padding: 0;
+    line-height: 38px;
+    background-color: #fff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: $text-color;
+  }
+
+  .message-item-content-other-files {
+    background-color: white !important;
+    padding: 10px;
+    display: flex;
     a {
       display: block;
       color: inherit;
     }
-    .fa-file-o {
-      font-size: 18px;
-      width: 40px;
-      height: 40px;
-      text-align: center;
-      padding: 0;
-      line-height: 38px;
-      background-color: #fff;
-      -webkit-border-radius: 5px;
-      -moz-border-radius: 5px;
-      border-radius: 5px;
-      color: $text-color;
-      border: 1px solid $line;
-    }
   }
   .message-item-content-note {
-    background-color: #ffffff;
+    background-color: #ffffff !important;
     padding: 10px;
     a {
       color: inherit;
@@ -251,19 +282,27 @@ $message-item-content-card-right-xs: 25px;
       float: right;
       background-color: #ADE4FF;
     }
-    .message-item-file {
-      @include border-right-radius(0);
-      @include border-left-radius(8px);
-      @include border-bottom-radius(8px);
-      text-align: left;
-      background-color: #ffffff;
-      float: right;
-    }
     .message-item-status {
       text-align: right;
     }
-    .icon-edited {
-      float: right;
+    .message-item-card {
+      padding: 0px;
+    }
+    .message-item-card-main-notify {
+      order: 2;
+    }
+    .message-item-card-main-content {
+      order: 1;
+    }
+    .message-item-card-main {
+      flex-direction: row-reverse;
+    }
+    .message-item-avatar {
+        order: 3;
+    }
+    .message-item-owner {
+      flex-direction: row-reverse;
+      margin-right: 30px;
     }
   }
   &.message-item-left {
@@ -274,36 +313,26 @@ $message-item-content-card-right-xs: 25px;
     .message-item-owner {
       margin-right: $message-item-content-card-right-xs;
       .message-item-owner-name {
-        margin-left: 25px;
+        margin-left: 30px;
         @media (min-width: $screen-sm-min) {
           margin-left: 40px;
         }
       }
-
+    }
+    .message-item-card {
+      margin-left: 15px;
     }
 
     .message-item-content {
-      @include border-right-radius(0);
-      @include border-left-radius(8px);
+      @include border-left-radius(0);
+      @include border-right-radius(8px);
       @include border-bottom-radius(8px);
       text-align: left;
-      float: left;
+      // float: left;
       background-color: #ffffff;
-      margin-left: 25px;
+      // margin-left: 25px;
       @media (min-width: $screen-sm-min) {
-        margin-left: 40px;
-      }
-    }
-    .message-item-file {
-      @include border-right-radius(0);
-      @include border-left-radius(8px);
-      @include border-bottom-radius(8px);
-      text-align: left;
-      float: left;
-      background-color: #ffffff;
-      margin-left: 25px;
-      @media (min-width: $screen-sm-min) {
-        margin-left: 40px;
+        // margin-left: 40px;
       }
     }
     .message-item-status {
@@ -313,6 +342,8 @@ $message-item-content-card-right-xs: 25px;
 
   .icon-edited {
     padding: 0 5px;
+    position: relative;
+    // top: 20px;
   }
 }
 

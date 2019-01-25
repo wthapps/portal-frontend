@@ -1,25 +1,29 @@
 <ng-template #objectActionsTemplate>
   <ul class="page-body-control-menu" *ngIf="hasSelectedObjects" [ngClass]="{'text-disable': !hasSelectedObjects}"
-    [class.disabled]="!hasSelectedObjects">
+      [class.disabled]="!hasSelectedObjects">
     <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
       <li *ngIf="!action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
-        <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false" pTooltip="{{action.val.tooltip}}"
-          tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
+        <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false"
+                pTooltip="{{action.val.tooltip}}"
+                tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);"
+                (click)="action.val.action()">
           <i class="{{action.val.iconClass}}"></i>
         </button>
       </li>
     </ng-template>
     <!-- More action on destop -->
     <li class="dropdown action hidden-xs" *ngIf="disableMoreAction != true">
-      <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction}}"
-        tooltipPosition="bottom">
+      <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+         pTooltip="{{ tooltip.moreAction}}"
+         tooltipPosition="bottom">
         <i class="fa fa-ellipsis-v"></i>
       </a>
       <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
         <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
           <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
-            <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"
-              href="javascript:void(0);" (click)="action.val.action()">
+            <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}"
+               tooltipPosition="{{action.val.tooltipPosition}}"
+               href="javascript:void(0);" (click)="action.val.action()">
               <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
             </a>
           </li>
@@ -28,15 +32,17 @@
     </li>
     <!-- More action on mobile -->
     <li class="dropdown action visible-xs-block">
-      <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction}}"
-        tooltipPosition="bottom">
+      <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+         pTooltip="{{ tooltip.moreAction}}"
+         tooltipPosition="bottom">
         <i class="fa fa-ellipsis-v"></i>
       </a>
       <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
         <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
           <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
-            <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"
-              href="javascript:void(0);" (click)="action.val.action()">
+            <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}"
+               tooltipPosition="{{action.val.tooltipPosition}}"
+               href="javascript:void(0);" (click)="action.val.action()">
               <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
             </a>
           </li>
@@ -46,21 +52,23 @@
   </ul>
 </ng-template>
 
-<w-toolbar #toolbar [viewMode]="viewMode" [selectedObjects]="selectedObjects" [objectActionsTemplate]="objectActionsTemplate"
-  (event)="doToolbarEvent($event)">
+<w-toolbar #toolbar [viewMode]="viewMode" [selectedObjects]="selectedObjects"
+           [objectActionsTemplate]="objectActionsTemplate"
+           (event)="doToolbarEvent($event)">
 </w-toolbar>
 
-<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)">
-
+<w-grid-list #gridlist [sorting]="sorting" [scrollWindow]="false" [view]="viewMode" [objects]="objects"
+             (event)="doListEvent($event)">
   <div footer-grid-list>
     <box-loading *ngIf="links?.next"></box-loading>
   </div>
 </w-grid-list>
-<div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
+<div class="page-body-content has-page-body-control" *ngIf="loading">
   <box-loading></box-loading>
 </div>
-<box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
-  [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
+<box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData"
+             [icon]="iconNoData || 'fa fa-video-camera'"
+             [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
   <button *ngIf="actionNoData" class="btn btn-outline-primary" (click)="doEvent({action: 'noData'})">
     <i class="fa fa-plus-circle"></i> {{actionNoData}}
   </button>

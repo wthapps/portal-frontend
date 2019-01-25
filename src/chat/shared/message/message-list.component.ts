@@ -25,6 +25,8 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
+import { ChatMessageService } from '../services/chat-message.service';
+import { ChatConversationService } from '../services/chat-conversation.service';
 
 declare var _: any;
 declare var $: any;
@@ -57,6 +59,8 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
     private storageService: StorageService,
     public commonEventService: CommonEventService,
     private chatContactService: ChatContactService,
+    private chatConversationService: ChatConversationService,
+    private chatMessageService: ChatMessageService,
     private wthEmojiService: WTHEmojiService
   ) {
     // this.messageService.scrollToBottom$
@@ -92,12 +96,7 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   }
 
   onLoadMore() {
-    // console.log('onLoadMore ...', this.listEl.nativeElement.scrollTop);
-    this.chatService.loadMoreMessages().then(res => {
-      // if (res.data && res.data.length > 0)
-      //   this.listEl.nativeElement.scrollTop += 100;
-      this.currentMessages.unshift(...res.data);
-    });
+    this.chatMessageService.loadMoreMessages();
   }
 
   scrollDown() {
@@ -108,10 +107,10 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
 
   onAddContact(contact: any) {
     this.requestModal.contact = contact;
-    // this.requestModal.modal.open();
-    this.chatContactService.addContact([contact.id], '', (res) => {
-      this.chatService.selectContactByPartnerId(contact.id);
-    });
+    this.chatContactService.addContact([contact.id], '',).then(res => {
+      this.chatConversationService.updateStoreConversation(res.data);
+      this.chatConversationService.navigateToConversation(res.data.group_id);
+    })
   }
 
   doEvent(event: any) {

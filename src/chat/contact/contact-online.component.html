@@ -14,7 +14,7 @@
               <i class="fa fa-comments-o"></i>
             </button>
             <button type="button" class="btn btn-outline-default" (click)="chatContactActions.onFavorite()">
-              <i class="fa" [ngClass]="contact.favourite? 'fa-star': 'fa-star-o'"></i>
+              <i class="fa" [ngClass]="contact.favorite? 'fa-star': 'fa-star-o'"></i>
             </button>
             <z-chat-contact-actions #chatContactActions [contact]="contact"></z-chat-contact-actions>
           </div>

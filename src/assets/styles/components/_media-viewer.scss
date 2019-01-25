@@ -1,0 +1,12 @@
+.media-viewer-wrap {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zindex-modal-background - 1;
+  background-color: #262626;
+  .objects-main-menu {
+    background-color: rgba(#292929, 0.6);
+  }
+}

@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsModalModule } from 'ng2-bs3-modal';
 import { IntroductionModalComponent } from './introduction/introduction.component';
+import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
@@ -15,10 +16,17 @@ import { IntroductionModalComponent } from './introduction/introduction.componen
     CommonModule,
     RouterModule,
     FormsModule,
+    ReactiveFormsModule,
     // BrowserAnimationsModule,
     BsModalModule
   ],
-  declarations: [IntroductionModalComponent],
-  exports: [IntroductionModalComponent]
+  declarations: [
+    IntroductionModalComponent,
+    PasswordConfirmationModalComponent,
+  ],
+  exports: [
+    IntroductionModalComponent,
+    PasswordConfirmationModalComponent,
+  ]
 })
 export class ModalModule {}

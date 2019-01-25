@@ -31,18 +31,18 @@
          (scrolled)="getMore()">
 
       <div class="notification-list notification-list-xs">
-        <div *ngFor="let conversation of conversations" class="noti-item can-click"
+        <div *ngFor="let conversation of conversations.data" class="noti-item can-click"
              [ngClass]="conversation?.notification_count > 0 ? 'conversation_active' : ''">
           <div class="noti-item-avatar">
-            <img *ngIf="conversation.group_type != 'multiple'" class="avatar-xs" [src]="conversation.display.image"
+            <img *ngIf="conversation.group_type != 'multiple'" class="avatar-xs" [src]="conversation?.display?.image"
                  alt="">
-            <img *ngIf="conversation.group_type == 'multiple'" class="avatar-xs" [src]="conversation?.group_json?.image"
+            <img *ngIf="conversation.group_type == 'multiple'" class="avatar-xs" [src]="conversation?.group?.profile_image"
                  alt="">
           </div>
           <div class="noti-item-content" (click)="navigate(conversation)">
             <div>
               <span *ngIf="conversation.group_type != 'multiple'" class="bold">{{conversation.display.name}}</span>
-              <span *ngIf="conversation.group_type == 'multiple'" class="bold">{{(conversation.group_json.name || conversation.group_json.users_name) | maxLength:30}}</span>
+              <span *ngIf="conversation.group_type == 'multiple'" class="bold">{{(conversation?.group?.name || conversation?.group?.users_name) | maxLength:30}}</span>
               <br>
               <span *ngIf="conversation.latest_message as latest_message" class="pt5 message emojione-sm">
                 <span *ngIf="latest_message?.message_type == 'text'"

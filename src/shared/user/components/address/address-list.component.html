@@ -1,7 +1,7 @@
 <div *ngIf="data">
   <div class="field-group">
     <div class="field-group-title">
-      <h3 class="pull-left">Addresses</h3>
+      <h4 class="pull-left">Addresses</h4>
       <div class="pull-right">
         <button *ngIf="editable" class="btn btn-default" (click)="onOpenModal()">
           <i class="fa fa-pencil"></i>
@@ -10,9 +10,9 @@
     </div>
     <div *ngIf="data.addresses" class="field-group-content">
       <dl class="dl-horizontal" *ngIf="data.addresses.length > 0">
-        <ng-template ngFor let-item [ngForOf]="data.addresses">
-          <dt>{{ item.category | keyToValue:addressType:'category':'name' }}</dt>
-          <dd class="pt10">
+        <ng-template ngFor let-item let-i="index" [ngForOf]="data.addresses">
+          <dt [ngClass]="{'pt10' : i > 0}">{{ item.category | keyToValue:addressType:'category':'name' }}</dt>
+          <dd [ngClass]="{'pt10' : i > 0}">
             <div *ngIf="item.address_line1">{{ item.address_line1 }}</div>
             <div *ngIf="item.address_line2">{{ item.address_line2 }}</div>
             <div *ngIf="item.city"> {{ item?.city }}</div>

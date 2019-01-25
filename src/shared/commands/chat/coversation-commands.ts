@@ -1,5 +1,5 @@
 import { ApiCommand } from '@shared/commands/common/api-command';
-import { Observable ,  concat } from 'rxjs';
+import { Observable, concat } from 'rxjs';
 
 export class ConversationApiCommands extends ApiCommand {
   static markAsRead(id: any) {
@@ -11,10 +11,7 @@ export class ConversationApiCommands extends ApiCommand {
   }
 
   static mostRecentConversations() {
-    return this.createRequest(
-      'get',
-      'zone/chat/conversations/most_recent_conversations'
-    );
+    return this.createRequest('get', 'zone/chat/contacts');
   }
 
   static getConversations() {

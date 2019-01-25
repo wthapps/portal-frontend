@@ -80,7 +80,7 @@ export class MyAccountComponent implements OnInit {
         old_password: old_password,
         password: password
       });
-      this.userService.changePassword(`users/${this.userService.getSyncProfile().id}`, body)
+      this.userService.changePassword(body)
         .subscribe((result: any) => {
             // stop loading
             this.loadingService.stop();
@@ -183,7 +183,7 @@ export class MyAccountComponent implements OnInit {
    *
    * @returns {boolean|Promise<boolean>}
    */
-  //2 canDeactivate(): Promise<boolean> | boolean {
+  // 2 canDeactivate(): Promise<boolean> | boolean {
   //   return this.deactivateConfirmService.activate(this.formValue, this.form.value);
   // }
 }

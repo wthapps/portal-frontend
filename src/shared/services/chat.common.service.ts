@@ -40,7 +40,7 @@ export class ChatCommonService {
     const contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     const recentContacts = _.filter(contacts, {
       favourite: false,
-      black_list: false,
+      blacklist: false,
       history: false
     });
     this.storage.save('chat_recent_conversations', recentContacts);
@@ -50,8 +50,8 @@ export class ChatCommonService {
   setFavouriteConversations() {
     const contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     const favouriteContacts = _.filter(contacts, {
-      favourite: true,
-      black_list: false
+      favorite: true,
+      blacklist: false
     });
     this.storage.save('chat_favourite_conversations', favouriteContacts);
   }
@@ -60,7 +60,7 @@ export class ChatCommonService {
     const contacts = this.storage.getValue(CHAT_CONVERSATIONS).data;
     const historyContacts = _.filter(contacts, {
       history: true,
-      black_list: false
+      blacklist: false
     });
     this.storage.save('chat_history_conversations', historyContacts);
   }
@@ -108,33 +108,31 @@ export class ChatCommonService {
     this.updateContactSelect();
   }
 
-  moveFirstRecentList(groupId?: string): Promise<any> {
-    const chat_conversations = this.storage.getValue(CHAT_CONVERSATIONS);
-    const conversations: any = chat_conversations.data;
-    const latest_group = conversations.find(conv => conv.group_id === groupId);
-    const contactSelect: any = latest_group || this.storage.getValue(CONVERSATION_SELECT);
-    _.pullAllBy(
-      conversations,
-      [{ group_id: contactSelect.group_id }],
-      'group_id'
-    );
-    conversations.unshift(contactSelect);
-    _.uniqBy(conversations, 'id');
-
-    this.storage.save(CHAT_CONVERSATIONS, {...chat_conversations, data: conversations});
-    return this.setRecentConversations();
+  moveFirstRecentList(groupId?: string){
+    // const chat_conversations = this.storage.getValue(CHAT_CONVERSATIONS);
+    // const conversations: any = chat_conversations.data;
+    // const latest_group = conversations.find(conv => conv.group_id === groupId);
+    // const contactSelect: any = latest_group || this.storage.getValue(CONVERSATION_SELECT);
+    // _.pullAllBy(
+    //   conversations,
+    //   [{ group_id: contactSelect.group_id }],
+    //   'group_id'
+    // );
+    // conversations.unshift(contactSelect);
+    // _.uniqBy(conversations, 'id');
   }
 
   addMessage(groupId: any, data: any): void {
     const message = data.message;
-    if(data.links) message.links = data.links;
+    if (data.links) { message.links = data.links; }
     const currentMessageList = this.storage.getValue(CHAT_MESSAGES_GROUP_ + groupId);
     const contactSelect = this.storage.getValue(CONVERSATION_SELECT);
     const conversationsResponse = this.storage.getValue(CHAT_CONVERSATIONS);
 
-    if (!conversationsResponse || !conversationsResponse.data)
+    if (!conversationsResponse || !conversationsResponse.data) {
       return;
-    const incomingConversation = conversationsResponse.data.find(conv => conv.group_json.id === groupId);
+    }
+    const incomingConversation = conversationsResponse.data.find(conv => conv.group.id === groupId);
     // show conversation if deleting
     if (incomingConversation === undefined && contactSelect.group_type === 'couple') {
       // Update another conversations to update their status
@@ -151,11 +149,11 @@ export class ChatCommonService {
       if (!isReplace) {
         currentMessageList.data.push(message);
       }
-      if (contactSelect.group_json.id === groupId) {
+      if (contactSelect.group.id === groupId) {
         const action = isReplace ? ACTION.EDIT : ACTION.ADD;
       }
       // // Scroll to bottom when user's own messages are arrived
-      if (message.user_id === this.userService.getSyncProfile().id)
+      if (message.user_id === this.userService.getSyncProfile().id) {
         // this.messageService.scrollToBottom();
         this.commonEventService.broadcast(
           {
@@ -163,14 +161,16 @@ export class ChatCommonService {
             action: 'scrollToBottom',
             payload: true
           }
-        )
+        );
+      }
     }
     if (incomingConversation && !incomingConversation.favourite) {
       this.moveFirstRecentList(groupId);
     }
     for (const conversation of conversationsResponse.data) {
-      if (conversation.group_json.id === groupId)
+      if (conversation.group.id === groupId) {
         conversation.latest_message = message;
+      }
     }
     this.setAllConversations(conversationsResponse);
   }
@@ -187,13 +187,14 @@ export class ChatCommonService {
     }
 
     // // this.storage.save('chat_messages_group_' + groupId, items.value);
-    if (contactSelect && contactSelect.group_json.id === groupId) {
+    if (contactSelect && contactSelect.group.id === groupId) {
       // this.storage.save(INCOMING_MESSAGE, { action: ACTION.EDIT, data });
       console.log('sending messages to current group: ', { action: ACTION.EDIT, data });
     }
 
-    if (data && data.byMe)
+    if (data && data.byMe) {
       this.messageService.scrollToBottom();
+    }
   }
 
   // Update another conversations to update their status

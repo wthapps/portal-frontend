@@ -1,27 +1,20 @@
 <ng-container *ngIf="contactSelect">
   <div class="page-body-nav">
     <div class="page-body-nav-left">
-      <z-chat-share-user [data]="contactSelect" [displayAvatar]="false" [isStranger]="contactSelect?.group_type === 'couple' && !contactSelect?.active"
+      <z-chat-share-user [data]="contactSelect" [displayAvatar]="false" [isPending]="contactSelect?.group_type === 'couple' && contactSelect?.status == 'sent_request'"
         [usersOnlineItem]="usersOnlineItem$ | async">
-        <!--<small *ngIf="contactSelect.group_json.member_count > 2"
-               [attr.title]="contactSelect.group_json | chatGroupMembers"
-               class="can-click" (click)="onShowMemberBar()">
-        </small>-->
-        <!--<small *ngIf="contactSelect && !(contactSelect?.group_type === 'couple' && !contactSelect?.active)">-->
-        <!--Active {{ contactSelect.group_json.interacted_at | timeFormat }}-->
-        <!--</small>-->
       </z-chat-share-user>
     </div>
-    <div *ngIf="contactSelect && !contactSelect.black_list" class="page-body-nav-right">
-      <button *ngIf="contactSelect.group_json.group_type == 'multiple' && (userService.profile.id == contactSelect.group_json.creator_id || contactSelect.group_json.allow_add)"
+    <div *ngIf="contactSelect && !contactSelect.blacklist" class="page-body-nav-right">
+      <button *ngIf="contactSelect.group.group_type == 'multiple' && (userService.profile.id == contactSelect.group.creator_id || contactSelect.group.allow_add)"
         type="button" class="btn btn-default" (click)="onAddMember()" pTooltip="{{ tooltip.addMembers }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
-      <button type="button" class="btn btn-default" (click)="onFavorite()" pTooltip="{{ (contactSelect.favourite) ? tooltip.removeFromFavourites : tooltip.addToFavorites }}"
+      <button type="button" class="btn btn-default" (click)="onFavorite()" pTooltip="{{ (contactSelect.favorite) ? tooltip.removeFromFavorites : tooltip.addToFavorites }}"
         tooltipPosition="top">
-        <i class="fa" [ngClass]="contactSelect.favourite? 'fa-star': 'fa-star-o'"></i>
+        <i class="fa" [ngClass]="contactSelect.favorite? 'fa-star': 'fa-star-o'"></i>
       </button>
-      <button type="button" class="btn btn-default" (click)="toogleNotification()" pTooltip="{{ (contactSelect.notification) ? tooltip.disable_notification : tooltip.enable_notification }}"
+      <button type="button" class="btn btn-default" (click)="toggleNotification()" pTooltip="{{ (contactSelect.notification) ? tooltip.disable_notification : tooltip.enable_notification }}"
         tooltipPosition="top">
         <i class="fa" [ngClass]="contactSelect.notification? 'fw fw-megaphone': 'fw fw-megaphone-mute'"></i>
       </button>
@@ -32,21 +25,24 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <!--show if current isn't one user-->
-          <ng-container *ngIf="contactSelect.group_json.group_type === 'multiple' && userService.profile.id == contactSelect.group_json.creator_id">
+          <ng-container *ngIf="contactSelect.group.group_type === 'multiple' && userService.profile.id == contactSelect.group.creator_id">
             <li>
               <a href="javascript:void(0);" (click)="onEditConversation()">Group settings</a>
             </li>
             <li role="separator" class="divider"></li>
           </ng-container>
-          <li *ngIf="contactSelect.group_json.group_type == 'multiple'">
+          <li *ngIf="contactSelect.group.group_type == 'multiple'">
             <a href="javascript:;" (click)="leaveConversation()">Leave chat</a>
           </li>
           <!--show if current isn't one user-->
           <li>
-            <a href="javascript:;" (click)="onDeleteConversation()">Hide chat</a>
+            <a href="javascript:;" (click)="onHideConversation()">Hide chat</a>
+          </li>
+          <li>
+            <a href="javascript:;" (click)="onDeleteConversation()">Delete conversation</a>
           </li>
           <!--show if current is one user-->
-          <li *ngIf="contactSelect.group_json.group_type == 'couple'">
+          <li *ngIf="contactSelect.group.group_type == 'couple'">
             <a [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a>
           </li>
           <!-- <li role="separator" class="divider"></li>
@@ -62,7 +58,7 @@
         <i [ngClass]="{'text-primary': openAssets}" class="fa fa-info-circle"></i>
       </button>
     </div>
-    <div *ngIf="contactSelect && contactSelect.black_list" class="page-body-nav-right">
+    <div *ngIf="contactSelect && contactSelect.blacklist" class="page-body-nav-right">
       <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
           tooltipPosition="top">
@@ -70,7 +66,7 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <!--show if current is one user-->
-          <li *ngIf="contactSelect.group_json.group_type == 'couple'">
+          <li *ngIf="contactSelect.group.group_type == 'couple'">
             <a [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a>
           </li>
         </ul>

@@ -96,10 +96,13 @@ export class PhotoService {
           'Are you sure to save the photo?\nThis photo will replace current photo!',
         header: 'Save Photo',
         accept: () => {
+          const {id, content_type} = photo;
+          const model = content_type.startsWith('image') ? 'Media::Photo' :
+          content_type.startsWith('video') ? 'Media::Video' : null;
           return this.update({
-            id: photo.id,
-            // name: photo.name + `.${photo.extension}`,
-            content_type: photo.content_type,
+            id,
+            model,
+            content_type,
             file: payload
           })
             .toPromise()

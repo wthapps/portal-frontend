@@ -84,6 +84,12 @@
       }
     }
   }
+  .modal-body-content {
+    @include flex(1);
+    margin-right: -$modal-inner-padding;
+    padding-right: $modal-inner-padding;
+    overflow: auto;
+  }
 }
 
 .modal-header-nav {
@@ -100,7 +106,7 @@
 
 .modal-full-height {
   .modal-content {
-    height: calc(100vh - 20px);
+    height: calc(100vh - 80px);
     @include flexbox;
     @include flex-direction(column);
     @media (min-width: $screen-sm-min) {

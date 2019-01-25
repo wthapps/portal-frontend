@@ -1,98 +1,148 @@
-<invitation-create-modal #modal (event)="doEvent($event)"></invitation-create-modal>
-
-<!--<div class="col-sm-9">-->
-<!--&lt;!&ndash;<router-outlet></router-outlet>&ndash;&gt;-->
 <div class="box-panel">
-  <h3 class="box-panel-title">
-    Invitations
-  </h3>
+  <h3 class="box-panel-title">Invitation</h3>
 
-  <nav class="nav nav-tabs clearfix">
-    <div class="pull-left btn-group hidden-md hidden-lg">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">
-        {{ currentTabTitle?.name }} <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li [ngClass]="{'active': (currentTab == TAB?.PENDING?.value)}">
-          <a [routerLink]="['./']" [queryParams]="{tab: TAB?.PENDING?.value}"> {{ TAB?.PENDING?.name }} {{ totalPending }}</a>
-        </li>
-        <li [ngClass]="{'active': (currentTab == TAB.ACCEPTED.value)}">
-          <a [routerLink]="['./']" [queryParams]="{tab: TAB.ACCEPTED.value}"> {{ TAB.ACCEPTED.name }} {{ totalAccepted }}</a>
-        </li>
-      </ul>
-    </div>
-
-    <ul class="nav nav-tabs pull-left list-unstyled clearfix visible-md-block visible-lg-block">
-      <li [ngClass]="{'active': (currentTab == TAB.PENDING.value)}">
-        <a [routerLink]="['./']" [queryParams]="{tab: TAB.PENDING.value}"> {{ TAB.PENDING.name }} {{ totalPending }}</a>
+  <div class="box-panel-content">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active">
+        <a href="#invitationPending" aria-controls="invitationPending" role="tab" data-toggle="tab">
+          Pending <span *ngIf="invPending?.length > 0" class="text-muted">{{ invPending?.length }}</span>
+        </a>
       </li>
-      <li [ngClass]="{'active': (currentTab == TAB.ACCEPTED.value)}">
-        <a [routerLink]="['./']" [queryParams]="{tab: TAB.ACCEPTED.value}"> {{ TAB.ACCEPTED.name }} {{ totalAccepted }}</a>
+      <li role="presentation">
+        <a href="#invitationAccepted" aria-controls="invitationAccepted" role="tab" data-toggle="tab">
+          Accepted Invitation <span *ngIf="invAccepted?.length > 0" class="text-muted">{{ invAccepted?.length }}</span>
+        </a>
       </li>
     </ul>
-  </nav>
-  <div id="loading"></div>
-  <div class="box-panel-subtitle">
-      <!-- <a class="btn btn-outline-primary btn-min" (click)="addRecipients(modal)">
-        <i class="fa fa-envelope-open-o"></i> Invite new members
-      </a> -->
-    <button class="btn btn-default" style="padding:0;"><invite-contact (invited)="doEvent($event)"></invite-contact></button>
-    <button class="btn btn-default" *ngIf="currentTab == TAB.PENDING.value" title="Resend"
-            (click)="onResend()" [disabled]="selectedItems.length === 0"><i class="fa fa-envelope-open-o"></i></button>
-    <button class="btn btn-default" title="Delete"
-            (click)="onRemove()" [disabled]="selectedItems.length === 0"><i class="fa fa-trash"></i></button>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="invitationPending">
+        <ng-container *ngIf="invPending;else templateLoading">
+          <div class="form-group mt10 clearfix">
+            <invite-contact (invited)="doEvent($event)" class="pull-left mr5">
+              <button type="button" class="btn btn-outline-primary">
+                <i class="fa fa-envelope"></i> Invite new members
+              </button>
+            </invite-contact>
+
+            <button [disabled]="selectedPending.length == 0" (click)="onResend(selectedPending)" type="button"
+                    class="btn btn-outline-default mr5">
+              Resend
+            </button>
+            <button [disabled]="selectedPending.length == 0" (click)="onRemove(selectedPending)" type="button"
+                    class="btn btn-outline-default">
+              Remove
+            </button>
+          </div>
+          <ng-container *ngIf="invPending.length > 0;else templatePendingNoData">
+            <p-table tableStyleClass="table-middle" [columns]="cols" [value]="invPending"
+                     [(selection)]="selectedPending"
+                     dataKey="uuid">
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th class="table-col-checkbox">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
+                  <th *ngFor="let col of columns">
+                    {{ col.header }}
+                  </th>
+                  <th class="table-invitation-col-action">&nbsp;</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                  <td class="table-col-checkbox">
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                  </td>
+                  <td *ngFor="let col of columns">
+                    <ng-container *ngIf="col.field  == 'created_at';else templateColNormal">
+                      {{ rowData[col.field] | timeFormat}}
+                    </ng-container>
+                    <ng-template #templateColNormal>
+                      {{ rowData[col.field]}}
+                    </ng-template>
+                  </td>
+                  <td class="text-right">
+                    <button (click)="onResend([rowData])" type="button" class="btn btn-outline-default mr5">
+                      Resend
+                    </button>
+                    <button (click)="onRemove([rowData])" type="button" class="btn btn-outline-default">
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-container>
+          <ng-template #templatePendingNoData>
+            <p>There are no invitations.</p>
+            <p>Click “Invite new members” to invite more friends to join WTH!Apps.</p>
+          </ng-template>
+        </ng-container>
+        <ng-template #templateLoading>
+          Loading...
+        </ng-template>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="invitationAccepted">
+        <ng-container *ngIf="invAccepted;else templateLoadingAccepted">
+          <div class="form-group mt10 clearfix">
+            <invite-contact (invited)="doEvent($event)" class="pull-left mr5">
+              <button type="button" class="btn btn-outline-primary">
+                <i class="fa fa-envelope"></i> Invite new members
+              </button>
+            </invite-contact>
+            <button [disabled]="selectedAccepted.length == 0" (click)="onRemove(selectedAccepted)" type="button"
+                    class="btn btn-outline-default">
+              Remove
+            </button>
+          </div>
+          <ng-container *ngIf="invAccepted.length > 0;else templateAcceptedNoData">
+            <p-table tableStyleClass="table-middle" [columns]="cols" [value]="invAccepted"
+                     [(selection)]="selectedAccepted"
+                     dataKey="uuid">
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th class="table-col-checkbox">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
+                  <th *ngFor="let col of columns">
+                    {{ col.header }}
+                  </th>
+                  <th class="table-invitation-col-action">&nbsp;</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                  <td class="table-col-checkbox">
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                  </td>
+                  <td *ngFor="let col of columns">
+                    <ng-container *ngIf="col.field  == 'created_at';else templateColNormal">
+                      {{ rowData[col.field] | timeFormat}}
+                    </ng-container>
+                    <ng-template #templateColNormal>
+                      {{ rowData[col.field]}}
+                    </ng-template>
+                  </td>
+                  <td class="text-right">
+                    <button (click)="onRemove([rowData])" type="button" class="btn btn-outline-default">
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </ng-container>
+          <ng-template #templateAcceptedNoData>
+            There are no accepted invitations.
+          </ng-template>
+        </ng-container>
+        <ng-template #templateLoadingAccepted>
+          Loading...
+        </ng-template>
+      </div>
+    </div>
   </div>
-  <br/>
-
-
-
-  <table class="table table-striped table-middle">
-    <thead>
-    <tr>
-      <th>
-        <div>
-          <p-checkbox [(ngModel)]="isSelectAll" binary="true" (onChange)="onSelectAll()"></p-checkbox>
-        </div>
-      </th>
-      <th class="email">Email</th>
-      <th class="date">{{ (currentTab == TAB.PENDING.value) ? 'Sent date' : 'Accepted date'}}</th>
-      <!--<ng-container *ngIf="currentTab == TAB.PENDING.value; else accepted_title">-->
-        <!--<th>Sent date</th>-->
-        <!--&lt;!&ndash;<th>Number of sent</th>&ndash;&gt;-->
-      <!--</ng-container>-->
-      <th class="action">Action</th>
-
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let item of items">
-      <th>
-        <div>
-          <!-- <p-checkbox value="" label=""
-                      [(ngModel)]="item.selected" (onChange)="onSelect(item)"></p-checkbox> -->
-          <p-checkbox value="" label=""
-                      [(ngModel)]="item.selected" binary="true" (onChange)="onSelect(item)"></p-checkbox>
-        </div>
-      </th>
-      <td><a rel="nofollow" target="_top"
-             href="mailto:{{ item?.recipient_email }}">{{ item?.recipient_email }}</a></td>
-        <td *ngIf="currentTab === TAB.PENDING.value">{{ item?.created_at | date:'y MMM d' }} {{ item?.created_at | date:'H:mm:ss' }}</td>
-        <td *ngIf="currentTab === TAB.ACCEPTED.value">{{ item?.accepted_at | date: 'y MMM d' }} {{ item?.accepted_at | date:'H:mm:ss' }}</td>
-      <td>
-        <div>
-          <button *ngIf="currentTab == TAB.PENDING.value" class="btn btn-default" title="Resend"
-                  (click)="onResend(item)"><i class="fa fa-envelope-open-o" aria-hidden="true"></i></button>
-          <button class="btn btn-default" title="Delete"
-                  (click)="onRemove(item)"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
 </div>
-
-
-<ng-template #accepted_title>
-  <th>Accepted date</th>
-</ng-template>
