@@ -175,20 +175,17 @@ export class ZNoteDetailEditComponent
         distinctUntilChanged((p, q) => p.user_uuid === q.user_uuid),
         takeUntil(this.destroySubject)
       ).subscribe((user) => {
+        this.messageService.clear();
         if (!user || Object.keys(user).length === 0) {
-          this.messageService.clear();
-
           if (this.note.permission !== 'view') {
-            this.customEditor.enable();
+            this.enable();
             this.customEditor.focus();
-            this.disabled = false;
           }
           return;
         }
         const {user_uuid, user_name} = user;
         if (user_uuid !== this.userService.getSyncProfile().uuid) {
-          this.customEditor.disable();
-          this.disabled = true;
+          this.enable(false);
         }
 
         if (user_name) {
@@ -463,10 +460,14 @@ export class ZNoteDetailEditComponent
       modules.placeholder = '';
     }
     this.customEditor = new Quill('#quill-editor', modules);
-    if (this.note.permission === 'view') { this.customEditor.disable(); }
-    if (!this.note.permission || this.note.permission !== 'view') {
-      $('#quill-toolbar').show();
+    if (this.note.permission === 'view') {
+      this.enable(false);
+    } else {
+      this.enable(true);
     }
+    // if (!this.note.permission || this.note.permission !== 'view') {
+    //   $('#quill-toolbar').show();
+    // }
 
     this.editorElement = document.querySelector('div.ql-editor');
 
@@ -482,6 +483,17 @@ export class ZNoteDetailEditComponent
     setTimeout(() => this.applyDefaultFormat(), 500);
   }
 
+  enable(enabled = true) {
+    if (enabled) {
+      this.customEditor.enable();
+      $('#quill-toolbar').show();
+    } else {
+      this.customEditor.disable();
+      $('#quill-toolbar').hide();
+    }
+    this.disabled = !enabled;
+  }
+
 
   applyDefaultFormat() {
     // Default font, size setting
@@ -495,29 +507,9 @@ export class ZNoteDetailEditComponent
       this.customEditor.format('font', font);
       this.customEditor.format('size', font_size);
     } else {
-      // // Insert a blank character in case default font differ from first character's format
-      // const firstFormat = this.customEditor.getFormat(1);
-      // const f_font = firstFormat.font;
-      // const f_size = firstFormat.size;
-      // if (f_font !== font || f_size !== font_size) {
-      //   this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
-      //   this.customEditor.setSelection(range.index, 1, Quill.sources.SILENT);
-      //   this.customEditor.format('font', font);
-      //   this.customEditor.format('size', font_size);
-      // }
-
       this.customEditor.setSelection(range, Quill.sources.SILENT);
-      // this.customEditor.format('font', font);
-      // this.customEditor.format('size', font_size);
+
     }
-
-    // // Unhighlight font, size setting by removing ql.active class
-    // const font_els = document.querySelectorAll('.ql-font > .ql-active');
-    // font_els.forEach(f => f.classList.remove('ql-active'));
-
-    // const size_els = document.querySelectorAll('.ql-size > .ql-active');
-    // size_els.forEach(f => f.classList.remove('ql-active'));
-
 
     this.noSaveSubject.next('');
   }
