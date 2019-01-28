@@ -94,7 +94,6 @@ export class ZMediaSearchComponent implements
     public router: Router,
     public route: ActivatedRoute,
     public location: Location
-    // private uploader: WUploader
     ) { }
 
   onAddedToPlaylist: (data: any) => void;
@@ -119,6 +118,7 @@ export class ZMediaSearchComponent implements
         break;
       case 'sort':
         this.sorting = e.payload.queryParams;
+        this.loadObjects(this.sorting);
         // this.loadObjects();
         break;
       case 'clickOnItem':
@@ -160,19 +160,19 @@ export class ZMediaSearchComponent implements
     }
   }
 
-  loadObjects(input: any) {
-    let new_input = { ...input};
-    if(input.searchFrom || input.searchTo) {
-      new_input.searchFrom = new Date(input.searchFrom)
-      new_input.searchTo = new Date(input.searchTo)
+  async loadObjects(input: any) {
+    const { queryParams } = this.route.snapshot;
+    const new_input = { ...input, ...queryParams, sort_name: input.sort_name || 'Date', sort: input.sort || 'desc'};
+    if (input.searchFrom || input.searchTo) {
+      new_input.searchFrom = new Date(input.searchFrom);
+      new_input.searchTo = new Date(input.searchTo);
     }
 
-    this.apiBaseService.get(`media/search`, input).subscribe(res => {
-      this.objects = res.data;
-      this.links = res.meta.links;
-      this.loading = false;
-      this.loadingEnd();
-    });
+    const res = await this.apiBaseService.get(`media/search`, new_input).toPromise();
+    this.objects = res.data;
+    this.links = res.meta.links;
+    this.loading = false;
+    this.loadingEnd();
   }
 
   validateActions: (menuActions: any, role_id: number) => any;
