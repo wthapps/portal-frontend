@@ -31,7 +31,7 @@ export class ChatMessageService {
       this.addCurrentMessages({ message: data});
       setTimeout(() => {
         this.store.dispatch({ type: CHAT_MESSAGES_CURRENT_TIMEOUT, payload: data })
-      }, 5000)
+      }, 8000)
       this.create(sc.group_id, { message: message, type: 'text', client_id: id}, option);
       return sc;
     })).toPromise().then(sc => {

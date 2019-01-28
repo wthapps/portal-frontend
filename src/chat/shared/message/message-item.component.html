@@ -21,9 +21,11 @@
           </figure>
         </div>
         <div class="message-item-card-main-content">
-          <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemContentText : ''"></ng-container>
-          <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemContentFile : ''"></ng-container>
-          <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemContentContact : ''"></ng-container>
+          <div>
+            <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemContentText : ''"></ng-container>
+            <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemContentFile : ''"></ng-container>
+            <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemContentContact : ''"></ng-container>
+          </div>
         </div>
         <div class="message-item-menu dropdown" *ngIf="byMe" style="padding: 5px !important">
           <!-- container template dynamic here -->
@@ -97,7 +99,7 @@
   <!-- video type-->
   <div class="wapper message-item-content-photo" *ngIf="message.file?.object_type == 'Media::Video'">
     <figure>
-      <div class="photo-box-figure-in" (click)="onPreviewPhoto(message)">
+      <div class="photo-box-figure-in can-click" (click)="onPreviewPhoto(message)">
         <img [src]="message.file?.thumbnail_url" alt="">
         <i class="fa fa-play-circle-o"></i>
       </div>

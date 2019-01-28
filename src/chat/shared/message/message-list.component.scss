@@ -112,9 +112,7 @@ $message-item-content-card-right-xs: 25px;
   }
 
   .message-item-menu {
-    // position: absolute;
-    top: 0;
-    right: 0;
+    height: 25px;
     i {
       width: 20px;
       height: 20px;
@@ -166,18 +164,14 @@ $message-item-content-card-right-xs: 25px;
       border-radius: 5px;
     }
     .photo-box-figure-in {
-      height: 320px;
-      width: 430px;
+      max-height: 320px;
+      max-width: 430px;
       @media (max-width: $screen-sm-min) {
-        height: 293px;
-        width: 293px;
+        max-height: 293px;
+        max-width: 293px;
       }
       overflow: hidden;
       position: relative;
-      img {
-        @include center();
-        width: 100%;
-      }
     }
   }
 
@@ -247,6 +241,7 @@ $message-item-content-card-right-xs: 25px;
   .message-item-content-note {
     background-color: #ffffff !important;
     padding: 10px;
+    max-width: 430px;
     a {
       color: inherit;
       text-decoration: none;
