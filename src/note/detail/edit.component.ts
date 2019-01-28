@@ -113,7 +113,8 @@ export class ZNoteDetailEditComponent
   private initRetry = 0; // number of times this component will try to init Quill editor, default max tries is 3
   resize: any;
   context$: any;
-  profile$: Observable<User>;
+  // profile$: Observable<User>;
+  profile: User;
   setting$: Observable<NoteSetting>;
 
   private uploadSubscriptions: { [filename: string]: Subscription } = {};
@@ -143,7 +144,8 @@ export class ZNoteDetailEditComponent
       this.destroySubject,
       this.closeSubject
     );
-    this.profile$ = this.userService.profile$;
+    // this.profile$ = this.userService.profile$;
+    this.profile = this.userService.getSyncProfile();
     this.setting$ = this.noteSetting.setting$;
 
     const getOs: any = this.clientDetectorService.getOs();

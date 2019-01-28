@@ -19,11 +19,11 @@
                class="form-control fz18 mb15" id="note_form_title" placeholder="Title">
         <h4 class="mb15" *ngIf="note.permission == 'view'">{{note.name}}</h4>
         <span class="text-fade pl12" *ngIf="editStatus === EDIT_STATUS.idle">
-          Last edited on {{ note?.updated_at | date: 'MMM dd' }} <i class="fa fa-circle fa-xs" aria-hidden="true"></i>  {{ note?.user?.uuid === (profile$ | async)?.uuid ? 'me' : ''}} 
-          <a href="javascript:;" *ngIf="note?.user?.uuid !== (profile$ | async)?.uuid"> {{ note?.user?.name }}</a> 
+          Last edited on {{ note?.updated_at | date: 'MMM dd' }} <i class="fa fa-circle fa-xs" aria-hidden="true"></i>  {{ note?.user?.uuid === profile?.uuid ? 'me' : ''}} 
+          <a href="javascript:;" *ngIf="note?.user?.uuid !== profile?.uuid"> {{ note?.user?.name }}</a> 
         </span> 
-        <span class="text-fade pl12" *ngIf="editStatus === EDIT_STATUS.editing">Saving ... <i class="fa fa-circle fa-xs" aria-hidden="true"></i>  {{ note?.user?.uuid === (profile$ | async)?.uuid ? 'me' : note?.user?.name}} </span>
-        <span class="text-fade pl12" *ngIf="editStatus === EDIT_STATUS.saved">All changes are saved <i class="fa fa-circle fa-xs" aria-hidden="true"></i>  {{ note?.user?.uuid === (profile$ | async)?.uuid ? 'me' : note?.user?.name}} </span>
+        <span class="text-fade pl12" *ngIf="editStatus === EDIT_STATUS.editing">Saving ... <i class="fa fa-circle fa-xs" aria-hidden="true"></i>  {{ note?.user?.uuid === profile?.uuid ? 'me' : note?.user?.name}} </span>
+        <span class="text-fade pl12" *ngIf="editStatus === EDIT_STATUS.saved">All changes are saved <i class="fa fa-circle fa-xs" aria-hidden="true"></i>  {{ note?.user?.uuid === profile?.uuid ? 'me' : note?.user?.name}} </span>
         <span class="text-fade pl12" *ngIf="editStatus === EDIT_STATUS.reloading"> Fetching latest data ...</span>
         
       </div>

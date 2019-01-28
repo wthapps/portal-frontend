@@ -64,8 +64,8 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
       distinctUntilChanged(),
       switchMap((term: any) => this.apiBaseService.get(`account/search?q=${term.query}`)))
       .subscribe((res: any) => {
-        const selectedIds = this.selectedUsers.map(ct => ct.id);
-        const sharedIds = this.sharings.map(ss => ss.recipient.id);
+        const selectedIds = this.selectedUsers ? this.selectedUsers.map(ct => ct.id) : [];
+        const sharedIds = this.sharings ? this.sharings.map(ss => ss.recipient.id) : [];
         this.users = res.data.filter(ct => !selectedIds.includes(ct.id) && !sharedIds.includes(ct.id));
       },
 (error: any) => {
