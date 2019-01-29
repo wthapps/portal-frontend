@@ -108,7 +108,15 @@ $note-editor-aside-w: 400px;
       }
 
       .ql-formats {
-        .ql-size,.ql-font {
+        .ql-size,.ql-font,.ql-header {
+          &.vh {
+            visibility: hidden;
+
+            svg {
+              visibility: visible;
+            }
+          }
+
           .ql-active {
             color: #444;
 
@@ -318,6 +326,7 @@ $note-editor-aside-w: 400px;
     display: none;
   }
 }
+
 
 .bdl1 {
   border-left: 1px;

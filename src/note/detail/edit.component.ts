@@ -117,6 +117,7 @@ export class ZNoteDetailEditComponent
   // profile$: Observable<User>;
   profile: User;
   setting$: Observable<NoteSetting>;
+  setting: NoteSetting;
 
   private uploadSubscriptions: { [filename: string]: Subscription } = {};
 
@@ -148,7 +149,8 @@ export class ZNoteDetailEditComponent
     );
     // this.profile$ = this.userService.profile$;
     this.profile = this.userService.getSyncProfile();
-    this.setting$ = this.noteSetting.setting$;
+    // this.setting$ = this.noteSetting.setting$;
+    this.setting = this.noteSetting.setting;
 
     const getOs: any = this.clientDetectorService.getOs();
     this.buttonControl = getOs.name === 7 ? '⌘' : 'ctrl';
@@ -469,9 +471,6 @@ export class ZNoteDetailEditComponent
     } else {
       this.enable(true);
     }
-    // if (!this.note.permission || this.note.permission !== 'view') {
-    //   $('#quill-toolbar').show();
-    // }
 
     this.editorElement = document.querySelector('div.ql-editor');
 
@@ -485,6 +484,9 @@ export class ZNoteDetailEditComponent
     this.registerSelectionChange();
     //  Format quill based on default setting
     setTimeout(() => this.applyDefaultFormat(), 500);
+
+    // Temporarily hide select components when finish initilize component
+    setTimeout(() => $('.vh').removeClass('vh'), 1000);
   }
 
   enable(enabled = true) {
