@@ -106,7 +106,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.focus();
   }
 
@@ -181,7 +181,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   focus() {
     // set background color #ffd when editing
-    this.editor.focus();
+    if (this.editor) { this.editor.focus(); }
   }
 
   cancelEditingMessage() {
@@ -225,10 +225,10 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       channel: 'ZChatShareAddContactComponent',
       action: 'open',
       payload: {option: 'shareContacts'}
-    })
+    });
   }
 
-  openAddFile(){
+  openAddFile() {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
       allowedFileTypes: null,
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',

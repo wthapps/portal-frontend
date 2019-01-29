@@ -36,9 +36,16 @@ export class WUploader {
     maxNumberOfFiles: null,
     afterCallBackUrl: null,
     beforeCallBackUrl: null,
+    onBeforeUpload: null,
     maxFileSize: null,
     module: 'chat' || 'social' || 'notes' || 'contacts' || 'media'
   }) {
+    let onBeforeUpload = options.onBeforeUpload;
+    if (!onBeforeUpload) {
+    onBeforeUpload = (files) => this.event$.next({ action: 'before-upload', payload: { files: files}});
+    }
+
+    const onAfterUploaded = options.onAfterUploaded;
 
     const opts: any = {
       autoProceed: true,
@@ -47,8 +54,8 @@ export class WUploader {
         maxNumberOfFiles: options.maxNumberOfFiles,
         maxFileSize: options.maxFileSize
       },
-      onBeforeFileAdded: (currentFile, files) => this.event$.next({ action: 'before-file-added', payload: { file: currentFile } }),
-      onBeforeUpload: (files) => { this.event$.next({ action: 'before-upload', payload: { files: files } }) },
+      onBeforeFileAdded: (currentFile, files) => this.event$.next({ action: 'before-file-added', payload: { file: currentFile, files } }),
+      onBeforeUpload,
     };
 
     this.uppy = Core(opts);
@@ -132,7 +139,11 @@ export class WUploader {
     this.uppy.on('upload-success', (file, resp, uploadURL) => {
       // upload uploaded value
       this.uppy.setFileMeta(file.id);
-      this.event$.next({action: 'success', payload: {file: file, resp: resp, uploadURL: uploadURL}});
+      this.event$.next({action: 'success', payload: {file, resp, uploadURL}});
+
+      if (onAfterUploaded) {
+        onAfterUploaded({file, resp, uploadURL});
+      }
     });
 
     this.uppy.on('complete', (result) => {
@@ -212,7 +223,7 @@ export class WUploader {
     }
   }
 
-  fileUpload(fileInput: any) {
+  fileUpload(fileInput: any, onUploadedCallback?) {
 
     // const imagePreview = document.querySelector('.upload-preview')
 
@@ -238,6 +249,10 @@ export class WUploader {
       const uploadedFileData = JSON.stringify(data);
       console.log('uploaded file data:::', uploadedFileData);
 
+
+      if (onUploadedCallback) {
+        onUploadedCallback({file, resp: data});
+      }
       // set hidden field value to the uploaded file data so that it's submitted with the form as the attachment
       // var hiddenInput = fileInput.parentNode.querySelector('.upload-hidden');
       // hiddenInput.value = uploadedFileData;

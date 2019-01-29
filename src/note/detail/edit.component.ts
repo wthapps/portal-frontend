@@ -44,6 +44,7 @@ import { SizePolicy } from '@shared/policies/size-policy';
 import { NoteChannelService } from '@shared/channels/note-channel.service';
 import { User } from '@shared/shared/models/user.model';
 import { MessageService } from 'primeng/api';
+import { WUploader } from './../../shared/services/w-uploader';
 import { ZNoteSharedSettingsService, NoteSetting } from '@notes/shared/services/settings.service';
 
 const DEBOUNCE_MS = 2500;
@@ -136,6 +137,7 @@ export class ZNoteDetailEditComponent
     private messageService: MessageService,
     public noteSetting: ZNoteSharedSettingsService,
     public userService: UserService,
+    private uploader: WUploader,
     private commonEventService: CommonEventService
   ) {
     this.renderer.addClass(document.body, 'modal-open');
@@ -565,7 +567,7 @@ export class ZNoteDetailEditComponent
                 let randId = `img_${new Date().getTime()}`;
                 self.insertFakeImage(randId);
                 ids.push(randId);
-                // let file = e.target['result'];
+
                 const files = [fileClipboard];
                 self.photoUploadService
                   .uploadPhotos(files)
@@ -642,7 +644,8 @@ export class ZNoteDetailEditComponent
       'i',
       {
         class: 'fa fa-spinner fa-spin big-icon',
-        id: id
+        id: id,
+        'data-id': id
       },
       Quill.sources.USER
     );
@@ -669,8 +672,21 @@ export class ZNoteDetailEditComponent
   }
 
   selectInlinePhotos4Note() {
-    this.mediaSelectionService.open();
-    this.mediaSelectionService.setMultipleSelection(true);
+    // this.mediaSelectionService.open();
+    // this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({ allowSelectMultiple: true,
+      hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
+      onBeforeUpload: (files) => {
+        Object.keys(files).forEach(f_id => this.insertFakeImage(f_id));
+      },
+      onAfterUploaded: ({file, resp, uploadURL}) => {
+        const fileId = file.id;
+        $(`i[data-id='${fileId}']`).after(
+          `<img src="${resp.data.url}" data-id="${resp.data.id}" />`
+        );
+        $(`i[data-id='${fileId}']`).remove();
+      }
+    });
 
     const close$: Observable<any> = merge(
       this.mediaSelectionService.open$,
@@ -684,25 +700,6 @@ export class ZNoteDetailEditComponent
         );
       });
 
-    const ids: string[] = [];
-    this.mediaSelectionService.uploadingMedias$
-      .pipe(
-        map(([file, dataUrl]) => [file]),
-        mergeMap((files: any[]) => {
-          const randId = `img_${new Date().getTime()}`;
-          this.insertFakeImage(randId);
-          ids.push(randId);
-          return this.photoUploadService.uploadPhotos(files);
-        }),
-        takeUntil(close$)
-      )
-      .subscribe((res: any) => {
-        const randId = ids.shift();
-        $(`i#${randId}`).after(
-          `<img src="${res.data.url}" data-id="${res.data.id}" />`
-        );
-        $(`i#${randId}`).remove();
-      });
   }
 
   copyFormat() {
@@ -1046,7 +1043,18 @@ export class ZNoteDetailEditComponent
   }
 
   private selectPhotos4Attachments() {
-    this.mediaSelectionService.open({ allowSelectMultiple: true });
+    this.mediaSelectionService.open({ allowSelectMultiple: true,
+      hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
+      onBeforeUpload: (files) => {
+        this.note.attachments.push(...Object.values(files));
+        this.form.controls['attachments'].setValue(this.note.attachments);
+      },
+      onAfterUploaded: ({file, resp, uploadURL}) => {
+        const index = _.indexOf(this.note.attachments, file);
+        this.note.attachments[index] = resp.data;
+        this.form.controls['attachments'].setValue(this.note.attachments);
+      }
+    });
 
     const close$: Observable<any> = merge(
       this.mediaSelectionService.open$,
@@ -1059,25 +1067,6 @@ export class ZNoteDetailEditComponent
         this.form.controls['attachments'].setValue(this.note.attachments);
       });
 
-    this.mediaSelectionService.uploadingMedias$
-      .pipe(map(([file, dataUrl]) => [file]), takeUntil(close$))
-      .subscribe((files: any) => {
-        this.note.attachments.push(...files);
-        _.forEach(files, (file: any) => {
-          const sub = this.photoUploadService.uploadPhotos(files).subscribe(
-            (response: any) => {
-              const index = _.indexOf(this.note.attachments, file);
-              this.note.attachments[index] = response.data;
-              this.form.controls['attachments'].setValue(this.note.attachments);
-            },
-            (err: any) => {
-              console.log('Error when uploading files ', err);
-            }
-          );
-
-          this.uploadSubscriptions[file.name] = sub;
-        });
-      });
   }
 
   private async updateNote() {

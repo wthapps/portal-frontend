@@ -88,13 +88,13 @@
                 </select>
 
                 <select class="ql-font no-border-radius w150" title="Font">
-                  <option *ngFor="let font of FONTS" [value]="font?.value">{{ font?.name}}</option>
-                  <!-- [attr.selected]="font?.value === (setting$ | async)?.font ? '' : null">{{ font?.name}}</option> -->
+                  <option *ngFor="let font of FONTS" [value]="font?.value"
+                  [attr.selected]="font?.value === (setting$ | async)?.font ? '' : null">{{ font?.name}}</option>
                 </select>
 
                 <select class="ql-size ql-size-sm no-border-radius" title="Font size">
-                  <option *ngFor="let size of FONT_SIZES" [value]="size?.value" >{{ size?.name}}</option>
-                  <!-- [attr.selected]="size?.value === '14pt' ? (setting$ | async)?.font_size : null">{{ size?.name}}</option> -->
+                  <option *ngFor="let size of FONT_SIZES" [value]="size?.value"
+                  [attr.selected]="size?.value === '14pt' ? (setting$ | async)?.font_size : null">{{ size?.name}}</option>
                 </select>
 
               </div>
@@ -195,15 +195,15 @@
 
             <div class="ql-formats bdl1">
                 <select class="ql-font w150 no-border-radius" title="Font">
-                  <option *ngFor="let font of FONTS" [value]="font?.value" >{{ font?.name}}</option>
-                  <!-- [attr.selected]="font?.value === (setting$ | async)?.font ? '' : null">{{ font?.name}}</option> -->
+                  <option *ngFor="let font of FONTS" [value]="font?.value"
+                  [attr.selected]="font?.value === (setting$ | async)?.font ? '' : null">{{ font?.name}}</option>
                 </select>
               </div>
 
               <div class="ql-formats bdl1 no-right-margin">
                   <select class="ql-size ql-size-sm no-border-radius" title="Font size">
-                    <option *ngFor="let size of FONT_SIZES" [value]="size?.value" >{{size?.name}}</option>
-                    <!-- [attr.selected]="size?.value === (setting$ | async)?.font_size ? '' : null">{{size?.name}}</option> -->
+                    <option *ngFor="let size of FONT_SIZES" [value]="size?.value"
+                    [attr.selected]="size?.value === (setting$ | async)?.font_size ? '' : null">{{size?.name}}</option>
                   </select>
     
                 </div>
@@ -342,9 +342,9 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let att of note.attachments">
-                      <td [ngClass]="{'can-click': att.object_type == 'photo'}" (click)="fileAttachmentClick(att)">
-                        <i *ngIf="att.thumbnail_url && att.object_type == 'photo'" class="fa fa-picture-o"></i>
-                        <i *ngIf="att.thumbnail_url && att.object_type !== 'photo'" class="fa fa-file"></i>
+                      <td [ngClass]="{'can-click': ['photo', 'Media::Photo'].includes(att.object_type)}" (click)="fileAttachmentClick(att)">
+                        <i *ngIf="att.thumbnail_url &&  ['photo', 'Media::Photo'].includes(att.object_type)" class="fa fa-picture-o"></i>
+                        <i *ngIf="att.thumbnail_url &&  !(['photo', 'Media::Photo'].includes(att.object_type))" class="fa fa-file"></i>
                         <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
                         {{ att.name + '.' + att?.extension | maxLength: 30 }}
                         <p class="text-fade">{{ att.size | bytes:3 }}</p>

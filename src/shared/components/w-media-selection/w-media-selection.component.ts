@@ -117,6 +117,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   private beforeCallBackUrl: any;
   private afterCallBackUrl: any;
   private payload: any;
+  private options;
   private sub: any;
 
   constructor(
@@ -178,6 +179,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     this.beforeCallBackUrl = options.beforeCallBackUrl;
     this.afterCallBackUrl = options.afterCallBackUrl;
     this.payload = options.payload;
+    this.options = options;
 
     if (options.filter) {
       this.filter = options.filter;
@@ -358,6 +360,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   upload() {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      ...this.options,
       allowedFileTypes: this.allowedFileTypes,
       beforeCallBackUrl: this.beforeCallBackUrl,
       afterCallBackUrl: this.afterCallBackUrl,
