@@ -1,0 +1,14 @@
+@mixin width-mixin($w) {
+  width: $w;
+}
+
+.w-25 {
+  @include width-mixin(25%);
+}
+.w-50 {
+  @include width-mixin(50%);
+}
+
+.w-100 {
+  @include width-mixin(100%);
+}

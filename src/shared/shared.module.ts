@@ -62,7 +62,7 @@ import { WEditorModule } from '@shared/components/w-editor/w-editor.module';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { StickyModule } from 'ng2-sticky-kit';
 import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
-import { WUserModule } from '@shared/components/w-user/w-user.module';
+// import { WUserModule } from '@shared/components/w-user/w-user.module';
 import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.module';
 
 /**
@@ -158,7 +158,7 @@ import { WLeftMenuModule } from '@shared/components/w-left-menu/w-left-menu.modu
     WLeftMenuModule,
     ComponentsModule,
     WEditorModule,
-    WUserModule,
+    // WUserModule,
     // Pipe
     PipeModule,
 

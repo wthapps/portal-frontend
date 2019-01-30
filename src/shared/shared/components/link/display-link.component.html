@@ -6,7 +6,7 @@
       </figure>
     </a>
   </div>
-  <div class="display-link-txt">
+  <div *ngIf="data.title" class="display-link-txt">
     <h4 *ngIf="data.title">
       <a [href]="data.link" target="_blank">{{ data.title | maxLength:60 }}</a>
     </h4>

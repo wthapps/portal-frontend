@@ -3,13 +3,12 @@
 .message-wrapper {
   @include flex(1);
   overflow: auto;
+  padding: 20px;
 }
 
 .message-item-wrapper {
   max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-  // padding: 15px;
+  margin: 0 auto;
   .message-item-dv {
     padding: 1px;
   }
@@ -301,7 +300,6 @@ $message-item-content-card-right-xs: 25px;
     }
   }
   &.message-item-left {
-    padding-left: 10px;
     @media (min-width: $screen-sm-min) {
       padding-left: 0px;
     }

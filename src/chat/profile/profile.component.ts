@@ -3,6 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { ChatService } from '../shared/services/chat.service';
 import { ZChatShareRequestContactComponent } from '../shared/modal/request-contact.component';
 import { Constants } from '@wth/shared/constant';
+import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 
 @Component({
   moduleId: module.id,
@@ -20,7 +21,8 @@ export class ZChatProfileComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private chatConversationService: ChatConversationService
   ) {}
 
   ngOnInit() {
@@ -40,7 +42,7 @@ export class ZChatProfileComponent implements OnInit {
   }
 
   onFavorite() {
-    this.chatService.addGroupUserFavorite(this.contact);
+    this.chatConversationService.apiFavoriteGroupUser(this.contact);
   }
 
   onSelect(user: any) {

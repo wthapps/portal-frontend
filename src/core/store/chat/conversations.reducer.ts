@@ -4,6 +4,7 @@ export const CHAT_CONVERSATIONS_SET = 'CHAT_CONVERSATIONS_SET';
 export const CHAT_CONVERSATIONS_ADD = 'CHAT_CONVERSATIONS_ADD';
 export const CHAT_CONVERSATIONS_ADD_NOTIFICATION = 'CHAT_CONVERSATIONS_ADD_NOTIFICATION';
 export const CHAT_CONVERSATIONS_UPDATE = 'CHAT_CONVERSATIONS_UPDATE';
+export const CHAT_CONVERSATIONS_LOAD_MORE = 'CHAT_CONVERSATIONS_LOAD_MORE';
 
 declare let _: any;
 const empty: any = function (): any {
@@ -36,6 +37,10 @@ export function reducer(state: Conversations = empty(), action: any) {
       } else {
         stateClone.data = [action.payload, ...stateClone.data]
       }
+      return stateClone;
+    case CHAT_CONVERSATIONS_LOAD_MORE:
+      stateClone.data = [...stateClone.data, ...action.payload.data];
+      stateClone.meta = action.payload.meta
       return stateClone;
     default:
       return state;

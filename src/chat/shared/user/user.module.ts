@@ -6,12 +6,10 @@ import { ZChatShareUserAvatarComponent } from '@chat/shared/user/user-avatar.com
 import { UserChatComponent } from '@chat/shared/user/user-chat.component';
 import { UserActionsComponent } from '@chat/shared/user/user-actions.component';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
+import { ZChatPipeModule } from '../pipe/chat-pipe.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    PipeModule,
-  ],
+  imports: [CommonModule, PipeModule, ZChatPipeModule],
   declarations: [
     ZChatShareUserComponent,
     ZChatShareUserIconComponent,

@@ -20,7 +20,8 @@
                   <a href="javascript:void(0);" (click)="onSelect(user)">Send Message</a>
                 </li>
                 <li>
-                  <a [routerLink]="[profileUrl, user.uuid]">View Profile</a>
+                  <!-- <a [routerLink]="[profileUrl, user.uuid]">View Profile</a> -->
+                  <a (click)="viewProfile()">View Profile</a>
                 </li>
                 <li *ngIf="showBlacklist">
                   <a href="javascript:void(0);" (click)="onAddToBlackList(user)">Blacklist</a>

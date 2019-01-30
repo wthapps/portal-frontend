@@ -15,17 +15,6 @@
     </a>
   </div>
   <div class="menuleft-chat-form">
-    <!--<div class="input-group-wrap input-group-wrap-search">-->
-    <!--<form class="input-group" novalidate="">-->
-    <!--<span class="input-group-btn input-group-left">-->
-    <!--<button class="btn btn-default" tooltipposition="bottom" type="button">-->
-    <!--<i class="fa fa-search"></i>-->
-    <!--</button>-->
-    <!--</span>-->
-    <!--<input autocomplete="off" class="form-control" name="search" type="text" placeholder="Search Conversations">-->
-    <!--</form>-->
-    <!--</div>-->
-
     <textbox-search #textbox [showSearchClearText]="false" [placeholder]="'Search conversation name'"
                     (onEnterEvent)="search(textbox.search)"
                     (onEscapeEvent)="clearSearch($event)" (onKeyUpEvent)="search(textbox.search)">
@@ -72,7 +61,12 @@
     </div>
   </div>
 </div>
-<div class="menuleft-chat-content">
+<div class="menuleft-chat-content" infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="loadMore()"
+      [scrollWindow]="false"
+>
   <ng-container *ngIf="!searching">
     <ng-container *ngIf="((conversations$ | async)?.data | chatGroupFavorite)?.length > 0">
       <div class="text-bold conversation-label">

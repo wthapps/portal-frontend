@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
@@ -19,7 +19,7 @@ const MEDIA_PATH_MAPPINGS = {
   styleUrls: ['message-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MessageItemComponent implements OnInit {
+export class MessageItemComponent implements OnInit, OnChanges {
   @Input() message: any;
   @Input() byMe: boolean;
   @Input() prevMessage: any;
@@ -50,6 +50,11 @@ export class MessageItemComponent implements OnInit {
 
   ngOnInit() {
     // console.log(this.message);
+
+  }
+
+  ngOnChanges(changes: any) {
+    console.log(changes);
 
   }
 

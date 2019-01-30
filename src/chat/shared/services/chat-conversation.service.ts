@@ -4,7 +4,7 @@ import { ApiBaseService, ChatCommonService, StorageService, UserService, CommonE
 import { CONVERSATION_SELECT, STORE_CONVERSATIONS, STORE_CONTEXT, STORE_SELECTED_CONVERSATION, STORE_MESSAGES } from '@shared/constant';
 import { takeUntil, filter, map, withLatestFrom, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { CHAT_CONVERSATIONS_SET, CHAT_CONVERSATIONS_ADD_NOTIFICATION, CHAT_CONVERSATIONS_UPDATE } from '@core/store/chat/conversations.reducer';
+import { CHAT_CONVERSATIONS_SET, CHAT_CONVERSATIONS_ADD_NOTIFICATION, CHAT_CONVERSATIONS_UPDATE, CHAT_CONVERSATIONS_LOAD_MORE } from '@core/store/chat/conversations.reducer';
 import { of } from 'rxjs';
 import { Conversations } from '@shared/shared/models/chat/conversations.model';
 
@@ -56,6 +56,16 @@ export class ChatConversationService extends CommonEventHandler {
       this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: res });
       return res;
     });
+  }
+
+  apiGetMoreConversations() {
+    this.getStoreConversations().pipe(take(1)).subscribe(conversations => {
+      if (conversations.meta && conversations.meta.links.next) {
+        this.apiBaseService.get(conversations.meta.links.next).subscribe(res => {
+          this.store.dispatch({ type: CHAT_CONVERSATIONS_LOAD_MORE, payload: res });
+        });
+      }
+    })
   }
 
   getStoreConversations() {
@@ -112,10 +122,17 @@ export class ChatConversationService extends CommonEventHandler {
     return this.apiBaseService
       .put('zone/chat/group_user/' + groupId, data)
       .toPromise().then((res: any) => {
-        // this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: res });
         this.store.dispatch({ type: CHAT_CONVERSATIONS_UPDATE, payload: res.data });
         return res;
       });
+  }
+
+  apiFavoriteGroupUser(conversation: any) {
+    return this.apiUpdateGroupUser(conversation.group_id, { favorite: !conversation.favorite });
+  }
+
+  apiNotificationGroupUser(conversation: any) {
+    return this.apiUpdateGroupUser(conversation.group_id, { notification: !conversation.notification });
   }
 
   leaveConversation(contact: any): Promise<any> {

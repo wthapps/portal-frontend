@@ -1,0 +1,75 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <div class="pull-left">
+      <h4 class="modal-title">Publish profile</h4>
+    </div>
+    <div class="pull-right">
+      <button class="btn btn-default">
+        <i class="fa fa-address-book"></i>
+      </button>
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li>
+            <a href="javascript:;" (click)="sendMessage()"><i class="fa fa-comments-o"></i> Send Message</a>
+          </li>
+          <li>
+            <a href="javascript:;" (click)="sendMessage()"><i class="fa fa-globe"></i> View social page</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="javascript:;" (click)="sendMessage()"><i class="fa fa-cloud-download"></i> Export to CSV </a>
+          </li>
+          <li>
+            <a href="javascript:;" (click)="sendMessage()"><i class="fa fa-trash"></i> Delete </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div style="display: flex;">
+      <div class="avatar-md">
+        <img [src]="user?.profile_image" alt="">
+      </div>
+      <div class="p20 w-100">
+        <div class="user-info" style="height: 80px">
+          <h4>
+            {{user?.name}}
+          </h4>
+          <div *ngIf="user?.description">
+            {{user.description}}
+          </div>
+        </div>
+        <div *ngIf="user?.email" class="p10">
+          <div class="row" style="padding-bottom: 10px;">
+            <div class="col-md-3">Email</div>
+            <div class="col-md-9">{{user?.email}}</div>
+          </div>
+        </div>
+        <div *ngIf="user?.phone" class="p10">
+          <div class="row" style="padding-bottom: 10px;">
+            <div class="col-md-3">Phone</div>
+            <div class="col-md-9">{{user?.phone}}</div>
+          </div>
+        </div>
+        <div *ngIf="user?.address" class="p10">
+          <div class="row" style="padding-bottom: 10px;">
+            <div class="col-md-3">Address</div>
+            <div class="col-md-9">{{user?.address}}</div>
+          </div>
+        </div>
+        <div *ngIf="user?.url" class="p10">
+          <div class="row" style="padding-bottom: 10px;">
+            <div class="col-md-3">Url</div>
+            <div class="col-md-9">{{user?.url}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </bs-modal-body>
+  <bs-modal-footer>
+  </bs-modal-footer>
+</bs-modal>

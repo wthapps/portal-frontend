@@ -1,6 +1,8 @@
 @mixin avatar-mixin($w) {
   width: $w;
   height: $w;
+  min-width: $w;
+  min-height: $w;
   position: relative;
   display: block;
   overflow: hidden;

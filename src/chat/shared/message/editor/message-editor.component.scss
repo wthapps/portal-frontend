@@ -1,12 +1,11 @@
 @import "../../../../assets/styles/global";
 
 .chat-message-container {
-  padding: 10px;
-  // background-color: #ffffff;
+  padding: 10px 20px 15px 20px;
+  // background-color: beige;
   background-color: #E9EDF1;
-  // border-top: 1px solid $line;
   @media (min-width: $screen-sm-min) {
-    padding: 10px 30px 15px 30px;
+    // padding: 10px 30px 15px 30px;
   }
 
   .fileinput-button {

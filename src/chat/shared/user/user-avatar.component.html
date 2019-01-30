@@ -1,9 +1,9 @@
 <div *ngIf="data" class="user-row">
   <div class="user-avatar">
     <div class="user-avatar-img">
-      <img *ngIf="data.group.group_type == 'couple'" [src]="data.display.image" alt="">
-      <img *ngIf="data.group.group_type == 'support'" [src]="data.display.image" alt="">
-      <img *ngIf="data.group.group_type == 'multiple'" [src]="data.group.profile_image" alt="">
+      <img *ngIf="data.group_type == 'couple'" [src]="data.display.image" alt="">
+      <img *ngIf="data.group_type == 'support'" [src]="data.display.image" alt="">
+      <img *ngIf="data.group_type == 'multiple'" [src]="data.group.profile_image" alt="">
     </div>
     <span *ngIf="!isPending && data.display?.id" class="media-user-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id), 'blacklist': data.blacklist}">
     </span>
@@ -13,10 +13,10 @@
   </div>
   <div class="user-body">
     <div class="user-name">
-      <p *ngIf="data.group.group_type == 'couple'">{{ data.display.name }}</p>
-      <p *ngIf="data.group.group_type == 'support'">{{ data.display.name }}</p>
-      <p *ngIf="data.group.group_type == 'multiple' && data.group.name">{{ data.group.name }}</p>
-      <p *ngIf="data.group.group_type == 'multiple' && !data.group.name">{{ data.group.users_name }}</p>
+      <p *ngIf="data.group_type == 'couple'">{{ data.display.name }}</p>
+      <p *ngIf="data.group_type == 'support'">{{ data.display.name }}</p>
+      <p *ngIf="data.group_type == 'multiple' && data.group.name">{{ data.group.name }}</p>
+      <p *ngIf="data.group_type == 'multiple' && !data.group.name">{{ data.group.users_name }}</p>
     </div>
     <ng-content select=".user-content"></ng-content>
   </div>

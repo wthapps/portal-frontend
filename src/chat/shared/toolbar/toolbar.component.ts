@@ -100,11 +100,11 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   onFavorite() {
-    this.chatService.addGroupUserFavorite(this.contactSelect);
+    this.chatConversationService.apiFavoriteGroupUser(this.contactSelect);
   }
 
   toggleNotification() {
-    this.chatService.updateNotification(this.contactSelect, { notification: !this.contactSelect.notification });
+    this.chatConversationService.apiNotificationGroupUser(this.contactSelect);
   }
 
   leaveConversation() {
@@ -133,6 +133,14 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     });
   }
 
+  viewProfile() {
+    this.commonEventService.broadcast({
+      channel: 'CardUserComponent',
+      action: 'open',
+      payload: this.contactSelect.partner
+    })
+  }
+
   onSelect(user: any) {
     this.chatService.selectContactByPartnerId(user.id);
   }
@@ -144,41 +152,4 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
       this.messageAssetsService.open();
     }
   }
-
-  /*onRemoveFromConversation(user: any) {
-    this.chatService.removeFromConversation(this.contactSelect, user.id);
-  }
-
-  onShowMemberBar() {
-    this.showMemberBar = !this.showMemberBar;
-  }
-
-  showDropdownMenu(e: any) {
-    let showDropdownMenu_ul = e.target.nextElementSibling;
-    if (e.screenX + 240 > window.innerWidth) {
-      showDropdownMenu_ul.style.left = 'auto';
-    }
-  }
-
-  checkBlacklist(user: any) {
-    if (this.chatService.userService.getSyncProfile().id == user.id) {
-      this.showBlacklist = false;
-    } else {
-      this.showBlacklist = true;
-    }
-  }
-
-  checkSendMessage(user: any) {
-    this.showSendMessage = !!this.chatContactList[user.id] && this.userService.getSyncProfile().id !== user.id;
-  }
-
-  onAddToBlackList(user: any) {
-    this.wthConfirmService.confirm({
-      message: 'Are you sure you want to add this contact to black list ?',
-      header: 'Add To Black List',
-      accept: () => {
-        this.chatService.addGroupUserBlackList(user.id);
-      }
-    });
-  }*/
 }

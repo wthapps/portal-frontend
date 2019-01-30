@@ -6,7 +6,7 @@
       </z-chat-share-user>
     </div>
     <div *ngIf="contactSelect && !contactSelect.blacklist" class="page-body-nav-right">
-      <button *ngIf="contactSelect.group.group_type == 'multiple' && (userService.profile.id == contactSelect.group.creator_id || contactSelect.group.allow_add)"
+      <button *ngIf="contactSelect.group_type == 'multiple' && (userService.profile.id == contactSelect.group.creator_id || contactSelect.group.allow_add)"
         type="button" class="btn btn-default" (click)="onAddMember()" pTooltip="{{ tooltip.addMembers }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
@@ -25,13 +25,13 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <!--show if current isn't one user-->
-          <ng-container *ngIf="contactSelect.group.group_type === 'multiple' && userService.profile.id == contactSelect.group.creator_id">
+          <ng-container *ngIf="contactSelect.group_type === 'multiple' && userService.profile.id == contactSelect.group.creator_id">
             <li>
               <a href="javascript:void(0);" (click)="onEditConversation()">Group settings</a>
             </li>
             <li role="separator" class="divider"></li>
           </ng-container>
-          <li *ngIf="contactSelect.group.group_type == 'multiple'">
+          <li *ngIf="contactSelect.group_type == 'multiple'">
             <a href="javascript:;" (click)="leaveConversation()">Leave chat</a>
           </li>
           <!--show if current isn't one user-->
@@ -42,16 +42,9 @@
             <a href="javascript:;" (click)="onDeleteConversation()">Delete conversation</a>
           </li>
           <!--show if current is one user-->
-          <li *ngIf="contactSelect.group.group_type == 'couple'">
-            <a [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a>
+          <li *ngIf="contactSelect.group_type == 'couple'">
+            <a (click)="viewProfile()">View Profile</a>
           </li>
-          <!-- <li role="separator" class="divider"></li>
-          <li *ngIf="contactSelect.notification">
-            <a href="javascript:;" (click)="disableNotification()">Disable Notification</a>
-          </li>
-          <li *ngIf="!contactSelect.notification">
-            <a href="javascript:;" (click)="enableNotification()">Enable Notification</a>
-          </li> -->
         </ul>
       </div>
       <button class="btn btn-default" (click)="onShowAssets()" type="button">
@@ -66,8 +59,8 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <!--show if current is one user-->
-          <li *ngIf="contactSelect.group.group_type == 'couple'">
-            <a [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a>
+          <li *ngIf="contactSelect.group_type == 'couple'">
+            <a (click)="viewProfile()">View Profile</a>
           </li>
         </ul>
       </div>

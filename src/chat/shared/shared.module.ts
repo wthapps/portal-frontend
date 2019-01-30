@@ -47,6 +47,7 @@ import { ZSharedReportModule } from '@shared/shared/components/zone/report/repor
 // import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
 import { ZChatSharedModalModule } from './modal/chat-shared-modal.module';
 import { ZChatPipeModule } from './pipe/chat-pipe.module';
+import { CardUserModule } from '@shared/components/card-user/card-user.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -57,6 +58,7 @@ import { ZChatPipeModule } from './pipe/chat-pipe.module';
     FormsModule,
     ReactiveFormsModule,
     WthCommonModule,
+    CardUserModule,
 
     // custom component
     ModalDockModule,
@@ -103,6 +105,7 @@ import { ZChatPipeModule } from './pipe/chat-pipe.module';
   ],
   exports: [
     WthCommonModule,
+    CardUserModule,
 
     // custom component
     ModalDockModule,

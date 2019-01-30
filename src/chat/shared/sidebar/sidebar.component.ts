@@ -7,13 +7,9 @@ import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { ApiBaseService, StorageService, UrlService, WMessageService, CommonEventService } from '@shared/services';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
-import { Conversation } from '@chat/shared/models/conversation.model';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
-import { ModalService } from '@shared/components/modal/modal-service';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
-import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 import { ChatConversationService } from '../services/chat-conversation.service';
 import { Store } from '@ngrx/store';
 import { STORE_CONVERSATIONS } from '@shared/constant';
@@ -51,14 +47,10 @@ export class ZChatSidebarComponent implements OnInit {
     public chatService: ChatService,
     public chatConversationService: ChatConversationService,
     private router: Router,
-    private urlService: UrlService,
-    private storageService: StorageService,
     private store: Store<any>,
     private renderer: Renderer2,
     private commonEventService: CommonEventService,
-    private addContactService: ZChatShareAddContactService,
     private wthEmojiService: WTHEmojiService,
-    private modalService: ModalService,
     private apiBaseService: ApiBaseService
   ) {
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
@@ -140,10 +132,6 @@ export class ZChatSidebarComponent implements OnInit {
     });
   }
 
-  onFavourite(conversation: any) {
-    this.chatService.addGroupUserFavorite(conversation);
-  }
-
   historyToggle() {
     this.historyShow = !this.historyShow;
   }
@@ -179,6 +167,9 @@ export class ZChatSidebarComponent implements OnInit {
   /*
   * End of searching here
    */
-
+  loadMore() {
+    console.log('scroll');
+    this.chatConversationService.apiGetMoreConversations();
+  }
 
 }

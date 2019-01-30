@@ -216,12 +216,6 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     return this.storage.getAsync(USERS_ONLINE);
   }
 
-  addGroupUserFavorite(contact: any) {
-    const body: any = { favorite: !contact.favorite };
-    this.updateGroupUser(contact.group_id, body);
-    contact.favorite = !contact.favorite;
-  }
-
   addGroupUserBlackList(userId: any) {
     this.apiBaseService
       .post('users/users_blacklist', { user_id: userId, module_name: 'chat' })
