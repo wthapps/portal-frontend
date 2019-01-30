@@ -174,7 +174,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         if (event.card) {
           this.cardService.updateCard({...event.card, avatar: event.payload});
         } else if (event.user) {
-          this.userService.update({uuid: event.user.uuid, image: event.payload})
+          this.userService.update({uuid: event.user.uuid, file: event.payload})
             .subscribe((result: any) => {
                 this.profileService.getMyProfile();
               },
