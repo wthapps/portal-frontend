@@ -1,21 +1,45 @@
 $zone-icons-list: 'social' 'note' 'chat' 'media' 'contact' 'profile';
 $zone-icons-width: 16;
+$zone-icons-md-width: 30;
+$zone-icons-lg-width: 50;
 
 [class^="icon-zone-"], [class*=" icon-zone-"] {
-  width: $zone-icons-width + px;
-  height: $zone-icons-width + px;
+  width: #{$zone-icons-width}px;
+  height: #{$zone-icons-width}px;
   display: inline-block;
   vertical-align: middle;
-  background-image: url('/assets/icons/zone-icons.png');
+  background-image: url('/assets/icons/icons-50x50.png');
   background-repeat: no-repeat;
   position: relative;
   top: -1px;
+  -webkit-background-size: #{$zone-icons-width}px auto;
+  background-size: #{$zone-icons-width}px auto;
+}
+
+[class^="icon-zone-md-"], [class*=" icon-zone-md-"] {
+  width: #{$zone-icons-md-width}px;
+  height: #{$zone-icons-md-width}px;
+  -webkit-background-size: #{$zone-icons-md-width}px auto;
+  background-size: #{$zone-icons-md-width}px auto;
+}
+
+[class^="icon-zone-lg-"], [class*=" icon-zone-lg-"] {
+  width: #{$zone-icons-lg-width}px;
+  height: #{$zone-icons-lg-width}px;
+  -webkit-background-size: #{$zone-icons-lg-width}px auto;
+  background-size: #{$zone-icons-lg-width}px auto;
 }
 
 @each $current-class in $zone-icons-list {
   $i: index($zone-icons-list, $current-class);
   .icon-zone-#{$current-class} {
-    background-position: center #{-(($i - 1) * $zone-icons-width) + px};
+    background-position: center #{-(($i - 1) * $zone-icons-width)}px;
+  }
+  .icon-zone-md-#{$current-class} {
+    background-position: center #{-(($i - 1) * $zone-icons-md-width)}px;
+  }
+  .icon-zone-lg-#{$current-class} {
+    background-position: center #{-(($i - 1) * $zone-icons-lg-width)}px;
   }
 }
 

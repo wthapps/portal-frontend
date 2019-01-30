@@ -1,214 +1,123 @@
 <form [formGroup]="form" novalidate class="note-editor-wrap">
   <div class="note-editor-header">
+    <div class="note-editor-header-actions">
+      <a href="javascript:;" class="icon-zone-md-note"></a>
+    </div>
     <div class="note-editor-header-content">
-      <div class="note-editor-header-action note-editor-header-action-right component-listbox-action">
-        <z-note-shared-actions-bar class="action" [selectedObjects]="[note]"
-                                   [subPage]="subPage" (outEvent)="handleActionEvents($event)"></z-note-shared-actions-bar>
-        <button type="button" (click)="onSubmit(form.value)" [disabled]="!form.valid" pTooltip="Close" tooltipPosition="bottom"
-                class="btn btn-default"><i class="fa fa-close"></i>
-        </button>
-
-      </div>
-      <div class="note-editor-icon">
-          <a href="javascript:;" class="icon-zone-note"></a>
+      <div class="d-flex">
+        <div class="body">
+          <div class="hidden-xs">
+            <input *ngIf="note.permission !== 'view'"
+                   type="text"
+                   tabindex="1"
+                   autofocus
+                   (keypress)="onToEditor($event)"
+                   [formControl]="name"
+                   [attr.disabled]="disabled ? 'disabled' : null"
+                   class="form-control"
+                   placeholder="Title">
+            <h4 *ngIf="note.permission == 'view'">{{note.name}}</h4>
+          </div>
+          <div class="visible-xs-block">
+            <h4 *ngIf="note.permission !== 'view'" class="can-click" (click)="modalEditName.modal.open()">
+              <span>{{note.name || 'Untitled Note'}}</span>
+            </h4>
+            <h4 *ngIf="note.permission == 'view'">{{note.name}}</h4>
+          </div>
         </div>
-      <div class="note-editor-header-input hidden-xs">
-        <input *ngIf="note.permission !== 'view'" tabindex="1" autofocus (keypress)="onToEditor($event)"
-               [formControl]="name" type="text"
-               [attr.disabled]="disabled ? 'disabled' : null"
-               class="form-control fz18 mb15" id="note_form_title" placeholder="Title">
-        <h4 class="mb15" *ngIf="note.permission == 'view'">{{note.name}}</h4>
-        <span class="text-fade pl12" *ngIf="editStatus === EDIT_STATUS.idle">
-          Last edited on {{ note?.updated_at | date: 'MMM dd' }} <i class="fa fa-circle fa-xs" aria-hidden="true"></i>  {{ note?.user?.uuid === profile?.uuid ? 'me' : ''}} 
-          <a href="javascript:;" *ngIf="note?.user?.uuid !== profile?.uuid"> {{ note?.user?.name }}</a> 
-        </span> 
-        <span class="text-fade pl12" *ngIf="editStatus === EDIT_STATUS.editing">Saving ... <i class="fa fa-circle fa-xs" aria-hidden="true"></i>  {{ note?.user?.uuid === profile?.uuid ? 'me' : note?.user?.name}} </span>
-        <span class="text-fade pl12" *ngIf="editStatus === EDIT_STATUS.saved">All changes are saved <i class="fa fa-circle fa-xs" aria-hidden="true"></i>  {{ note?.user?.uuid === profile?.uuid ? 'me' : note?.user?.name}} </span>
-        <span class="text-fade pl12" *ngIf="editStatus === EDIT_STATUS.reloading"> Fetching latest data ...</span>
-        
+        <div class="actions">
+          <z-note-shared-actions-bar class="action" [selectedObjects]="[note]"
+                                     [subPage]="subPage"
+                                     (outEvent)="handleActionEvents($event)">
+          </z-note-shared-actions-bar>
+          <div>
+            <button type="button" (click)="onSubmit(form.value)" [disabled]="!form.valid" pTooltip="Close"
+                    tooltipPosition="bottom" class="btn btn-default">
+              <i class="fa fa-close"></i>
+            </button>
+          </div>
+        </div>
       </div>
-
-      <button (click)="onSubmit(form.value)" class="btn btn-text visible-xs-block" type="button">
-        <i class="fa bold fa-angle-left"></i>
-      </button>
-      <div class="note-editor-header-input visible-xs-block">
-        <h4 *ngIf="note.permission == 'view'">{{note.name}}</h4>
-        <h4 *ngIf="note.permission !== 'view'" class="can-click" (click)="modalEditName.modal.open()">
-          <span *ngIf="note.name">{{note.name}}</span>
-          <span *ngIf="!note.name">Untitled Note</span>
-        </h4>
+      <div class="text-fade small mt-5">
+          <span *ngIf="editStatus === EDIT_STATUS.idle">Last edited on {{ note?.updated_at | date: 'MMM dd' }}
+            <span class="text-bold fz16 ml5 mr5">·</span> {{ note?.user?.uuid === profile?.uuid ? 'me' : ''}}
+            <a href="javascript:;" *ngIf="note?.user?.uuid !== profile?.uuid"> {{ note?.user?.name }}</a>
+          </span>
+        <span *ngIf="editStatus === EDIT_STATUS.editing">Saving ...
+            <span class="text-bold fz16 ml5 mr5">·</span>
+            {{ note?.user?.uuid === profile?.uuid ? 'me' : note?.user?.name}} </span>
+        <span *ngIf="editStatus === EDIT_STATUS.saved">All changes are saved
+            <span class="text-bold fz16 ml5 mr5">·</span>
+            {{ note?.user?.uuid === profile?.uuid ? 'me' : note?.user?.name}}
+          </span>
+        <span *ngIf="editStatus === EDIT_STATUS.reloading"> Fetching latest data ...</span>
+        <span class="text-bold fz16 ml5 mr5">·</span>
+        <span id="counter"></span>
       </div>
     </div>
   </div>
   <div class="note-editor-content" [ngClass]="{'show-aside': !!visibleTab}">
     <div class="note-editor-toolbar">
-      <div class="container-fluid">
-        <div id="quill-toolbar">
-          <!--Mobile-->
-          <div class="ql-format-group ql-format-group-mobile visible-xs-block">
-            <div class="clearfix">
-              <div class="pull-left">
-                <div class="ql-formats">
-                  <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()">
-                    <i class="fa fa-reply"></i>
-                  </button>
-                  <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()">
-                    <i class="fa fa-share"></i>
-                  </button>
-                  <button pTooltip="Paint format" tooltipPosition="bottom" type="button" (click)="copyFormat()">
-                    <i class="fa fa-paint-brush"></i>
-                  </button>
-                  <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
-                </div>
-              </div>
-              <div class="pull-right">
-                <div class="ql-formats">
-                  <button pTooltip="Undo" tooltipPosition="bottom" type="button"
-                          (click)="showFormatGroupMobile = !showFormatGroupMobile">
-                    <span *ngIf="!showFormatGroupMobile">A</span>
-                    <span class="btn-show-format" *ngIf="showFormatGroupMobile"><i class="fa fa-times"></i></span>
-                  </button>
-                </div>
-                <div class="ql-formats">
-                  <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom"
-                          class="ql-link"></button>
-                  <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
-                  <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
-                  <!--<button class="ql-video"></button>-->
-                  <!--<button class="ql-formula"></button>-->
-                </div>
+      <div id="quill-toolbar">
+        <!--Mobile-->
+        <div class="ql-format-group ql-format-group-mobile visible-xs-block">
+          <div class="clearfix">
+            <div class="pull-left">
+              <div class="ql-formats">
+                <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()">
+                  <i class="fa fa-reply"></i>
+                </button>
+                <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()">
+                  <i class="fa fa-share"></i>
+                </button>
+                <button pTooltip="Paint format" tooltipPosition="bottom" type="button" (click)="copyFormat()">
+                  <i class="fa fa-paint-brush"></i>
+                </button>
+                <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
               </div>
             </div>
-
-            <div [ngClass]="{'hidden': !showFormatGroupMobile}" class="ql-format-group-mobile-content">
-              <div class="ql-formats no-right-margin">
-                <select class="ql-header vh left-border-radius" title="Styles">
-                  <option *ngFor="let h of HEADINGS" [value]="h?.value" 
-                  [attr.selected]="h?.value === '0' ? '' : null">{{ h?.name}}</option>
-                </select>
-
-                <select class="ql-font vh no-border-radius w150" title="Font">
-                  <option *ngFor="let font of FONTS" [value]="font?.value"
-                  [attr.selected]="font?.value === setting?.font ? '' : null">{{ font?.name}}</option>
-                </select>
-
-                <select class="ql-size vh ql-size-sm no-border-radius" title="Font size">
-                  <option *ngFor="let size of FONT_SIZES" [value]="size?.value"
-                  [attr.selected]="size?.value === '14pt' ? setting?.font_size : null">{{ size?.name}}</option>
-                </select>
-
-              </div>
-
+            <div class="pull-right">
               <div class="ql-formats">
-                <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold"
-                        aria-label="Bold"></button>
-                <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic"
-                        aria-label="Italic"></button>
-                <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom" class="ql-underline"
-                        aria-label="Underline"></button>
-                <!-- <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike"
-                        aria-label="Strikethrough"></button> -->
-
-                <select class="ql-color no-border-radius" title="Text color">
-                  <option value="#000000"></option>
-                  <option value="#002966"></option>
-                  <option value="#0047b2"></option>
-                  <!--<option value="#0066cc"></option>-->
-                  <option value="#5c5cff"></option>
-                  <option value="#ff0000"></option>
-                  <option value="#0000ff"></option>
-                  <option value="#ffff00"></option>
-                  <option value="#00ff00"></option>
-                  <option value="#00ffff"></option>
-                  <option value="#ff00ff"></option>
-                  <option value="#bbbbbb"></option>
-                  <option value="#7f7f7f"></option>
-                  <option value="#888888"></option>
-                  <option value="#444444"></option>
-                  <option value="#ffffff"></option>
-                </select>
-
-                <!-- Add background -->
-                <select class="ql-background right-border-radius" title="Background">
-                  <option value="#ffffff"></option>
-                  <option value="#ffff00"></option>
-                  <option value="#00ff00"></option>
-                  <option value="#00ffff"></option>
-                  <option value="#ff00ff"></option>
-                  <option value="#ff9900"></option>
-                  <option value="#ff0000"></option>
-                  <option value="#bbbbbb"></option>
-                  <option value="#444444"></option>
-                  <option value="#000000"></option>
-
-                </select>
-              </div>
-              <div tooltipPosition="bottom" class="ql-formats">
-                <!-- <button pTooltip="Left align" tooltipPosition="bottom" class="ql-align" value=""></button> -->
-                <!-- <button pTooltip="Center align" tooltipPosition="bottom" class="ql-align" value="center"></button>
-                <button pTooltip="Right align" tooltipPosition="bottom" class="ql-align" value="right"></button>
-                <button pTooltip="Justify" tooltipPosition="bottom" class="ql-align" value="justify"></button> -->
-              </div>
-              <div class="ql-formats">
-                <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
-                <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list" value="ordered"></button>
-                <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list" value="bullet"></button>
-
-                <!-- <button pTooltip="Decrease indent" tooltipPosition="bottom" class="ql-indent" value="-1"></button>
-                <button pTooltip="Increase indent" tooltipPosition="bottom" class="ql-indent" value="+1"></button> -->
-              </div>
-
-              <div pTooltip="Divider line" tooltipPosition="bottom" class="ql-formats">
-                <button type="button" (click)="divider()">
-                  <i>&mdash;</i>
+                <button pTooltip="Undo" tooltipPosition="bottom" type="button"
+                        (click)="showFormatGroupMobile = !showFormatGroupMobile">
+                  <span *ngIf="!showFormatGroupMobile">A</span>
+                  <span class="btn-show-format" *ngIf="showFormatGroupMobile"><i class="fa fa-times"></i></span>
                 </button>
               </div>
-
-              <!-- <div class="ql-formats">
-                <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
-                <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
-              </div> -->
+              <div class="ql-formats">
+                <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom"
+                        class="ql-link"></button>
+                <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
+                <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
+                <!--<button class="ql-video"></button>-->
+                <!--<button class="ql-formula"></button>-->
+              </div>
             </div>
-
           </div>
 
-          <!--PC-->
-          <div class="ql-format-group hidden-xs">
-            <div class="ql-formats">
-              <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()">
-                <i class="fa fa-reply"></i>
-              </button>
-              <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()">
-                <i class="fa fa-share"></i>
-              </button>
-              <button pTooltip="Paint format" tooltipPosition="bottom" type="button" (click)="copyFormat()">
-                <i class="fa fa-paint-brush"></i>
-              </button>
-            </div>
-
-            <div class="ql-formats bdl1">
+          <div [ngClass]="{'hidden': !showFormatGroupMobile}" class="ql-format-group-mobile-content">
+            <div class="ql-formats no-right-margin">
               <select class="ql-header vh left-border-radius" title="Styles">
-                <option *ngFor="let h of HEADINGS" [value]="h?.value" 
-                [attr.selected]="h?.value === '0' ? '' : null">{{ h?.name}}</option>
+                <option *ngFor="let h of HEADINGS" [value]="h?.value"
+                        [attr.selected]="h?.value === '0' ? '' : null">{{ h?.name}}
+                </option>
               </select>
+
+              <select class="ql-font vh no-border-radius w150" title="Font">
+                <option *ngFor="let font of FONTS" [value]="font?.value"
+                        [attr.selected]="font?.value === setting?.font ? '' : null">{{ font?.name}}
+                </option>
+              </select>
+
+              <select class="ql-size vh ql-size-sm no-border-radius" title="Font size">
+                <option *ngFor="let size of FONT_SIZES" [value]="size?.value"
+                        [attr.selected]="size?.value === '14pt' ? setting?.font_size : null">{{ size?.name}}
+                </option>
+              </select>
+
             </div>
 
-            <div class="ql-formats bdl1">
-                <select class="ql-font vh w150 no-border-radius" title="Font">
-                  <option *ngFor="let font of FONTS" [value]="font?.value"
-                  [attr.selected]="font?.value === setting?.font ? '' : null">{{ font?.name}}</option>
-                </select>
-              </div>
-
-              <div class="ql-formats bdl1 no-right-margin" >
-                  <select class="ql-size vh ql-size-sm no-border-radius" title="Font size">
-                    <option *ngFor="let size of FONT_SIZES" [value]="size?.value"
-                    [attr.selected]="size?.value === setting?.font_size ? '' : null">{{size?.name}}</option>
-                  </select>
-    
-                </div>
-
-            <div class="ql-formats bdl1">
+            <div class="ql-formats">
               <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold"
                       aria-label="Bold"></button>
               <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic"
@@ -249,16 +158,16 @@
                 <option value="#bbbbbb"></option>
                 <option value="#444444"></option>
                 <option value="#000000"></option>
+
               </select>
             </div>
-            <div class="ql-formats bdl1">
-              <select class="ql-align no-border-radius">
-                  <option value=""></option>
-                  <option value="center"></option>
-                  <option value="right"></option>
-                  <option value="justify"></option>
-                </select>
-
+            <div tooltipPosition="bottom" class="ql-formats">
+              <!-- <button pTooltip="Left align" tooltipPosition="bottom" class="ql-align" value=""></button> -->
+              <!-- <button pTooltip="Center align" tooltipPosition="bottom" class="ql-align" value="center"></button>
+              <button pTooltip="Right align" tooltipPosition="bottom" class="ql-align" value="right"></button>
+              <button pTooltip="Justify" tooltipPosition="bottom" class="ql-align" value="justify"></button> -->
+            </div>
+            <div class="ql-formats">
               <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
               <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list" value="ordered"></button>
               <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list" value="bullet"></button>
@@ -267,112 +176,226 @@
               <button pTooltip="Increase indent" tooltipPosition="bottom" class="ql-indent" value="+1"></button> -->
             </div>
 
-            <div class="ql-formats bdl1">
-                <button  pTooltip="Divider line" tooltipPosition="bottom" type="button" (click)="divider()">
-                  <i>&mdash;</i>
-                </button>
-              <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom" class="ql-link"></button>
-              <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
-              <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
-              <!--<button class="ql-video"></button>-->
-              <!--<button class="ql-formula"></button>-->
+            <div pTooltip="Divider line" tooltipPosition="bottom" class="ql-formats">
+              <button type="button" (click)="divider()">
+                <i>&mdash;</i>
+              </button>
             </div>
+
             <!-- <div class="ql-formats">
-              <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
-            </div>
-            <div class="ql-formats">
               <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
               <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
             </div> -->
+          </div>
+
+        </div>
+
+        <!--PC-->
+        <div class="ql-format-group hidden-xs">
+          <div class="ql-formats">
+            <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()">
+              <i class="fa fa-reply"></i>
+            </button>
+            <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()">
+              <i class="fa fa-share"></i>
+            </button>
+            <button pTooltip="Paint format" tooltipPosition="bottom" type="button" (click)="copyFormat()">
+              <i class="fa fa-paint-brush"></i>
+            </button>
+          </div>
+
+          <div class="ql-formats">
+            <select class="ql-header vh left-border-radius" title="Styles">
+              <option *ngFor="let h of HEADINGS" [value]="h?.value"
+                      [attr.selected]="h?.value === '0' ? '' : null">{{ h?.name}}
+              </option>
+            </select>
+          </div>
+
+          <div class="ql-formats">
+            <select class="ql-font vh w150 no-border-radius" title="Font">
+              <option *ngFor="let font of FONTS" [value]="font?.value"
+                      [attr.selected]="font?.value === setting?.font ? '' : null">{{ font?.name}}
+              </option>
+            </select>
+          </div>
+
+          <div class="ql-formats">
+            <select class="ql-size vh ql-size-sm no-border-radius" title="Font size">
+              <option *ngFor="let size of FONT_SIZES" [value]="size?.value"
+                      [attr.selected]="size?.value === setting?.font_size ? '' : null">{{size?.name}}
+              </option>
+            </select>
 
           </div>
+
+          <div class="ql-formats">
+            <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold"
+                    aria-label="Bold"></button>
+            <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic"
+                    aria-label="Italic"></button>
+            <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom" class="ql-underline"
+                    aria-label="Underline"></button>
+            <!-- <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike"
+                    aria-label="Strikethrough"></button> -->
+
+            <select class="ql-color no-border-radius" title="Text color">
+              <option value="#000000"></option>
+              <option value="#002966"></option>
+              <option value="#0047b2"></option>
+              <!--<option value="#0066cc"></option>-->
+              <option value="#5c5cff"></option>
+              <option value="#ff0000"></option>
+              <option value="#0000ff"></option>
+              <option value="#ffff00"></option>
+              <option value="#00ff00"></option>
+              <option value="#00ffff"></option>
+              <option value="#ff00ff"></option>
+              <option value="#bbbbbb"></option>
+              <option value="#7f7f7f"></option>
+              <option value="#888888"></option>
+              <option value="#444444"></option>
+              <option value="#ffffff"></option>
+            </select>
+
+            <!-- Add background -->
+            <select class="ql-background right-border-radius" title="Background">
+              <option value="#ffffff"></option>
+              <option value="#ffff00"></option>
+              <option value="#00ff00"></option>
+              <option value="#00ffff"></option>
+              <option value="#ff00ff"></option>
+              <option value="#ff9900"></option>
+              <option value="#ff0000"></option>
+              <option value="#bbbbbb"></option>
+              <option value="#444444"></option>
+              <option value="#000000"></option>
+            </select>
+          </div>
+          <div class="ql-formats">
+            <select class="ql-align no-border-radius">
+              <option value=""></option>
+              <option value="center"></option>
+              <option value="right"></option>
+              <option value="justify"></option>
+            </select>
+
+            <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
+            <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list" value="ordered"></button>
+            <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list" value="bullet"></button>
+
+            <!-- <button pTooltip="Decrease indent" tooltipPosition="bottom" class="ql-indent" value="-1"></button>
+            <button pTooltip="Increase indent" tooltipPosition="bottom" class="ql-indent" value="+1"></button> -->
+          </div>
+
+          <div class="ql-formats">
+            <button pTooltip="Divider line" tooltipPosition="bottom" type="button" (click)="divider()">
+              <i>&mdash;</i>
+            </button>
+            <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom" class="ql-link"></button>
+            <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
+            <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
+            <!--<button class="ql-video"></button>-->
+            <!--<button class="ql-formula"></button>-->
+          </div>
+          <!-- <div class="ql-formats">
+            <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
+          </div>
+          <div class="ql-formats">
+            <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
+            <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
+          </div> -->
+
         </div>
       </div>
     </div>
     <div class="note-editor-body" id="scrolling-container">
-        <div class="container" id="quill-container-wrapper">
-          <div id="quill-editor"></div>      
-
-          <div id="counter"></div>    
-        </div>
+      <div id="quill-editor"></div>
     </div>
 
     <div class="note-editor-aside">
-          <div *ngIf="visibleTab === 'attachment'">
-                <div [ngClass]="{'hidden': false}" class="quill-toolbar-attachment">
-                    <div class="p10 mb15 fwb bb">                  
-                        <i class="fa fa-paperclip"></i> Attachment ({{ note?.attachments?.length || 0 }}) 
-                        <a href="javascript:;" pTooltip="Close" tooltipPosition="bottom" class="btn-default pull-right" ><i class="fa fa-close"></i></a>
-                      </div>
-                    <div class="btn-group pl12">
-                      <a href="javascript:;" class="btn btn-outline-default" [ngClass]="{'disabled': note.permission === 'view'}" (click)="selectPhotos()"
-                              >
-                        <i class="fa fa-plus"></i> Photo
-                    </a>
-                      <a href="javascript:;" class="btn btn-outline-default can-click btn-style-1 fileinput-button" [ngClass]="{'disabled': note.permission === 'view'}"
-                              pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top" >
-                        <i class="fa fa-paperclip"></i> Attachment
-                        <input id="files" #fileBrowse type="file" *ngIf="note.permission !== 'view'" multiple="multiple" (click)="fileBrowse.value='';"
-                              (change)="selectFiles($event)"
-                        />
-                    </a>
-                    </div>
-          
-                    <div class="btn-group ml10">
-                      <button class="btn btn-outline-default" [disabled]="note.attachments.length === 0"
-                              (click)="downloadAttachments()">
-                        <i class="fa fa-download"></i> Download all
-                      </button>
-                    </div>
-          
-                  </div>
-                <div class="attachment-list-wrap pl12 pr12 pt12">
-        
-                  <table class="table table-middle wth-table table-hover"
-                         *ngIf="note.attachments && note.attachments.length > 0">
-                    <thead>
-                    <tr>
-                      <th class="can-click" (click)="onSort('name')">
-                        Name
-                        <i *ngIf="hasSortBy" class="fa"
-                           [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
-                      </th>
-                      <th>&nbsp;</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let att of note.attachments">
-                      <td [ngClass]="{'can-click': ['photo', 'Media::Photo'].includes(att.object_type)}" (click)="fileAttachmentClick(att)">
-                        <i *ngIf="att.thumbnail_url &&  ['photo', 'Media::Photo'].includes(att.object_type)" class="fa fa-picture-o"></i>
-                        <i *ngIf="att.thumbnail_url &&  !(['photo', 'Media::Photo'].includes(att.object_type))" class="fa fa-file"></i>
-                        <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
-                        {{ att.name + '.' + att?.extension | maxLength: 30 }}
-                        <p class="text-fade">{{ att.size | bytes:3 }}</p>
-                      </td>
-                      <td class="text-right">
-                        <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
-                          <i class="fa fa-download"></i>
-                        </button>
-                        <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button"
-                                [disabled]="note.permission == 'view'">
-                          <i class="fa fa-trash-o"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-            </div>
+      <div *ngIf="visibleTab === 'attachment'">
+        <div [ngClass]="{'hidden': false}" class="quill-toolbar-attachment">
+          <div class="p10 mb15 fwb bb">
+            <i class="fa fa-paperclip"></i> Attachment ({{ note?.attachments?.length || 0 }})
+            <a href="javascript:;" pTooltip="Close" tooltipPosition="bottom" class="btn-default pull-right"><i
+              class="fa fa-close"></i></a>
+          </div>
+          <div class="btn-group pl12">
+            <a href="javascript:;" class="btn btn-outline-default" [ngClass]="{'disabled': note.permission === 'view'}"
+               (click)="selectPhotos()"
+            >
+              <i class="fa fa-plus"></i> Photo
+            </a>
+            <a href="javascript:;" class="btn btn-outline-default can-click btn-style-1 fileinput-button"
+               [ngClass]="{'disabled': note.permission === 'view'}"
+               pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top">
+              <i class="fa fa-paperclip"></i> Attachment
+              <input id="files" #fileBrowse type="file" *ngIf="note.permission !== 'view'" multiple="multiple"
+                     (click)="fileBrowse.value='';"
+                     (change)="selectFiles($event)"
+              />
+            </a>
+          </div>
+
+          <div class="btn-group ml10">
+            <button class="btn btn-outline-default" [disabled]="note.attachments.length === 0"
+                    (click)="downloadAttachments()">
+              <i class="fa fa-download"></i> Download all
+            </button>
+          </div>
+
+        </div>
+        <div class="attachment-list-wrap pl12 pr12 pt12">
+
+          <table class="table table-middle wth-table table-hover"
+                 *ngIf="note.attachments && note.attachments.length > 0">
+            <thead>
+            <tr>
+              <th class="can-click" (click)="onSort('name')">
+                Name
+                <i *ngIf="hasSortBy" class="fa"
+                   [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
+              </th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let att of note.attachments">
+              <td [ngClass]="{'can-click': ['photo', 'Media::Photo'].includes(att.object_type)}"
+                  (click)="fileAttachmentClick(att)">
+                <i *ngIf="att.thumbnail_url &&  ['photo', 'Media::Photo'].includes(att.object_type)"
+                   class="fa fa-picture-o"></i>
+                <i *ngIf="att.thumbnail_url &&  !(['photo', 'Media::Photo'].includes(att.object_type))"
+                   class="fa fa-file"></i>
+                <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+                {{ att.name + '.' + att?.extension | maxLength: 30 }}
+                <p class="text-fade">{{ att.size | bytes:3 }}</p>
+              </td>
+              <td class="text-right">
+                <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
+                  <i class="fa fa-download"></i>
+                </button>
+                <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button"
+                        [disabled]="note.permission == 'view'">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
 
     </div>
 
   </div>
 </form>
+
 <lock-upload-modal></lock-upload-modal>
 <z-note-shared-modal-edit-name
   #modalEditName
   [name]="form.value.name"
   (eventEmitter)="onSaveName($event)">
 </z-note-shared-modal-edit-name>
-<!--<z-note-shared-modal-edit-name #modalEditName [name]="form.value.name"></z-note-shared-modal-edit-name>-->
