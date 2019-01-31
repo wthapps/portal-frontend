@@ -1,5 +1,7 @@
 @import '../../assets/styles/global';
 
+$note-editor-aside-w: 400px;
+
 .note-editor-wrap {
   position: fixed;
   top: 0;
@@ -64,6 +66,7 @@
     @include flex(1);
     @include flexbox;
     @include flex-direction(column);
+    position: relative;
     .note-editor-body {
       @include flex(1);
       width: 100%;
@@ -74,6 +77,54 @@
         .ql-editor {
           @include flex(1);
         }
+      }
+    }
+
+    .note-editor-aside {
+      position: absolute;
+      z-index: 10;
+      top: 0;
+      bottom: 0;
+      right: -$note-editor-aside-w;
+      width: $note-editor-aside-w;
+      background-color: #fff;
+      border: 1px solid $line;
+      @include transition($transition-base);
+      @include flexbox;
+      @include flex-direction(column);
+      .note-editor-aside-header {
+        border-bottom: 1px solid $line;
+        @include flexbox;
+        @include align-items(center);
+        @include justify-content(space-between);
+        padding: 10px;
+        h4 {
+          font-size: 16px;
+          margin: 0;
+        }
+      }
+      .note-editor-aside-body {
+        padding: 10px;
+        @include flex(1);
+        @include flexbox;
+        @include flex-direction(column);
+        height: 100%;
+      }
+      .note-editor-aside-content {
+        @include flex(1);
+        overflow: auto;
+        max-height: 100%;
+        margin-left: -10px;
+        margin-right: -10px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+
+    &.show-aside {
+      padding-right: $note-editor-aside-w;
+      .note-editor-aside {
+        right: 0;
       }
     }
   }
@@ -88,6 +139,22 @@
       }
     }
   }
+  @media all {
+    p > img {
+      text-align: center;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      cursor: move !important;
+    }
+
+    .big-icon {
+      font-size: 200px;
+    }
+  }
+
   @media (min-width: $screen-sm-min) {
     .note-editor-toolbar {
       margin-bottom: 10px;
@@ -104,6 +171,29 @@
               margin-right: 10px;
               padding-right: 10px;
               border-right: 1px solid $line;
+            }
+          }
+
+          .ql-color-picker {
+            .ql-picker-options {
+              width: 112px;
+            }
+          }
+
+          .ql-formats {
+            .ql-size, .ql-font, .ql-header {
+              &.vh {
+                visibility: hidden;
+                svg {
+                  visibility: visible;
+                }
+              }
+              .ql-active {
+                color: #444;
+                .ql-stroke {
+                  stroke: #444;
+                }
+              }
             }
           }
         }
@@ -138,5 +228,26 @@
         border-width: 0;
       }
     }
+  }
+}
+
+@media screen {
+  .printable {
+    /*visibility: hidden;*/
+    display: none;
+  }
+}
+
+@media print {
+  body {
+    //visibility: hidden;
+    display: none;
+  }
+  .ql-container.ql-snow {
+    border-style: none;
+  }
+  .printable {
+    //visibility: visible;
+    display: block;
   }
 }

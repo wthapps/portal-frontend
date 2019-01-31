@@ -1,7 +1,7 @@
 <form [formGroup]="form" novalidate class="note-editor-wrap">
   <div class="note-editor-header">
     <div class="note-editor-header-actions">
-      <a href="javascript:;" class="icon-zone-md-note"></a>
+      <a href="#" class="icon-zone-md-note"></a>
     </div>
     <div class="note-editor-header-content">
       <div class="d-flex">
@@ -46,7 +46,7 @@
       <div class="text-fade small ml5">
           <span *ngIf="editStatus === EDIT_STATUS.idle">Last edited on {{ note?.updated_at | date: 'MMM dd' }}
             <span class="text-bold fz16 ml5 mr5">·</span> {{ note?.user?.uuid === profile?.uuid ? 'me' : ''}}
-            <a href="javascript:;" *ngIf="note?.user?.uuid !== profile?.uuid"> {{ note?.user?.name }}</a>
+            <a href="#" *ngIf="note?.user?.uuid !== profile?.uuid"> {{ note?.user?.name }}</a>
           </span>
         <span *ngIf="editStatus === EDIT_STATUS.editing">Saving ...
             <span class="text-bold fz16 ml5 mr5">·</span>
@@ -319,80 +319,78 @@
     </div>
 
     <div class="note-editor-aside">
-      <div *ngIf="visibleTab === 'attachment'">
-        <div [ngClass]="{'hidden': false}" class="quill-toolbar-attachment">
-          <div class="p10 mb15 fwb bb">
+      <ng-container *ngIf="visibleTab === 'attachment'">
+        <div class="note-editor-aside-header">
+          <h4>
             <i class="fa fa-paperclip"></i> Attachment ({{ note?.attachments?.length || 0 }})
-            <a href="javascript:;" pTooltip="Close" tooltipPosition="bottom" class="btn-default pull-right"><i
-              class="fa fa-close"></i></a>
-          </div>
-          <div class="btn-group pl12">
-            <a href="javascript:;" class="btn btn-outline-default" [ngClass]="{'disabled': note.permission === 'view'}"
-               (click)="selectPhotos()"
-            >
-              <i class="fa fa-plus"></i> Photo
-            </a>
-            <a href="javascript:;" class="btn btn-outline-default can-click btn-style-1 fileinput-button"
-               [ngClass]="{'disabled': note.permission === 'view'}"
-               pTooltip="{{ tooltip.addAttachments }}" tooltipPosition="top">
-              <i class="fa fa-paperclip"></i> Attachment
-              <input id="files" #fileBrowse type="file" *ngIf="note.permission !== 'view'" multiple="multiple"
-                     (click)="fileBrowse.value='';"
-                     (change)="selectFiles($event)"
-              />
-            </a>
-          </div>
-
-          <div class="btn-group ml10">
-            <button class="btn btn-outline-default" [disabled]="note.attachments.length === 0"
-                    (click)="downloadAttachments()">
-              <i class="fa fa-download"></i> Download all
-            </button>
-          </div>
-
+          </h4>
+          <a (click)="visibleTab = undefined" href="#" class="btn btn-default">
+            <i class="fa fa-close"></i>
+          </a>
         </div>
-        <div class="attachment-list-wrap pl12 pr12 pt12">
-
-          <table class="table table-middle wth-table table-hover"
-                 *ngIf="note.attachments && note.attachments.length > 0">
-            <thead>
-            <tr>
-              <th class="can-click" (click)="onSort('name')">
-                Name
-                <i *ngIf="hasSortBy" class="fa"
-                   [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
-              </th>
-              <th>&nbsp;</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let att of note.attachments">
-              <td [ngClass]="{'can-click': ['photo', 'Media::Photo'].includes(att.object_type)}"
-                  (click)="fileAttachmentClick(att)">
-                <i *ngIf="att.thumbnail_url &&  ['photo', 'Media::Photo'].includes(att.object_type)"
-                   class="fa fa-picture-o"></i>
-                <i *ngIf="att.thumbnail_url &&  !(['photo', 'Media::Photo'].includes(att.object_type))"
-                   class="fa fa-file"></i>
-                <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
-                {{ att.name + '.' + att?.extension | maxLength: 30 }}
-                <p class="text-fade">{{ att.size | bytes:3 }}</p>
-              </td>
-              <td class="text-right">
-                <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
-                  <i class="fa fa-download"></i>
-                </button>
-                <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button"
-                        [disabled]="note.permission == 'view'">
-                  <i class="fa fa-trash-o"></i>
-                </button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+        <div class="note-editor-aside-body">
+          <div class="btn-toolbar mb15" role="toolbar">
+            <div *ngIf="note.permission !== 'view'" class="btn-group" role="group">
+              <button (click)="selectPhotos()" type="button" class="btn btn-outline-default">
+                <i class="fa fa-plus"></i> Photo
+              </button>
+              <button type="button" class="btn btn-outline-default can-click btn-style-1 fileinput-button">
+                <i class="fa fa-paperclip"></i> Attachment
+                <input *ngIf="note.permission !== 'view'"
+                       #fileBrowse
+                       id="files"
+                       type="file"
+                       multiple="multiple"
+                       (click)="fileBrowse.value='';"
+                       (change)="selectFiles($event)">
+              </button>
+            </div>
+            <div *ngIf="note?.attachments?.length > 0" class="btn-group" role="group">
+              <button (click)="downloadAttachments()" type="button" class="btn btn-outline-default">
+                <i class="fa fa-download"></i> Download all
+              </button>
+            </div>
+          </div>
+          <div class="note-editor-aside-content">
+            <table class="table table-middle wth-table table-hover"
+                   *ngIf="note.attachments && note.attachments.length > 0">
+              <thead>
+              <tr>
+                <th class="can-click" (click)="onSort('name')">
+                  Name
+                  <i *ngIf="hasSortBy" class="fa"
+                     [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
+                </th>
+                <th>&nbsp;</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let att of note.attachments">
+                <td [ngClass]="{'can-click': ['photo', 'Media::Photo'].includes(att.object_type)}"
+                    (click)="fileAttachmentClick(att)">
+                  <i *ngIf="att.thumbnail_url &&  ['photo', 'Media::Photo'].includes(att.object_type)"
+                     class="fa fa-picture-o"></i>
+                  <i *ngIf="att.thumbnail_url &&  !(['photo', 'Media::Photo'].includes(att.object_type))"
+                     class="fa fa-file"></i>
+                  <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+                  {{ att.name + '.' + att?.extension | maxLength: 30 }}
+                  <p class="text-fade">{{ att.size | bytes:3 }}</p>
+                </td>
+                <td class="text-right">
+                  <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
+                    <i class="fa fa-download"></i>
+                  </button>
+                  <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button"
+                          [disabled]="note.permission == 'view'">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-
-
+      </ng-container>
     </div>
 
   </div>
