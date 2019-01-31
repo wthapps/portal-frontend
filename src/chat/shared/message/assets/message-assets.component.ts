@@ -17,6 +17,7 @@ import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.serv
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
+import { ChatContactService } from '@chat/shared/services/chat-contact.service';
 
 
 @Component({
@@ -26,7 +27,6 @@ import { ChatConversationService } from '@chat/shared/services/chat-conversation
   encapsulation: ViewEncapsulation.None
 })
 export class MessageAssetsComponent implements OnInit, OnDestroy {
-  @Input() chatContactList: { [partner_id: string]: any } = {};
   conversation: any;
   tooltip: any = Constants.tooltip;
 
@@ -72,8 +72,8 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   medias$: Observable<Array<any>>;
   nextLink: string;
   isLoading: boolean;
-  members: Array<any> = [];
   conversations$: any;
+  users: any = [];
   readonly noteUrl: any = `${Constants.baseUrls.note}/notes/public`;
   private destroy$ = new Subject<any>();
   private pageSize = 30;
@@ -87,6 +87,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private messageAssetsService: MessageAssetsService,
     private objectListService: WObjectListService,
     private chatConversationService: ChatConversationService,
+    private chatContactService: ChatContactService,
     private apiBaseService: ApiBaseService,
     private chatCommonService: ChatCommonService,
     private store: Store<any>,
@@ -150,7 +151,10 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       }
     } else {
       this.isLoading = true;
-      this.conversations$ = this.store.select(STORE_CONVERSATIONS);
+      // this.conversations$ = this.store.select(STORE_CONVERSATIONS);
+      this.apiBaseService.get('zone/chat/group/' + this.conversation.group_id + '/users').subscribe(res => {
+        this.users = res.data;
+      })
     }
   }
 
@@ -159,14 +163,18 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   onSelect(user: any) {
-    this.chatService.selectContactByPartnerId(user.id);
+    this.chatContactService.addContact([user.id]).then(res => {
+      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
+        this.chatConversationService.moveToFirst(res2.data);
+      });
+      this.chatConversationService.navigateToConversation(res.data.group_id);
+    });
   }
 
   onRemoveMember(user: any) {
-    this.chatService.removeFromConversation(this.conversation, user.id).then((response: any) => {
+    this.chatConversationService.removeFromConversation(this.conversation, user.id).then((response: any) => {
       console.log(response);
-      // const conversation = response.data.own_group_user.group;
-      // this.members = conversation.users_json;
+      this.users = this.users.filter(u => u.id !== user.id);
     });
   }
 
@@ -237,7 +245,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
               item.file.uuid,
               {
                 object: 'conversation',
-                parent_uuid: this.conversation.group.uuid,
+                parent_uuid: this.conversation.uuid,
                 only_preview: true
               }
             ]
@@ -258,13 +266,13 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     let urlAPI = '';
     switch (this.currentTab) {
       case 'photos':
-        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=photo&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.uuid}/resources?qt=photo&per_page=${this.pageSize}`;
         break;
       case 'notes':
-        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=note&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.uuid}/resources?qt=note&per_page=${this.pageSize}`;
         break;
       default:
-        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=file&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.uuid}/resources?qt=file&per_page=${this.pageSize}`;
         break;
     }
     return urlAPI;

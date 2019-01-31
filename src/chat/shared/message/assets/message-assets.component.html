@@ -4,13 +4,13 @@
 <div *ngIf="currentTab === 'members'" class="message-assets-content bg-gray-light">
   <div class="message-assets-members">
     <ng-container *ngIf="conversation">
-      <ul *ngIf="conversation.group_type === 'multiple' && (conversations$ | async).data.length > 0">
-        <ng-container *ngFor="let user of (conversations$ | async).data[0]?.group?.users_json">
-          <li *ngIf="(userService.getSyncProfile().uuid !== user.uuid)">
+      <ul *ngIf="conversation.group_type === 'multiple' && users.length > 0">
+        <ng-container *ngFor="let user of users">
+          <li>
             <z-chat-share-user-icon class="message-assets-members-row" [userId]="user.id" [image]="user.profile_image"
-                                    [groupType]="chatContactList[user?.id] ? 'couple' : 'stranger'" [name]="user.name">
+                                    [groupType]="'couple'" [name]="user.name">
             </z-chat-share-user-icon>
-            <div class="btn-group">
+            <div *ngIf="(userService.getSyncProfile().uuid !== user.uuid)" class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
                       tooltipPosition="top">
                 <i class="fa fa-ellipsis-v"></i>
@@ -26,7 +26,7 @@
                 <li *ngIf="showBlacklist">
                   <a href="javascript:void(0);" (click)="onAddToBlackList(user)">Blacklist</a>
                 </li>
-                <li *ngIf="authService.user.id === conversation.group.creator_id && conversation.group.creator_id !== user.id">
+                <li *ngIf="authService.user.id === conversation.creator_id && conversation.creator_id !== user.id">
                   <a href="javascript:void(0);" (click)="onRemoveMember(user)">Remove From Conversation</a>
                 </li>
                 <li *ngIf="authService.user.id === user.id">

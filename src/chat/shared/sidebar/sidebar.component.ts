@@ -168,7 +168,6 @@ export class ZChatSidebarComponent implements OnInit {
   * End of searching here
    */
   loadMore() {
-    console.log('scroll');
     this.chatConversationService.apiGetMoreConversations();
   }
 

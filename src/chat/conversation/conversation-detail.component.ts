@@ -42,7 +42,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   groupId: any;
   selectedConversation: any;
   currentMessages$: Observable<any>;
-  chatContactList$: Observable<any>;
   chatConversations$: Observable<any>;
   currentUser$: Observable<User>;
   networkOnline$: Observable<boolean>;
@@ -86,7 +85,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   ngOnInit() {
-    this.chatContactList$ = this.chatConversationService.getStoreConversations();
     // SELECTED CONVERSATION
     this.chatConversationService.getStoreConversations().pipe(
       combineLatest(this.route.params)

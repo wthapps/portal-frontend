@@ -50,8 +50,8 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
 
   open() {
     this.modal.open().then(e => {
-      this.allow_add = (this.conversation.group.allow_add || this.conversation.group.allow_add == 'true');
-      this.name = this.conversation.group.name;
+      this.allow_add = (this.conversation.allow_add || this.conversation.allow_add == 'true');
+      this.name = this.conversation.name;
     });
   }
 
@@ -68,7 +68,7 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
       filter(photos => photos.length > 0)
     ).pipe(takeUntil(this.destroy$)).subscribe(photos => {
       this.imageUpdated = photos[0].url;
-      this.conversation.group.profile_image = this.imageUpdated;
+      this.conversation.profile_image = this.imageUpdated;
       // detect to update
       this.conversation = {...this.conversation};
     });
@@ -87,7 +87,7 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
           // re-open
           this.modal.open();
           this.imageUpdated = event.payload;
-          this.conversation.group.profile_image = this.imageUpdated;
+          this.conversation.profile_image = this.imageUpdated;
           // detect to update
           this.conversation = { ...this.conversation };
         }

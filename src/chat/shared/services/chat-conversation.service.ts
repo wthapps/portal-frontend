@@ -52,7 +52,7 @@ export class ChatConversationService extends CommonEventHandler {
   }
 
   apiGetConversations(option: any = {}): Promise<any> {
-    return this.apiBaseService.get('zone/chat/contacts', option).toPromise().then((res: any) => {
+    return this.apiBaseService.get('zone/chat/group', option).toPromise().then((res: any) => {
       this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: res });
       return res;
     });
@@ -114,7 +114,6 @@ export class ChatConversationService extends CommonEventHandler {
 
   apHideConversation(contact: any) {
     this.apiUpdateGroupUser(contact.group_id, { deleted: true })
-      // .then(res => this.apiGetConversations())
       .then(r2 => this.router.navigate(['/conversations']));
   }
 
@@ -152,6 +151,17 @@ export class ChatConversationService extends CommonEventHandler {
       { status: 'decline'})
       // .then(res => this.apiGetConversations())
       .then(r2 => this.router.navigate(['/conversations']));
+  }
+
+  removeFromConversation(contact: any, userId: any): Promise<any> {
+    return this.apiUpdateGroupUser(
+      contact.group_id,
+      { remove_from_conversation: true, user_id: userId })
+      .then((res: any) => {
+        // Update another conversations to update their status
+        return this.chatCommonService.updateConversationBroadcast(contact.group_id);
+      }
+      );
   }
 
   moveToFirst(sc: any) {

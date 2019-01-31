@@ -1,20 +1,21 @@
 <div *ngIf="data" class="media-avatar">
   <div *ngIf="displayAvatar" class="media-avatar-img-wrap">
     <div class="media-avatar-img avatar-{{ size }} avatar-chat">
-      <img *ngIf="data.group_type == 'couple'" [src]="data.display.image" alt="">
-      <img *ngIf="data.group_type == 'multiple'" [src]="data.group.profile_image" alt="">
+      <!-- <img *ngIf="data.group_type == 'couple'" [src]="data?.display?.image" alt="">
+      <img *ngIf="data.group_type == 'multiple'" [src]="data?.profile_image" alt=""> -->
+      <img [src]="data?.avatar" alt="">
 
     </div>
-    <span *ngIf="data.display?.id" class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}">
+    <span *ngIf="data.id" class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}">
       <i *ngIf="isPending" class="fa fa-question-circle"></i>
     </span>
   </div>
   <div *ngIf="displayUserName" class="media-avatar-body">
     <div class="text-bold text-1-line" *ngIf="data.group_type == 'couple'">
-      <p>{{ data.display.name }}</p>
+      <p>{{ data.name }}</p>
     </div>
     <div class="text-bold text-1-line" *ngIf="data.group_type == 'multiple'">
-      <p>{{ data.group | chatGroupName}}</p>
+      <p>{{ data.name}}</p>
     </div>
     <ng-container *ngIf="!displayAvatar">
 
@@ -31,7 +32,7 @@
       </ng-container>
 
       <ng-container *ngIf="data.group_type == 'multiple'">
-        {{ data.group?.users_json?.length }} members
+        {{ data.member_count }} members
       </ng-container>
 
     </ng-container>

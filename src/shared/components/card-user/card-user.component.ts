@@ -22,4 +22,5 @@ export class CardUserComponent extends CommonEventHandler {
     this.user = payload;
     this.modal.open();
   }
+  sendMessage(){}
 }

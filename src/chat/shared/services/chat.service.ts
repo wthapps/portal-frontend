@@ -244,17 +244,6 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     });
   }
 
-  removeFromConversation(contact: any, userId: any): Promise<any> {
-    return this.updateGroupUser(
-      contact.group_id,
-      { remove_from_conversation: true, user_id: userId })
-      .then((res: any) => {
-        // Update another conversations to update their status
-        return this.chatCommonService.updateConversationBroadcast(contact.group_id);
-      }
-    );
-  }
-
   updateGroupUser(groupId: any, data: any) {
     return this.apiBaseService
       .put('zone/chat/group_user/' + groupId, data)

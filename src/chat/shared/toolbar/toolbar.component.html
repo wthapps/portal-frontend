@@ -6,7 +6,7 @@
       </z-chat-share-user>
     </div>
     <div *ngIf="contactSelect && !contactSelect.blacklist" class="page-body-nav-right">
-      <button *ngIf="contactSelect.group_type == 'multiple' && (userService.profile.id == contactSelect.group.creator_id || contactSelect.group.allow_add)"
+      <button *ngIf="contactSelect.group_type == 'multiple' && (userService.profile.id == contactSelect.creator_id || contactSelect.group.allow_add)"
         type="button" class="btn btn-default" (click)="onAddMember()" pTooltip="{{ tooltip.addMembers }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
@@ -25,7 +25,7 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <!--show if current isn't one user-->
-          <ng-container *ngIf="contactSelect.group_type === 'multiple' && userService.profile.id == contactSelect.group.creator_id">
+          <ng-container *ngIf="contactSelect.group_type === 'multiple' && userService.profile.id == contactSelect.creator_id">
             <li>
               <a href="javascript:void(0);" (click)="onEditConversation()">Group settings</a>
             </li>

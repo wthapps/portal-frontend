@@ -200,7 +200,7 @@ export class ChatCommonService {
   // Update another conversations to update their status
   updateConversationBroadcast(groupId: any): Promise<any> {
     return this.apiBaseService
-      .post('zone/chat/notification/broadcard_contact', { group_id: groupId })
+      .post('zone/chat/group/broadcast_conversations', { group_id: groupId })
       .toPromise();
   }
 }

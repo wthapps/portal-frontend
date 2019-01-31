@@ -1,6 +1,5 @@
 <ng-container *ngIf="selectedConversation">
   <z-chat-share-toolbar [contactSelect]="selectedConversation"
-                        [chatContactList]="chatContactList$ | async"
                         class="page-body-control">
   </z-chat-share-toolbar>
   <div class="page-body-content page-body-content-chat has-page-body-control" (drop)="drop($event)"
@@ -23,6 +22,6 @@
                     [isDisabled]="!selectedConversation.active || selectedConversation.blacklist || !(networkOnline$ | async)"
                     [contactSelect]="selectedConversation">
     </message-editor>
-    <message-assets class="message-assets" [chatContactList]="chatContactList$ | async"></message-assets>
+    <message-assets class="message-assets"></message-assets>
   </div>
 </ng-container>

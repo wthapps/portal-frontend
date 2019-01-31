@@ -29,7 +29,6 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   @Input() contactSelect: any;
-  @Input() chatContactList: { [partner_id: string]: any } = {};
   @Input() inContactBook = true;
   showMemberBar = false;
   usersOnlineItem$: Observable<any>;
