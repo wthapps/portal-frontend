@@ -7,16 +7,21 @@
       <div class="d-flex">
         <div class="body">
           <div class="hidden-xs">
-            <input *ngIf="note.permission !== 'view'"
-                   type="text"
-                   tabindex="1"
-                   autofocus
-                   (keypress)="onToEditor($event)"
-                   [formControl]="name"
-                   [attr.disabled]="disabled ? 'disabled' : null"
-                   class="form-control"
-                   placeholder="Title">
-            <h4 *ngIf="note.permission == 'view'">{{note.name}}</h4>
+            <ng-container *ngIf="note.permission !== 'view';else templateName">
+              <input (click)="disabled = true"
+                     (clickElseWhere)="disabled = false"
+                     type="text"
+                     tabindex="1"
+                     autofocus
+                     (keypress)="onToEditor($event)"
+                     [formControl]="name"
+                     class="form-control"
+                     [ngClass]="{'has-no-edit': !disabled}"
+                     placeholder="Title">
+            </ng-container>
+            <ng-template #templateName>
+              <h4 class="ml5">{{note.name}}</h4>
+            </ng-template>
           </div>
           <div class="visible-xs-block">
             <h4 *ngIf="note.permission !== 'view'" class="can-click" (click)="modalEditName.modal.open()">
@@ -38,7 +43,7 @@
           </div>
         </div>
       </div>
-      <div class="text-fade small mt-5">
+      <div class="text-fade small ml5">
           <span *ngIf="editStatus === EDIT_STATUS.idle">Last edited on {{ note?.updated_at | date: 'MMM dd' }}
             <span class="text-bold fz16 ml5 mr5">·</span> {{ note?.user?.uuid === profile?.uuid ? 'me' : ''}}
             <a href="javascript:;" *ngIf="note?.user?.uuid !== profile?.uuid"> {{ note?.user?.name }}</a>

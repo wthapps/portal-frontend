@@ -4,8 +4,8 @@
       <h4 class="text-center modal-title"> {{data[index].title}} </h4>
     </bs-modal-header>
     <bs-modal-body *ngIf="data && data[index]">
-      <div class="text-center">
-        <img *ngIf="data[index].icon" alt="" [src]="data[index].icon" style="width: 120px; padding: 25px">
+      <div *ngIf="data[index].icon" class="text-center">
+        <i class="data[index].icon"></i>
       </div>
       <p *ngIf="data[index].content">{{data[index].content}}</p>
       <p *ngIf="data[index].content2">{{data[index].content2}}</p>

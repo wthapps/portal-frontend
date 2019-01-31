@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild, View
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable ,  Subject ,  Subscription ,  of, fromEvent, merge, interval } from 'rxjs';
+import { Observable, Subject, Subscription, of, fromEvent, merge, interval } from 'rxjs';
 import {
   takeUntil,
   switchMap,
@@ -69,6 +69,7 @@ export class ZNoteDetailEditComponent
   hasSortBy = false;
   noteChanged = false;
   customEditor: any;
+
   readonly tooltip: any = Constants.tooltip;
   readonly EDIT_STATUS = {
     idle: 1,
@@ -166,7 +167,7 @@ export class ZNoteDetailEditComponent
         switch (e.action) {
           case 'note:note_edit:close':
             this.router.navigate([{ outlets: { detail: null } }], {
-              queryParamsHandling: 'preserve' , preserveFragment: true
+              queryParamsHandling: 'preserve', preserveFragment: true
             });
             break;
           case 'note:note_edit:print':
@@ -175,54 +176,56 @@ export class ZNoteDetailEditComponent
         }
       });
 
-      // Lock note if other user are editing ..
-      this.noteChannel.lock$.pipe(
-        filter(val => !!val),
-        distinctUntilChanged((p, q) => p.user_uuid === q.user_uuid),
-        takeUntil(this.destroySubject)
-      ).subscribe((user) => {
-        this.messageService.clear();
-        if (!user || Object.keys(user).length === 0) {
-          if (this.note.permission !== 'view') {
-            this.enable();
-            this.customEditor.focus();
-          }
-          return;
+    // Lock note if other user are editing ..
+    this.noteChannel.lock$.pipe(
+      filter(val => !!val),
+      distinctUntilChanged((p, q) => p.user_uuid === q.user_uuid),
+      takeUntil(this.destroySubject)
+    ).subscribe((user) => {
+      this.messageService.clear();
+      if (!user || Object.keys(user).length === 0) {
+        if (this.note.permission !== 'view') {
+          this.enable();
+          this.customEditor.focus();
         }
-        const {user_uuid, user_name} = user;
-        if (user_uuid !== this.userService.getSyncProfile().uuid) {
-          this.enable(false);
-        }
+        return;
+      }
+      const { user_uuid, user_name } = user;
+      if (user_uuid !== this.userService.getSyncProfile().uuid) {
+        this.enable(false);
+      }
 
-        if (user_name) {
-          this.messageService.add({severity: 'warn', detail: `User ${user_name} is editing`, life: 60000,
-            closable: false, sticky: true});
-        }
-      });
+      if (user_name) {
+        this.messageService.add({
+          severity: 'warn', detail: `User ${user_name} is editing`, life: 60000,
+          closable: false, sticky: true
+        });
+      }
+    });
 
-      // Reload note if this note's content is updated by another user
-      this.noteChannel.reload$.pipe(
-        tap(() => this.editStatus = this.EDIT_STATUS.reloading),
-        switchMap(() =>
+    // Reload note if this note's content is updated by another user
+    this.noteChannel.reload$.pipe(
+      tap(() => this.editStatus = this.EDIT_STATUS.reloading),
+      switchMap(() =>
         this.noteService.getNoteAvailable(this.route.snapshot.paramMap.get('id'))),
-        takeUntil(this.destroySubject)
-      ).subscribe(res => {
-        const noteContent = res.data;
-        this.note = noteContent;
-        this.store.dispatch(new note.NoteUpdated(this.note));
+      takeUntil(this.destroySubject)
+    ).subscribe(res => {
+      const noteContent = res.data;
+      this.note = noteContent;
+      this.store.dispatch(new note.NoteUpdated(this.note));
 
-        this.noSave = true;
-        this.updateFormValue(this.note);
-        // Reset content of elemenet div.ql-editor to prevent HTML data loss
-        if (document.querySelector('.ql-editor')) {
-          document.querySelector('.ql-editor').innerHTML = this.note.content;
-        }
-        _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400) ;
-      });
+      this.noSave = true;
+      this.updateFormValue(this.note);
+      // Reset content of elemenet div.ql-editor to prevent HTML data loss
+      if (document.querySelector('.ql-editor')) {
+        document.querySelector('.ql-editor').innerHTML = this.note.content;
+      }
+      _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400);
+    });
   }
 
   handleActionEvents(event) {
-    const {action} = event;
+    const { action } = event;
 
     switch (action) {
       case 'showComments': {
@@ -264,7 +267,9 @@ export class ZNoteDetailEditComponent
       )
       .subscribe(
         ([noteContent, currentFolder]: any) => {
-          if (!noteContent) { return; }
+          if (!noteContent) {
+            return;
+          }
 
           // Subscribe user to this note channel
           this.noteChannel.subscribe(noteContent.uuid || this.note.uuid);
@@ -276,11 +281,13 @@ export class ZNoteDetailEditComponent
           } catch (e) {
             if (this.initRetry < 3) {
               this.initQuill();
-              this.initRetry ++;
+              this.initRetry++;
             }
-            console.warn('exception: ', e );
+            console.warn('exception: ', e);
           }
-          if (currentFolder) { this.parentId = currentFolder.id; }
+          if (currentFolder) {
+            this.parentId = currentFolder.id;
+          }
           this.updateFormValue(this.note);
           // Reset content of elemenet div.ql-editor to prevent HTML data loss
           if (document.querySelector('.ql-editor')) {
@@ -288,7 +295,9 @@ export class ZNoteDetailEditComponent
           }
 
           this.broadcastViewing();
-          if (this.note.permission !== 'view') { this.registerAutoSave(); }
+          if (this.note.permission !== 'view') {
+            this.registerAutoSave();
+          }
         },
         (error: any) => {
           if (error.status === 403) {
@@ -315,7 +324,9 @@ export class ZNoteDetailEditComponent
     this.destroySubject.unsubscribe();
 
 
-    if (this.timeInterval) { clearInterval(this.timeInterval); }
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
+    }
 
     // Unsubscribe user from this note channel
     this.noteChannel.unsubscribe(this.note.uuid);
@@ -344,7 +355,9 @@ export class ZNoteDetailEditComponent
     )
       .pipe(
         skip(1),
-        tap(() => { this.editStatus = this.EDIT_STATUS.editing; }),
+        tap(() => {
+          this.editStatus = this.EDIT_STATUS.editing;
+        }),
         debounceTime(DEBOUNCE_MS),
         takeUntil(this.closeSubject)
       )
@@ -370,7 +383,9 @@ export class ZNoteDetailEditComponent
   // }
 
   viewing() {
-    if (!this.noteChannel) { return; }
+    if (!this.noteChannel) {
+      return;
+    }
     this.noteChannel.editing(this.note.uuid);
     this.checkIdle();
   }
@@ -503,7 +518,7 @@ export class ZNoteDetailEditComponent
 
   applyDefaultFormat() {
     // Default font, size setting
-    const {font, font_size} = this.noteSetting.setting;
+    const { font, font_size } = this.noteSetting.setting;
 
     const range = this.customEditor.getSelection(true);
     if (this.customEditor.getLength() <= 1) {
@@ -547,7 +562,9 @@ export class ZNoteDetailEditComponent
             }
           }
 
-          if (e.defaultPrevented || !this.quill.isEnabled()) { return; }
+          if (e.defaultPrevented || !this.quill.isEnabled()) {
+            return;
+          }
           const range = this.quill.getSelection();
           let delta = new Delta().retain(range.index);
           const scrollTop = this.quill.scrollingContainer.scrollTop;
@@ -676,12 +693,13 @@ export class ZNoteDetailEditComponent
   selectInlinePhotos4Note() {
     // this.mediaSelectionService.open();
     // this.mediaSelectionService.setMultipleSelection(true);
-    this.mediaSelectionService.open({ allowSelectMultiple: true,
+    this.mediaSelectionService.open({
+      allowSelectMultiple: true,
       hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
       onBeforeUpload: (files) => {
         Object.keys(files).forEach(f_id => this.insertFakeImage(f_id));
       },
-      onAfterUploaded: ({file, resp, uploadURL}) => {
+      onAfterUploaded: ({ file, resp, uploadURL }) => {
         const fileId = file.id;
         $(`i[data-id='${fileId}']`).after(
           `<img src="${resp.data.url}" data-id="${resp.data.id}" />`
@@ -891,7 +909,7 @@ export class ZNoteDetailEditComponent
     if (files.length === 0) {
       return;
     }
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35, {only: /video\//g})]);
+    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35, { only: /video\//g })]);
     this.note.attachments = [
       ...this.note.attachments,
       ...filesAddedPolicy.filter(file => file.allow === true)
@@ -938,7 +956,9 @@ export class ZNoteDetailEditComponent
       (this.editorElement && this.editorElement.innerHTML.length > 0 &&
         this.editorElement.innerHTML !== '<p><br></p>')
     ) {
-      if (!this.editorElement) { return; }
+      if (!this.editorElement) {
+        return;
+      }
 
       if (this.editMode === Constants.modal.add) {
         if (this.note.permission !== 'view') {
@@ -978,20 +998,20 @@ export class ZNoteDetailEditComponent
    * Save post and change to EDIT mode
    */
   async onFirstSave() {
-      const res = await this.noteService
-        .create({
-          ...this.form.value,
-          content: this.editorElement.innerHTML,
-          parent_id: this.parentId
-        })
-        .toPromise();
-        this.note = res.data;
-        this.editMode = Constants.modal.edit;
-        this.store.dispatch(new note.MultiNotesAdded([res['data']]));
+    const res = await this.noteService
+      .create({
+        ...this.form.value,
+        content: this.editorElement.innerHTML,
+        parent_id: this.parentId
+      })
+      .toPromise();
+    this.note = res.data;
+    this.editMode = Constants.modal.edit;
+    this.store.dispatch(new note.MultiNotesAdded([res['data']]));
 
-        // return await this.router.navigate([
-        //   { outlets: { detail: ['notes', this.note.id] } }
-        // ]);
+    // return await this.router.navigate([
+    //   { outlets: { detail: ['notes', this.note.id] } }
+    // ]);
   }
 
   download(file: any) {
@@ -1045,13 +1065,14 @@ export class ZNoteDetailEditComponent
   }
 
   private selectPhotos4Attachments() {
-    this.mediaSelectionService.open({ allowSelectMultiple: true,
+    this.mediaSelectionService.open({
+      allowSelectMultiple: true,
       hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
       onBeforeUpload: (files) => {
         this.note.attachments.push(...Object.values(files));
         this.form.controls['attachments'].setValue(this.note.attachments);
       },
-      onAfterUploaded: ({file, resp, uploadURL}) => {
+      onAfterUploaded: ({ file, resp, uploadURL }) => {
         const index = _.indexOf(this.note.attachments, file);
         this.note.attachments[index] = resp.data;
         this.form.controls['attachments'].setValue(this.note.attachments);
@@ -1072,7 +1093,9 @@ export class ZNoteDetailEditComponent
   }
 
   private async updateNote() {
-    if (!this.note.id || !this.editorElement) { return; }
+    if (!this.note.id || !this.editorElement) {
+      return;
+    }
     const noteObj: any = Object.assign({}, this.note, this.form.value, {
       content: this.editorElement.innerHTML
     });

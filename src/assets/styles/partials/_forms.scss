@@ -7,6 +7,11 @@
     -webkit-background-size: 24px 24px;
     background-size: 24px 24px;
   }
+  &.has-no-edit {
+    border-color: transparent;
+    @include box-shadow(none);
+    cursor: pointer;
+  }
 }
 
 .form-control-block {
