@@ -1,13 +1,11 @@
-<ng-container *ngIf="selectedConversation">
-  <z-chat-share-toolbar [contactSelect]="selectedConversation"
-                        class="page-body-control">
+  <z-chat-share-toolbar [contactSelect]="selectedConversation$ | async" class="page-body-control">
   </z-chat-share-toolbar>
   <div class="page-body-content page-body-content-chat has-page-body-control" (drop)="drop($event)"
        (dragover)="drag($event)" (dragenter)="drag($event)">
 
     <z-chat-share-item-request
       *ngIf="selectedConversation.status == 'sent_request' || selectedConversation.status == 'pending'"
-      [selectedConversation]="selectedConversation"
+      [selectedConversation]="selectedConversation$ | async"
       [message]="(currentMessages$ | async)?.data[0]">
     </z-chat-share-item-request>
 
@@ -25,4 +23,7 @@
     </message-editor>
     <message-assets class="message-assets"></message-assets>
   </div>
-</ng-container>
+
+<!--<div>-->
+ <!--{{ selectedConversation$ | async |json }}-->
+<!--</div>-->

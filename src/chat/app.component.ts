@@ -85,6 +85,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     socket.connect();
   }
 
+  loadSelectedConversation(conversation: any) {
+    console.log('loadSelectedConversation');
+  }
+
   handleOnlineOffline() {
     window.addEventListener('online', () => this.updateChatMessages());
     window.addEventListener('offline', () => this.updateChatMessages());

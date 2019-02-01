@@ -39,11 +39,11 @@
             <a href="javascript:;" (click)="onHideConversation()">Hide chat</a>
           </li>
           <li>
-            <a href="javascript:;" (click)="onDeleteConversation()">Delete conversation</a>
+            <a href="javascript:;" (click)="onDeleteConversation()">Delete Chat</a>
           </li>
           <!--show if current is one user-->
           <li *ngIf="contactSelect.group_type == 'couple'">
-            <a (click)="viewProfile()">View Profile</a>
+            <a [routerLink]="[profileUrl, contactSelect.uuid]">View Profile</a>
           </li>
         </ul>
       </div>
@@ -60,7 +60,7 @@
         <ul class="dropdown-menu dropdown-menu-right">
           <!--show if current is one user-->
           <li *ngIf="contactSelect.group_type == 'couple'">
-            <a (click)="viewProfile()">View Profile</a>
+            <a [routerLink]="[profileUrl, contactSelect.uuid]">View Profile</a>
           </li>
         </ul>
       </div>

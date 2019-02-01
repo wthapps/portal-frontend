@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_BASE_HREF } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
@@ -26,6 +26,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
 import { ZChatProfileModule } from '@chat/profile/profile.module';
 import { AppStoreModule } from '@chat/store';
+import { JwtIntercepter } from '@shared/services/auth/jwt-intercepter';
 
 @NgModule({
   imports: [
@@ -67,7 +68,9 @@ import { AppStoreModule } from '@chat/store';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtIntercepter, multi: true },
+
   ],
   bootstrap: [AppComponent]
 })

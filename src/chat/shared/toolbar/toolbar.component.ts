@@ -10,7 +10,6 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { Constants } from '@wth/shared/constant';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { UserService, CommonEventService } from '@shared/services';
 import { ChatConversationService } from '../services/chat-conversation.service';
 

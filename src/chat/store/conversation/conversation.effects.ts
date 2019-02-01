@@ -15,13 +15,28 @@ export class ConversationEffects {
     ofType<ConversationActions.GetAll>(ConversationActions.ActionTypes.GET_ALL),
     switchMap(action =>
       this.conversationService.getAll(action.payload).pipe(
-          map(response => {
-            return new ConversationActions.GetAllSuccess(response);
-          }),
-          catchError(error =>
-            of(new ConversationActions.GetAllFailure({ error }))
-          )
+        map(response => {
+          return new ConversationActions.GetAllSuccess(response);
+        }),
+        catchError(error =>
+          of(new ConversationActions.GetAllFailure({ error }))
         )
+      )
+    )
+  );
+
+  @Effect()
+  getItem$: Observable<Action> = this.actions$.pipe(
+    ofType<ConversationActions.GetItem>(ConversationActions.ActionTypes.GET_ITEM),
+    switchMap(action =>
+      this.conversationService.get(action.payload).pipe(
+        map(response => {
+          return new ConversationActions.GetItemSuccess(response);
+        }),
+        catchError(error =>
+          of(new ConversationActions.GetItemFailure({ error }))
+        )
+      )
     )
   );
 }

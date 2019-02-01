@@ -13,7 +13,7 @@ export class ConversationService {
 
 
   get(id: any): Observable<any> {
-    return this.api.get(`${this.url}/${id}`);
+    return this.httpClient.get(`${this.url}/${id}`);
   }
 
   getAll(query: any): Observable<any> {

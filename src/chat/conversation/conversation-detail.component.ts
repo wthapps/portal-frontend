@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
-import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
+import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import { Subscription, Observable, Subject } from 'rxjs';
@@ -28,6 +28,9 @@ import { ChatConversationService } from '@chat/shared/services/chat-conversation
 import { merge, mergeMap, mergeMapTo, map, filter, withLatestFrom, combineLatest, takeUntil } from 'rxjs/operators';
 import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 import { CHAT_SELECTED_CONVERSATION_SET } from '@core/store/chat/selected-conversation.reducer';
+import * as ConversationSelectors from '@chat/store/conversation/conversation.selectors';
+import { AppState } from '@chat/store';
+import * as ConversationActions from '@chat/store/conversation/conversation.actions';
 
 declare var _: any;
 declare var $: any;
@@ -44,6 +47,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   currentMessages: any;
   groupId: any;
   selectedConversation: any;
+  selectedConversation$: Observable<any>;
+
   currentMessages$: Observable<any>;
   chatConversations$: Observable<any>;
   currentUser$: Observable<User>;
@@ -61,7 +66,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     private route: ActivatedRoute,
     public userService: UserService,
     public storage: StorageService,
-    public store: Store<any>,
+    // public store: Store<any>,
+    private store$: Store<AppState>,
     public apiBaseService: ApiBaseService,
     private conversationService: ConversationService,
     private uploader: WUploader
@@ -87,6 +93,14 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   ngOnInit() {
+    this.route.params.forEach((params: Params) => {
+      const conversationId = params['id'];
+      this.store$.dispatch(new ConversationActions.GetItem(conversationId));
+
+      this.selectedConversation$ = this.store$.select(ConversationSelectors.getItem);
+
+    });
+
     // SELECTED CONVERSATION
     this.chatConversationService.getStoreConversations().pipe(
       combineLatest(this.route.params)

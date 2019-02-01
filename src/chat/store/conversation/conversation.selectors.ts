@@ -32,6 +32,7 @@ export const selectConversationState: MemoizedSelector<
 // ) => Conversation[] = conversationAdapter.getSelectors(selectConversationState).selectEntities;
 
 export const getItems   = createSelector(selectConversationState, (state: ConversationState) => state.items);
+export const getItem   = createSelector(selectConversationState, (state: ConversationState) => state.selectedItem);
 
 
 export const selectConversationById = (id: string) =>

@@ -1,4 +1,13 @@
-import { Component, HostBinding, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { take, filter } from 'rxjs/operators';
@@ -30,6 +39,7 @@ import {
 export class ZChatSidebarComponent implements OnInit {
   @HostBinding('class') cssClass = 'menuleft-chat';
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
+  @Output() onSelectedConversation = new EventEmitter<any>();
 
   readonly chatMenu = Constants.chatMenuItems;
 
@@ -97,10 +107,10 @@ export class ZChatSidebarComponent implements OnInit {
     }
   }
 
-  onSelect(event: any, contact: any) {
-    // event.preventDefault();
-    // event.stopPropagation();
-    // $('#chat-message-text').focus();
+  selectConversation(conversation: any, event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    $('#chat-message-text').focus();
     // if (contact.deleted) {
     //   this.chatConversationService.apiUpdateGroupUser(contact.group_id, { deleted: false, notification_count: 0 }).then(res => {
     //     this.chatConversationService.apiGetConversations().then(r2 => {
@@ -122,6 +132,10 @@ export class ZChatSidebarComponent implements OnInit {
     //   channel: 'MessageEditorComponent',
     //   action: 'resetEditor'
     // })
+    // this.store$.dispatch(new ConversationActions.SetSelectedItem(conversation));
+
+    this.router.navigate(['conversations', conversation.uuid]).then();
+    // this.onSelectedConversation.emit(conversation);
   }
 
   onAddContact() {

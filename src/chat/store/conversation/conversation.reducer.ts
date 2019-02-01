@@ -29,6 +29,40 @@ export function conversationReducer(state = INITIAL_CONVERSATION_STATE, action: 
         error: action.payload.error
       };
     }
+
+    case ActionTypes.GET_ITEM: {
+      return {
+        ...state,
+        isLoading: true,
+        error: null
+      };
+    }
+
+    case ActionTypes.GET_ITEM_SUCCESS: {
+      const item = action.payload.data.attributes;
+
+      return {
+        ...state,
+        selectedItem: item,
+        isLoading: false,
+        error: null
+      };
+    }
+
+    case ActionTypes.GET_ITEM_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+    }
+
+    case ActionTypes.SET_SELECTED_ITEM: {
+      return {
+        ...state,
+        selectedItem: action.payload
+      };
+    }
     default: {
       return state;
     }

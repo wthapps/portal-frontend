@@ -114,8 +114,9 @@
         <!-- {{conversation.latest_message}} -->
         <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
         <a class="media-chat-user-link"
-           (click)="onSelect($event, conversation); onCloseMenu()"
-           href="javascript:;"></a>
+           (click)="selectConversation(conversation, $event); onCloseMenu()"
+           href="javascript:void(0);"></a>
+        <!--<a class="media-chat-user-link" [routerLink]="['/conversations', conversation.uuid]"></a>-->
       </div>
       <div class="user-action">
         <div class="user-action-col">
