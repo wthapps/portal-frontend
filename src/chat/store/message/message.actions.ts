@@ -1,0 +1,94 @@
+import { Action } from '@ngrx/store';
+
+export enum ActionTypes  {
+  GET_ALL           = 'MESSAGE_GET_ALL',
+  GET_ALL_SUCCESS   = 'MESSAGE_GET_ALL_SUCCESS',
+  GET_ALL_ERROR     = 'MESSAGE_GET_ALL_ERROR',
+  GET_MORE          = 'MESSAGE_GET_MORE',
+  GET_MORE_SUCCESS  = 'MESSAGE_GET_MORE_SUCCESS',
+  GET_MORE_ERROR    = 'MESSAGE_GET_MORE_ERROR',
+  GET_ITEM          = 'MESSAGE_GET_ITEM',
+  GET_ITEM_SUCCESS  = 'MESSAGE_GET_ITEM_SUCCESS',
+  GET_ITEM_ERROR    = 'MESSAGE_GET_ITEM_ERROR',
+  SELECT_ITEM       = 'MESSAGE_SELECT_ITEM',
+  CREATE            = 'MESSAGE_CREATE',
+  UPDATE            = 'MESSAGE_UPDATE',
+  DELETE            = 'MESSAGE_DELETE'
+}
+
+// Get all actions
+
+export class GetAll implements Action {
+  readonly type = ActionTypes.GET_ALL;
+
+  constructor(public payload: any) { }
+}
+
+export class GetAllSuccess implements Action {
+  readonly type = ActionTypes.GET_ALL_SUCCESS;
+
+  constructor(public payload: any) { }
+}
+
+export class GetAllError implements Action {
+  readonly type = ActionTypes.GET_ALL_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
+// Get more actions
+export class GetMore implements Action {
+  readonly type = ActionTypes.GET_MORE;
+
+  constructor(public payload: any) { }
+}
+
+export class GetMoreSuccess implements Action {
+  readonly type = ActionTypes.GET_MORE_SUCCESS;
+
+  constructor(public payload: any) { }
+}
+
+export class GetMoreError implements Action {
+  readonly type = ActionTypes.GET_MORE_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
+// Get item actions
+
+export class GetItem implements Action {
+  readonly type = ActionTypes.GET_ITEM;
+
+  constructor(public payload: any) { }
+}
+
+export class GetItemSuccess implements Action {
+  readonly type = ActionTypes.GET_ITEM_SUCCESS;
+
+  constructor(public payload: any = null) { }
+}
+
+export class GetItemError implements Action {
+  readonly type = ActionTypes.GET_ITEM_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
+export class SelectItem implements Action {
+  readonly type = ActionTypes.SELECT_ITEM;
+
+  constructor(public payload: any = null) { }
+}
+
+export type Actions =
+  GetAll |
+  GetAllSuccess |
+  GetAllError |
+  GetMore |
+  GetMoreSuccess |
+  GetMoreError |
+  GetItem |
+  GetItemSuccess |
+  GetItemError |
+  SelectItem;
