@@ -19,7 +19,7 @@ export class ConversationEffects {
           return new ConversationActions.GetAllSuccess(response);
         }),
         catchError(error =>
-          of(new ConversationActions.GetAllFailure({ error }))
+          of(new ConversationActions.GetAllError({ error }))
         )
       )
     )
@@ -34,7 +34,7 @@ export class ConversationEffects {
           return new ConversationActions.GetItemSuccess(response);
         }),
         catchError(error =>
-          of(new ConversationActions.GetItemFailure({ error }))
+          of(new ConversationActions.GetItemError({ error }))
         )
       )
     )

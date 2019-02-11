@@ -5,9 +5,9 @@ import {
 } from '@ngrx/store';
 
 import { Conversation } from './conversation.model';
-import { conversationAdapter, ConversationState } from './conversation.state';
+import { ConversationState } from './conversation.reducer';
 
-export const FEATURE_CONVERSATION = 'conversation';
+export const FEATURE_NAME = 'conversation';
 
 export const getError = (state: ConversationState): any => state.error;
 
@@ -21,7 +21,7 @@ export const getSelectedItem = (state: ConversationState): Conversation => state
 export const selectConversationState: MemoizedSelector<
   object,
   ConversationState
-  > = createFeatureSelector<ConversationState>(FEATURE_CONVERSATION);
+  > = createFeatureSelector<ConversationState>(FEATURE_NAME);
 
 // export const selectAllItems: (
 //   state: object
@@ -44,12 +44,12 @@ export const selectConversationById = (id: string) =>
     }
   });
 
-export const selectConversationError: MemoizedSelector<object, any> = createSelector(
+export const selectError: MemoizedSelector<object, any> = createSelector(
   selectConversationState,
   getError
 );
 
-export const selectConversationIsLoading: MemoizedSelector<
+export const selectIsLoading: MemoizedSelector<
   object,
   boolean
   > = createSelector(selectConversationState, getIsLoading);

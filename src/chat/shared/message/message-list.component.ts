@@ -28,6 +28,11 @@ import { ChatContactService } from '@chat/shared/services/chat-contact.service';
 import { ChatMessageService } from '../services/chat-message.service';
 import { ChatConversationService } from '../services/chat-conversation.service';
 
+import { Store } from '@ngrx/store';
+import { AppState } from '@chat/store';
+import { MessageActions, MessageSelectors } from '@chat/store/message';
+
+
 declare var _: any;
 declare var $: any;
 
@@ -41,13 +46,15 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
   @ViewChild('listEl') listEl: ElementRef;
 
-  @Input() currentMessages: any;
-  @Input() contactItem: any;
+  @Input() messages: any;
+  @Input() conversation: any;
   @Input() currentUser: User;
-  @Input() selectedConversation;
   @Input() channel = 'MessageListComponent';
-  emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
+  @Input() selectedConversation;
+  emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
   prevMessage: any;
+  loading$: Observable<boolean>;
+  loadingMore = false;
   readonly scrollDistance: number = 1000;
   // currentMessages: any[] = [];
 
@@ -56,6 +63,7 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   constructor(
     private chatService: ChatService,
     private router: Router,
+    private store$: Store<AppState>,
     private messageService: WMessageService,
     private storageService: StorageService,
     public commonEventService: CommonEventService,
@@ -84,10 +92,13 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
 
   ngOnInit() {
     // setInterval(() => {
-    //   this.item = this.chatService.getCurrentMessages();
-    //   this.contactItem = this.chatService.getContactSelect();
-    //   this.ref.markForCheck();
-    // }, 200);
+      //   this.item = this.chatService.getCurrentMessages();
+      //   this.contactItem = this.chatService.getContactSelect();
+      //   this.ref.markForCheck();
+      // }, 200);
+
+    this.loading$ = this.store$.select(MessageSelectors.getLoading);
+
   }
 
   scrollToBottom(event: CommonEvent) {
@@ -97,13 +108,23 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   }
 
   onLoadMore() {
-    this.chatMessageService.loadMoreMessages();
+    this.loadingMore = true;
+    // this.chatMessageService.loadMoreMessages();
+
+    // this.store$.select(MessageSelectors.getLinks).subscribe(links => {
+    //   console.log('get links:::', links);
+      // if (links.next && links.next !== links.self) {
+        this.store$.dispatch(new MessageActions.GetMore({groupId: this.conversation.uuid, queryParams: 'links.next'}));
+
+      // }
+    // });
+    this.loadingMore = false;
   }
 
   scrollDown() {
-    this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(res => {
-      this.chatConversationService.markAsRead(res);
-    });
+    // this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(res => {
+    //   this.chatConversationService.markAsRead(res);
+    // });
     // if ($('#chat-message-text').is(':focus')) {
     // }
   }
@@ -134,9 +155,9 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   }
 
   getPrevMessage(currentMessage: any) {
-    const curMsgIndex = _.findIndex(this.currentMessages, {
+    const curMsgIndex = _.findIndex(this.messages, {
       id: currentMessage.id
     });
-    return curMsgIndex <= 0 ? null : this.currentMessages[curMsgIndex - 1];
+    return curMsgIndex <= 0 ? null : this.messages[curMsgIndex - 1];
   }
 }

@@ -7,6 +7,7 @@ import { ConversationDetailComponent } from './conversation-detail.component';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { ZChatNewConversationComponent } from './new-conversation.component';
 import { ZChatMessageModule } from '@chat/shared/message/message.module';
+import { ConversationService } from '@chat/conversation/conversation.service';
 
 @NgModule({
   imports: [
@@ -28,6 +29,8 @@ import { ZChatMessageModule } from '@chat/shared/message/message.module';
     ConversationDetailComponent,
     ZChatNewConversationComponent
   ],
-  providers: []
+  providers: [
+    ConversationService
+  ]
 })
 export class ZChatConversationModule {}

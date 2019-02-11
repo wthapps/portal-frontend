@@ -18,7 +18,7 @@ const MEDIA_PATH_MAPPINGS = {
   styleUrls: ['message-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MessageItemComponent implements OnInit, OnChanges {
+export class MessageItemComponent implements OnInit {
   @Input() message: any;
   @Input() byMe: boolean;
   @Input() prevMessage: any;
@@ -50,11 +50,6 @@ export class MessageItemComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     // console.log(this.message);
-
-  }
-
-  ngOnChanges(changes: any) {
-    // console.log(changes);
 
   }
 

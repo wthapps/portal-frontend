@@ -1,12 +1,32 @@
-<ng-container *ngIf="contactItem">
-  <div #listEl scrollToBottom [detectChange]="contactItem.group_id" class="message-wrapper" infiniteScrollDistance="1" infiniteScrollUpDistance="2"
-    infiniteScroll [scrollWindow]="false" (scrolled)="scrollDown()" (scrolledUp)="onLoadMore()">
-    <ng-container *ngIf="(currentMessages); else loadingBlock">
+<ng-container *ngIf="conversation">
+  <!--TODO: fix scrollup like below link-->
+  <!--https://embed.plnkr.co/DrEDetYnZkFxR7OWWrxS/-->
+  <div #listEl class="message-wrapper"
+       scrollToBottom
+       [detectChange]="conversation.group_id"
+       infiniteScroll
+       [infiniteScrollDistance]="1"
+       [infiniteScrollUpDistance]="2"
+       [scrollWindow]="false"
+       (scrolledUp)="onLoadMore()"
+       (scrolled)="scrollDown()"
+    >
+    <ng-container *ngIf="loadingMore">
+      <div class="text-center">
+        Updating message....
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!(loading$ | async); else loadingBlock">
       <div class="message-item-wrapper">
-        <div class="message-item-dv" *ngFor="let message of currentMessages">
-          <message-item [message]="message" [byMe]="currentUser.id == message.user_id" [prevMessage]="getPrevMessage(message)" [selectedConversation]="selectedConversation" [contactItem]="contactItem"
+        <ng-container *ngIf="messages?.length > 0; else templateNodata">
+           <div class="message-item-dv" *ngFor="let message of messages; trackBy: message?.uuid">
+            <message-item [message]="message"
+                          [byMe]="currentUser.id == message.user_id"
+                          [prevMessage]="getPrevMessage(message)"
+                          [conversation]="conversation"
             [emojiMap]="emojiMap$ | async" (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
-        </div>
+          </div>
+        </ng-container>
       </div>
       <!-- <ng-template #templateNodata>
         <box-no-data [title]="'Welcome to a new conversation'" [subTitle]="'Let start sharing your messages'"></box-no-data>

@@ -1,29 +1,31 @@
-  <z-chat-share-toolbar [contactSelect]="selectedConversation$ | async" class="page-body-control">
+<ng-container *ngIf="selectedConversation$ | async as conversation;">
+  <z-chat-share-toolbar [contactSelect]="conversation" class="page-body-control">
   </z-chat-share-toolbar>
   <div class="page-body-content page-body-content-chat has-page-body-control" (drop)="drop($event)"
        (dragover)="drag($event)" (dragenter)="drag($event)">
 
     <z-chat-share-item-request
-      *ngIf="selectedConversation.status == 'sent_request' || selectedConversation.status == 'pending'"
-      [selectedConversation]="selectedConversation$ | async"
+      *ngIf="conversation.status == 'sent_request' || conversation.status == 'pending'"
+      [selectedConversation]="conversation"
       [message]="(currentMessages$ | async)?.data[0]">
     </z-chat-share-item-request>
 
-    <message-list [currentMessages]="(currentMessages$ | async)?.data"
+    <message-list class="message-list-body" #messageList
+                  [messages]="messages$ | async"
                   [contactItem]="selectedConversation"
                   [selectedConversation]="selectedConversation"
+                  [conversation]="conversation"
                   [currentUser]="currentUser$ | async"
-                  class="message-list-body"
-                  #messageList>
+                  >
     </message-list>
     <message-editor class="chat-message-container"
                     #messageEditor
-                    [isDisabled]="!selectedConversation.active || selectedConversation.blacklist || !(networkOnline$ | async)"
-                    [contactSelect]="selectedConversation">
+                    [isDisabled]="!conversation.active || conversation.blacklist || !(networkOnline$ | async)"
+                    [contactSelect]="conversation">
     </message-editor>
     <message-assets class="message-assets"></message-assets>
   </div>
-
+</ng-container>
 <!--<div>-->
  <!--{{ selectedConversation$ | async |json }}-->
 <!--</div>-->

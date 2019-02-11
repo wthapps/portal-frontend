@@ -27,10 +27,10 @@ import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 import { merge, mergeMap, mergeMapTo, map, filter, withLatestFrom, combineLatest, takeUntil } from 'rxjs/operators';
 import { ChatMessageService } from '@chat/shared/services/chat-message.service';
-import { CHAT_SELECTED_CONVERSATION_SET } from '@core/store/chat/selected-conversation.reducer';
 import * as ConversationSelectors from '@chat/store/conversation/conversation.selectors';
 import { AppState } from '@chat/store';
 import * as ConversationActions from '@chat/store/conversation/conversation.actions';
+import { MessageActions, MessageSelectors } from '@chat/store/message';
 
 declare var _: any;
 declare var $: any;
@@ -48,6 +48,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   groupId: any;
   selectedConversation: any;
   selectedConversation$: Observable<any>;
+  messages$: Observable<any>;
 
   currentMessages$: Observable<any>;
   chatConversations$: Observable<any>;
@@ -97,32 +98,36 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       const conversationId = params['id'];
       this.store$.dispatch(new ConversationActions.GetItem(conversationId));
 
+      this.store$.dispatch(new MessageActions.GetAll({groupId: conversationId, queryParams: {}}));
+
       this.selectedConversation$ = this.store$.select(ConversationSelectors.getItem);
+
+      this.messages$ = this.store$.select(MessageSelectors.getItems);
 
     });
 
     // SELECTED CONVERSATION
-    this.chatConversationService.getStoreConversations().pipe(
-      combineLatest(this.route.params)
-    ).pipe(takeUntil(this.destroy$)).subscribe(([conversations, params]) => {
-      const conversation = conversations.data.filter(c => !c.blacklist && !c.left && !c.deleted).find(c => +c.group_id === +params.id);
-      if (conversation) {
-        this.store.dispatch({ type: CHAT_SELECTED_CONVERSATION_SET, payload: conversation });
-      }
-    });
-    // Get messages when select
-    this.chatConversationService.getStoreSelectedConversationFull().pipe(takeUntil(this.destroy$)).subscribe(res => {
-      this.selectedConversation = res.selectedConversation;
-      if (res.isDifference) {
-        this.chatMessageService.getMessages(res.selectedConversation.group_id);
-      }
-      this.commonEventService.broadcast({
-        channel: 'MessageEditorComponent',
-        action: 'focus'
-      });
-    });
-    // sync current message
-    this.currentMessages$ = this.chatMessageService.getCurrentMessages();
+    // this.chatConversationService.getStoreConversations().pipe(
+    //   combineLatest(this.route.params)
+    // ).pipe(takeUntil(this.destroy$)).subscribe(([conversations, params]) => {
+    //   const conversation = conversations.data.filter(c => !c.blacklist && !c.left && !c.deleted).find(c => +c.group_id === +params.id);
+    //   if (conversation) {
+    //     this.store.dispatch({ type: CHAT_SELECTED_CONVERSATION_SET, payload: conversation });
+    //   }
+    // });
+    // // Get messages when select
+    // this.chatConversationService.getStoreSelectedConversationFull().pipe(takeUntil(this.destroy$)).subscribe(res => {
+    //   this.selectedConversation = res.selectedConversation;
+    //   if (res.isDifference) {
+    //     this.chatMessageService.getMessages(res.selectedConversation.group_id);
+    //   }
+    //   this.commonEventService.broadcast({
+    //     channel: 'MessageEditorComponent',
+    //     action: 'focus'
+    //   });
+    // });
+    // // sync current message
+    // this.currentMessages$ = this.chatMessageService.getCurrentMessages();
   }
 
   ngOnDestroy() {

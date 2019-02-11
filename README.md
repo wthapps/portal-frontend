@@ -19,3 +19,31 @@ rsync -avL --force --progress  -e "ssh -i /home/hdthinh/Downloads/productionwtha
 
 [source_folder_name]     must be: portal, my-account, media, social, chat, contact, note
 [deployment_folder_name] must be: portal, myaccount, media, social, chat, contacts, notes
+
+## Ng Cli generation
+
+  * Generate module for app
+
+    `ng g module ../store/message/message-store --flat true --project chat`
+
+## Ngrx References
+  * Commands
+  
+    1. Generate store
+     
+      ``
+    2. Generate feature store
+  
+      `ng generate feature ../../chat/store/message/Message --module ../../chat/store/message/message-store.module.ts `
+  
+  * Feature state 
+  https://itnext.io/ngrx-best-practices-for-enterprise-angular-applications-6f00bcdf36d7
+  
+  * Selector understanding
+  https://toddmotto.com/ngrx-store-understanding-state-selectors
+  
+  * Detecting online connection
+  https://www.intertech.com/Blog/detecting-online-connection-status-using-angular-7-and-ngrx/
+  
+  * 
+  

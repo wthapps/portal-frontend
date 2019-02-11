@@ -19,7 +19,11 @@
             "polyfills": "src/portal/polyfills.ts",
             "tsConfig": "src/portal/tsconfig.app.json",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
@@ -47,10 +51,8 @@
               "serviceWorker": true,
               "fileReplacements": [
                 {
-                  "replace":
-                  "src/portal/../environments/environment.ts",
-                  "with":
-                  "src/portal/../environments/environment.prod.ts"
+                  "replace": "src/portal/../environments/environment.ts",
+                  "with": "src/portal/../environments/environment.prod.ts"
                 }
               ]
             },
@@ -133,9 +135,7 @@
               "node_modules/cropperjs/dist/cropper.min.css",
               "src/portal/styles/portal.scss"
             ],
-            "assets": [
-
-            ]
+            "assets": []
           }
         },
         "lint": {
@@ -193,7 +193,11 @@
             "tsConfig": "src/my-account/tsconfig.app.json",
             "polyfills": "src/my-account/polyfills.ts",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
@@ -363,7 +367,11 @@
             "tsConfig": "src/media/tsconfig.app.json",
             "polyfills": "src/media/polyfills.ts",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
@@ -534,7 +542,11 @@
             "tsConfig": "src/social/tsconfig.app.json",
             "polyfills": "src/social/polyfills.ts",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
@@ -710,7 +722,11 @@
             "tsConfig": "src/chat/tsconfig.app.json",
             "polyfills": "src/chat/polyfills.ts",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
@@ -887,7 +903,11 @@
             "tsConfig": "src/contact/tsconfig.app.json",
             "polyfills": "src/contact/polyfills.ts",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              },
               "src/contact/manifest.json"
             ],
             "styles": [
@@ -1069,7 +1089,11 @@
             "tsConfig": "src/note/tsconfig.app.json",
             "polyfills": "src/note/polyfills.ts",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              },
               "src/note/manifest.json"
             ],
             "styles": [
@@ -1288,7 +1312,11 @@
             "polyfills": "src/sample/polyfills.ts",
             "tsConfig": "src/sample/tsconfig.app.json",
             "assets": [
-              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" }
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
@@ -1316,10 +1344,8 @@
               "serviceWorker": true,
               "fileReplacements": [
                 {
-                  "replace":
-                  "src/sample/../environments/environment.ts",
-                  "with":
-                  "src/sample/../environments/environment.prod.ts"
+                  "replace": "src/sample/../environments/environment.ts",
+                  "with": "src/sample/../environments/environment.prod.ts"
                 }
               ]
             },
@@ -1400,9 +1426,7 @@
               "node_modules/cropperjs/dist/cropper.min.css",
               "src/sample/styles/sample.scss"
             ],
-            "assets": [
-  
-            ]
+            "assets": []
           }
         },
         "lint": {
@@ -1429,5 +1453,8 @@
     "@schematics/angular:directive": {
       "prefix": ""
     }
+  },
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
   }
 }

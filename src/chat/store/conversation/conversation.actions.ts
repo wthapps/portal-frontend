@@ -3,10 +3,10 @@ import { Action } from '@ngrx/store';
 export enum ActionTypes  {
   GET_ALL           = 'CONVERSATION_GET_ALL',
   GET_ALL_SUCCESS   = 'CONVERSATION_GET_ALL_SUCCESS',
-  GET_ALL_FAILURE   = 'CONVERSATION_GET_ALL_FAILURE',
+  GET_ALL_ERROR     = 'CONVERSATION_GET_ALL_ERROR',
   GET_ITEM          = 'CONVERSATION_GET_ITEM',
   GET_ITEM_SUCCESS  = 'CONVERSATION_GET_ITEM_SUCCESS',
-  GET_ITEM_FAILURE  = 'CONVERSATION_GET_ITEM_FAILURE',
+  GET_ITEM_ERROR    = 'CONVERSATION_GET_ITEM_ERROR',
   SET_SELECTED_ITEM = 'CONVERSATION_SET_SELECTED_ITEM',
   CREATE            = 'CONVERSATION_CREATE',
   UPDATE            = 'CONVERSATION_UPDATE',
@@ -27,8 +27,8 @@ export class GetAllSuccess implements Action {
   constructor(public payload: any) { }
 }
 
-export class GetAllFailure implements Action {
-  readonly type = ActionTypes.GET_ALL_FAILURE;
+export class GetAllError implements Action {
+  readonly type = ActionTypes.GET_ALL_ERROR;
 
   constructor(public payload: any = null) { }
 }
@@ -45,8 +45,8 @@ export class GetItemSuccess implements Action {
   constructor(public payload: any = null) { }
 }
 
-export class GetItemFailure implements Action {
-  readonly type = ActionTypes.GET_ITEM_FAILURE;
+export class GetItemError implements Action {
+  readonly type = ActionTypes.GET_ITEM_ERROR;
 
   constructor(public payload: any = null) { }
 }
@@ -63,8 +63,8 @@ export class SetSelectedItem implements Action {
 export type Actions =
   GetAll |
   GetAllSuccess |
-  GetAllFailure |
+  GetAllError |
   GetItem |
   GetItemSuccess |
-  GetItemFailure |
+  GetItemError |
   SetSelectedItem;

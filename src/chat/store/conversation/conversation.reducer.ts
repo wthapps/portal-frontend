@@ -1,7 +1,29 @@
 import { Actions, ActionTypes } from './conversation.actions';
-import { ConversationState, INITIAL_CONVERSATION_STATE } from './conversation.state';
 
-export function conversationReducer(state = INITIAL_CONVERSATION_STATE, action: Actions): ConversationState {
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { Conversation } from './conversation.model';
+
+export const conversationAdapter: EntityAdapter<Conversation> = createEntityAdapter<Conversation>({
+  selectId: model => model.id
+});
+
+export interface ConversationState extends EntityState<Conversation> {
+  selectedItem: Conversation | null;
+  items: Array<Conversation> | [];
+  isLoading?: boolean;
+  error?: any;
+}
+
+export const inititalConversationState: ConversationState = conversationAdapter.getInitialState(
+  {
+    selectedItem: null,
+    items: [],
+    isLoading: false,
+    error: null
+  }
+);
+
+export function reducer(state = inititalConversationState, action: Actions): ConversationState {
   switch (action.type) {
     case ActionTypes.GET_ALL: {
       return {
@@ -22,7 +44,7 @@ export function conversationReducer(state = INITIAL_CONVERSATION_STATE, action: 
         error: null
       };
     }
-    case ActionTypes.GET_ALL_FAILURE: {
+    case ActionTypes.GET_ALL_ERROR: {
       return {
         ...state,
         isLoading: false,
@@ -49,7 +71,7 @@ export function conversationReducer(state = INITIAL_CONVERSATION_STATE, action: 
       };
     }
 
-    case ActionTypes.GET_ITEM_FAILURE: {
+    case ActionTypes.GET_ITEM_ERROR: {
       return {
         ...state,
         isLoading: false,
