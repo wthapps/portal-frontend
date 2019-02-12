@@ -10,21 +10,22 @@ import {
 } from '@angular/core';
 
 
-import { Constants } from '@shared/constant/config/constants';
-import { ZNoteService } from '../services/note.service';
-import { CommonEventService } from '@shared/services/common-event/common-event.service';
+import {Constants} from '@shared/constant/config/constants';
+import {ZNoteService} from '../services/note.service';
+import {CommonEventService} from '@shared/services/common-event/common-event.service';
 import * as note from '../actions/note';
 import * as context from '../reducers/context';
-import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService } from '@shared/services/apibase.service';
-import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { UrlService } from '@shared/services';
-import { NoteConstants, noteConstants } from '@notes/shared/config/constants';
-import { Router } from '@angular/router';
+import {WthConfirmService} from '@shared/shared/components/confirmation/wth-confirm.service';
+import {ApiBaseService} from '@shared/services/apibase.service';
+import {Store} from '@ngrx/store';
+import {Subject} from 'rxjs';
+import {UrlService} from '@shared/services';
+import {NoteConstants, noteConstants} from '@notes/shared/config/constants';
+import {Router} from '@angular/router';
 
 declare var _: any;
 declare let saveAs: any;
+
 // declare let printJS: any;
 
 @Component({
@@ -112,6 +113,11 @@ export class ZNoteSharedActionBarComponent
       action: this.edit.bind(this),
       title: 'Edit'
     },
+    divider: {
+      show: true,
+      inDropDown: true,
+      divider: true
+    },
     copy: {
       show: true,
       needPermission: 'edit',
@@ -132,7 +138,8 @@ export class ZNoteSharedActionBarComponent
       needPermission: 'owner',
       inDropDown: true, // Inside dropdown list
       action: this.moveToFolder.bind(this),
-      title: 'Move to folder'
+      title: 'Move to folder',
+      iconClass: 'wicon-move-to-folder'
     },
     print: {
       show: true,
@@ -298,8 +305,12 @@ export class ZNoteSharedActionBarComponent
     Object.keys(this.actionsMenu).map((action: any) =>
       permissonValidateFavourites(this.actionsMenu[action], objects)
     );
-    if (allFavorite) { this.actionsMenu.favourite.iconClass = 'fa fa-star'; }
-    if (!allFavorite) { this.actionsMenu.favourite.iconClass = 'fa fa-star-o'; }
+    if (allFavorite) {
+      this.actionsMenu.favourite.iconClass = 'fa fa-star';
+    }
+    if (!allFavorite) {
+      this.actionsMenu.favourite.iconClass = 'fa fa-star-o';
+    }
 
     // After All
     this.disableDropDown = true;
@@ -430,7 +441,7 @@ export class ZNoteSharedActionBarComponent
     const obj: any = this.selectedObjects[0];
     const parentPath: string =
       obj.permission === 'owner' ? '/my-note' : '/shared-with-me';
-      const path: string = obj.parent_id
+    const path: string = obj.parent_id
       ? `${parentPath}/folders/${obj.parent_id}`
       : parentPath;
     this.store.dispatch({
@@ -470,11 +481,11 @@ export class ZNoteSharedActionBarComponent
       };
     });
     this.apiBaseService
-      .post('note/mixed_entities/favourites', { objects: objects })
+      .post('note/mixed_entities/favourites', {objects: objects})
       .subscribe((res: any) => {
         this.selectedObjects = res.data;
         this.validatePermission(this.selectedObjects);
         this.store.dispatch(new note.MultiNotesUpdated(res.data));
-    });
+      });
   }
 }

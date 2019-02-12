@@ -13,12 +13,13 @@
             pTooltip="{{ tooltip.moreAction }}" tooltipPosition="bottom" [disabled]="disableDropDown">
       <i class="fa fa-ellipsis-v"></i>
     </button>
-    <ul class="dropdown-menu dropdown-menu-right text-right">
+    <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right text-right">
       <ng-template ngFor let-menu [ngForOf]="actionsMenu | mapToIterable: detectMenu">
-        <li *ngIf="menu.val.show && menu.val.inDropDown">
+        <li *ngIf="menu.val.show && menu.val.inDropDown && !menu.val.divider">
           <a tabindex="-1" href="javascript:;"
           (click)="menu.val.action()"><i class="{{menu.val.iconClass}}"></i> {{menu.val.title}}</a>
         </li>
+        <li *ngIf="menu.val.show && menu.val.inDropDown && menu.val.divider" class="divider"></li>
       </ng-template>
     </ul>
   </li>
