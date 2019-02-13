@@ -109,6 +109,7 @@ $note-editor-aside-w: 400px;
         @include flexbox;
         @include flex-direction(column);
         height: 100%;
+        overflow: auto;
       }
       .note-editor-aside-content {
         @include flex(1);
@@ -118,6 +119,33 @@ $note-editor-aside-w: 400px;
         margin-right: -10px;
         padding-left: 10px;
         padding-right: 10px;
+      }
+      .note-editor-aside-comment {
+        padding: 10px;
+        border-bottom: 1px solid $line;
+      }
+      .user-row {
+        @include align-items(start);
+        color: $text-muted;
+        .user-name {
+          a {
+            font-weight: bold;
+            color: $text-color;
+          }
+        }
+        .user-content {
+          color: $text-color;
+        }
+        .user-reply, .user-name {
+          span {
+            display: inline-block;
+            margin-left: 10px;
+            margin-right: 10px;
+          }
+        }
+        & + .user-row, .user-row {
+          margin-top: 10px;
+        }
       }
     }
 
@@ -140,14 +168,16 @@ $note-editor-aside-w: 400px;
     }
   }
   @media all {
-    p > img {
-      text-align: center;
-    }
+    .ql-container {
+      p > img {
+        text-align: center;
+      }
 
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      cursor: move !important;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        cursor: move !important;
+      }
     }
 
     .big-icon {

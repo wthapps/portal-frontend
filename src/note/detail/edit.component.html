@@ -75,7 +75,8 @@
                 <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()">
                   <i class="fa fa-share"></i>
                 </button>
-                <button pTooltip="Paint format" tooltipPosition="bottom" type="button" (click)="copyFormat()">
+                <button pTooltip="Paint format" tooltipPosition="bottom" type="button"
+                        (click)="copyFormat()">
                   <i class="fa fa-paint-brush"></i>
                 </button>
                 <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
@@ -86,7 +87,8 @@
                 <button pTooltip="Undo" tooltipPosition="bottom" type="button"
                         (click)="showFormatGroupMobile = !showFormatGroupMobile">
                   <span *ngIf="!showFormatGroupMobile">A</span>
-                  <span class="btn-show-format" *ngIf="showFormatGroupMobile"><i class="fa fa-times"></i></span>
+                  <span class="btn-show-format" *ngIf="showFormatGroupMobile"><i
+                          class="fa fa-times"></i></span>
                 </button>
               </div>
               <div class="ql-formats">
@@ -116,7 +118,8 @@
 
               <select class="ql-size vh ql-size-sm no-border-radius" title="Font size">
                 <option *ngFor="let size of FONT_SIZES" [value]="size?.value"
-                        [attr.selected]="size?.value === '14pt' ? setting?.font_size : null">{{ size?.name}}
+                        [attr.selected]="size?.value === '14pt' ? setting?.font_size : null">{{
+                  size?.name}}
                 </option>
               </select>
 
@@ -127,7 +130,8 @@
                       aria-label="Bold"></button>
               <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic"
                       aria-label="Italic"></button>
-              <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom" class="ql-underline"
+              <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom"
+                      class="ql-underline"
                       aria-label="Underline"></button>
               <!-- <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike"
                       aria-label="Strikethrough"></button> -->
@@ -174,8 +178,10 @@
             </div>
             <div class="ql-formats">
               <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
-              <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list" value="ordered"></button>
-              <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list" value="bullet"></button>
+              <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list"
+                      value="ordered"></button>
+              <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list"
+                      value="bullet"></button>
 
               <!-- <button pTooltip="Decrease indent" tooltipPosition="bottom" class="ql-indent" value="-1"></button>
               <button pTooltip="Increase indent" tooltipPosition="bottom" class="ql-indent" value="+1"></button> -->
@@ -239,7 +245,8 @@
                     aria-label="Bold"></button>
             <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic"
                     aria-label="Italic"></button>
-            <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom" class="ql-underline"
+            <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom"
+                    class="ql-underline"
                     aria-label="Underline"></button>
             <!-- <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike"
                     aria-label="Strikethrough"></button> -->
@@ -286,8 +293,10 @@
             </select>
 
             <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
-            <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list" value="ordered"></button>
-            <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list" value="bullet"></button>
+            <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list"
+                    value="ordered"></button>
+            <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list"
+                    value="bullet"></button>
 
             <!-- <button pTooltip="Decrease indent" tooltipPosition="bottom" class="ql-indent" value="-1"></button>
             <button pTooltip="Increase indent" tooltipPosition="bottom" class="ql-indent" value="+1"></button> -->
@@ -297,7 +306,8 @@
             <button pTooltip="Divider line" tooltipPosition="bottom" type="button" (click)="divider()">
               <i>&mdash;</i>
             </button>
-            <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom" class="ql-link"></button>
+            <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom"
+                    class="ql-link"></button>
             <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
             <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
             <!--<button class="ql-video"></button>-->
@@ -325,7 +335,7 @@
             <i class="fa fa-paperclip"></i> Attachment ({{ note?.attachments?.length || 0 }})
           </h4>
           <a (click)="visibleTab = undefined" href="#" class="btn btn-default">
-            <i class="fa fa-close"></i>
+            <i class="fa fa-close text-fade"></i>
           </a>
         </div>
         <div class="note-editor-aside-body">
@@ -334,7 +344,8 @@
               <button (click)="selectPhotos()" type="button" class="btn btn-outline-default">
                 <i class="fa fa-plus"></i> Photo
               </button>
-              <button type="button" class="btn btn-outline-default can-click btn-style-1 fileinput-button">
+              <button type="button"
+                      class="btn btn-outline-default can-click btn-style-1 fileinput-button">
                 <i class="fa fa-paperclip"></i> Attachment
                 <input *ngIf="note.permission !== 'view'"
                        #fileBrowse
@@ -391,6 +402,79 @@
           </div>
         </div>
       </ng-container>
+      <ng-container *ngIf="visibleTab === 'comment'">
+        <div class="note-editor-aside-header">
+          <h4>
+            <i class="fa fa-comment" aria-hidden="true"></i> Comment
+          </h4>
+          <a (click)="visibleTab = undefined" href="#" class="btn btn-default">
+            <i class="fa fa-close text-fade"></i>
+          </a>
+        </div>
+        <div class="note-editor-aside-comment">
+          <div class="user-row">
+            <div class="user-avatar">
+              <div class="user-avatar-img">
+                <img alt=""
+                     src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1542958923.jpg">
+              </div>
+            </div>
+            <div class="user-body">
+
+            </div>
+          </div>
+        </div>
+        <div class="note-editor-aside-body">
+          <div class="note-comment-list">
+            <div class="user-row">
+              <div class="user-avatar">
+                <div class="user-avatar-img">
+                  <img alt=""
+                       src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1542958923.jpg">
+                </div>
+              </div>
+              <div class="user-body">
+                <div class="user-name">
+                  <a href="#">Jack Gmail1</a> <span>·</span> 1 day ago
+                </div>
+                <div class="user-content">Lorem ipsum dolor sit amet</div>
+                <div class="user-reply"><a href="#">Reply</a> <span>·</span> <a href="">2 Replies</a></div>
+              </div>
+            </div>
+            <div class="user-row">
+              <div class="user-avatar">
+                <div class="user-avatar-img">
+                  <img alt=""
+                       src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1542958923.jpg">
+                </div>
+              </div>
+              <div class="user-body">
+                <div class="user-name">
+                  <a href="#">Jack Gmail1</a> <span>·</span> 1 day ago
+                </div>
+                <div class="user-content">Lorem ipsum dolor sit amet</div>
+                <div class="user-reply"><a href="#">Reply</a> <span>·</span> <a href="">2 Replies</a></div>
+
+                <div class="user-row align-items-start">
+                  <div class="user-avatar">
+                    <div class="user-avatar-img">
+                      <img alt=""
+                           src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1542958923.jpg">
+                    </div>
+                  </div>
+                  <div class="user-body">
+                    <div class="user-name">
+                      <a href="#">Jack Gmail1</a> <span>·</span> 1 day ago
+                    </div>
+                    <div class="user-content">Lorem ipsum dolor sit amet</div>
+                    <div class="user-reply"><a href="#">Reply</a> <span>·</span> <a href="">2 Replies</a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
 
   </div>
@@ -398,7 +482,7 @@
 
 <lock-upload-modal></lock-upload-modal>
 <z-note-shared-modal-edit-name
-  #modalEditName
-  [name]="form.value.name"
-  (eventEmitter)="onSaveName($event)">
+        #modalEditName
+        [name]="form.value.name"
+        (eventEmitter)="onSaveName($event)">
 </z-note-shared-modal-edit-name>
