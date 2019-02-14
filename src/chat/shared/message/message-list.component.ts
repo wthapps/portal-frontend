@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
@@ -100,9 +100,11 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   }
 
   scrollDown() {
-    if ($('#chat-message-text').is(':focus')) {
-      this.chatService.markAsRead(this.contactItem.value.group_id);
-    }
+    this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(res => {
+      this.chatConversationService.markAsRead(res);
+    });
+    // if ($('#chat-message-text').is(':focus')) {
+    // }
   }
 
   onAddContact(contact: any) {

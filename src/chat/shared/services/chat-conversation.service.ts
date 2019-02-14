@@ -4,7 +4,7 @@ import { ApiBaseService, ChatCommonService, StorageService, UserService, CommonE
 import { CONVERSATION_SELECT, STORE_CONVERSATIONS, STORE_CONTEXT, STORE_SELECTED_CONVERSATION, STORE_MESSAGES } from '@shared/constant';
 import { takeUntil, filter, map, withLatestFrom, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { CHAT_CONVERSATIONS_SET, CHAT_CONVERSATIONS_ADD_NOTIFICATION, CHAT_CONVERSATIONS_UPDATE, CHAT_CONVERSATIONS_LOAD_MORE } from '@core/store/chat/conversations.reducer';
+import { CHAT_CONVERSATIONS_SET, CHAT_CONVERSATIONS_ADD_NOTIFICATION, CHAT_CONVERSATIONS_UPDATE, CHAT_CONVERSATIONS_LOAD_MORE, CHAT_CONVERSATIONS_MARK_AS_READ } from '@core/store/chat/conversations.reducer';
 import { of } from 'rxjs';
 import { Conversations } from '@shared/shared/models/chat/conversations.model';
 
@@ -86,7 +86,12 @@ export class ChatConversationService extends CommonEventHandler {
   }
 
   addNotification(data: any){
-    this.store.dispatch({ type: CHAT_CONVERSATIONS_ADD_NOTIFICATION, payload: data})
+    // of(data).pipe(withLatestFrom(this.getStoreSelectedConversation()), map(([data, sc]) => {
+    //   if(sc.group_id != data.group_id) this.store.dispatch({ type: CHAT_CONVERSATIONS_ADD_NOTIFICATION, payload: data});
+    // })).toPromise().then(res => {
+
+    // });
+    this.store.dispatch({ type: CHAT_CONVERSATIONS_ADD_NOTIFICATION, payload: data});
   }
 
   addRemoveMember(data: any){
@@ -124,6 +129,26 @@ export class ChatConversationService extends CommonEventHandler {
         this.store.dispatch({ type: CHAT_CONVERSATIONS_UPDATE, payload: res.data });
         return res;
       });
+  }
+
+  markAsRead(contact: any){
+    this.apiBaseService
+      .post('zone/chat/notification/mark_as_read', { id: contact.group_id })
+      .toPromise().then((res: any) => {
+        this.commonEventService.broadcast({
+          channel: 'ChatNotificationComponent',
+          action: 'addNotification',
+          payload: { notification_count: 0, last_notification_count: res.data.last_notification_count}
+        });
+        this.store.dispatch({ type: CHAT_CONVERSATIONS_MARK_AS_READ, payload: res.data });
+      });
+    // this.apiUpdateGroupUser(contact.group_id, { notification_count: 0 }).then(res => {
+    //   this.commonEventService.broadcast({
+    //       channel: 'ChatNotificationComponent',
+    //       action: 'addNotification',
+    //       payload: { notification_count: 0, last_notification_count: res.data.last_notification_count}
+    //     });
+    // });
   }
 
   apiFavoriteGroupUser(conversation: any) {

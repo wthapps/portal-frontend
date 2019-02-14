@@ -92,7 +92,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   }
 
   markAsRead(c: Conversation) {
-    const group_id = c.group.id;
+    const group_id = c.group_id;
     this.apiBaseService
       .post('zone/chat/notification/mark_as_read', {id: group_id})
       .subscribe((res: any) => {
@@ -103,7 +103,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   }
 
   updateNotification(c: Conversation) {
-    const group_id = c.group.id;
+    const group_id = c.group_id;
     this.apiBaseService
       .addCommand(
         ConversationApiCommands.updateNotification({
@@ -137,7 +137,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   navigate(conversation: any) {
     $('#chat-header-notification').removeClass('open');
     this.wthNavigateService.navigateOrRedirect(
-      `conversations/${conversation.group.id}`,
+      `conversations/${conversation.group_id}`,
       'chat'
     );
     this.handlerService.triggerEvent('on_conversation_select', conversation);

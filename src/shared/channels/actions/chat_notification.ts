@@ -16,9 +16,6 @@ export class ChatNotification implements Processable {
     if (data.data.type === 'added_contact') {
       this.addContact(data);
     }
-    // if (data.data.type === 'removed_contact') {
-    //   this.removeContact(data);
-    // }
     if (data.data.type === 'update_display') {
       this.updateDisplay(data);
     }
@@ -36,7 +33,6 @@ export class ChatNotification implements Processable {
     const index = _.findIndex(item.value.data, { id: data.data.group_user.id });
     if (index !== -1) {
       item.value.data[index] = data.data.group_user;
-      this.serviceManager.getChatCommonService().updateAll();
     }
   }
 
@@ -48,7 +44,6 @@ export class ChatNotification implements Processable {
       );
       if (contact && contact.notification) {
         if (contact.notification) contact.notification_count = data.data.count;
-        this.serviceManager.getChatCommonService().updateAll();
       }
     }
     if (data.data.count && !this.inSameModule([Constants.baseUrls.chat]))
@@ -66,17 +61,15 @@ export class ChatNotification implements Processable {
     } else {
       conversations.data[index] = data.data.group_user;
     }
-    this.serviceManager.getChatCommonService().updateAll();
   }
 
   updateConversationList(data: any) {
     const item = this.serviceManager.getStorageService().find(CHAT_CONVERSATIONS);
     item.value.data = data.data.group_users;
-    this.serviceManager.getChatCommonService().updateAll();
   }
 
   addNotificationMessage(data: any) {
-    this.serviceManager.getChatCommonService().addMessage(data.data.group, data.data);
+    // this.serviceManager.getChatCommonService().addMessage(data.data.group, data.data);
   }
 
   private inSameModule(moduleNames: string[]) {
