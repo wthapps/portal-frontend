@@ -1,8 +1,6 @@
 <div *ngIf="data" class="media-avatar">
   <div *ngIf="displayAvatar" class="media-avatar-img-wrap">
     <div class="media-avatar-img avatar-{{ size }} avatar-chat">
-      <!-- <img *ngIf="data.group_type == 'couple'" [src]="data?.display?.image" alt="">
-      <img *ngIf="data.group_type == 'multiple'" [src]="data?.profile_image" alt=""> -->
       <img [src]="data?.avatar" alt="">
 
     </div>

@@ -39,10 +39,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   constructor(
     private navigateService: WTHNavigateService,
     private apiBaseService: ApiBaseService,
-    private chatCommonService: ChatCommonService,
     public commonEventService: CommonEventService,
-    private router: Router,
-    private storageService: StorageService,
     public connectionService: ConnectionNotificationService,
     public notificationService: NotificationService,
     public handlerService: HandlerService,
@@ -73,20 +70,22 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
 
   gotoChat() {
     this.navigateService.navigateOrRedirect('conversations', 'chat');
-    // $('#chat-header-notification').removeClass('open');
   }
 
   toggleViewNotifications() {
-    this.apiBaseService.get('zone/chat/contacts').pipe(map(res => new Conversations(res))).subscribe((conversations: Conversations) => {
+    this.apiBaseService.get('zone/chat/group').pipe(map(res => new Conversations(res))).subscribe((conversations: Conversations) => {
       this.conversations = conversations;
       this.links = conversations.meta.links;
     })
   }
 
-  markAllAsRead() {
+  markAllAsRead(conversations?: Conversations) {
     this.apiBaseService.post('zone/chat/notification/mark_all_as_read')
       .subscribe(res => {
         this.notificationCount = 0;
+        if (conversations) {
+          this.conversations = conversations;
+        }
         this.conversations.markAllAsRead();
         this.updateChatStore();
       });
@@ -124,7 +123,6 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
       action: 'updateStoreConversations',
       payload: this.conversations
     })
-    // this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: this.conversations})
   }
 
   getMore() {

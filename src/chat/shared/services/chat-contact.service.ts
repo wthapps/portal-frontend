@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiBaseService, ChatCommonService, StorageService, UserService } from '@wth/shared/services';
+import { ChatConversationService } from './chat-conversation.service';
 
 
 declare var _: any;
@@ -12,7 +13,7 @@ export class ChatContactService {
   constructor(
     public storage: StorageService,
     public apiBaseService: ApiBaseService,
-    public chatCommonService: ChatCommonService,
+    public chatConversationService: ChatConversationService,
     public router: Router
   ) {
 
@@ -24,9 +25,7 @@ export class ChatContactService {
 
   cancelContactRequest(contact: any): Promise<boolean> {
     const groupId = contact.group_id;
-    return this.apiBaseService.post('zone/chat/contact/cancel', {group_id: groupId}).toPromise()
-      .then(() => this.chatCommonService.setDefaultSelectContact())
-    ;
+    return this.apiBaseService.post('zone/chat/contact/cancel', {group_id: groupId}).toPromise();
   }
 
   getAll(query: string = '') {

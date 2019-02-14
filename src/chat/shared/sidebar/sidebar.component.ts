@@ -13,6 +13,7 @@ import { TextBoxSearchComponent } from '@shared/partials/search-box';
 import { ChatConversationService } from '../services/chat-conversation.service';
 import { Store } from '@ngrx/store';
 import { STORE_CONVERSATIONS } from '@shared/constant';
+import { Conversations } from '@shared/shared/models/chat/conversations.model';
 
 
 @Component({
@@ -139,12 +140,9 @@ export class ZChatSidebarComponent implements OnInit {
   onCloseMenu() {
     this.renderer.removeClass(document.body, 'left-sidebar-open');
   }
-
-
   /*
   * Handle searching here
    */
-
   search(keyword: string) {
     if (keyword === '') {
       this.clearSearch({});
@@ -156,6 +154,16 @@ export class ZChatSidebarComponent implements OnInit {
       this.searchConversations = res.data;
       this.searched = true;
     });
+  }
+
+  markAllAsRead(){
+    this.conversations$.pipe(take(1)).subscribe(res => {
+      this.commonEventService.broadcast({
+        channel: 'ChatNotificationComponent',
+        action: 'markAllAsRead',
+        payload: res
+      })
+    })
   }
 
   clearSearch(event: any) {

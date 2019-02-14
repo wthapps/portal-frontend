@@ -10,6 +10,7 @@ import { WMediaSelectionService } from '@shared/components/w-media-selection/w-m
 import { Subject } from 'rxjs';
 import { takeUntil, filter, take } from 'rxjs/operators';
 import { ApiBaseService, CommonEventService } from '@shared/services';
+import { ChatConversationService } from '../services/chat-conversation.service';
 
 @Component({
   selector: 'z-chat-share-edit-conversation',
@@ -28,6 +29,7 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
 
   constructor(private chatService: ChatService,
     private mediaSelectionService: WMediaSelectionService,
+    private chatConversationService: ChatConversationService,
     private apiBaseService: ApiBaseService,
     private commonEventService: CommonEventService,
     private fb: FormBuilder)  {
@@ -44,14 +46,14 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.chatService.updateDisplay(this.conversation, {display: {name: this.name}, allow_add: this.allow_add, image: this.imageUpdated, upload: true});
+    this.chatConversationService.updateDisplay(this.conversation, { edited_name: this.name, allow_add: this.allow_add, image: this.imageUpdated, upload: true});
     this.modal.close();
   }
 
   open() {
     this.modal.open().then(e => {
       this.allow_add = (this.conversation.allow_add || this.conversation.allow_add == 'true');
-      this.name = this.conversation.name;
+      this.name = this.conversation.edited_name;
     });
   }
 
@@ -68,7 +70,7 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
       filter(photos => photos.length > 0)
     ).pipe(takeUntil(this.destroy$)).subscribe(photos => {
       this.imageUpdated = photos[0].url;
-      this.conversation.profile_image = this.imageUpdated;
+      this.conversation.avatar = this.imageUpdated;
       // detect to update
       this.conversation = {...this.conversation};
     });
@@ -87,7 +89,7 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
           // re-open
           this.modal.open();
           this.imageUpdated = event.payload;
-          this.conversation.profile_image = this.imageUpdated;
+          this.conversation.avatar = this.imageUpdated;
           // detect to update
           this.conversation = { ...this.conversation };
         }

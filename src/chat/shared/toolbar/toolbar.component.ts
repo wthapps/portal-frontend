@@ -85,7 +85,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'ZChatShareAddContactComponent',
       action: 'open',
-      payload: {option: 'addMember'}
+      payload: {option: 'addMember', conversationSelected: this.contactSelect}
     })
 
   }

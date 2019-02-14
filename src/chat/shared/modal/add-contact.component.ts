@@ -30,7 +30,6 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
   type = 'addContact';
   title = 'New Conversation';
   filter: any;
-  conversationSelect: any;
   loading = false;
   selectedUsers: Array<any> = [];
   suggestedUsers: Array<any> = [];
@@ -104,7 +103,14 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
     this.resetData();
     this.modal.open().then();
 
-    this.apiBaseService.get(`account/get_my_contacts_accounts?size=1000`).subscribe(res => {
+    let link = "";
+    if(data.option == 'addMember') {
+      link = `zone/chat/group/${data.conversationSelected.group_id}/contacts_not_in_group`;
+    } else {
+      link = `account/get_my_contacts_accounts?size=1000`
+    }
+
+    this.apiBaseService.get(link).subscribe(res => {
       this.contacts = res.data;
       this.users = res.data;
       this.loading = false;

@@ -237,13 +237,6 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     // .then(r2 => this.router.navigate(['/conversations']));
   }
 
-  updateDisplay(contact: any, data: any) {
-    this.updateGroupUser(contact.group_id, data)
-      .then((res: any) => {
-      return this.updateDisplayNotification(contact.group.id);
-    });
-  }
-
   updateGroupUser(groupId: any, data: any) {
     return this.apiBaseService
       .put('zone/chat/group_user/' + groupId, data)
@@ -297,7 +290,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
         const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value
         && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
 
-        this.chatCommonService.updateAll();
+        // this.chatCommonService.updateAll();
         return this.router.navigate([ChatConstant.conversationUrl, _.get(nextRecentConversation, 'id', '')]);
       }
     );
@@ -346,17 +339,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
             contact.notification_count = 0;
           }
         }
-        this.chatCommonService.updateAll();
       });
-  }
-
-  updateDisplayNotification(groupId: any): Promise<any
-    > {
-    return this.apiBaseService
-      .post('zone/chat/notification/broadcard_group_user_display', {
-        group_id: groupId
-      })
-      .toPromise();
   }
 
   getOwnUserProfile() {

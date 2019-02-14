@@ -1,3 +1,4 @@
+// Client code
 export class Conversations {
   data: any = [];
   meta: any = {};

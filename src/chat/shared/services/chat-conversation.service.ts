@@ -169,4 +169,12 @@ export class ChatConversationService extends CommonEventHandler {
       conversations.moveToFirst(sc);
     })
   }
+
+
+  updateDisplay(contact: any, data: any) {
+    this.apiUpdateGroupUser(contact.group_id, data)
+      .then((res: any) => {
+        return this.chatCommonService.updateConversationBroadcast(contact.group_id);
+      });
+  }
 }
