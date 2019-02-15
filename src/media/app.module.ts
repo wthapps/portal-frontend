@@ -34,7 +34,7 @@ import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal
 import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
 import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
-import { ZMediaVideoModule } from '@media/video/video.module';
+// import { ZMediaVideoModule } from '@media/video/video.module';
 import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
 import { PhotoHtmlModule } from '@media/html/photo-html.module';
 import {
@@ -65,7 +65,6 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     ZMediaSharingModule,
     ZMediaSearchModule,
     ZMediaMyProfileModule,
-    ZMediaVideoModule,
     WMediaPreviewModule,
     PhotoHtmlModule,
     ZMediaTrashModule,

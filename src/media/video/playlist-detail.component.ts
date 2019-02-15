@@ -4,7 +4,8 @@ import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 import {
   ApiBaseService,
-  WthConfirmService
+  WthConfirmService,
+  CommonEventService
 } from '@wth/shared/services';
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
@@ -103,6 +104,7 @@ PlaylistAddMixin, MediaDownloadMixin {
     public apiBaseService: ApiBaseService,
     public resolver: ComponentFactoryResolver,
     public confirmService: WthConfirmService,
+    public commonEventService: CommonEventService,
     public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public localStorageService: LocalStorageService,

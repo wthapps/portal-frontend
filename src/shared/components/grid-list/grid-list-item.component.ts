@@ -3,7 +3,6 @@ import { Constants } from '@wth/shared/constant';
 import { UserService } from '@shared/services';
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
   selector: 'w-grid-list-item',
   templateUrl: 'grid-list-item.component.html',
   styleUrls: ['grid-list-item.component.scss']

@@ -36,7 +36,6 @@ const MAX_CONCURRENT_FILES = 4;
   moduleId: module.id,
   selector: 'me-photo-list',
   templateUrl: '../shared/list/list.component.html'
-  // templateUrl: 'photo-list.component.html'
 })
 export class ZMediaPhotoListComponent extends CommonEventHandler implements OnInit, OnDestroy,
 SharingModalMixin,
@@ -92,6 +91,7 @@ MediaModalMixin {
   ) {
     super(commonEventService);
   }
+  deSelect: () => void;
 
   ngOnInit() {
     this.loadObjects();

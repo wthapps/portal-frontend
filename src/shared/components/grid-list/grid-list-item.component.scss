@@ -13,3 +13,50 @@
     }
   }
 }
+.photo-box-figure {
+  .item-actions {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    visibility: hidden;
+  }
+}
+
+.content-item {
+    &:hover {
+      .form-checkbox {
+        visibility: visible;
+      }
+    }
+    &.selected {
+      .item-media {
+        border-color: $theme-color;
+      }
+      .form-checkbox {
+        visibility: visible;
+        background-color: $theme-color;
+        &:before {
+          visibility: visible;
+        }
+      }
+    }
+  }
+.item-media-img {
+    i {
+      z-index: 2;
+      @include center();
+      color: #ffffff;
+      background-color: rgba(#404040, 0.6);
+      font-size: 48px;
+      width: 50px;
+      height: 50px;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      text-align: center;
+      &:before {
+        @include center();
+      }
+    }
+  }

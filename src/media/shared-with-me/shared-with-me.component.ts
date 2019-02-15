@@ -17,7 +17,7 @@ import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
@@ -67,12 +67,14 @@ MediaAdditionalListMixin {
     public router: Router,
     public localStorageService: LocalStorageService,
     public toastsService: ToastsService,
+    public commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
     public sharingService: SharingService
   ) {
   }
 
   validateActions: (menuActions: any, role_id: number) => any;
+  deSelect: () => void;
 
   ngOnInit() {
     this.loadObjects();

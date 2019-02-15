@@ -37,7 +37,6 @@ import { takeUntil, take, filter } from 'rxjs/operators';
 })
 export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin,
 AlbumAddMixin,
-PlaylistCreateMixin,
 AlbumCreateMixin {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() leftAddActionsTemplate: TemplateRef<any>;
@@ -81,9 +80,6 @@ AlbumCreateMixin {
 
     }
 
-  openCreatePlaylistModal: (selectedObjects: any) => void;
-  onDonePlaylist: (e: any) => void;
-
   ngOnInit() {
     this.subUploader = this.mediaUploaderDataService.action$.subscribe(e => {
       switch (e.action) {
@@ -116,12 +112,6 @@ AlbumCreateMixin {
       );
     });
   }
-  // uploadVideo(content_types: any = []) {
-  //   this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-  //     allowedFileTypes: content_types,
-  //     video: true
-  //   });
-  // }
 
   doAction(event: any) {
     if (event.action === 'favourite') {
@@ -134,10 +124,6 @@ AlbumCreateMixin {
     if (event.action === 'deselectAll') {
       this.selectedObjects.length = 0;
       this.updateSelectedObjects([]);
-    }
-    if (event.action === 'openModalCreatePlayListModal') {
-      if (this.subCreatePlaylist) { this.subCreatePlaylist.unsubscribe(); }
-      this.openCreatePlaylistModal(this.selectedObjects);
     }
     if (event.action === 'openModalCreateAlbumModal') {
       this.openCreateAlbumModal(this.selectedObjects);
@@ -152,17 +138,6 @@ AlbumCreateMixin {
     this.hasOneObject = this.selectedObjects.length === 1 ? true : false;
     this.hasNoObject = this.selectedObjects.length === 0 ? true : false;
   }
-
-  // uploaVideodHandler(files: any) {
-  //   const data = files.map(file => {
-  //     return { file: file.result, name: file.name, type: file.type };
-  //   });
-  //   data.forEach(f => {
-  //     this.apiBaseService.post(`media/videos`, f).subscribe(res => {
-  //       this.event.emit({ action: 'uploaded', payload: [...files] });
-  //     });
-  //   });
-  // }
 
   errorHandler(error: any) {
     if (error.statusCode === 406 && error.error === 'Not Acceptable') {

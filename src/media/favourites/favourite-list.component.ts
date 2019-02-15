@@ -22,7 +22,7 @@ import { DeleteManySuccess } from '@media/shared/store/media';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
@@ -74,6 +74,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
     public toastsService: ToastsService,
     public localStorageService: LocalStorageService,
     public confirmService: WthConfirmService,
+    public commonEventService: CommonEventService,
     public resolver: ComponentFactoryResolver
   ) {
   }
@@ -82,6 +83,8 @@ export class ZMediaFavoriteListComponent implements OnInit,
   loadingEnd: () => void;
   onSaveShare: (e: SharingModalResult) => void;
   onEditShare: (e: SharingModalResult, sharing: any) => void;
+  deSelect: () => void;
+
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
   selectedObjectsChanged: (objectsChanged?: any) => void;

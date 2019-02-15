@@ -79,10 +79,12 @@ MediaModalMixin {
     public resolver: ComponentFactoryResolver,
     public router: Router,
     public localStorageService: LocalStorageService,
-    private commonEventService: CommonEventService,
+    public commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
     private uploader: WUploader
   ) {}
+
+  deSelect: () => void;
 
   ngOnInit() {
     this.loadObjects();

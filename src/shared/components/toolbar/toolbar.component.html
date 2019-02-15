@@ -1,12 +1,10 @@
-<div class="page-body-control" [ngClass]="{'sub-object-actions' : (selectedObjects && selectedObjects.length > 0 && object)}">
+<div class="page-body-control sub-toolbar" [ngClass]="{'sub-object-actions' : (selectedObjects && selectedObjects.length > 0), 'object-actions': (!selectedObjects || selectedObjects.length == 0  && object)}">
 
-  <!--Left actions-->
-  <!--default left actions-->
   <ng-template #leftActions>
-    <span class="btn btn-text text-fade hidden" [ngClass]="{'visible-xs-block': selectedObjects.length>0}">
+    <span class="btn btn-text text-fade number-selected">
       {{ selectedObjects.length }} Selected
     </span>
-    <div class="dropdown" [ngClass]="{'hidden-xs': selectedObjects.length>0}">
+    <!-- <div class="dropdown" [ngClass]="{'hidden-xs': selectedObjects.length>0}">
       <button aria-expanded="true" aria-haspopup="true" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" tooltipposition="bottom"
         type="button">
         <i class="fa fa-plus"></i>
@@ -21,14 +19,6 @@
           </a>
         </li>
 
-        <!-- <li>
-          <a class="p0" href="javascript:void(0);" (click)="uploadVideo(['video/mp4','video/x-m4v','video/*'])">
-            <span class="fileinput-button">
-              <i class="fa fa-video-camera"></i> Upload Video
-            </span>
-          </a>
-        </li> -->
-
         <li>
           <a (click)="doAction({action: 'openModalCreateAlbumModal'})">
             <i class="fa fa-plus-circle"></i> Create Album
@@ -41,7 +31,7 @@
         </li>
       </ul>
       <ng-container *ngTemplateOutlet="leftAddActionsTemplate? leftAddActionsTemplate : ''"></ng-container>
-    </div>
+    </div> -->
   </ng-template>
 
   <div class="page-body-control-nav">
@@ -52,8 +42,7 @@
   <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
     <ng-container *ngTemplateOutlet="objectActionsTemplate"></ng-container>
 
-    <!--view option-->
-    <ul class="page-body-control-menu">
+    <!-- <ul class="page-body-control-menu">
       <li class="dropdown">
         <a class="btn btn-default" href="javascript:void(0);" data-toggle="dropdown" draggable="false" pTooltip="{{ tooltip.changeView}}"
           tooltipPosition="bottom">
@@ -84,7 +73,7 @@
           </li>
         </ul>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </div>
 

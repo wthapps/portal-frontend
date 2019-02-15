@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import { Download } from '../shared/store/media/media.actions';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
@@ -116,6 +116,7 @@ export class ZMediaSharingDetailComponent
     public confirmService: WthConfirmService,
     public mediaSelectionService: WMediaSelectionService,
     public router: Router,
+    public commonEventService: CommonEventService,
     public localStorageService: LocalStorageService,
     public route: ActivatedRoute,
     public location: Location,

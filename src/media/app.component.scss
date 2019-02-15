@@ -99,6 +99,9 @@
     }
 
   }
+  &.parent-detail{
+    top: $header-height;
+  }
   &.active-info {
     .page-over-full-info {
       right: 0;

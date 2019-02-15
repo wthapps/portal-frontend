@@ -1,4 +1,4 @@
-import { ApiBaseService, WthConfirmService } from "@shared/services";
+import { ApiBaseService, WthConfirmService, CommonEventService } from "@shared/services";
 import { Constants } from "@shared/constant";
 import { LocalStorageService } from "angular-2-local-storage";
 /* MediaListMixin This is media list methods, to
@@ -18,6 +18,7 @@ export class MediaBasicListMixin {
 
   constructor(public apiBaseService: ApiBaseService,
     public confirmService: WthConfirmService,
+    public commonEventService: CommonEventService,
     public localStorageService: LocalStorageService) {}
 
   loadObjects(input?: any) {
@@ -48,11 +49,24 @@ export class MediaBasicListMixin {
     }
   }
 
+  deSelect(){
+    this.objects = this.objects.map(ob => {
+      ob.selected = false;
+      return ob;
+    });
+    this.selectedObjectsChanged();
+  }
+
   selectedObjectsChanged(objectsChanged: any = this.objects) {
     if (this.objects) {
       this.selectedObjects = this.objects.filter(v => v.selected == true);
       this.hasSelectedObjects = this.selectedObjects.length > 0;
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+      this.commonEventService.broadcast({
+        channel: 'ZMediaSharedLeftMenuComponent',
+        action: 'updateSelectedObjects',
+        payload: this.selectedObjects
+      })
       this.onListChanges({ action: 'selectedObjectsChanged', payload: objectsChanged});
     }
   }

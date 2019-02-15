@@ -1,16 +1,45 @@
 import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Constants } from '@shared/constant/config/constants';
+import { WUploader } from '@shared/services/w-uploader';
+import { CommonEventService, ApiBaseService, CommonEventHandler } from '@shared/services';
+import { filter, take } from 'rxjs/operators';
+import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
+import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { Router } from '@angular/router';
+import { Subscription, Subject } from 'rxjs';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
+import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 
+@Mixins([AlbumAddMixin, AlbumCreateMixin])
 @Component({
   selector: 'z-media-shared-left-menu',
   templateUrl: 'left-menu.component.html',
   styleUrls: ['left-menu.component.scss']
 })
-export class ZMediaSharedLeftMenuComponent implements OnInit, OnDestroy {
+export class ZMediaSharedLeftMenuComponent extends CommonEventHandler implements OnInit, OnDestroy,
+AlbumAddMixin,
+AlbumCreateMixin {
   mediaMenu = Constants.pictureMenuItems;
 
-  constructor(private renderer: Renderer2) {
+  subAddAlbum: Subscription;
+  subOpenCreateAlbum: Subscription;
+  subCreateAlbum: Subscription;
+  destroy$: Subject<any>;
+  selectedObjects: any = [];
+  channel = 'ZMediaSharedLeftMenuComponent';
 
+  constructor(
+    private renderer: Renderer2,
+    public commonEventService: CommonEventService,
+    public apiBaseService: ApiBaseService,
+    public toastsService: ToastsService,
+    public mediaAddModalService: MediaAddModalService,
+    public mediaCreateModalService: MediaCreateModalService,
+    public router: Router,
+    public uploader: WUploader) {
+    super(commonEventService);
   }
 
   ngOnInit() {
@@ -21,9 +50,47 @@ export class ZMediaSharedLeftMenuComponent implements OnInit, OnDestroy {
 
   }
 
-  doEvent(event: any) {
-
+  updateSelectedObjects(objects: any) {
+    this.selectedObjects = objects;
   }
+
+  upload(content_types: any = []) {
+    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      allowedFileTypes: content_types,
+      video: true
+    });
+    this.uploader.event$.pipe(filter(e => e.action === 'complete'), take(1)).subscribe(res => {
+      this.commonEventService.broadcast(
+        { channel: 'ZMediaPhotoListComponent', action: 'loadObjects'}
+      );
+    });
+  }
+
+  /* AlbumCreateMixin This is album create methods, to
+custom method please overwirte any method*/
+  openCreateAlbumModal: (selectedObjects: any) => void;
+  onDoneAlbum(e: any) {
+    this.apiBaseService.post(`media/albums`, { name: e.parents[0].name, description: e.parents[0].description,
+       photos: e.children.map(el => el.id) }).toPromise().then(res => {
+      this.router.navigate(['albums', res.data.uuid]);
+    });
+  }
+  /* ================================== */
+
+  /* AlbumAddMixin This is album add methods, to
+custom method please overwirte any method*/
+  openModalAddToAlbum: (selectedObjects: any) => void;
+  onAddToAlbum(e: any) {
+    this.apiBaseService
+      .post(`media/albums/${e.parents[0].id}/photos`, {
+        photos: e.children
+      })
+      .subscribe(res => {
+        this.toastsService.success('You just added to Album success');
+      });
+  }
+  onAddedToAlbum: (data: any) => void;
+  /* ================================== */
 
 
   onCloseMenu() {

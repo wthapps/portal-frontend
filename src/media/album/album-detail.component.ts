@@ -123,6 +123,7 @@ export class ZMediaAlbumDetailComponent
     public apiBaseService: ApiBaseService,
     public resolver: ComponentFactoryResolver,
     public confirmService: WthConfirmService,
+    public commonEventService: CommonEventService,
     public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public route: ActivatedRoute,

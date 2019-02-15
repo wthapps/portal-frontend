@@ -8,7 +8,11 @@
     font-weight: bold;
   }
 }
-
+.menuleft-item {
+  a {
+    text-align: left;
+  }
+}
 .well-folder-tree-left-wrap {
   .well-folder-tree {
     width: 100%;

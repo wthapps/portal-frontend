@@ -58,6 +58,7 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
     list: 'list',
     timeline: 'timeline'
   };
+
   viewMode: any = this.viewModes.grid;
   modalIns: any;
   modalRef: any;
@@ -69,15 +70,17 @@ export class ZMediaVideoListComponent implements OnInit, SharingModalMixin, Medi
 
   constructor(public apiBaseService: ApiBaseService,
     private router: Router,
-    private commonEventService: CommonEventService,
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
     public confirmService: WthConfirmService,
     private playlistModalService: PlaylistModalService,
     public resolver: ComponentFactoryResolver,
+    public commonEventService: CommonEventService,
     public localStorageService: LocalStorageService,
     private uploader: WUploader
               ) {}
+
+  deSelect: () => void;
 
   ngOnInit() {
     this.loadObjects();

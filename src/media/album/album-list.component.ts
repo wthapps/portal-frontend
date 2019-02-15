@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
@@ -76,6 +76,7 @@ export class AlbumListComponent implements OnInit,
 
   deleteObjects: (term: any) => void;
   loadingEnd: () => void;
+  deSelect: () => void;
 
   loadMoreObjects: (input?: any) => void;
 
@@ -95,6 +96,7 @@ export class AlbumListComponent implements OnInit,
     public objectListService: WObjectListService,
     public localStorageService: LocalStorageService,
     public mediaCreateModalService: MediaCreateModalService,
+    public commonEventService: CommonEventService,
     public resolver: ComponentFactoryResolver
   ) {
   }

@@ -12,7 +12,7 @@ import { take, takeUntil } from 'rxjs/operators';
 
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
 import { PlaylistCreateModalService } from '@shared/shared/components/photo/modal/playlist/playlist-create-modal.service';
@@ -88,6 +88,7 @@ MediaModalMixin {
     public objectListService: WObjectListService,
     public locationCustomService: LocationCustomService,
     public mediaCreateModalService: MediaCreateModalService,
+    public commonEventService: CommonEventService,
     public resolver: ComponentFactoryResolver
   ) {
   }
@@ -95,6 +96,7 @@ MediaModalMixin {
   onDonePlaylist: (e: any) => void;
 
   downloadMedia: (media: any) => void;
+  deSelect: () => void;
 
   ngOnInit() {
     this.loadObjects();

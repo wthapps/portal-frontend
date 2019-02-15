@@ -52,10 +52,47 @@
   </ul>
 </ng-template>
 
+<ng-template #leftSubMenuTemplate>
+  <ul class="page-body-control-menu">
+    <li class="divider">
+      <a class="btn btn-default" href="javascript:;" (click)="deSelect()" draggable="false" pTooltip="{{ tooltip.close }}"
+        tooltipPosition="bottom">
+        <i class="fa fa-times"></i>
+      </a>
+    </li>
+    <li class="hidden-xs hidden-sm">
+      <span class="btn btn-text">{{ selectedObjects.length }} selected</span>
+    </li>
+  </ul>
+</ng-template>
 <w-toolbar #toolbar [viewMode]="viewMode" [selectedObjects]="selectedObjects"
            [objectActionsTemplate]="objectActionsTemplate"
+           [leftActionsTemplate]="leftSubMenuTemplate"
            (event)="doToolbarEvent($event)">
 </w-toolbar>
+<!-- <div style="    transition: all 0.3s ease;
+    box-shadow: none;
+    background-color: #F54A59;
+    color: #ffffff;
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 2000;
+    left: 0;">
+  <div class="page-body-control-nav">
+    <ul class="page-body-control-menu">
+      <li class="divider">
+        <a class="btn btn-default" draggable="false" href="javascript:;" tooltipposition="bottom">
+          <i class="fa fa-times"></i>
+        </a>
+      </li>
+      <li class="hidden-xs hidden-sm">
+        <span class="btn btn-text">1 selected</span>
+      </li>
+    </ul>
+  </div>
+</div> -->
 
 <w-grid-list #gridlist [sorting]="sorting" [scrollWindow]="false" [view]="viewMode" [objects]="objects"
              (event)="doListEvent($event)">
