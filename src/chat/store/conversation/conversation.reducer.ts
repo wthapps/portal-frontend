@@ -3,27 +3,34 @@ import { Actions, ActionTypes } from './conversation.actions';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Conversation } from './conversation.model';
 
+export function sortByName(a: Conversation, b: Conversation): number {
+  return a.name.localeCompare(b.name);
+}
+
 export const conversationAdapter: EntityAdapter<Conversation> = createEntityAdapter<Conversation>({
-  selectId: model => model.id
+  selectId: model => model.id,
+  sortComparer: sortByName,
 });
 
 export interface ConversationState extends EntityState<Conversation> {
-  selectedItem: Conversation | null;
-  items: Array<Conversation> | [];
+  selectedConversationId: string | null;
+  selectedConversation: Conversation | null;
+  conversations: Array<Conversation> | [];
   isLoading?: boolean;
   error?: any;
 }
 
-export const inititalConversationState: ConversationState = conversationAdapter.getInitialState(
+export const initialConversationState: ConversationState = conversationAdapter.getInitialState(
   {
-    selectedItem: null,
-    items: [],
+    selectedConversationId: null,
+    selectedConversation: null,
+    conversations: [],
     isLoading: false,
     error: null
   }
 );
 
-export function reducer(state = inititalConversationState, action: Actions): ConversationState {
+export function reducer(state = initialConversationState, action: Actions): ConversationState {
   switch (action.type) {
     case ActionTypes.GET_ALL: {
       return {
@@ -33,16 +40,11 @@ export function reducer(state = inititalConversationState, action: Actions): Con
       };
     }
     case ActionTypes.GET_ALL_SUCCESS: {
-      const items = [];
-      action.payload.data.forEach(item => {
-        items.push(item.attributes);
-      });
-      return {
+      return conversationAdapter.addAll(action.payload.conversations, {
         ...state,
-        items: items,
         isLoading: false,
         error: null
-      };
+      });
     }
     case ActionTypes.GET_ALL_ERROR: {
       return {
@@ -65,7 +67,7 @@ export function reducer(state = inititalConversationState, action: Actions): Con
 
       return {
         ...state,
-        selectedItem: item,
+        selectedConversation: item,
         isLoading: false,
         error: null
       };
@@ -82,7 +84,7 @@ export function reducer(state = inititalConversationState, action: Actions): Con
     case ActionTypes.SET_SELECTED_ITEM: {
       return {
         ...state,
-        selectedItem: action.payload
+        selectedConversation: action.payload
       };
     }
     default: {
@@ -90,3 +92,25 @@ export function reducer(state = inititalConversationState, action: Actions): Con
     }
   }
 }
+
+// export const getSelectedConversationId = (state: ConversationState) => state.selectedConversationId;
+//
+// // get the selectors
+// const {
+//   selectIds,
+//   selectEntities,
+//   selectAll,
+//   selectTotal,
+// } = conversationAdapter.getSelectors();
+//
+// // select the array of conversation ids
+// export const selectConversationIds = selectIds;
+//
+// // select the dictionary of conversation entities
+// export const selectConversationEntities = selectEntities;
+//
+// // select the array of conversations
+// export const selectAllConversations = selectAll;
+//
+// // select the total conversation count
+// export const selectConversationTotal = selectTotal;

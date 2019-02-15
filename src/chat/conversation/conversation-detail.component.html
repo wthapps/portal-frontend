@@ -21,11 +21,13 @@
     <message-editor class="chat-message-container"
                     #messageEditor
                     [isDisabled]="!conversation.active || conversation.blacklist || !(networkOnline$ | async)"
-                    [contactSelect]="conversation">
+                    [contactSelect]="conversation"
+                    (onCreate)="createMessage($event)"
+                    >
     </message-editor>
     <message-assets class="message-assets"></message-assets>
   </div>
 </ng-container>
-<!--<div>-->
- <!--{{ selectedConversation$ | async |json }}-->
-<!--</div>-->
+<div>
+ {{ (selectedConversation$ | async)?.latest_message }}
+</div>

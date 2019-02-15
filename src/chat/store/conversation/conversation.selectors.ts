@@ -5,7 +5,8 @@ import {
 } from '@ngrx/store';
 
 import { Conversation } from './conversation.model';
-import { ConversationState } from './conversation.reducer';
+import { ConversationState, conversationAdapter } from './conversation.reducer';
+import { Dictionary } from '@ngrx/entity';
 
 export const FEATURE_NAME = 'conversation';
 
@@ -15,7 +16,7 @@ export const getIsLoading = (state: ConversationState): boolean => state.isLoadi
 
 // export const getItems = (state: State): Array<Conversation> => state.items;
 
-export const getSelectedItem = (state: ConversationState): Conversation => state.selectedItem;
+export const getSelectedItem = (state: ConversationState): Conversation => state.selectedConversation;
 
 
 export const selectConversationState: MemoizedSelector<
@@ -23,16 +24,26 @@ export const selectConversationState: MemoizedSelector<
   ConversationState
   > = createFeatureSelector<ConversationState>(FEATURE_NAME);
 
-// export const selectAllItems: (
-//   state: object
-// ) => Conversation[] = conversationAdapter.getSelectors(selectConversationState).selectAll;
-//
-// export const selectItems: (
-//   state: object
-// ) => Conversation[] = conversationAdapter.getSelectors(selectConversationState).selectEntities;
+// Select from entity
+export const selectConversationEntities: (
+  state: object
+) => Dictionary<Conversation> = conversationAdapter.getSelectors(selectConversationState).selectEntities;
 
-export const getItems   = createSelector(selectConversationState, (state: ConversationState) => state.items);
-export const getItem   = createSelector(selectConversationState, (state: ConversationState) => state.selectedItem);
+export const selectAllConversations: (
+  state: object
+) => Conversation[] = conversationAdapter.getSelectors(selectConversationState).selectAll;
+
+export const selectConversationIds: (
+  state: object
+) => any[] = conversationAdapter.getSelectors(selectConversationState).selectIds;
+
+export const selectConversationTotal: (
+  state: object
+) => number = conversationAdapter.getSelectors(selectConversationState).selectTotal;
+
+// custom selector
+export const getConversations   = createSelector(selectConversationState, (state: ConversationState) => state.conversations);
+export const getSelectedConversation   = createSelector(selectConversationState, (state: ConversationState) => state.selectedConversation);
 
 
 export const selectConversationById = (id: string) =>

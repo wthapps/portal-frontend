@@ -1,7 +1,11 @@
 <form [formGroup]="messageEditorForm" novalidate>
 
-  <mini-editor #miniEditor *ngIf="contactSelect" [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" [placeholder]="contactSelect.blacklist ? placeholderBl : placeholder"
-               [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"
+  <mini-editor #miniEditor *ngIf="contactSelect"
+               [placeholder]="contactSelect.blacklist ? placeholderBl : placeholder"
+               [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"
+               [(ngModel)]="message.message"
+               [ngModelOptions]="{standalone: true}"
+               [isDisabled]="isDisabled"
                (onKeyUp)="handleKeyUp($event)" (onImagePaste)="handleImagePaste($event)">
     <p-header>
     </p-header>

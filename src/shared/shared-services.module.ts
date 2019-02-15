@@ -54,6 +54,7 @@ import { PageVisibilityService } from './services/page-visibility.service';
 import { NoteChannelService } from './channels/note-channel.service';
 import { DatePipe } from '@angular/common';
 import { WHttpClientService } from '@shared/services/w-http-client.service';
+import { WebsocketService } from '@shared/channels/websocket.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -126,13 +127,14 @@ export class SharedServicesModule {
         WUploader,
         ModalService,
         PageVisibilityService,
+        WHttpClientService,
+        WebsocketService,
 
         // Service worker related modules
         PromptUpdateService,
         LogUpdateService,
         CheckForUpdateService,
         SwPushService,
-        WHttpClientService,
       ]
     };
   }

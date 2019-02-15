@@ -5,9 +5,10 @@ import { User } from '@wth/shared/shared/models';
 import { SwUpdate } from '@angular/service-worker';
 import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
 import { Constants } from '@shared/constant';
-import { ApiBaseService, AuthService, NotificationService, WTHNavigateService, CommonEventHandler, CommonEventService } from '@shared/services';
+import { ApiBaseService, AuthService, NotificationService, CommonEventHandler, CommonEventService } from '@shared/services';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
 import { Subscription } from 'rxjs/Subscription';
+import { WebsocketService } from '@shared/channels/websocket.service';
 
 declare var $: any;
 declare var _: any;
@@ -57,7 +58,8 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
     private visibilityService: PageVisibilityService,
     public connectionService: ConnectionNotificationService,
     public commonEventService: CommonEventService,
-    public notificationService: NotificationService
+    public notificationService: NotificationService,
+    private webSocketService: WebsocketService
   ) {
     super(commonEventService);
   }
@@ -147,6 +149,8 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
 
   subscribeChanneService() {
     this.channelService.subscribe();
+    this.webSocketService.createSocket({token: this.authService.user.uuid});
+
   }
 
   onShowSideBar(event: Event) {

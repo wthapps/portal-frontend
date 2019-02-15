@@ -18,7 +18,11 @@ export class MessageEffects {
     switchMap(action =>
       this.messageService.getAll(action.payload.groupId, action.payload.queryParams).pipe(
         map(response => {
-          return new MessageActions.GetAllSuccess(response);
+          const messages = [];
+          response.data.forEach(message => {
+            messages.push(message.attributes);
+          });
+          return new MessageActions.GetAllSuccess({messages: messages});
         }),
         catchError(error =>
           of(new MessageActions.GetAllError({ error }))
@@ -33,7 +37,12 @@ export class MessageEffects {
     switchMap(action =>
       this.messageService.getAll(action.payload.groupId, action.payload.queryParams).pipe(
         map(response => {
-          return new MessageActions.GetMoreSuccess(response);
+          const messages = [];
+          response.data.forEach(message => {
+            messages.push(message.attributes);
+          });
+
+          return new MessageActions.GetMoreSuccess({messages: messages});
         }),
         catchError(error =>
           of(new MessageActions.GetAllError({ error }))

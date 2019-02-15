@@ -31,6 +31,8 @@ import * as ConversationSelectors from '@chat/store/conversation/conversation.se
 import { AppState } from '@chat/store';
 import * as ConversationActions from '@chat/store/conversation/conversation.actions';
 import { MessageActions, MessageSelectors } from '@chat/store/message';
+import { WebsocketService } from '@shared/channels/websocket.service';
+import { Channel, Presence } from 'phoenix';
 
 declare var _: any;
 declare var $: any;
@@ -42,7 +44,7 @@ declare var $: any;
 export class ConversationDetailComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
-  @Input() channel = 'ConversationDetailComponent';
+  // @Input() channel = 'ConversationDetailComponent';
   events: any;
   currentMessages: any;
   groupId: any;
@@ -56,6 +58,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   networkOnline$: Observable<boolean>;
   tokens: any;
   destroy$ = new Subject<any>();
+  channel: any;
+  cursor: number;
 
   constructor(
     private chatService: ChatService,
@@ -71,7 +75,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     private store$: Store<AppState>,
     public apiBaseService: ApiBaseService,
     private conversationService: ConversationService,
-    private uploader: WUploader
+    private uploader: WUploader,
+    private websocketService: WebsocketService
   ) {
     super(commonEventService);
     this.currentUser$ = userService.profile$;
@@ -98,12 +103,39 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       const conversationId = params['id'];
       this.store$.dispatch(new ConversationActions.GetItem(conversationId));
 
-      this.store$.dispatch(new MessageActions.GetAll({groupId: conversationId, queryParams: {}}));
 
-      this.selectedConversation$ = this.store$.select(ConversationSelectors.getItem);
+      this.selectedConversation$ = this.store$.select(ConversationSelectors.getSelectedConversation);
 
-      this.messages$ = this.store$.select(MessageSelectors.getItems);
+      this.selectedConversation$.subscribe(
+        conversation => {
+          this.store$.dispatch(new MessageActions.GetAll({ groupId: conversationId, queryParams: {
+              cursor: 1541674034512 + 1
+            }
+          }));
 
+          return conversation;
+      });
+
+      // this.messages$ = this.store$.select(MessageSelectors.getItems);
+      this.messages$ = this.store$.select(MessageSelectors.selectAllMessages);
+
+      this.channel = this.websocketService.getSocket.channel(`conversation:${conversationId}`, {token: this.userService.getSyncProfile().uuid});
+
+      this.channel.join()
+        .receive('ok', ({messages}) => console.log('catching up', messages) )
+        .receive('error', ({reason}) => console.log('failed join', reason) )
+        .receive('timeout', () => console.log('Networking issue. Still waiting...'));
+
+      const presence = new Presence(this.channel);
+      presence.onSync(() => {
+        console.log('presence list', presence.list());
+      });
+
+      this.channel.on('message_created', (msg: any) => {
+        this.store$.dispatch(new MessageActions.CreateSuccess({data: msg}));
+      });
+
+      console.log('WEBSOCKET', this.websocketService.getSocket.channels);
     });
 
     // SELECTED CONVERSATION
@@ -133,6 +165,24 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  createMessage(message: any) {
+    this.channel.push('new_message', message)
+      .receive('ok', (msg) => {
+        // this.store$.dispatch(new MessageActions.Create());
+      })
+      .receive('error', (reasons) => console.log('create failed', reasons) )
+      .receive('timeout', () => console.log('Networking issue...') );
+
+    // this.channel.on('new_message', (msg: any) => {
+    //   console.log('Got message', msg);
+    //   this.store$.dispatch(new MessageActions.CreateSuccess({data: msg}));
+    //
+    // });
+
+
+
   }
 
   deleteMessage(event: CommonEvent) {

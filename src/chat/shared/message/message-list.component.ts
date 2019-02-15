@@ -55,7 +55,8 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   prevMessage: any;
   loading$: Observable<boolean>;
   loadingMore = false;
-  readonly scrollDistance: number = 1000;
+  currentCursor$: Observable<number>;
+  currentCursor = 1536829920761;
   // currentMessages: any[] = [];
 
   private destroySubject: Subject<any> = new Subject();
@@ -98,7 +99,12 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
       // }, 200);
 
     this.loading$ = this.store$.select(MessageSelectors.getLoading);
-
+    this.currentCursor$ = this.store$.select(MessageSelectors.getCurrentCursor);
+    this.currentCursor$.subscribe(cursor => {
+      if (cursor !== 0) {
+        this.currentCursor = cursor;
+      }
+    });
   }
 
   scrollToBottom(event: CommonEvent) {
@@ -114,7 +120,7 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
     // this.store$.select(MessageSelectors.getLinks).subscribe(links => {
     //   console.log('get links:::', links);
       // if (links.next && links.next !== links.self) {
-        this.store$.dispatch(new MessageActions.GetMore({groupId: this.conversation.uuid, queryParams: 'links.next'}));
+        this.store$.dispatch(new MessageActions.GetMore({groupId: this.conversation.uuid, queryParams: {cursor: this.currentCursor}}));
 
       // }
     // });

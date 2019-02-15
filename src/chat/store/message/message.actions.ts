@@ -12,8 +12,14 @@ export enum ActionTypes  {
   GET_ITEM_ERROR    = 'MESSAGE_GET_ITEM_ERROR',
   SELECT_ITEM       = 'MESSAGE_SELECT_ITEM',
   CREATE            = 'MESSAGE_CREATE',
+  CREATE_SUCCESS    = 'MESSAGE_CREATE_SUCCESS',
+  CREATE_ERROR      = 'MESSAGE_CREATE_ERROR',
   UPDATE            = 'MESSAGE_UPDATE',
-  DELETE            = 'MESSAGE_DELETE'
+  UPDATE_SUCCESS    = 'MESSAGE_UPDATE_SUCCESS',
+  UPDATE_ERROR      = 'MESSAGE_UPDATE_ERROR',
+  DELETE            = 'MESSAGE_DELETE',
+  DELETE_SUCCESS    = 'MESSAGE_DELETE_SUCCESS',
+  DELETE_ERROR      = 'MESSAGE_DELETE_ERROR'
 }
 
 // Get all actions
@@ -75,11 +81,70 @@ export class GetItemError implements Action {
   constructor(public payload: any = null) { }
 }
 
+// Select actions
 export class SelectItem implements Action {
   readonly type = ActionTypes.SELECT_ITEM;
 
   constructor(public payload: any = null) { }
 }
+
+// Create actions
+export class Create implements Action {
+  readonly type = ActionTypes.CREATE;
+
+  constructor(public payload: any = null) { }
+}
+
+export class CreateSuccess implements Action {
+  readonly type = ActionTypes.CREATE_SUCCESS;
+
+  constructor(public payload: any = null) { }
+}
+
+export class CreateError implements Action {
+  readonly type = ActionTypes.CREATE_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
+// Update actions
+export class Update implements Action {
+  readonly type = ActionTypes.UPDATE;
+
+  constructor(public payload: any = null) { }
+}
+
+export class UpdateSuccess implements Action {
+  readonly type = ActionTypes.UPDATE_SUCCESS;
+
+  constructor(public payload: any = null) { }
+}
+
+export class UpdateError implements Action {
+  readonly type = ActionTypes.UPDATE_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
+// Delete actions
+export class Delete implements Action {
+  readonly type = ActionTypes.DELETE;
+
+  constructor(public payload: any = null) { }
+}
+
+export class DeleteSuccess implements Action {
+  readonly type = ActionTypes.DELETE_SUCCESS;
+
+  constructor(public payload: any = null) { }
+}
+
+export class DeleteError implements Action {
+  readonly type = ActionTypes.DELETE_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
 
 export type Actions =
   GetAll |
@@ -91,4 +156,13 @@ export type Actions =
   GetItem |
   GetItemSuccess |
   GetItemError |
+  Create |
+  CreateSuccess |
+  CreateError |
+  Update |
+  UpdateSuccess |
+  UpdateError |
+  Delete |
+  DeleteSuccess |
+  DeleteError |
   SelectItem;

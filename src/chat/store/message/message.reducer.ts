@@ -3,17 +3,24 @@ import { Actions, ActionTypes } from './message.actions';
 
 export const FEATURE_NAME = 'message';
 
+export function sortByCursor(a: any, b: any): number {
+  return a.cursor.localeCompare(b.cursor);
+}
+
 export const messageAdapter: EntityAdapter<any> = createEntityAdapter<any>({
-  selectId: model => model.id
+  selectId: model => model.id,
+  // sortComparer: sortByCursor,
 });
 
 export interface MessageState extends EntityState<any> {
   selectedItem: any | null;
-  items: any[] | [];
+  messages: any[] | [];
   loading?: boolean;
   loadingMore?: boolean;
+  sending?: boolean;
   error?: any;
   cursor: number;
+  currentCursor: number;
   links: {
     self: string | null,
     prev: string | null,
@@ -25,11 +32,13 @@ export interface MessageState extends EntityState<any> {
 
 export const initialMessageState: MessageState = messageAdapter.getInitialState({
   selectedItem: null,
-  items: [],
+  messages: [],
   loading: false,
   loadingMore: false,
+  sending: false,
   error: null,
   cursor: 0,
+  currentCursor: 0,
   links: {
     self: null,
     prev: null,
@@ -53,23 +62,30 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       };
     }
     case ActionTypes.GET_ALL_SUCCESS: {
-      const items = [...state.items];
-      action.payload.data.forEach(item => {
-        items.push(item.attributes);
-      });
+      // const messages = [];
+      // action.payload.data.forEach(message => {
+      //   messages.push(message.attributes);
+      // });
       const links = Object.assign({}, {...state.links}, action.payload.links);
 
-      console.log('Message links:::', links, items[items.length - 1].cursor,
-    );
-
-      return {
+      // return {
+      //   ...state,
+      //   messages: [
+      //     ...messages.reverse(),
+      //     ...state.messages
+      //   ],
+      //   cursor: messages[messages.length - 1].cursor,
+      //   loading: false,
+      //   error: null,
+      //   links: links
+      // };
+      return messageAdapter.addAll(action.payload.messages.reverse(), {
         ...state,
-        items: items,
-        cursor: items[items.length - 1].cursor,
+        cursor: action.payload.messages[action.payload.messages.length - 1].cursor,
         loading: false,
         error: null,
         links: links
-      };
+      });
     }
     case ActionTypes.GET_ALL_ERROR: {
       return {
@@ -81,7 +97,6 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
 
     // Get more actions
     case ActionTypes.GET_MORE: {
-      console.log('GET MORE cursor value:::', state.cursor);
       return {
         ...state,
         loadingMore: true,
@@ -89,20 +104,17 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       };
     }
     case ActionTypes.GET_MORE_SUCCESS: {
-      const items = [...state.items];
-      action.payload.data.forEach(item => {
-        items.push(item.attributes);
-      });
-      const links = Object.assign({}, {...state.links}, action.payload.links);
+      const currentCursor = action.payload.messages[action.payload.messages.length - 1].cursor;
 
-      return {
+      return messageAdapter.addAll([
+        ...action.payload.messages.reverse(),
+        ...Object.values(state.entities)
+      ], {
         ...state,
-        items: items,
-        cursor: items[items.length - 1].cursor,
+        currentCursor: currentCursor,
         loadingMore: false,
         error: null,
-        links: links
-      };
+      });
     }
     case ActionTypes.GET_MORE_ERROR: {
       return {
@@ -140,12 +152,44 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       };
     }
 
+    // Select actions
     case ActionTypes.SELECT_ITEM: {
       return {
         ...state,
         selectedItem: action.payload
       };
     }
+
+    // Create actions
+    case ActionTypes.CREATE: {
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    }
+
+    case ActionTypes.CREATE_SUCCESS: {
+      const message = action.payload.data;
+      return {
+        ...state,
+        messages: [
+          ...state.messages,
+          message
+        ],
+        loading: false,
+        error: null,
+      };
+    }
+
+    case ActionTypes.CREATE_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
+    }
+
     default: {
       return state;
     }

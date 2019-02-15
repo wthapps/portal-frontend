@@ -16,7 +16,11 @@ export class ConversationEffects {
     switchMap(action =>
       this.conversationService.getAll(action.payload).pipe(
         map(response => {
-          return new ConversationActions.GetAllSuccess(response);
+          const conversations = [];
+          response.data.forEach(item => {
+            conversations.push(item.attributes);
+          });
+          return new ConversationActions.GetAllSuccess({conversations: conversations});
         }),
         catchError(error =>
           of(new ConversationActions.GetAllError({ error }))

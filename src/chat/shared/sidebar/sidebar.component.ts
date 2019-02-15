@@ -76,7 +76,7 @@ export class ZChatSidebarComponent implements OnInit {
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
     this.contactSelect$ = this.chatService.getContactSelectAsync();
     // this.conversations$ = this.store.select(STORE_CONVERSATIONS);
-    this.conversations$ = this.store$.select(ConversationSelectors.getItems);
+    this.conversations$ = this.store$.select(ConversationSelectors.selectAllConversations);
 
     this.store$.dispatch(new ConversationActions.GetAll({}));
   }

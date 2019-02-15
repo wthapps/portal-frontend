@@ -5,7 +5,8 @@ import {
 } from '@ngrx/store';
 
 // import { Message } from './message.model';
-import { MessageState, FEATURE_NAME } from './message.reducer';
+import { MessageState, FEATURE_NAME, messageAdapter } from './message.reducer';
+import { Dictionary } from '@ngrx/entity';
 
 export const getError = (state: MessageState): any => state.error;
 
@@ -22,18 +23,31 @@ export const selectMessageState: MemoizedSelector<
   MessageState
   > = createFeatureSelector<MessageState>(FEATURE_NAME);
 
-// export const selectAllItems: (
-//   state: object
-// ) => Conversation[] = conversationAdapter.getSelectors(selectConversationState).selectAll;
-//
-// export const selectItems: (
-//   state: object
-// ) => Conversation[] = conversationAdapter.getSelectors(selectConversationState).selectEntities;
+// Select from entity
+export const selectMessageEntities: (
+  state: object
+) => Dictionary<any> = messageAdapter.getSelectors(selectMessageState).selectEntities;
+
+export const selectAllMessages: (
+  state: object
+) => any[] = messageAdapter.getSelectors(selectMessageState).selectAll;
+
+export const selectMessageIds: (
+  state: object
+) => any[] = messageAdapter.getSelectors(selectMessageState).selectIds;
+
+export const selectMessageTotal: (
+  state: object
+) => number = messageAdapter.getSelectors(selectMessageState).selectTotal;
+
+
 export const getLoading = createSelector(selectMessageState, (state: MessageState) => state.loading);
 export const getLoadingMore = createSelector(selectMessageState, (state: MessageState) => state.loadingMore);
+export const getCurrentCursor = createSelector(selectMessageState, (state: MessageState) => state.currentCursor);
 
-export const getItems   = createSelector(selectMessageState, (state: MessageState) => state.items);
-export const getItem   = createSelector(selectMessageState, (state: MessageState) => state.selectedItem);
+
+export const getItems   = createSelector(selectMessageState, (state: MessageState) => state.messages);
+export const getMessage   = createSelector(selectMessageState, (state: MessageState) => state.selectedItem);
 export const getLinks   = createSelector(selectMessageState, (state: MessageState) => state.links);
 
 export const selectById = (id: string) =>

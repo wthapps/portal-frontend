@@ -2,7 +2,7 @@ import { Config } from './env.config';
 export class ConstantsBase {
   baseUrls: any = {
     apiUrl: Config.API + '/',
-    apiChat: Config.API_CHAT + '/',
+    apiChat: Config.CHAT_API + '/',
     domain: Config.DOMAIN,
     app: Config.SUB_DOMAIN.APP,
     myAccount: Config.SUB_DOMAIN.MYACCOUNT,

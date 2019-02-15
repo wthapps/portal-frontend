@@ -1,4 +1,17 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input, OnChanges, AfterViewInit, AfterContentInit, DoCheck, AfterViewChecked } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+  Input,
+  OnChanges,
+  AfterViewInit,
+  AfterContentInit,
+  DoCheck,
+  AfterViewChecked,
+  EventEmitter, Output
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Subject, Subscription, Observable, from, merge } from 'rxjs';
@@ -38,6 +51,9 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   @Input() isDisabled = false;
   @Input() contactSelect;
   @Input() maxLengthAllow = 2000;
+
+  @Output() onCreate: EventEmitter<any> = new EventEmitter<any>();
+
   channel = 'MessageEditorComponent';
 
   readonly tooltip: any = Constants.tooltip;
@@ -147,11 +163,14 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   handleKeyUp(e: any) {
     if (e.keyCode === 13) {
-      this.validateAndSend();
-    } else if (e.keyCode === 27) {
-      this.cancelEditingMessage();
-      return;
+      this.onCreate.emit(this.message);
     }
+    // if (e.keyCode === 13) {
+    //   this.validateAndSend();
+    // } else if (e.keyCode === 27) {
+    //   this.cancelEditingMessage();
+    //   return;
+    // }
   }
 
   create(message: any) {

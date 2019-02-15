@@ -5,7 +5,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { ConversationEffects } from './conversation.effects';
 import * as ConversationSelectors from './conversation.selectors';
 import * as fromConversation from './conversation.reducer';
-import { ZChatConversationModule } from '@chat/conversation/conversation.module';
 
 
 @NgModule({

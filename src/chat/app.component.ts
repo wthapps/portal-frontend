@@ -20,7 +20,7 @@ import { AuthService, StorageService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
 import { ChatConversationService } from './shared/services/chat-conversation.service';
-import { Socket } from 'phoenix';
+import { Socket, Presence } from 'phoenix';
 
 declare const _: any;
 
@@ -80,13 +80,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     ) {
       this.introduction.open();
     }
-
-    const socket = new Socket('ws://localhost:5000/socket', {params: {token: '65c3e97c-9c52-4b91-9cd5-8561e4ce0c02'}});
-    socket.connect();
-  }
-
-  loadSelectedConversation(conversation: any) {
-    console.log('loadSelectedConversation');
   }
 
   handleOnlineOffline() {
