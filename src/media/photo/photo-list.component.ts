@@ -70,6 +70,7 @@ MediaModalMixin {
   sorting: any =  {sort_name: 'Date', sort: 'desc'};
   destroy$ = new Subject();
   channel = 'ZMediaPhotoListComponent';
+  title: string = 'Photos';
 
   private sub: any;
 
@@ -233,10 +234,8 @@ custom method please overwirte any method*/
   viewDetail(id: any) {
     const model = this.selectedObjects[0].object_type;
     const data: any = { returnUrls: '/photos', preview: true, model: model};
-    // if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
     if (this.selectedObjects && this.selectedObjects.length > 1) { data.objects = this.selectedObjects.map(s => `${s.uuid},${s.object_type}`); }
     this.router.navigate([`/photos/${id}`], {queryParams: data});
-    // this.router.navigate([`/videos/${id}`], {queryParams: data});
   }
 
   // ============= MediaListMixin ===============

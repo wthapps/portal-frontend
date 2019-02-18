@@ -15,6 +15,7 @@ export class MediaBasicListMixin {
   viewMode: any = this.viewModes.grid;
   sorting: any = {};
   endLoading: any;
+  title: string = 'Photos';
 
   constructor(public apiBaseService: ApiBaseService,
     public confirmService: WthConfirmService,

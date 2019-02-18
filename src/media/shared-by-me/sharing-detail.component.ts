@@ -99,6 +99,7 @@ export class ZMediaSharingDetailComponent
   endLoading: any;
   returnUrls: any;
   destroy$ = new Subject();
+  title: string = 'Shares';
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ViewChild('mediaInfo') mediaInfo: MediaDetailInfoComponent;

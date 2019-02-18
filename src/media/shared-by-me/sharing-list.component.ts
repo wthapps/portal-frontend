@@ -48,6 +48,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   iconNoData: any = 'fa fa-share-alt';
   titleNoData: any = 'There are no media shared by you!';
   subTitleNoData: any = 'Media can be shared to your connected contact.';
+  title: string = 'Shared by me';
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(

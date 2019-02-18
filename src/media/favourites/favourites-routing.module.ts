@@ -9,12 +9,12 @@ import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
   imports: [
     RouterModule.forChild([
       {
-        path: 'favourites',
+        path: 'favorites',
         component: ZMediaFavoriteListComponent,
         canActivate: [AuthGuard]
       },
       {
-        path: 'favourites/:id',
+        path: 'favorites/:id',
         component: ZMediaFavoriteDetailComponent,
         canActivate: [AuthGuard]
       },

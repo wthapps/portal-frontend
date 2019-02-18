@@ -2,7 +2,7 @@
   <div class="page-body-content" infinite-scroll [infiniteScrollDistance]="2"
     [infiniteScrollThrottle]="500" [scrollWindow]="scrollWindow" (scrolled)="doEvent({action: 'getMore', payload: { nextLink: nextLink }})">
     <div class="page-body-content-in">
-      <w-grid-list-header [data]="objects" [view]="view" [field]="sorting.sort_name" [direction]="sorting.sort" (event)="doEvent($event)"
+      <w-grid-list-header [title]="title" [data]="objects" [view]="view" [field]="sorting.sort_name" [direction]="sorting.sort" (event)="doEvent($event)"
         [hideScale]="hideScale"></w-grid-list-header>
       <div id="list-photo" class="row-img row-img-{{ viewSize }}" [ngClass]="view" (dragenter)="onDragenter($event)"
         (dragleave)="onDragleave($event)">

@@ -64,6 +64,7 @@ MediaModalMixin {
   endLoading: any;
   sorting: any =  {sort_name: "Date", sort: "desc"};
   destroy$ = new Subject();
+  title: string = 'Trash';
 
   private sub: any;
 

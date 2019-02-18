@@ -73,6 +73,7 @@ export class ZMediaSearchComponent implements
   subUpload: any;
   subSelect: any;
   endLoading: any;
+  title: string = 'Search';
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 

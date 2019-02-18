@@ -34,7 +34,7 @@
   [leftAddActionsTemplate]="leftAddActionsTemplate" (event)="doToolbarEvent($event)">
 </w-toolbar>
 
-<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)"
+<w-grid-list #gridlist [title]="title" [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)"
   (selectedObjectsChanged)="selectedObjectsChanged($event)">
   <div footer-grid-list>
     <box-loading *ngIf="links?.next"></box-loading>

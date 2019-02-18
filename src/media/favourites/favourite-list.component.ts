@@ -66,6 +66,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
   sorting: any;
   endLoading: any;
   disableMoreAction: boolean = true;
+  title: string = 'Favorites';
 
   constructor(
     public apiBaseService: ApiBaseService,
@@ -208,16 +209,15 @@ export class ZMediaFavoriteListComponent implements OnInit,
   viewDetails(payload: any) {
     switch (payload.selectedObject.model) {
       case 'Media::Playlist' :
-        this.router.navigate([`/playlists`, payload.selectedObject.uuid], { queryParams: { returnUrls: ['/', '/favourites'] } });
+        this.router.navigate([`/playlists`, payload.selectedObject.uuid], { queryParams: { returnUrls: ['/', '/favorites'] } });
         break;
       case 'Media::Album' :
-        this.router.navigate([`/albums`, payload.selectedObject.uuid], { queryParams: { returnUrls: ['/', '/favourites'] } });
+        this.router.navigate([`/albums`, payload.selectedObject.uuid], { queryParams: { returnUrls: ['/', '/favorites'] } });
         break;
       case 'Media::Photo' :
-        this.router.navigate(['photos', payload.selectedObject.uuid]);
-        break;
       case 'Media::Video' :
-        this.router.navigate(['videos', payload.selectedObject.uuid]);
+        const data: any = { returnUrls: '/favorites', preview: true, model: payload.selectedObject.model};
+        this.router.navigate(['photos', payload.selectedObject.uuid], {queryParams: data});
         break;
       case 'Common::Sharing' :
         this.router.navigate(['shared', payload.selectedObject.uuid]);

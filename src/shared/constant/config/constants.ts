@@ -201,7 +201,7 @@ export class ConstantsBase {
     // { name: 'Videos', link: '/videos', icon: 'fa fa-video-camera' },
     // { name: 'Playlists', link: '/playlists', icon: 'fa fa-file-video-o' },
 
-    { name: 'Favourites', link: '/favourites', icon: 'fa fa-star' },
+    { name: 'Favorites', link: '/favorites', icon: 'fa fa-star' },
     {
       name: 'Shared with me',
       link: '/shared-with-me',

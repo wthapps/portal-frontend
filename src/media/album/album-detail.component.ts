@@ -106,6 +106,7 @@ export class ZMediaAlbumDetailComponent
   endLoading: any;
   returnUrls: any;
   destroy$ = new Subject();
+  title: string = 'Album Detail';
   // ============
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;

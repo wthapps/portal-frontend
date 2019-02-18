@@ -41,6 +41,8 @@ export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
   @Input() objects: Array<any> = new Array<any>();
   @Input() nextLink: string = null;
   @Input() hasMultipleSelection: boolean = true;
+  @Input() title: string;
+
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedObjectsChanged: EventEmitter<any> = new EventEmitter<any>();
 

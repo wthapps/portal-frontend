@@ -56,7 +56,7 @@ MediaAdditionalListMixin {
   sorting: any;
   endLoading: any;
   disableMoreAction = false;
-
+  title: string = 'Shared with me';
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
