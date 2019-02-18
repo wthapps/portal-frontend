@@ -112,7 +112,7 @@
 
               <select class="ql-font vh no-border-radius w150" title="Font">
                 <option *ngFor="let font of FONTS" [value]="font?.value"
-                        [attr.selected]="font?.value === setting?.font ? '' : null">{{ font?.name}}
+                        [attr.selected]="font?.value === setting?.font ? '' : null">{{font?.name}}
                 </option>
               </select>
 
@@ -226,7 +226,7 @@
           <div class="ql-formats">
             <select class="ql-font vh w150 no-border-radius" title="Font">
               <option *ngFor="let font of FONTS" [value]="font?.value"
-                      [attr.selected]="font?.value === setting?.font ? '' : null">{{ font?.name}}
+                      [attr.selected]="font?.value === setting?.font ? '' : null">{{font?.name}}
               </option>
             </select>
           </div>

@@ -183,6 +183,38 @@ $note-editor-aside-w: 400px;
     .big-icon {
       font-size: 200px;
     }
+
+    #quill-toolbar .ql-font span[data-value="gotham"]::before, .ql-font-gotham {
+      font-family: 'Gotham', sans-serif, serif;
+    }
+
+    #quill-toolbar .ql-font span[data-value="georgia"]::before, .ql-font-georgia {
+      font-family: Georgia, Times, "Times New Roman", serif
+    }
+
+    #quill-toolbar .ql-font span[data-value="helvetica"]::before, .ql-font-helvetica {
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+    }
+
+    #quill-toolbar .ql-font span[data-value="lato"]::before, .ql-font-lato {
+      font-family: "Lato";
+    }
+
+    #quill-toolbar .ql-font span[data-value="courier-new"]::before, .ql-font-courier-new {
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    #quill-toolbar .ql-font span[data-value="times-new-roman"]::before, .ql-font-times-new-roman {
+      font-family: "TimesNewRoman", "Times New Roman", Times, Baskerville, Georgia, serif;;
+    }
+
+    #quill-toolbar .ql-font span[data-value="trebuchet"]::before, .ql-font-trebuchet {
+      font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+    }
+    
+    #quill-toolbar .ql-font span[data-value="verdana"]::before, .ql-font-verdana {
+      font-family: Verdana, Geneva, sans-serif;
+    }
   }
 
   @media (min-width: $screen-sm-min) {
@@ -280,4 +312,8 @@ $note-editor-aside-w: 400px;
     //visibility: visible;
     display: block;
   }
+}
+
+.w150 {
+  width: 150px !important;
 }
