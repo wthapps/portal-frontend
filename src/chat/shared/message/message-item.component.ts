@@ -54,7 +54,7 @@ export class MessageItemComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    console.log(changes);
+    // console.log(changes);
 
   }
 

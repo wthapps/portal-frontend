@@ -12,9 +12,8 @@ import { ZMediaPhotoModule } from './photo/photo.module';
 import { ZMediaFavoriteModule } from './favourites/favourites.module';
 import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZMediaSearchModule } from './search/search.module';
-import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
+// import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
 import { ZMediaSharingModule } from './shared-by-me/sharing.module';
-import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -64,7 +63,7 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     ZMediaSharedWithMeModule,
     ZMediaSharingModule,
     ZMediaSearchModule,
-    ZMediaMyProfileModule,
+    // ZMediaMyProfileModule,
     WMediaPreviewModule,
     PhotoHtmlModule,
     ZMediaTrashModule,
@@ -74,7 +73,6 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     ServiceModule,
     ZMediaSharedModule.forRoot(),
     CoreModule.forRoot(),
-    SharedModule.forRoot(),
     SharedServicesModule.forRoot(),
     StoreModule.forRoot(appStore),
     EffectsModule.forRoot(appEffects),

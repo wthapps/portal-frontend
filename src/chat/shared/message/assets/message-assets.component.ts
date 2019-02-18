@@ -154,8 +154,12 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       // this.conversations$ = this.store.select(STORE_CONVERSATIONS);
       this.apiBaseService.get('zone/chat/group/' + this.conversation.group_id + '/users').subscribe(res => {
         this.users = res.data;
-      })
+      });
     }
+  }
+
+  viewProfile() {
+    console.log('View profile ...');
   }
 
   onClose() {
