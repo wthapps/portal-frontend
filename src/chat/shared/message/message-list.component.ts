@@ -83,11 +83,11 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
 
   ngOnInit() {
     // setInterval(() => {
-      //   this.item = this.chatService.getCurrentMessages();
-      //   this.contactItem = this.chatService.getContactSelect();
-      //   this.ref.markForCheck();
-      // }, 200);
-    }
+    //   this.item = this.chatService.getCurrentMessages();
+    //   this.contactItem = this.chatService.getContactSelect();
+    //   this.ref.markForCheck();
+    // }, 200);
+  }
 
   scrollToBottom(res: any) {
     if (res && this.listEl) {

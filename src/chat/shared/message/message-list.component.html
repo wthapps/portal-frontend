@@ -3,17 +3,16 @@
     infiniteScroll [scrollWindow]="false" (scrolled)="scrollDown()" (scrolledUp)="onLoadMore()">
     <ng-container *ngIf="(currentMessages); else loadingBlock">
       <div class="message-item-wrapper">
-        <ng-container *ngIf="currentMessages?.length>0;else templateNodata">
-          <!-- <div class="message-item-dv" *ngFor="let message of currentMessages; trackBy: message?.id"> -->
+        <ng-container *ngIf="currentMessages?.length > 0 || contactItem.status == 'sent_request' || contactItem.status == 'pending'">
           <div class="message-item-dv" *ngFor="let message of currentMessages">
             <message-item [message]="message" [byMe]="currentUser.id == message.user_id" [prevMessage]="getPrevMessage(message)" [contactItem]="contactItem"
               [emojiMap]="emojiMap$ | async" (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
           </div>
         </ng-container>
       </div>
-      <ng-template #templateNodata>
+      <!-- <ng-template #templateNodata>
         <box-no-data [title]="'Welcome to a new conversation'" [subTitle]="'Let start sharing your messages'"></box-no-data>
-      </ng-template>
+      </ng-template> -->
 
     </ng-container>
     <ng-template class="message-item-wrapper" #loadingBlock>

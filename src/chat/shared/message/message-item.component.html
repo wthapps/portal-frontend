@@ -255,6 +255,7 @@
   </div>
 
   <div *ngIf="message.message_type === 'request_accepted'">
+    <box-no-data [title]="'Welcome to a new conversation'" [subTitle]="'Let start sharing your messages'"></box-no-data>
     You connected with
     <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.user?.name }}</span> on WTH!Chat
   </div>
