@@ -170,16 +170,20 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
     }
 
     case ActionTypes.CREATE_SUCCESS: {
-      const message = action.payload.data;
-      return {
+      return messageAdapter.addOne(action.payload.message, {
         ...state,
-        messages: [
-          ...state.messages,
-          message
-        ],
         loading: false,
         error: null,
-      };
+      });
+      // return {
+      //   ...state,
+      //   messages: [
+      //     ...state.messages,
+      //     message
+      //   ],
+      //   loading: false,
+      //   error: null,
+      // };
     }
 
     case ActionTypes.CREATE_SUCCESS: {

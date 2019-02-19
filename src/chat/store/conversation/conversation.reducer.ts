@@ -17,7 +17,15 @@ export interface ConversationState extends EntityState<Conversation> {
   selectedConversation: Conversation | null;
   conversations: Array<Conversation> | [];
   isLoading?: boolean;
+  isLoadingMore?: boolean;
   error?: any;
+  links: {
+    self: string | null,
+    prev: string | null,
+    next: string | null,
+    fist: string | null,
+    last: string | null,
+  };
 }
 
 export const initialConversationState: ConversationState = conversationAdapter.getInitialState(
@@ -26,7 +34,15 @@ export const initialConversationState: ConversationState = conversationAdapter.g
     selectedConversation: null,
     conversations: [],
     isLoading: false,
-    error: null
+    isLoadingMore: false,
+    error: null,
+    links: {
+      self: null,
+      prev: null,
+      next: null,
+      fist: null,
+      last: null,
+    },
   }
 );
 
@@ -40,16 +56,48 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       };
     }
     case ActionTypes.GET_ALL_SUCCESS: {
-      return conversationAdapter.addAll(action.payload.conversations, {
+      console.log('LINKS IN EFFECTS', action.payload.links);
+
+      return conversationAdapter.addAll([
+        ...Object.values(state.entities),
+        ...action.payload.conversations
+      ], {
         ...state,
         isLoading: false,
-        error: null
+        error: null,
+        links: {...action.payload.links},
       });
     }
     case ActionTypes.GET_ALL_ERROR: {
       return {
         ...state,
         isLoading: false,
+        error: action.payload.error
+      };
+    }
+
+    case ActionTypes.GET_MORE: {
+      return {
+        ...state,
+        isLoadingMore: true,
+        error: null
+      };
+    }
+    case ActionTypes.GET_MORE_SUCCESS: {
+      return conversationAdapter.addAll([
+        ...Object.values(state.entities),
+        ...action.payload.conversations
+      ], {
+        ...state,
+        isLoadingMore: false,
+        error: null,
+        links: action.payload.links,
+      });
+    }
+    case ActionTypes.GET_MORE_ERROR: {
+      return {
+        ...state,
+        isLoadingMore: false,
         error: action.payload.error
       };
     }

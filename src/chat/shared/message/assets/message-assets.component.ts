@@ -29,7 +29,7 @@ import { User } from '@shared/shared/models';
   encapsulation: ViewEncapsulation.None
 })
 export class MessageAssetsComponent implements OnInit, OnDestroy {
-  conversation: any;
+  @Input() conversation: any;
   tooltip: any = Constants.tooltip;
 
   tabMember: WTab = {

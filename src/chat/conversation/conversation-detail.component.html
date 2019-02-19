@@ -7,7 +7,7 @@
     <z-chat-share-item-request
       *ngIf="conversation.status == 'sent_request' || conversation.status == 'pending'"
       [selectedConversation]="conversation"
-      [message]="(currentMessages$ | async)?.data[0]">
+      [message]="(messages$ | async)[0]">
     </z-chat-share-item-request>
 
     <message-list class="message-list-body" #messageList
@@ -25,7 +25,8 @@
                     (onCreate)="createMessage($event)"
                     >
     </message-editor>
-    <message-assets class="message-assets"></message-assets>
+    <message-assets class="message-assets"
+                    [conversation]="conversation"></message-assets>
   </div>
 </ng-container>
 <div>

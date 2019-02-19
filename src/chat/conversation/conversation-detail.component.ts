@@ -33,8 +33,8 @@ import * as ConversationActions from '@chat/store/conversation/conversation.acti
 import { MessageActions, MessageSelectors } from '@chat/store/message';
 import { WebsocketService } from '@shared/channels/websocket.service';
 import { Channel, Presence } from 'phoenix';
+import { filter, map, skip } from 'rxjs/operators';
 
-declare var _: any;
 declare var $: any;
 
 @Component({
@@ -52,7 +52,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   selectedConversation$: Observable<any>;
   messages$: Observable<any>;
 
-  currentMessages$: Observable<any>;
   chatConversations$: Observable<any>;
   currentUser$: Observable<User>;
   networkOnline$: Observable<boolean>;
@@ -99,30 +98,39 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   ngOnInit() {
+    // Get conversation details such as conversation information and message list
+
+    this.messages$ = this.store$.select(MessageSelectors.selectAllMessages);
+
+
     this.route.params.forEach((params: Params) => {
       const conversationId = params['id'];
-      this.store$.dispatch(new ConversationActions.GetItem(conversationId));
 
-
-      this.selectedConversation$ = this.store$.select(ConversationSelectors.getSelectedConversation);
-
-      this.selectedConversation$.subscribe(
-        conversation => {
-          this.store$.dispatch(new MessageActions.GetAll({ groupId: conversationId, queryParams: {
-              cursor: 1541674034512 + 1
-            }
-          }));
-
+      // Always plus 1 to make sure it is greater than current message cursor
+      this.selectedConversation$ = this.store$.select(ConversationSelectors.getSelectedConversation).pipe(
+        skip(1),
+        map((conversation: any) => {
+          if (conversation) {
+            this.store$.dispatch(new MessageActions.GetAll({ groupId: conversationId, queryParams: {
+                cursor: 1541674034512 + 1
+              }}));
+          }
           return conversation;
+        })
+      );
+
+      // Create new channel depends on selected conversation
+      // If channel has already been existing don't create new one
+      this.channel = this.websocketService.getSocket.channel(`conversation:${conversationId}`, {
+        token: this.userService.getSyncProfile().uuid
       });
 
-      // this.messages$ = this.store$.select(MessageSelectors.getItems);
-      this.messages$ = this.store$.select(MessageSelectors.selectAllMessages);
-
-      this.channel = this.websocketService.getSocket.channel(`conversation:${conversationId}`, {token: this.userService.getSyncProfile().uuid});
-
+      // Join selected conversation channel
       this.channel.join()
-        .receive('ok', ({messages}) => console.log('catching up', messages) )
+        .receive('ok', ({messages}) => {
+          // Perform some tasks need to do after joining channel successfully
+          this.store$.dispatch(new ConversationActions.GetItem(conversationId));
+        })
         .receive('error', ({reason}) => console.log('failed join', reason) )
         .receive('timeout', () => console.log('Networking issue. Still waiting...'));
 
@@ -132,7 +140,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       });
 
       this.channel.on('message_created', (msg: any) => {
-        this.store$.dispatch(new MessageActions.CreateSuccess({data: msg}));
+        msg['id'] = +(new Date());
+        this.store$.dispatch(new MessageActions.CreateSuccess({message: msg}));
       });
 
       console.log('WEBSOCKET', this.websocketService.getSocket.channels);
@@ -158,9 +167,9 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     //     action: 'focus'
     //   });
     // });
-    // // sync current message
-    // this.currentMessages$ = this.chatMessageService.getCurrentMessages();
+
   }
+
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -174,15 +183,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       })
       .receive('error', (reasons) => console.log('create failed', reasons) )
       .receive('timeout', () => console.log('Networking issue...') );
-
-    // this.channel.on('new_message', (msg: any) => {
-    //   console.log('Got message', msg);
-    //   this.store$.dispatch(new MessageActions.CreateSuccess({data: msg}));
-    //
-    // });
-
-
-
   }
 
   deleteMessage(event: CommonEvent) {

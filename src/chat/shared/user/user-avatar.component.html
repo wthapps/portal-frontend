@@ -3,11 +3,11 @@
     <div class="user-avatar-img">
       <img [src]="data.profile_image" alt="">
     </div>
-    <span *ngIf="!isPending && data.display?.id" class="media-user-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id), 'blacklist': data.blacklist}">
+    <span *ngIf="!isPending && data.id" class="media-user-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id), 'blacklist': data.blacklist}">
     </span>
-    <!-- <span *ngIf="isPending" class="media-user-status media-user-stranger">
+    <span *ngIf="isPending" class="media-user-status media-user-stranger">
       <i class="fa fa-question-circle"></i>
-    </span> -->
+    </span>
   </div>
   <div class="user-body">
     <div class="user-name">

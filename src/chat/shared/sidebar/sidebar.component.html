@@ -64,7 +64,7 @@
 <div class="menuleft-chat-content" infiniteScroll
       [infiniteScrollDistance]="2"
       [infiniteScrollThrottle]="50"
-      (scrolled)="loadMore()"
+      (scrolled)="loadMoreConversations(links)"
       [scrollWindow]="false"
 >
   <ng-container *ngIf="!searching">
@@ -148,3 +148,7 @@
                  [icon]="'fa fa-comments-o'" [subTitle]="'No sent request'"></box-no-data>
   </div>
 </ng-template>
+
+<div>
+  {{ links$|async|json }}
+</div>

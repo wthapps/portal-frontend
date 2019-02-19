@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { take, filter } from 'rxjs/operators';
+import { take, filter, map } from 'rxjs/operators';
 
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
@@ -20,7 +20,7 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
 import { ChatConversationService } from '../services/chat-conversation.service';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { STORE_CONVERSATIONS } from '@shared/constant';
 import { Conversations } from '@shared/shared/models/chat/conversations.model';
 import {
@@ -50,7 +50,10 @@ export class ZChatSidebarComponent implements OnInit {
   contactItem$: Observable<any>;
   conversations$: any;
   contactSelect$: Observable<any>;
-  historyShow: any = true;
+  links$: Observable<any>;
+  links: any;
+
+
   isRedirect: boolean;
   filter = 'All';
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
@@ -75,10 +78,28 @@ export class ZChatSidebarComponent implements OnInit {
   ngOnInit() {
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
     this.contactSelect$ = this.chatService.getContactSelectAsync();
-    // this.conversations$ = this.store.select(STORE_CONVERSATIONS);
-    this.conversations$ = this.store$.select(ConversationSelectors.selectAllConversations);
+    this.conversations$ = this.store$.select(ConversationSelectors.selectAllConversations).pipe();
+    this.store$.pipe(select(ConversationSelectors.getLinks)).subscribe(links => {
+      this.links = links;
+    });
 
-    this.store$.dispatch(new ConversationActions.GetAll({}));
+    this.loadConversations();
+  }
+
+  /*
+    Load conversations
+   */
+  loadConversations() {
+    this.store$.dispatch(new ConversationActions.GetAll({query: null}));
+  }
+
+  loadMoreConversations(links: any) {
+    console.log('LOAD MORE CONVERSATION', links);
+    if (links && links.next) {
+      const query = links.next.split('?')[1];
+      this.store$.dispatch(new ConversationActions.GetAll({query: query}));
+    }
+
   }
 
   doFilter(param) {
@@ -155,10 +176,6 @@ export class ZChatSidebarComponent implements OnInit {
     });
   }
 
-  historyToggle() {
-    this.historyShow = !this.historyShow;
-  }
-
   onCloseMenu() {
     this.renderer.removeClass(document.body, 'left-sidebar-open');
   }
@@ -197,8 +214,4 @@ export class ZChatSidebarComponent implements OnInit {
   /*
   * End of searching here
    */
-  loadMore() {
-    this.chatConversationService.apiGetMoreConversations();
-  }
-
 }

@@ -14,16 +14,38 @@ export class ConversationEffects {
   getAll$: Observable<Action> = this.actions$.pipe(
     ofType<ConversationActions.GetAll>(ConversationActions.ActionTypes.GET_ALL),
     switchMap(action =>
+      this.conversationService.getAll(action.payload.query).pipe(
+        map(response => {
+          const conversations = [];
+          response.data.forEach(item => {
+            conversations.push(item.attributes);
+          });
+          return new ConversationActions.GetAllSuccess({
+            conversations: conversations,
+            links: response.links
+          });
+        }),
+        catchError(error =>
+          of(new ConversationActions.GetAllError({ error }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  getMore$: Observable<Action> = this.actions$.pipe(
+    ofType<ConversationActions.GetMore>(ConversationActions.ActionTypes.GET_MORE),
+    switchMap(action =>
       this.conversationService.getAll(action.payload).pipe(
         map(response => {
           const conversations = [];
           response.data.forEach(item => {
             conversations.push(item.attributes);
           });
-          return new ConversationActions.GetAllSuccess({conversations: conversations});
+          return new ConversationActions.GetMoreSuccess({conversations: conversations});
         }),
         catchError(error =>
-          of(new ConversationActions.GetAllError({ error }))
+          of(new ConversationActions.GetMoreError({ error }))
         )
       )
     )

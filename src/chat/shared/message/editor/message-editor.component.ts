@@ -163,7 +163,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   handleKeyUp(e: any) {
     if (e.keyCode === 13) {
-      this.onCreate.emit(this.message);
+      this.onCreate.emit({...this.message, group_id: this.contactSelect.id});
     }
     // if (e.keyCode === 13) {
     //   this.validateAndSend();

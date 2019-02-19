@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 export class ConversationService {
   constructor(private api: WHttpClientService, private httpClient: HttpClient) {}
   url = 'http://localhost:5000/v1/chat/conversations';
+  pageSize = 10;
   // url = 'chat/conversations';
 
 
@@ -17,8 +18,13 @@ export class ConversationService {
   }
 
   getAll(query: any): Observable<any> {
+    if (!query) {
+      query = `?page[size]=${this.pageSize}`;
+    } else {
+      query = `?${query}`;
+    }
     // return this.api.get(this.url, query);
-    return this.httpClient.get<any>(`${this.url}`, {headers: {Accept: 'application/json'}});
+    return this.httpClient.get<any>(`${this.url}${query}`, {headers: {Accept: 'application/json'}});
   }
 
   create(payload: any): Observable<any> {

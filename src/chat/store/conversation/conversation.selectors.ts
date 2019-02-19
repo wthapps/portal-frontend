@@ -44,6 +44,7 @@ export const selectConversationTotal: (
 // custom selector
 export const getConversations   = createSelector(selectConversationState, (state: ConversationState) => state.conversations);
 export const getSelectedConversation   = createSelector(selectConversationState, (state: ConversationState) => state.selectedConversation);
+export const getLinks   = createSelector(selectConversationState, (state: ConversationState) => state.links);
 
 
 export const selectConversationById = (id: string) =>

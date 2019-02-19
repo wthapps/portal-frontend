@@ -19,7 +19,7 @@
           Pending request
         </div>
         <div *ngIf="!isPending">
-          <span class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>
+          <!--<span class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>-->
           <span *ngIf="usersOnlineItem?.includes(data.display?.id)">Online</span>
           <span *ngIf="!usersOnlineItem?.includes(data.display?.id)">Offline</span>
         </div>

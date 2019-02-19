@@ -98,7 +98,7 @@ export class Create implements Action {
 export class CreateSuccess implements Action {
   readonly type = ActionTypes.CREATE_SUCCESS;
 
-  constructor(public payload: any = null) { }
+  constructor(public payload: any = {message: null}) { }
 }
 
 export class CreateError implements Action {
