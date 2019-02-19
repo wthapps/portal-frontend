@@ -142,13 +142,6 @@ export class ChatConversationService extends CommonEventHandler {
         });
         this.store.dispatch({ type: CHAT_CONVERSATIONS_MARK_AS_READ, payload: res.data });
       });
-    // this.apiUpdateGroupUser(contact.group_id, { notification_count: 0 }).then(res => {
-    //   this.commonEventService.broadcast({
-    //       channel: 'ChatNotificationComponent',
-    //       action: 'addNotification',
-    //       payload: { notification_count: 0, last_notification_count: res.data.last_notification_count}
-    //     });
-    // });
   }
 
   apiFavoriteGroupUser(conversation: any) {
@@ -167,7 +160,9 @@ export class ChatConversationService extends CommonEventHandler {
   acceptRequest(contact: any) {
     return this.apiUpdateGroupUser(
       contact.group_id,
-      { accept_friend: true });
+      { accept_friend: true }).then(res => {
+        return this.chatCommonService.updateConversationBroadcast(contact.group_id);
+      });
   }
 
   declineRequest(contact: any) {
