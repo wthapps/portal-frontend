@@ -1,0 +1,28 @@
+@import "../../assets/styles/global";
+@import "../shared/styles/objects-main";
+
+.main-note {
+  .content-grid {
+    .item-media-img {
+      background-color: transparent;
+      i {
+        color: $gray-light;
+        &.fa-folder-o {
+          &:before {
+            font-size: 130%;
+          }
+        }
+      }
+      span {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: hidden;
+        padding: 10px;
+        font-size: 82%;
+      }
+    }
+  }
+}

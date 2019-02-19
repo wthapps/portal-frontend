@@ -1,10 +1,6 @@
 @import '../../../shared/scss/global';
 @import '../../../shared/scss/modules/card';
 
-:host {
-  display: block;
-}
-
 $note-name: auto;
 $note-owner: 200px;
 $note-description: 200px;

@@ -3,10 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   // { path: '', component: AppComponent },
-  { path: '', redirectTo: '/media', pathMatch: 'full' },
+  { path: '', redirectTo: '/note', pathMatch: 'full' },
   {
     path: 'media',
     loadChildren: './media/media.module#MediaModule'
+  },
+  {
+    path: 'note',
+    loadChildren: './note/note.module#NoteModule'
   }
 ];
 

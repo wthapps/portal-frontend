@@ -10,7 +10,7 @@ import { SampleSharedModule } from './shared/shared.module';
     AppRoutingModule
   ],
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

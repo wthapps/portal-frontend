@@ -1,26 +1,20 @@
 <div class="objects-main">
-  <w-dataView-nav [sliderView]="mediaService.sliderView$ | async"
-                  (sliderViewCompleted)="mediaService.changeSliderView($event)"
-                  (sortComplete)="onSortComplete($event)">
-    <h4 class="title">Photos</h4>
+  <w-dataView-nav (sortComplete)="onSortComplete($event)">
+      <h4 class="title">My Note</h4>
   </w-dataView-nav>
   <ng-container *ngIf="data$ | async as list; else templateloading">
     <ng-container *ngIf="list?.length > 0; else templateNodata">
       <w-dataView [data]="list"
-                  [sliderView]="mediaService.sliderView$ | async"
                   (loadMoreCompleted)="onLoadMoreCompleted($event)"
                   (selectCompleted)="onSelectCompleted()"
                   #dataView>
         <ng-template #viewBody let-item>
           <div class="item-media-img">
-            <img [src]="item.thumbnail_url" alt="">
-            <i class="fa fa-play-circle-o"></i>
-            <div class="item-media-img-over">
-              7 items
-            </div>
+            <i *ngIf="item.object_type === 'Note::Folder'" class="fa fa-folder-o"></i>
+            <span *ngIf="item.object_type === 'Note::Note'" [innerHTML]="item?.content"></span>
           </div>
           <div class="item-media-name">
-            <span>{{ item.name }}</span>
+            <span>{{ item.name || 'Untitled' }}</span>
           </div>
         </ng-template>
       </w-dataView>

@@ -1,6 +1,6 @@
-<h4 class="title">Photos</h4>
+<ng-content></ng-content>
 <div class="action">
-  <div class="slider">
+  <div *ngIf="sliderView" class="slider">
     <i class="fa fa-photo fz10"></i>
     <p-slider [style]="{'width':'60px'}"
               [(ngModel)]="sliderView"
