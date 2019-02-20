@@ -1,8 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewContainerRef, ViewChild, ComponentFactoryResolver, ContentChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewContainerRef, ViewChild,
+   ComponentFactoryResolver, ContentChild, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { combineLatest } from 'rxjs/operators/combineLatest';
+import { Subject } from 'rxjs';
 import * as Cropper from 'cropperjs';
 
 import {
@@ -23,7 +25,7 @@ import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mi
 import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
 import { DoublyLinkedListsV2 } from '@shared/data-structures/link-list/doubly-linked-lists-v2';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { Subject } from 'rxjs';
+
 
 const MODEL_MAP = {
   'photo': '::Media::Photo',
@@ -74,6 +76,7 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
   @ContentChild('menuAction') menuAction;
+  @Output() parentLoad: EventEmitter<any> = new EventEmitter();
 
   validateActions: (menuActions: any, role_id: number) => any;
   openModalShare: (input: any) => void;
@@ -136,11 +139,14 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
                   if (res2.data.length === 0) {
                   return;
                   }
-                  this.listIds = new DoublyLinkedListsV2(res2.data.map(d => ({uuid: d.uuid, model: d.model})));
+                  this.listIds = new DoublyLinkedListsV2(res2.data.map(d => ({uuid: d.uuid, model: d.model, parent: d.parent})));
                   const {uuid, model} = this.object;
                   this.listIds.setCurrent({uuid, model});
+                  this.parentLoad.emit(this.listIds.current.data.parent);
                 }
               });
+          } else {
+            this.parentLoad.emit(this.listIds.current.data.parent);
           }
           this.returnUrl = p.get('returnUrl') || this.returnUrl;
         });

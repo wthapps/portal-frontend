@@ -13,6 +13,7 @@
 
     <message-list [currentMessages]="(currentMessages$ | async)?.data"
                   [contactItem]="selectedConversation"
+                  [selectedConversation]="selectedConversation"
                   [currentUser]="currentUser$ | async"
                   class="message-list-body"
                   #messageList>

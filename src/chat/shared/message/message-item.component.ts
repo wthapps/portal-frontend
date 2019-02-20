@@ -25,6 +25,7 @@ export class MessageItemComponent implements OnInit, OnChanges {
   @Input() prevMessage: any;
   @Input() contactItem: any;
   @Input() emojiMap: any;
+  @Input() selectedConversation;
   @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
@@ -60,7 +61,7 @@ export class MessageItemComponent implements OnInit, OnChanges {
 
   onPreviewPhoto(message: any) {
     if (!_.get(message, 'file.uuid')) { return; }
-    const currentConversation = this.storageService.get(CONVERSATION_SELECT);
+    // const currentConversation = this.storageService.get(CONVERSATION_SELECT);
     this.router.navigate([{
       outlets: {
         modal: [
@@ -68,7 +69,7 @@ export class MessageItemComponent implements OnInit, OnChanges {
           message.file.uuid,
           {
             object: 'conversation',
-            parent_uuid: _.get(currentConversation, 'group.uuid'),
+            parent_uuid: _.get(this.selectedConversation, 'group_uuid'),
             only_preview: true
           }
         ]

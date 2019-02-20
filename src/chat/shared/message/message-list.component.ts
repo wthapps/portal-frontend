@@ -44,7 +44,8 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   @Input() currentMessages: any;
   @Input() contactItem: any;
   @Input() currentUser: User;
-  @Input() channel: string = 'MessageListComponent';
+  @Input() selectedConversation;
+  @Input() channel = 'MessageListComponent';
   emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
   prevMessage: any;
   readonly scrollDistance: number = 1000;
@@ -109,10 +110,10 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
 
   onAddContact(contact: any) {
     this.requestModal.contact = contact;
-    this.chatContactService.addContact([contact.id], '',).then(res => {
+    this.chatContactService.addContact([contact.id], '', ).then(res => {
       this.chatConversationService.updateStoreConversation(res.data);
       this.chatConversationService.navigateToConversation(res.data.group_id);
-    })
+    });
   }
 
   doEvent(event: any) {

@@ -3,9 +3,10 @@
     infiniteScroll [scrollWindow]="false" (scrolled)="scrollDown()" (scrolledUp)="onLoadMore()">
     <ng-container *ngIf="(currentMessages); else loadingBlock">
       <div class="message-item-wrapper">
-        <ng-container *ngIf="currentMessages?.length > 0">
-          <div class="message-item-dv" *ngFor="let message of currentMessages">
-            <message-item [message]="message" [byMe]="currentUser.id == message.user_id" [prevMessage]="getPrevMessage(message)" [contactItem]="contactItem"
+        <ng-container *ngIf="currentMessages?.length>0;else templateNodata">
+          <!-- <div class="message-item-dv" *ngFor="let message of currentMessages; trackBy: message?.id"> -->
+            <div class="message-item-dv" *ngFor="let message of currentMessages">
+            <message-item [message]="message" [byMe]="currentUser.id == message.user_id" [prevMessage]="getPrevMessage(message)" [selectedConversation]="selectedConversation" [contactItem]="contactItem"
               [emojiMap]="emojiMap$ | async" (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
           </div>
         </ng-container>
