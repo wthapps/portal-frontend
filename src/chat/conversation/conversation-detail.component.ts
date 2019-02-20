@@ -15,7 +15,8 @@ import {
   CommonEventService,
   PhotoService, UserService, ChatCommonService, StorageService, WMessageService, ApiBaseService
 } from '@wth/shared/services';
-import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, NETWORK_ONLINE, STORE_CONVERSATIONS, STORE_CONTEXT } from '@wth/shared/constant';
+import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, NETWORK_ONLINE,
+   STORE_CONVERSATIONS, STORE_CONTEXT } from '@wth/shared/constant';
 import { User } from '@wth/shared/shared/models';
 import { WUploader } from '@shared/services/w-uploader';
 import { Message } from '@chat/shared/models/message.model';
@@ -89,11 +90,11 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.chatConversationService.getStoreConversations().pipe(
       combineLatest(this.route.params)
     ).pipe(takeUntil(this.destroy$)).subscribe(([conversations, params]) => {
-      let conversation = conversations.data.filter(c => !c.blacklist && !c.left && !c.deleted).find(c => c.group_id == params.id);
+      const conversation = conversations.data.filter(c => !c.blacklist && !c.left && !c.deleted).find(c => +c.group_id === +params.id);
       if (conversation) {
         this.store.dispatch({ type: CHAT_SELECTED_CONVERSATION_SET, payload: conversation });
       }
-    })
+    });
     // Get messages when select
     this.chatConversationService.getStoreSelectedConversationFull().pipe(takeUntil(this.destroy$)).subscribe(res => {
       this.selectedConversation = res.selectedConversation;
@@ -117,7 +118,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   deleteMessage(message: any) {
-    this.conversationService
+    this.chatMessageService
           .deleteMessage(message.group_id, message.id)
           .toPromise()
           .then((res: any) => {

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil, distinctUntilChanged, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
@@ -18,6 +18,7 @@ import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
+import { User } from '@shared/shared/models';
 
 
 @Component({
@@ -70,10 +71,13 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   profileUrl: any;
 
   medias$: Observable<Array<any>>;
+  medias: Array<any>;
   nextLink: string;
   isLoading: boolean;
   conversations$: any;
   users: any = [];
+  selectedIds = {};
+  currentUser: User;
   readonly noteUrl: any = `${Constants.baseUrls.note}/notes/public`;
   private destroy$ = new Subject<any>();
   private pageSize = 30;
@@ -94,6 +98,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private router: Router,
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
+    this.currentUser = userService.getSyncProfile();
     this.messageAssetsService.open$.subscribe(
       (res: any) => {
         if (res) {
@@ -101,6 +106,22 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.messageAssetsService.medias$.pipe(
+      takeUntil(this.destroy$))
+    .subscribe(media => this.medias = media);
+
+    this.chatConversationService.getStoreSelectedConversation().pipe(
+      distinctUntilChanged((p, q) => p.id === q.id),
+      takeUntil(this.destroy$)
+    ).subscribe(sc => {
+      this.conversation = sc;
+      if (this.conversation && this.conversation.group_type === 'couple') {
+        this.tabs = this.tabsPhoto;
+      } else {
+        this.tabs = this.tabsMember;
+      }
+      this.tabAction(this.tabs[0]);
+    });
   }
 
   ngOnInit() {
@@ -123,19 +144,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     //     this.tabAction(this.tabs[0]);
       // });
 
-    this.chatConversationService.getStoreSelectedConversation().pipe(
-      distinctUntilChanged((p, q) => p.id === q.id)
-    ).subscribe(sc => {
-      this.conversation = sc;
-      if (this.conversation && this.conversation.group_type === 'couple') {
-        this.tabs = this.tabsPhoto;
-      } else {
-        this.tabs = this.tabsMember;
-      }
-      this.tabAction(this.tabs[0]);
-    });
-
-    this.medias$ = this.messageAssetsService.medias$;
     this.objectListService.setMultipleSelection(false);
   }
 
@@ -156,6 +164,16 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
         this.users = res.data;
       });
     }
+  }
+
+  onClickItem(item) {
+    const { id } = item;
+    this.selectedIds = { [id]: true };
+    console.log('on click item: ', item, this.selectedIds);
+  }
+
+  onRemove(item) {
+    console.log('on remove item: ', item);
   }
 
   viewProfile() {
@@ -250,7 +268,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
               {
                 object: 'conversation',
                 parent_uuid: this.conversation.uuid,
-                only_preview: true
+                only_preview: false
               }
             ]
           }

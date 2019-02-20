@@ -1,0 +1,10 @@
+<media-preview>
+  <div #menuAction class="menu-action">
+    <a class="btn btn-default" [pTooltip]="tooltip.downloadPhoto" tooltipPosition="bottom" href="javascript:;"  (click)="download()">
+      <i class="fa fa-download"></i>
+    </a>
+    <a class="btn btn-default" *ngIf="mediaPreview?.object?.owner?.id === user?.id" [pTooltip]="tooltip.deleteMessage" tooltipPosition="bottom" href="javascript:;" (click)="removeMessage()">
+      <i class="fa fa-trash" ></i>
+    </a>
+  </div>
+</media-preview>

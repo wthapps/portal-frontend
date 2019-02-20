@@ -45,12 +45,6 @@ export class ConversationService {
     return this.api.post(`${this.url}/${id}/delete_member`, payload);
   }
 
-  deleteMessage(conversationId: number, id: number): Observable<any> {
-    return this.api.delete(
-      `zone/chat/conversations/${conversationId}/messages/${id}`
-    );
-  }
-
   cancelUpload(conversationId: number, id: number): Observable<any> {
     return this.api.post(
       `zone/chat/conversations/${conversationId}/cancel_messages/${id}`

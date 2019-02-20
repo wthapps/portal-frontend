@@ -9,7 +9,10 @@
         <i class="fa" [ngClass]="object.model == 'Media::Video'? 'fa-video-camera': 'fa-photo'"></i> {{object.full_name
         || object.name}} </span>
     </div>
-    <div class="image-viewer-header-right" *ngIf="showMenuAction">
+    <div class="image-viewer-header-right" *ngIf="menuAction">
+      <ng-content select=".menu-action"></ng-content>
+    </div>
+    <div class="image-viewer-header-right" *ngIf="!menuAction">
       <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
         <button *ngIf="action.val.active && !action.val.inDropDown && action.key != 'info'" [disabled]="!action.val.active" class="{{action.val.class}}"
           draggable="false" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);"

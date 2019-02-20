@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewContainerRef, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewContainerRef, ViewChild, ComponentFactoryResolver, ContentChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -73,6 +73,7 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
   destroy$ = new Subject();
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+  @ContentChild('menuAction') menuAction;
 
   validateActions: (menuActions: any, role_id: number) => any;
   openModalShare: (input: any) => void;
@@ -122,18 +123,19 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
           this.menuActions.favorite.iconClass = this.object.favorite ? 'fa fa-star' : 'fa fa-star-o';
 
           // reload video
-          if ($('#video')[0]) $('#video')[0].load();
+          if ($('#video')[0]) { $('#video')[0].load(); }
           this.validateActions(this.menuActions, this.object.permission.role_id);
         })
         .then(() => {
           if (!this.listIds) {
             const query: any = { model: MODEL_MAP[this.route.snapshot.paramMap.get('object')] };
-            if (p.get('parent_uuid')) query.parent_uuid = p.get('parent_uuid');
+            if (p.get('parent_uuid')) { query.parent_uuid = p.get('parent_uuid'); }
             this.apiBaseService.get(`media/media/relating_objects`, query).toPromise()
               .then(res2 => {
                 if (res2.data) {
-                  if (res2.data.length === 0)
+                  if (res2.data.length === 0) {
                   return;
+                  }
                   this.listIds = new DoublyLinkedListsV2(res2.data.map(d => ({uuid: d.uuid, model: d.model})));
                   const {uuid, model} = this.object;
                   this.listIds.setCurrent({uuid, model});
@@ -169,8 +171,9 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
     this.modalIns.event.subscribe(e => {
       switch (e.action) {
         case 'editInfo':
-          if (this.route.snapshot.queryParamMap.get('object') !== 'video')
+          if (this.route.snapshot.queryParamMap.get('object') !== 'video') {
           return;
+          }
           this.apiBaseService.put(`media/videos/${this.object.id}`,
             {
               name: e.params.selectedObject.name,
@@ -327,6 +330,10 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
     };
   }
 
+  download() {
+    this.downloadMedia([this.object]);
+  }
+
   // onPrev: (term) => void;
   // onNext: (term) => void;
   onPrev() {
@@ -348,10 +355,11 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
       this.router.navigate([this.returnUrl]);
     } else {
       const outlet = this.route.snapshot.outlet;
-      if (outlet !== 'primary')
+      if (outlet !== 'primary') {
         this.router.navigate([{ outlets: { [outlet]: null}}]);
-      else
+      } else {
         this.location.back();
+      }
     }
   }
 
