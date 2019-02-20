@@ -1,7 +1,9 @@
 <div class="photo-box content-item" *ngIf="object" [ngClass]="{'selected': object.selected}" id="photo-box-img-{{ object.id }}">
   <div class="photo-box-action photo-box-action-right">
-    <i (click)="doAction({action:'favorite', payload: [object]})" class="fa"
-       [ngClass]="object.favorite? 'fa-star': 'fa-star-o'"></i>
+    <!-- <i (click)="doAction({action:'favorite', payload: [object]})" class="fa"
+       [ngClass]="object.favorite? 'fa-star': 'fa-star-o'"></i> -->
+    <i class="fa"
+       [ngClass]="object.favorite? 'fa-star': ''"></i>
   </div>
 
   <!--type == 'photo', 'video' -->

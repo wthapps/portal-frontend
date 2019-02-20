@@ -236,7 +236,7 @@
   </div>
 </ng-template>
 
-<div *ngIf="['notification', 'request_accepted'].includes(message.message_type)" class="p20 text-center">
+<div *ngIf="['notification', 'request'].includes(message.message_type)" class="p20 text-center">
   <div *ngIf="message.message_type === 'notification'">
 
     <ng-container *ngIf="message.message.indexOf('added into') !== -1">
@@ -252,14 +252,19 @@
     <ng-container *ngIf="(message.message.indexOf('added into') === -1) && (message.message.indexOf('removed from') === -1)">
       <span class="text-bold"> {{ byMe ? 'You' : message.user?.name }} </span> {{ message.message }}
     </ng-container>
+    <div class="text-fade">
+      <small>{{ message.created_at | timeFormat: "time_only" }}</small>
+    </div>
   </div>
 
-  <div *ngIf="message.message_type === 'request_accepted'">
-    <box-no-data [title]="'Welcome to a new conversation'" [subTitle]="'Let start sharing your messages'"></box-no-data>
-    You connected with
-    <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.user?.name }}</span> on WTH!Chat
+  <div *ngIf="message.message_type === 'request'">
+    <!-- <box-no-data [title]="'Welcome to a new conversation'" [subTitle]="'Let start sharing your messages'"></box-no-data>
+    You connected with -->
+    <!-- <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.user?.name }}</span> on WTH!Chat -->
+    <h5 class="text-fade"> This is the beginning of this conversation </h5>
+
   </div>
-  <div class="text-fade">
+  <!-- <div class="text-fade">
     <small>{{ message.created_at | timeFormat: "time_only" }}</small>
-  </div>
+  </div> -->
 </div>

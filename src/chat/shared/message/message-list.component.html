@@ -3,7 +3,7 @@
     infiniteScroll [scrollWindow]="false" (scrolled)="scrollDown()" (scrolledUp)="onLoadMore()">
     <ng-container *ngIf="(currentMessages); else loadingBlock">
       <div class="message-item-wrapper">
-        <ng-container *ngIf="currentMessages?.length > 0 || contactItem.status == 'sent_request' || contactItem.status == 'pending'">
+        <ng-container *ngIf="currentMessages?.length > 0">
           <div class="message-item-dv" *ngFor="let message of currentMessages">
             <message-item [message]="message" [byMe]="currentUser.id == message.user_id" [prevMessage]="getPrevMessage(message)" [contactItem]="contactItem"
               [emojiMap]="emojiMap$ | async" (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
