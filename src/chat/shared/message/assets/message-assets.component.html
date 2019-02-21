@@ -50,18 +50,12 @@
           <ng-container *ngIf="item.file_type === 'Media::Photo' && item?.file">
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
   
-            <div class="message-assets-item-body"  (dbclick)="view(item)">
-                <!-- <figure class="img-center-dv can-click">
-                    <div class="item-media-img photo-box-figure-in">
-                      <img class="img-center" draggable="false" alt=""
-                      [src]="item?.file?.thumbnail_url">
-                    </div>
-                  </figure> -->
+            <div class="message-assets-item-body" (click)="onClickItem(item)"  (dblclick)="view(item)">
                   <div class="message-assets-item-img">
                       <img alt=""
                       [src]="item?.file?.thumbnail_url">
                   </div>
-                  <div class="photo-box-name" title="item?.file?.full_name">
+                  <div class="photo-box-name" [title]="item?.file?.full_name">
                       <span>{{ item?.file?.full_name }} </span>
                     </div> 
             </div>
@@ -70,12 +64,16 @@
           <ng-container *ngIf="item.file_type === 'Media::Video' && item?.file">
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
 
-            <div class="wobject-box-img" (dbclick)="view(item)">
-              <img [src]="item?.file?.thumbnail_url" alt="">
-            </div>
-            <div class="wobject-box-name" title="item?.file?.full_name">
-              <span><i class="fa fa-video-camera"></i> {{ item?.file?.full_name }} </span>
-            </div>
+            <div class="message-assets-item-body" (click)="onClickItem(item)"  (dblclick)="view(item)">
+                <div class="message-assets-item-img">
+                    <img alt=""
+                    [src]="item?.file?.thumbnail_url">
+                    <i class="fa fa-play-circle-o"></i>
+                </div>
+                <div class="photo-box-name" [title]="item?.file?.full_name">
+                    <span>{{ item?.file?.full_name }} </span>
+                  </div> 
+          </div>
           </ng-container>
   
           <!-------------- End Photo view --------------->
@@ -83,9 +81,9 @@
           <ng-container *ngIf="item.file_type === 'Note::Note'">
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
   
-            <div class="message-assets-item-body" (click)="onClickItem(item)">
+            <div class="message-assets-item-body" (click)="onClickItem(item)" >
               <span class="bold name-clickable"><i class="fa fa-file"></i>
-                <a [href]="noteUrl + '/' + item.uuid" target="_blank"> {{ item?.file?.name === '' ? 'Untitled' :
+                <a [href]="noteUrl + '/' + item.uuid" class="note-title" target="_blank"> {{ item?.file?.name === '' ? 'Untitled' :
                   item?.file?.name }} </a> </span>
               <div class="wobject-box-content-note" [innerHTML]="item?.file?.content | safeHtml"></div>
             </div>

@@ -68,16 +68,17 @@ $message-assets-width: 400px;
     .wobject-grid .wobject-item, .wobject-timeline .wobject-item {
       @include box-shadow(none);
       .wobject-box-name {
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
         border-radius: 5px;
         border: 1px solid $line;
         .media-body a {
-          display: block;
           width: 317px;
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
+
+          &.note-title {
+            display: block;
+          }
         }
       }
     }
@@ -141,9 +142,12 @@ $message-assets-width: 400px;
         padding: 0px 10px;
         border: 2px solid transparent;
         border-radius: 4px;
+        cursor: pointer;
 
         &.photo-item {
-            flex: 0 45%;
+            -webkit-box-flex: 0;
+                -ms-flex: 0 45%;
+                    flex: 0 45%;
             padding: 10px;
             margin: 10px;
             width: 50%;
@@ -200,8 +204,25 @@ $message-assets-width: 400px;
 
             .message-assets-item-img {
               max-height: 100px;
-              overflow: hidden;
+              overflow: hidden;  
+              position: relative;
+              text-align: center;
+
+              i {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                font-size: 40px;
+                color: #ffffff;
+                width: 40px;
+                height: 40px;
+                display: inline-block;
+              }
             }
+
+            
 
             .photo-box-name {
               white-space: nowrap;
