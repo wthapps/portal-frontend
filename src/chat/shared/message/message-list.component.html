@@ -23,8 +23,9 @@
             <message-item [message]="message"
                           [byMe]="currentUser.id == message.user_id"
                           [prevMessage]="getPrevMessage(message)"
-                          [conversation]="conversation"
-            [emojiMap]="emojiMap$ | async" (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
+                          [emojiMap]="emojiMap$ | async"
+                          (onAddContact)="onAddContact($event)"
+                          (event)="doEvent($event)"></message-item>
           </div>
         </ng-container>
       </div>

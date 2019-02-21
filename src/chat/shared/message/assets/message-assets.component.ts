@@ -128,7 +128,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     });
 
     this.chatConversationService.getStoreSelectedConversation().pipe(
-      distinctUntilChanged((p, q) => p.id === q.id),
+      distinctUntilChanged((p: any, q: any) => p.id === q.id),
       takeUntil(this.destroy$)
     ).subscribe(sc => {
       this.conversation = sc;

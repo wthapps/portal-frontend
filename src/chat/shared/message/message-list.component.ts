@@ -50,7 +50,7 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   @Input() conversation: any;
   @Input() currentUser: User;
   @Input() channel = 'MessageListComponent';
-  @Input() selectedConversation;
+
   emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
   prevMessage: any;
   loading$: Observable<boolean>;

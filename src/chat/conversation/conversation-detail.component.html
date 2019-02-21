@@ -19,8 +19,6 @@
 
     <message-list class="message-list-body" #messageList
                   [messages]="messages$ | async"
-                  [contactItem]="selectedConversation"
-                  [selectedConversation]="selectedConversation"
                   [conversation]="conversation"
                   [currentUser]="currentUser$ | async"
                   >

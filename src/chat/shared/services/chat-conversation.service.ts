@@ -73,12 +73,12 @@ export class ChatConversationService extends CommonEventHandler {
   }
 
   getStoreSelectedConversation(): any {
-    // return this.store.select(STORE_SELECTED_CONVERSATION).pipe(
-    //   // filter selectedConversation empty
-    //   filter(cx => {
-    //   return cx.selectedConversation && cx.selectedConversation.group_id;}),
-    //   // map to selected Convervarion
-    //   map(cx => cx.selectedConversation));
+    return this.store.select(STORE_SELECTED_CONVERSATION).pipe(
+      // filter selectedConversation empty
+      filter(cx => {
+      return cx.selectedConversation && cx.selectedConversation.group_id;}),
+      // map to selected Convervarion
+      map(cx => cx.selectedConversation));
   }
 
   addNotificationEvent(event: CommonEvent) {
