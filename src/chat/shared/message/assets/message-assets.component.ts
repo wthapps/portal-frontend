@@ -1,3 +1,4 @@
+import { ChatMessageService } from './../../services/chat-message.service';
 import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -94,6 +95,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private chatContactService: ChatContactService,
     private apiBaseService: ApiBaseService,
     private chatCommonService: ChatCommonService,
+    private chatMessageService: ChatMessageService,
     private store: Store<any>,
     private router: Router,
   ) {
@@ -133,17 +135,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   open() {
-    // this.chatService.getContactSelectAsync()
-    //   .subscribe((res: any) => {
-    //     this.conversation = res;
-    //     if (this.conversation && this.conversation.group_type === 'couple') {
-    //       this.tabs = this.tabsPhoto;
-    //     } else {
-    //       this.tabs = this.tabsMember;
-    //     }
-    //     this.tabAction(this.tabs[0]);
-      // });
-
     this.objectListService.setMultipleSelection(false);
   }
 
@@ -169,11 +160,14 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   onClickItem(item) {
     const { id } = item;
     this.selectedIds = { [id]: true };
-    console.log('on click item: ', item, this.selectedIds);
   }
 
   onRemove(item) {
-    console.log('on remove item: ', item);
+    const { group_id, id} = item;
+    this.chatMessageService.deleteMessage(group_id, id).toPromise()
+    .then(() => {
+      this.messageAssetsService.removeMedia(item);
+    });
   }
 
   viewProfile() {

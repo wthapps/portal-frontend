@@ -82,6 +82,13 @@ export class ChatMessageService {
     });
   }
 
+  /**
+   *
+   * @param conversationId
+   * @param id
+   * Descritpion: calling delete message api, updating local data operation will be done later by
+   * action cable handler later. Reference chat_actions.ts: chat_send_message handler
+   */
   deleteMessage(conversationId: number, id: number): Observable<any> {
     return this.api.delete(
       `zone/chat/conversations/${conversationId}/messages/${id}`

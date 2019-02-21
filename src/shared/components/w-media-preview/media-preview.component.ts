@@ -52,7 +52,6 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
   readonly tooltip: any = Constants.tooltip;
   menuActions: any = {};
   selectedObjects: any;
-  showMenuAction = true;
   showDetailsInfo: any = false;
   modalIns: any;
   modalRef: any;
@@ -105,16 +104,12 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
 
   ngOnInit() {
     this.menuActions = this.getMenuActions();
-    this.route.data.subscribe(data => {
-      this.showMenuAction = (data['show_menu_action'] !== undefined) ? data['show_menu_action'] : true;
-    });
 
     this.route.paramMap.pipe(
       combineLatest(this.route.queryParams)
     ).subscribe(([p, _]) => {
       const parent_object = p.get('object');
       const options = { model: MODEL_MAP[parent_object] };
-      this.showMenuAction = !p.get('only_preview');
 
       // uuid will be required for parent object type 'post' or 'conversation'
       if (p.get('parent_uuid')) {

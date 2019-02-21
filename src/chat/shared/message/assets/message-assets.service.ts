@@ -52,7 +52,7 @@ export class MessageAssetsService {
         if (!this.mediasSubject.getValue() || override) {
           this.mediasSubject.next(data);
         } else {
-          let medias = this.mediasSubject.getValue().concat(data);
+          const medias = this.mediasSubject.getValue().concat(data);
           this.mediasSubject.next(medias);
         }
         return res;
@@ -63,5 +63,10 @@ export class MessageAssetsService {
         return Observable.throw(err);
       })
     );
+  }
+
+  removeMedia(item) {
+    const medias = this.mediasSubject.getValue().filter(m => m.uuid !== item.uuid);
+    this.mediasSubject.next(medias);
   }
 }

@@ -164,7 +164,26 @@ $message-assets-width: 400px;
                 text-overflow: ellipsis;
                 overflow: hidden;
             }
+
+            .wobject-box-content-note {
+              max-height: 60px;
+              overflow: hidden;
+              position: relative;
+              color: #9b9b9b;
+              &:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 20px;
+                z-index: 2;
+                @include gradient-vertical(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1), 0%, 100%)
+              }
+            }
         }
+
+        
     }
 }
 
