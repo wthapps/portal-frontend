@@ -43,26 +43,26 @@
 <ng-container *ngIf="currentTab !== 'members'">
   <ng-container *ngIf="!isLoading; else templateloading">
     <ng-container *ngIf="medias?.length; else templateNodata">
-      <div class="message-assets-list">
+      <div class="message-assets-list" [ngClass]="{'row-img grid': currentTab === 'photos'}">
         <div *ngFor="let item of medias" class="message-assets-item" 
-        [ngClass]="{'active': selectedIds[item?.id], 'photo-item': ['Media::Photo', 'Media::Video'].includes(item.file_type)}" >
+        [ngClass]="{'active': selectedIds[item?.id], 'row-img-item photo-box content-item': ['Media::Photo', 'Media::Video'].includes(item.file_type)}" >
           <!-------------- Photo view --------------->
           <ng-container *ngIf="item.file_type === 'Media::Photo' && item?.file">
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
   
-            <div class="message-assets-item-body"  (click)="view(item)">
+            <div class="message-assets-item-body"  (dbclick)="view(item)">
                 <!-- <figure class="img-center-dv can-click">
                     <div class="item-media-img photo-box-figure-in">
                       <img class="img-center" draggable="false" alt=""
                       [src]="item?.file?.thumbnail_url">
                     </div>
                   </figure> -->
-                  <div>
+                  <div class="message-assets-item-img">
                       <img alt=""
                       [src]="item?.file?.thumbnail_url">
                   </div>
-                  <div title="item?.file?.full_name">
-                      <span><i class="fa fa-photo"></i> {{ item?.file?.full_name }} </span>
+                  <div class="photo-box-name" title="item?.file?.full_name">
+                      <span>{{ item?.file?.full_name }} </span>
                     </div> 
             </div>
 
@@ -95,7 +95,7 @@
           <ng-container *ngIf="item.file_type === 'Common::GenericFile'">
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
   
-            <div class="message-assets-item-body" (click)="onClickItem(item)">
+            <div class="message-assets-item-body text-fade" (click)="onClickItem(item)">
               <div class="media">
                 <div class="media-left">
                   <i class="fa fa-file-archive-o fz30 mt5"></i>
@@ -116,7 +116,7 @@
     </ng-container>
     <ng-template #templateItemHeader let-item="item">
         <div class="message-assets-item-header text-fade">
-            <span>{{ currentUser?.name }}, {{ item?.created_at | timeFormat }}</span>
+            <span>{{ item?.owner | username }}, {{ item?.created_at | timeFormat }}</span>
 
             <a href="javascript:;" *ngIf="item?.owner?.uuid === currentUser?.uuid" class="pull-right action" (click)="onRemove(item)"><i class="fa fa-trash"></i></a>
           </div>

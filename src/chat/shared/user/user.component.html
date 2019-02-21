@@ -4,7 +4,7 @@
       <img [src]="data?.avatar" alt="">
 
     </div>
-    <span *ngIf="data.id" class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}">
+    <span *ngIf="data.id" class="media-avatar-status mr3" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}">
       <i *ngIf="isPending" class="fa fa-question-circle"></i>
     </span>
   </div>

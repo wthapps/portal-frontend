@@ -32,6 +32,7 @@ import { KeysPipe } from '@shared/shared/pipe/keys.pipe';
 import { StripHtmlPipe } from '@shared/shared/pipe/strip-html.pipe';
 import { MaxCountPipe } from '@wth/shared/shared/pipe/max-count.pipe';
 import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.pipe';
+import { UsernamePipe } from './username.pipe';
 
 @NgModule({
   imports: [CommonModule],
@@ -64,6 +65,7 @@ import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.
     MaxCountPipe,
     StripHtmlPipe,
     PhoneCodeToDisplayCodePipe,
+    UsernamePipe,
     KeysPipe
   ],
   exports: [
@@ -95,6 +97,7 @@ import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.
     MapToIterablePipe,
     MaxCountPipe,
     PhoneCodeToDisplayCodePipe,
+    UsernamePipe,
     KeysPipe
   ],
   providers: []

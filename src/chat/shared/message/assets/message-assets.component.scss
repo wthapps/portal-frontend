@@ -75,6 +75,7 @@ $message-assets-width: 400px;
         .media-body a {
           display: block;
           width: 317px;
+          white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
         }
@@ -120,15 +121,26 @@ $message-assets-width: 400px;
   }
 }
 
+
+
+.row-img {
+  &.grid {
+    .row-img-item {
+      width: 50%;
+      float: left;
+    }
+  }
+}
+
 .message-assets-list {
     overflow: auto;
-    display: flex;
-    flex-direction: column;
+    padding-top: 20px;
     
     .message-assets-item {
-        margin: 10px 5px;
-        padding: 2px;
+        margin-bottom: 10px;
+        padding: 0px 10px;
         border: 2px solid transparent;
+        border-radius: 4px;
 
         &.photo-item {
             flex: 0 45%;
@@ -142,6 +154,7 @@ $message-assets-width: 400px;
         }
 
         .message-assets-item-header {
+            margin-top: 2px;
             .action {
                 color: $text-color;
                 padding-right: 5px;
@@ -152,15 +165,18 @@ $message-assets-width: 400px;
     
         .message-assets-item-body {
             padding: 5px;
+            margin-bottom: 2px;
             border-radius: 5px;
             border: 1px solid #ccc;
             overflow: hidden;
-            max-height: 100px;
             cursor: 'pointer';
     
             a {
+                display: block;
+                width: 317px;
                 text-decoration: none;
                 color: $text-color;
+                white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
             }
@@ -181,6 +197,18 @@ $message-assets-width: 400px;
                 @include gradient-vertical(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1), 0%, 100%)
               }
             }
+
+            .message-assets-item-img {
+              max-height: 100px;
+              overflow: hidden;
+            }
+
+            .photo-box-name {
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              margin-top: 5px;
+          }
         }
 
         
