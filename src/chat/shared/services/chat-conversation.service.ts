@@ -148,11 +148,11 @@ export class ChatConversationService extends CommonEventHandler {
   }
 
   apiFavoriteGroupUser(conversation: any) {
-    return this.apiUpdateGroupUser(conversation.group_id, { favorite: !conversation.favorite });
+    return this.apiUpdateGroupUser(conversation.id, { favorite: !conversation.favorite });
   }
 
   apiNotificationGroupUser(conversation: any) {
-    return this.apiUpdateGroupUser(conversation.group_id, { notification: !conversation.notification });
+    return this.apiUpdateGroupUser(conversation.id, { notification: !conversation.notification });
   }
 
   leaveConversation(contact: any): Promise<any> {

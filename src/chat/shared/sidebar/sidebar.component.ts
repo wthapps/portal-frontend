@@ -1,7 +1,7 @@
 import {
   Component,
   EventEmitter,
-  HostBinding,
+  HostBinding, OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -9,8 +9,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { Observable } from 'rxjs';
-import { take, filter, map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { take, filter, map, takeUntil } from 'rxjs/operators';
 
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
@@ -21,7 +21,6 @@ import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
 import { ChatConversationService } from '../services/chat-conversation.service';
 import { select, Store } from '@ngrx/store';
-import { STORE_CONVERSATIONS } from '@shared/constant';
 import { Conversations } from '@shared/shared/models/chat/conversations.model';
 import {
   AppState,
@@ -36,7 +35,7 @@ import {
   styleUrls: ['sidebar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZChatSidebarComponent implements OnInit {
+export class ZChatSidebarComponent implements OnInit, OnDestroy {
   @HostBinding('class') cssClass = 'menuleft-chat';
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
   @Output() onSelectedConversation = new EventEmitter<any>();
@@ -49,17 +48,18 @@ export class ZChatSidebarComponent implements OnInit {
   recentContacts$: Observable<any>;
   contactItem$: Observable<any>;
   conversations$: any;
-  contactSelect$: Observable<any>;
+  searchConversations$: Observable<any>;
   links$: Observable<any>;
   links: any;
 
+  destroy$ = new Subject();
 
   isRedirect: boolean;
   filter = 'All';
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
 
   searching = false;
-  searchConversations: Array<any> = [];
+
   searched = false;
 
   constructor(
@@ -77,9 +77,12 @@ export class ZChatSidebarComponent implements OnInit {
 
   ngOnInit() {
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
-    this.contactSelect$ = this.chatService.getContactSelectAsync();
-    this.conversations$ = this.store$.select(ConversationSelectors.selectAllConversations).pipe();
-    this.store$.pipe(select(ConversationSelectors.getLinks)).subscribe(links => {
+    this.conversations$ = this.store$.pipe(select(ConversationSelectors.selectAllConversations));
+    this.searchConversations$ = this.store$.pipe(select(ConversationSelectors.selectSearchedConversations));
+    this.store$.pipe(
+      select(ConversationSelectors.getLinks),
+      takeUntil(this.destroy$)
+    ).subscribe(links => {
       this.links = links;
     });
 
@@ -90,14 +93,13 @@ export class ZChatSidebarComponent implements OnInit {
     Load conversations
    */
   loadConversations() {
-    this.store$.dispatch(new ConversationActions.GetAll({query: null}));
+    this.store$.dispatch(new ConversationActions.GetItems({query: null}));
   }
 
   loadMoreConversations(links: any) {
-    console.log('LOAD MORE CONVERSATION', links);
     if (links && links.next) {
       const query = links.next.split('?')[1];
-      this.store$.dispatch(new ConversationActions.GetAll({query: query}));
+      this.store$.dispatch(new ConversationActions.GetItems({query: query}));
     }
 
   }
@@ -189,10 +191,12 @@ export class ZChatSidebarComponent implements OnInit {
     }
     this.searching = true;
     this.searched = false;
-    this.apiBaseService.get('zone/chat/search', { q: keyword }).subscribe((res: any) => {
-      this.searchConversations = res.data;
-      this.searched = true;
-    });
+
+    this.store$.dispatch(new ConversationActions.Search({
+      query: null,
+      q: keyword,
+    }));
+    this.searched = true;
   }
 
   markAllAsRead() {
@@ -208,10 +212,15 @@ export class ZChatSidebarComponent implements OnInit {
   clearSearch(event: any) {
     this.searching = false;
     this.searched = false;
-    this.searchConversations = [];
     this.textbox.search = '';
+    this.store$.dispatch(new ConversationActions.ClearSearch());
   }
   /*
   * End of searching here
    */
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

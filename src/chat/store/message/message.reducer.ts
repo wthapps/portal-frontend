@@ -52,7 +52,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
   switch (action.type) {
 
     // Get all actions
-    case ActionTypes.GET_ALL: {
+    case ActionTypes.GET_ITEMS: {
       console.log('GET ALL cursor value:::', state.cursor);
 
       return {
@@ -61,7 +61,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
         error: null
       };
     }
-    case ActionTypes.GET_ALL_SUCCESS: {
+    case ActionTypes.GET_ITEMS_SUCCESS: {
       // const messages = [];
       // action.payload.data.forEach(message => {
       //   messages.push(message.attributes);
@@ -87,7 +87,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
         links: links
       });
     }
-    case ActionTypes.GET_ALL_ERROR: {
+    case ActionTypes.GET_ITEMS_ERROR: {
       return {
         ...state,
         loading: false,

@@ -49,7 +49,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
   @ViewChild('longMessageModal') longMessageModal: LongMessageModalComponent;
   @Input() isDisabled = false;
-  @Input() contactSelect;
+  @Input() conversation;
   @Input() maxLengthAllow = 2000;
 
   @Output() onCreate: EventEmitter<any> = new EventEmitter<any>();
@@ -115,7 +115,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   ngOnChanges(changes: any) {
-    if (changes && changes.contactSelect && changes.contactSelect.currentValue && changes.contactSelect.currentValue.blacklist) {
+    if (changes && changes.conversation && changes.conversation.currentValue && changes.conversation.currentValue.blacklist) {
       this.setPlaceholder(this.placeholderBl);
     } else {
       this.setPlaceholder(this.placeholder);
@@ -163,7 +163,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   handleKeyUp(e: any) {
     if (e.keyCode === 13) {
-      this.onCreate.emit({...this.message, group_id: this.contactSelect.id});
+      this.onCreate.emit({...this.message, group_id: this.conversation.id});
     }
     // if (e.keyCode === 13) {
     //   this.validateAndSend();
@@ -231,7 +231,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       meta_data: {}
     });
 
-    const fakeMessage = this.chatMessageService.create(this.contactSelect.group_id, message);
+    const fakeMessage = this.chatMessageService.create(this.conversation.group_id, message);
     const uploadedMessage = this.uploadService.uploadPhotos([file]).toPromise();
     Promise.all([fakeMessage, uploadedMessage]).then(([fake, uploaded]) => {
       const updateMessage = { ...fake.data, file: uploaded['data'], content_type: type };
@@ -252,7 +252,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       allowedFileTypes: null,
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
       afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
-      payload: { group_id: this.contactSelect.group_id },
+      payload: {group_id: this.conversation.group_id},
       module: 'chat'
     });
   }
@@ -276,8 +276,8 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       allowedFileTypes: ['image/*'],
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
       afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
-      payload: { group_id: this.contactSelect.group_id },
-    });
+      payload: { group_id: this.conversation.group_id },
+  });
 
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.close$), filter((items: any[]) => items.length > 0))

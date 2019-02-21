@@ -3,4 +3,6 @@ export interface Conversation {
   uuid: string;
   name: string;
   displayName: string;
+  favorite: boolean;
+  notification: boolean;
 }

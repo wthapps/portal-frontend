@@ -1,7 +1,7 @@
 <form [formGroup]="messageEditorForm" novalidate>
 
-  <mini-editor #miniEditor *ngIf="contactSelect"
-               [placeholder]="contactSelect.blacklist ? placeholderBl : placeholder"
+  <mini-editor #miniEditor *ngIf="conversation"
+               [placeholder]="conversation.blacklist ? placeholderBl : placeholder"
                [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"
                [(ngModel)]="message.message"
                [ngModelOptions]="{standalone: true}"
@@ -10,7 +10,7 @@
     <p-header>
     </p-header>
   </mini-editor>
-  <div *ngIf="contactSelect && !contactSelect.blacklist" class="chat-message-action">
+  <div *ngIf="conversation && !conversation.blacklist" class="chat-message-action">
     <div class="btn-group dropup">
       <button type="button" class="btn btn-default dropdown-toggle" [attr.disabled]="isDisabled ? 'disabled' : null" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">

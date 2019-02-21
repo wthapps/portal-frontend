@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router';
 
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Subscription, Observable, Subject } from 'rxjs';
 
 
@@ -33,7 +33,7 @@ import * as ConversationActions from '@chat/store/conversation/conversation.acti
 import { MessageActions, MessageSelectors } from '@chat/store/message';
 import { WebsocketService } from '@shared/channels/websocket.service';
 import { Channel, Presence } from 'phoenix';
-import { filter, map, skip } from 'rxjs/operators';
+import { filter, map, skip, take } from 'rxjs/operators';
 
 declare var $: any;
 
@@ -106,18 +106,23 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.route.params.forEach((params: Params) => {
       const conversationId = params['id'];
 
+      console.log('CONVERSATION_ID:::', conversationId);
+
       // Always plus 1 to make sure it is greater than current message cursor
-      this.selectedConversation$ = this.store$.select(ConversationSelectors.getSelectedConversation).pipe(
-        skip(1),
-        map((conversation: any) => {
-          if (conversation) {
-            this.store$.dispatch(new MessageActions.GetAll({ groupId: conversationId, queryParams: {
-                cursor: 1541674034512 + 1
-              }}));
-          }
-          return conversation;
-        })
-      );
+      this.selectedConversation$ = this.store$.pipe(select(ConversationSelectors.getSelectedConversation));
+
+      // map((conversation: any) => {
+      //   console.log('CONVERSATION:::', conversation);
+      //   if (conversation) {
+      //     this.store$.dispatch(new MessageActions.GetAll({ groupId: conversationId, queryParams: {
+      //         cursor: 1541674034512 + 1
+      //       }}));
+      //   }
+      //   return conversation;
+      // })
+      this.store$.dispatch(new MessageActions.GetItems({ groupId: conversationId, queryParams: {
+          cursor: 1541674034512 + 1
+        }}));
 
       // Create new channel depends on selected conversation
       // If channel has already been existing don't create new one
@@ -127,7 +132,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
       // Join selected conversation channel
       this.channel.join()
-        .receive('ok', ({messages}) => {
+        .receive('ok', ({message}) => {
+          console.log('JOIN:::', message);
           // Perform some tasks need to do after joining channel successfully
           this.store$.dispatch(new ConversationActions.GetItem(conversationId));
         })
@@ -175,6 +181,29 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  // Conversation actions handle
+
+  doAccept(conversation: any) {
+    console.log('ACCTEPTED');
+    this.store$.dispatch(new ConversationActions.AcceptInvitation(conversation));
+    // this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(contact => {
+    //   this.chatConversationService.acceptRequest(contact).then(res => {
+    //     this.chatMessageService.getMessages(contact.group_id)
+    //   });
+    // })
+  }
+
+  doDecline(conversation: any) {
+    this.store$.dispatch(new ConversationActions.DeclineInvitation(conversation));
+    console.log('DECLINED');
+    // this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(contact => {
+    //   this.chatConversationService.declineRequest(contact);
+    // })
+  }
+
+  // Conversation action handle end
+
 
   createMessage(message: any) {
     this.channel.push('new_message', message)
@@ -238,6 +267,21 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     return message;
   }
 
+  /*
+   * Conversation actions
+   */
+
+  favorite(conversation: any) {
+    this.store$.dispatch(new ConversationActions.UpdateSelf({id: conversation.id, body: {favorite: conversation.favorite}}));
+  }
+
+  toggleNotification(conversation: any) {
+    this.store$.dispatch(new ConversationActions.UpdateSelf({id: conversation.id, body: {notification: conversation.notification}}));
+  }
+
+  /*
+   * Conversation actions ending
+   */
 
   drop(e: any) {
     e.preventDefault();

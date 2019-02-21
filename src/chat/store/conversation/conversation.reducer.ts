@@ -15,11 +15,18 @@ export const conversationAdapter: EntityAdapter<Conversation> = createEntityAdap
 export interface ConversationState extends EntityState<Conversation> {
   selectedConversationId: string | null;
   selectedConversation: Conversation | null;
-  conversations: Array<Conversation> | [];
+  searchedConversations: Conversation[] | [];
   isLoading?: boolean;
   isLoadingMore?: boolean;
   error?: any;
   links: {
+    self: string | null,
+    prev: string | null,
+    next: string | null,
+    fist: string | null,
+    last: string | null,
+  };
+  searchedLinks: {
     self: string | null,
     prev: string | null,
     next: string | null,
@@ -32,11 +39,18 @@ export const initialConversationState: ConversationState = conversationAdapter.g
   {
     selectedConversationId: null,
     selectedConversation: null,
-    conversations: [],
+    searchedConversations: [],
     isLoading: false,
     isLoadingMore: false,
     error: null,
     links: {
+      self: null,
+      prev: null,
+      next: null,
+      fist: null,
+      last: null,
+    },
+    searchedLinks: {
       self: null,
       prev: null,
       next: null,
@@ -48,14 +62,14 @@ export const initialConversationState: ConversationState = conversationAdapter.g
 
 export function reducer(state = initialConversationState, action: Actions): ConversationState {
   switch (action.type) {
-    case ActionTypes.GET_ALL: {
+    case ActionTypes.GET_ITEMS: {
       return {
         ...state,
         isLoading: true,
         error: null
       };
     }
-    case ActionTypes.GET_ALL_SUCCESS: {
+    case ActionTypes.GET_ITEMS_SUCCESS: {
       console.log('LINKS IN EFFECTS', action.payload.links);
 
       return conversationAdapter.addAll([
@@ -68,7 +82,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
         links: {...action.payload.links},
       });
     }
-    case ActionTypes.GET_ALL_ERROR: {
+    case ActionTypes.GET_ITEMS_ERROR: {
       return {
         ...state,
         isLoading: false,
@@ -76,29 +90,38 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       };
     }
 
-    case ActionTypes.GET_MORE: {
+    case ActionTypes.SEARCH: {
       return {
         ...state,
-        isLoadingMore: true,
+        isLoading: true,
         error: null
       };
     }
-    case ActionTypes.GET_MORE_SUCCESS: {
-      return conversationAdapter.addAll([
-        ...Object.values(state.entities),
-        ...action.payload.conversations
-      ], {
+    case ActionTypes.SEARCH_SUCCESS: {
+      console.log('SEARCH RESULT:::', action.payload.conversations);
+      return {
         ...state,
-        isLoadingMore: false,
+        searchedConversations: [
+          ...state.searchedConversations,
+          ...action.payload.conversations
+        ],
+        isLoading: false,
         error: null,
         links: action.payload.links,
-      });
+      };
     }
-    case ActionTypes.GET_MORE_ERROR: {
+    case ActionTypes.SEARCH_ERROR: {
       return {
         ...state,
         isLoadingMore: false,
         error: action.payload.error
+      };
+    }
+
+    case ActionTypes.CLEAR_SEARCH: {
+      return {
+        ...state,
+        searchedConversations: [],
       };
     }
 
@@ -112,7 +135,6 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.GET_ITEM_SUCCESS: {
       const item = action.payload.data.attributes;
-
       return {
         ...state,
         selectedConversation: item,
@@ -129,7 +151,42 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       };
     }
 
-    case ActionTypes.SET_SELECTED_ITEM: {
+    // Update Self actions
+    case ActionTypes.UPDATE_SELF: {
+      return {
+        ...state,
+        error: null
+      };
+    }
+
+    case ActionTypes.UPDATE_SELF_SUCCESS: {
+      const conversation = action.payload.conversation;
+
+      return conversationAdapter.updateOne({
+        id: conversation.id,
+        changes: {
+          favorite: conversation.favorite,
+          notification: conversation.notification,
+        }
+      }, {
+        ...state,
+        selectedConversation: {
+          ...state.selectedConversation,
+          ...conversation
+        }
+      });
+    }
+
+    case ActionTypes.UPDATE_SELF_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+    }
+
+    // Select action
+    case ActionTypes.SELECT_ITEM: {
       return {
         ...state,
         selectedConversation: action.payload
@@ -141,24 +198,3 @@ export function reducer(state = initialConversationState, action: Actions): Conv
   }
 }
 
-// export const getSelectedConversationId = (state: ConversationState) => state.selectedConversationId;
-//
-// // get the selectors
-// const {
-//   selectIds,
-//   selectEntities,
-//   selectAll,
-//   selectTotal,
-// } = conversationAdapter.getSelectors();
-//
-// // select the array of conversation ids
-// export const selectConversationIds = selectIds;
-//
-// // select the dictionary of conversation entities
-// export const selectConversationEntities = selectEntities;
-//
-// // select the array of conversations
-// export const selectAllConversations = selectAll;
-//
-// // select the total conversation count
-// export const selectConversationTotal = selectTotal;

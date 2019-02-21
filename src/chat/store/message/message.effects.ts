@@ -14,7 +14,7 @@ export class MessageEffects {
 
   @Effect()
   getAll$: Observable<Action> = this.actions$.pipe(
-    ofType<MessageActions.GetAll>(MessageActions.ActionTypes.GET_ALL),
+    ofType<MessageActions.GetItems>(MessageActions.ActionTypes.GET_ITEMS),
     switchMap(action =>
       this.messageService.getAll(action.payload.groupId, action.payload.queryParams).pipe(
         map(response => {
@@ -22,10 +22,10 @@ export class MessageEffects {
           response.data.forEach(message => {
             messages.push(message.attributes);
           });
-          return new MessageActions.GetAllSuccess({messages: messages});
+          return new MessageActions.GetItemsSuccess({messages: messages});
         }),
         catchError(error =>
-          of(new MessageActions.GetAllError({ error }))
+          of(new MessageActions.GetItemsError({ error }))
         )
       )
     )
@@ -45,7 +45,7 @@ export class MessageEffects {
           return new MessageActions.GetMoreSuccess({messages: messages});
         }),
         catchError(error =>
-          of(new MessageActions.GetAllError({ error }))
+          of(new MessageActions.GetItemsError({ error }))
         )
       )
     )

@@ -1,14 +1,21 @@
+<z-chat-share-toolbar [conversation]="selectedConversation$|async" class="page-body-control"
+  (onFavorite)="favorite($event)"
+  (onNotify)="toggleNotification($event)"
+>
+</z-chat-share-toolbar>
+
 <ng-container *ngIf="selectedConversation$ | async as conversation;">
-  <z-chat-share-toolbar [contactSelect]="conversation" class="page-body-control">
-  </z-chat-share-toolbar>
+
   <div class="page-body-content page-body-content-chat has-page-body-control" (drop)="drop($event)"
        (dragover)="drag($event)" (dragenter)="drag($event)">
 
-    <z-chat-share-item-request
-      *ngIf="conversation.status == 'sent_request' || conversation.status == 'pending'"
-      [selectedConversation]="conversation"
-      [message]="(messages$ | async)[0]">
-    </z-chat-share-item-request>
+    <message-invitation
+      [conversation]="conversation"
+      [message]="(messages$ | async)[0]"
+      (onAccept)="doAccept(conversation)"
+      (onDecline)="doDecline(conversation)"
+    >
+    </message-invitation>
 
     <message-list class="message-list-body" #messageList
                   [messages]="messages$ | async"
@@ -21,7 +28,7 @@
     <message-editor class="chat-message-container"
                     #messageEditor
                     [isDisabled]="!conversation.active || conversation.blacklist || !(networkOnline$ | async)"
-                    [contactSelect]="conversation"
+                    [conversation]="conversation"
                     (onCreate)="createMessage($event)"
                     >
     </message-editor>
@@ -29,6 +36,4 @@
                     [conversation]="conversation"></message-assets>
   </div>
 </ng-container>
-<div>
- {{ (selectedConversation$ | async)?.latest_message }}
-</div>
+

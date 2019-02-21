@@ -18,7 +18,7 @@ import {
   TooltipModule
 } from 'primeng/primeng';
 
-import { ZChatShareItemRequestComponent } from './message/item-request.component';
+import { MessageInvitationComponent } from './message/message-invitation.component';
 import { PartialModule } from './../../shared/partials/partial.module';
 
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
@@ -99,7 +99,7 @@ import { CardUserModule } from '@shared/components/card-user/card-user.module';
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
     ContactListModalComponent,
-    ZChatShareItemRequestComponent
+    MessageInvitationComponent,
     // ZChatShareRequestContactComponent,
   ],
   exports: [
@@ -122,7 +122,7 @@ import { CardUserModule } from '@shared/components/card-user/card-user.module';
     // Chat scoped modules
     MessagesModule,
     MessageModule,
-    ZChatShareItemRequestComponent,
+    MessageInvitationComponent,
     // ZChatShareRequestContactComponent,
     ZChatSharedModalModule,
     ZChatShareUserModule,

@@ -1,9 +1,9 @@
 import { Action } from '@ngrx/store';
 
 export enum ActionTypes  {
-  GET_ALL           = 'MESSAGE_GET_ALL',
-  GET_ALL_SUCCESS   = 'MESSAGE_GET_ALL_SUCCESS',
-  GET_ALL_ERROR     = 'MESSAGE_GET_ALL_ERROR',
+  GET_ITEMS         = 'MESSAGE_GET_ITEMS',
+  GET_ITEMS_SUCCESS = 'MESSAGE_GET_ITEMS_SUCCESS',
+  GET_ITEMS_ERROR   = 'MESSAGE_GET_ITEMS_ERROR',
   GET_MORE          = 'MESSAGE_GET_MORE',
   GET_MORE_SUCCESS  = 'MESSAGE_GET_MORE_SUCCESS',
   GET_MORE_ERROR    = 'MESSAGE_GET_MORE_ERROR',
@@ -24,20 +24,20 @@ export enum ActionTypes  {
 
 // Get all actions
 
-export class GetAll implements Action {
-  readonly type = ActionTypes.GET_ALL;
+export class GetItems implements Action {
+  readonly type = ActionTypes.GET_ITEMS;
 
   constructor(public payload: any) { }
 }
 
-export class GetAllSuccess implements Action {
-  readonly type = ActionTypes.GET_ALL_SUCCESS;
+export class GetItemsSuccess implements Action {
+  readonly type = ActionTypes.GET_ITEMS_SUCCESS;
 
   constructor(public payload: any) { }
 }
 
-export class GetAllError implements Action {
-  readonly type = ActionTypes.GET_ALL_ERROR;
+export class GetItemsError implements Action {
+  readonly type = ActionTypes.GET_ITEMS_ERROR;
 
   constructor(public payload: any = null) { }
 }
@@ -147,9 +147,9 @@ export class DeleteError implements Action {
 
 
 export type Actions =
-  GetAll |
-  GetAllSuccess |
-  GetAllError |
+  GetItems |
+  GetItemsSuccess |
+  GetItemsError |
   GetMore |
   GetMoreSuccess |
   GetMoreError |

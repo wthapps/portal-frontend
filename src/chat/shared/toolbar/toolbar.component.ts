@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input, Renderer2, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Renderer2, OnDestroy, EventEmitter, Output } from '@angular/core';
 
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, merge } from 'rxjs/operators';
@@ -27,8 +27,12 @@ declare let window: any;
 export class ZChatToolbarComponent implements OnInit, OnDestroy {
   @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
   @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
-  @Input() contactSelect: any;
+  @Input() conversation: any;
   @Input() inContactBook = true;
+  @Output() onFavorite: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onNotify: EventEmitter<any> = new EventEmitter<any>();
+
+
   showMemberBar = false;
   usersOnlineItem$: Observable<any>;
   profileUrl: any;
@@ -84,7 +88,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'ZChatShareAddContactComponent',
       action: 'open',
-      payload: {option: 'addMember', conversationSelected: this.contactSelect}
+      payload: {option: 'addMember', conversationSelected: this.conversation}
     })
 
   }
@@ -97,16 +101,19 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     this.editConversation.open();
   }
 
-  onFavorite() {
-    this.chatConversationService.apiFavoriteGroupUser(this.contactSelect);
+  favorite() {
+    // this.chatConversationService.apiFavoriteGroupUser(this.conversation);
+    this.onFavorite.emit({...this.conversation, favorite: !this.conversation.favorite});
   }
 
   toggleNotification() {
-    this.chatConversationService.apiNotificationGroupUser(this.contactSelect);
+    // this.chatConversationService.apiNotificationGroupUser(this.conversation);
+    this.onNotify.emit({...this.conversation, notification: !this.conversation.notification});
+
   }
 
   leaveConversation() {
-    this.chatConversationService.leaveConversation(this.contactSelect);
+    this.chatConversationService.leaveConversation(this.conversation);
   }
 
   onHideConversation() {
@@ -115,7 +122,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
       message: 'Are you sure you want to hide this conversation?',
       header: 'Hide Chat',
       accept: () => {
-        this.chatConversationService.apHideConversation(this.contactSelect);
+        this.chatConversationService.apHideConversation(this.conversation);
       }
     });
   }
@@ -126,7 +133,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
       message: 'This conversation will be deleted from your message list only. not everyone else.<br><br> This action can\'t be undone',
       header: 'Delete Conversation',
       accept: () => {
-        this.chatConversationService.apiDeleteConversation(this.contactSelect);
+        this.chatConversationService.apiDeleteConversation(this.conversation);
       }
     });
   }
@@ -135,7 +142,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     this.commonEventService.broadcast({
       channel: 'CardUserComponent',
       action: 'open',
-      payload: this.contactSelect.partner
+      payload: this.conversation.partner
     })
   }
 
