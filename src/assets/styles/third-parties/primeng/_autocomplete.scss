@@ -1,11 +1,17 @@
 .ui-autocomplete {
-  display: block;
+  @include flexbox;
+  &.ui-autocomplete-multiple {
+
+  }
   .ui-autocomplete-multiple-container.ui-inputtext {
     height: auto;
     padding: 2px;
     @include flexbox;
     @include align-items(center);
     @include flex-wrap(wrap);
+  }
+  .ui-autocomplete-loader {
+    z-index: 10;
   }
 }
 
