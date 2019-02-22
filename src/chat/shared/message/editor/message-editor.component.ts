@@ -250,7 +250,11 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   onOpenSelectPhotos() {
     this.mediaSelectionService.open({
       allowSelectMultiple: true,
-      hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
+      hiddenTabs: ['videos', 'playlists'],
+      selectedTab: 'photos',
+      filter: 'all',
+      allowCancelUpload: true,
+      allowedFileTypes: ['image/*'],
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
       afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
       payload: { group_id: this.contactSelect.group_id },

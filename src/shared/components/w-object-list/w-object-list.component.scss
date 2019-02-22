@@ -75,6 +75,10 @@ $wobject-checkbox: 30px;
     }
     &:hover i, &:focus i {
       border-color: $theme-color;
+
+      &:before {
+        visibility: visible;
+      }
     }
   }
   .wobject-row {
@@ -152,8 +156,8 @@ $wobject-checkbox: 30px;
       }
 
       .wobject-row-checkbox {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         position: absolute;
         top: 5px;
         left: 5px + 10px;
@@ -161,13 +165,15 @@ $wobject-checkbox: 30px;
         // pointer-events: none;
         visibility: hidden;
         i {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          border-radius: 2px;
           line-height: 22px;
           @include box-shadow(0 0 2px rgba(0, 0, 0, .5));
           &, &:hover, &:focus {
             border: 2px solid #FFF;
+            background-color: #FFF; 
+            color: #404040;
           }
         }
       }
@@ -182,6 +188,12 @@ $wobject-checkbox: 30px;
       &:hover, &.active {
         .wobject-row-checkbox {
           visibility: visible;
+
+          i {
+            &:before {
+              visibility: visible;
+            }
+          }
         }
       }
 
@@ -234,6 +246,18 @@ $wobject-checkbox: 30px;
           width: 100%;
           height: auto;
         }
+        i {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          font-size: 40px;
+          color: #ffffff;
+          width: 40px;
+          height: 40px;
+          display: inline-block;
+        }
         .wmedia-box-info {
           position: absolute;
           bottom: 0;
@@ -253,7 +277,7 @@ $wobject-checkbox: 30px;
       right: 5px + 10px;
       z-index: 2;
       i {
-        font-size: 24px;
+        font-size: 20px;
         color: #ffffff;
         text-shadow: 0 0 2px rgba(0, 0, 0, .5);
       }
@@ -341,6 +365,19 @@ $wobject-checkbox: 30px;
             height: auto;
             @include center();
           }
+
+          i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            color: #ffffff;
+            width: 40px;
+            height: 40px;
+            display: inline-block;
+          }
         }
         .wobject-box-name {
           @include flex(1);
@@ -354,6 +391,11 @@ $wobject-checkbox: 30px;
     &.active {
       .wobject-row-checkbox, .wobject-row-ui {
         background-color: rgba(#d4d4d4, 0.5);
+      }
+
+      .wobject-row-checkbox {
+        border: 1px solid #ffffff;
+        border-radius: 4px;
       }
     }
 

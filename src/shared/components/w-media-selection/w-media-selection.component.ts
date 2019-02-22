@@ -45,7 +45,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     {
       name: 'Albums',
       link: 'albums',
-      icon: 'fa fa-file-photo-o',
+      icon: 'wthico-album',
       number: null,
       type: 'tab'
     },

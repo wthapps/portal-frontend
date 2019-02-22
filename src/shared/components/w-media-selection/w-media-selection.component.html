@@ -81,7 +81,7 @@
           </ul>
         </div>
         <div *ngIf="currentTab === 'favourites'" class="modal-selection-toolbar-left pull-left">
-            <div class="btn-group" role="group" aria-label="object-filter">
+            <div class="btn-group btn-group-filter" role="group" aria-label="object-filter">
               <button type="button" class="btn" [ngClass]="subFilter === 'photo' ? 'btn-danger' : 'btn-default'" (click)="onSubFilter('photo')">Photos</button>
               <button type="button" class="btn" [ngClass]="subFilter === 'album' ? 'btn-danger' : 'btn-default'" (click)="onSubFilter('album')">Albums</button>
             </div>
@@ -93,7 +93,7 @@
           
         <ng-container *ngIf="mediasList?.length; else templateNodata">
           
-          <w-object-list class="media-selection-content gray-light" [viewMode]="view$ | async" [data]="mediasList"
+          <w-object-list class="media-selection-content" [viewMode]="view$ | async" [data]="mediasList"
             [sortInline]="false" [isLoading]="isLoading" (completeSort)="onCompleteSort($event)" (completeLoadMore)="onCompleteLoadMore($event)"
             (completeDoubleClick)="onCompleteDoubleClick($event)">
             <ng-template #columnBox let-item>
@@ -123,13 +123,11 @@
               <ng-container *ngIf="item.object_type === 'Media::Photo' || item.model === 'Media::Video'">
                 <div class="wobject-box-img">
                   <img [src]="item.thumbnail_url" alt="">
+                  <i *ngIf="item.model === 'Media::Video'" class="fa fa-play-circle-o"></i>
                 </div>
                 <div class="wobject-box-name">
 
                   <span>{{ item.name }}.{{ item.extension }}</span>
-                  <!-- <div class="wobject-box-action">
-                    <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}"></i>
-                  </div> -->
                 </div>
               </ng-container>
             </ng-template>

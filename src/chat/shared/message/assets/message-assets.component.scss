@@ -207,6 +207,18 @@ $message-assets-width: 400px;
               overflow: hidden;  
               position: relative;
               text-align: center;
+              padding-bottom: 75%;
+              display: block;
+              box-shadow: 0 2px 4px 0 rgba(164, 164, 164, 0.4);
+
+              img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -webkit-transform: translate(-50%,-50%);
+                transform: translate(-50%,-50%);
+                width: 100%;
+              }
 
               i {
                 position: absolute;
