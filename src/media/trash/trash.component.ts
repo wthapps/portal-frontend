@@ -1,5 +1,5 @@
 import {Component, OnInit, ComponentFactoryResolver, OnDestroy, ViewContainerRef, ViewChild} from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -25,6 +25,7 @@ import { SharingModalResult } from '@shared/shared/components/photo/modal/sharin
 import { WUploader } from '@shared/services/w-uploader';
 import { Subject } from 'rxjs';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { takeUntil } from 'rxjs/operators';
 
 declare var _: any;
 @Mixins([SharingModalMixin, MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin])
@@ -65,6 +66,7 @@ MediaModalMixin {
   sorting: any =  {sort_name: "Date", sort: "desc"};
   destroy$ = new Subject();
   title: string = 'Trash';
+  filters: any = [{ title: 'Photos', active: true, model: 'Media::Photo' }, { title: 'Albums', active: false, model: 'Media::Album'  }];
 
   private sub: any;
 
@@ -79,6 +81,7 @@ MediaModalMixin {
     public mediaCreateModalService: MediaCreateModalService,
     public resolver: ComponentFactoryResolver,
     public router: Router,
+    public route: ActivatedRoute,
     public localStorageService: LocalStorageService,
     public commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
@@ -88,8 +91,31 @@ MediaModalMixin {
   deSelect: () => void;
 
   ngOnInit() {
-    this.loadObjects();
+    // this.loadObjects();
     this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      if (params.model == 'Media::Photo') {
+        this.loadObjects({ 'filter[where][object_type]': 'Media::Photo', 'filter[or][object_type]': 'Media::Video'});
+        this.filters = this.filters.map(f => {
+          if (f.model == 'Media::Photo') {
+            f.active = true;
+          } else {
+            f.active = false;
+          }
+          return f;
+        })
+      } else {
+        this.loadObjects({ 'filter[where][object_type]': 'Media::Album'});
+        this.filters = this.filters.map(f => {
+          if (f.model == 'Media::Album') {
+            f.active = true;
+          } else {
+            f.active = false;
+          }
+          return f;
+        })
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -192,6 +218,14 @@ custom method please overwirte any method*/
       case 'favorite':
         this.toggleFavorite(event.payload)
         break;
+      case 'filter':
+        this.filters.forEach(f => {
+          if(f.title == event.data.title) {
+            this.router.navigate(['/trash'], {queryParams: {model: f.model}});
+          }
+          return f;
+        })
+        break;
       case 'download':
         this.store.dispatch(new Download(event.payload));
         break;
@@ -208,6 +242,9 @@ custom method please overwirte any method*/
       case 'sort':
         this.sorting = event.payload.queryParams;
         this.loadObjects(this.sorting);
+        break;
+      case 'emptyTrash':
+        this.emptyTrash();
         break;
       case 'clickOnItem':
       case 'clickOnCircle':

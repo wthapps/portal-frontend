@@ -17,6 +17,7 @@ export class WGridListHeaderComponent {
   @Input() hideScale = false;
   @Input() direction: string;
   @Input() title: string;
+  @Input() titleActions: Array<any> = [];
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
   groupBy = 'Date';

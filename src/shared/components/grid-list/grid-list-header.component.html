@@ -1,5 +1,27 @@
 <div class="grid-list-head">
-  <h5 class="ml10 pull-left">{{title}}</h5>
+  <!-- <h5 class="ml10 pull-left">{{title}}</h5> -->
+  <div class="dropdown">
+    <a aria-expanded="true" aria-haspopup="true" class="btn dropdown-toggle" data-toggle="dropdown" tooltipposition="bottom"
+      type="button">
+      <span> {{title}} </span> <i class="caret"></i>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <a href="#" (click)="upload(['image/*', 'video/mp4', 'video/x-m4v', 'video/*'])">
+          <span class="fileinput-button">
+            <i class="fa fa-image"></i> Upload Item
+          </span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#" (click)="openCreateAlbumModal(selectedObjects)">
+          <i class="fa fa-plus-circle"></i> Create Album
+        </a>
+      </li>
+    </ul>
+  </div>
+
   <div *ngIf="view == 'grid'" class="clearfix sortbar-wrap">
 
     <span class="btn btn-text pull-right" (click)="sort(field)" style="cursor: pointer;">

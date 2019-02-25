@@ -7,7 +7,7 @@
     tooltipposition="bottom" type="button">
     <i class="fa fa-plus"></i>
     <span class="hidden-xs"> New</span>
-</a>
+  </a>
   <ul class="dropdown-menu">
     <li>
       <a href="#" (click)="upload(['image/*', 'video/mp4', 'video/x-m4v', 'video/*'])">
@@ -27,7 +27,7 @@
 <hr class="mt10 mb10">
 <ng-container *ngFor="let media of mediaMenu">
   <div *ngIf="media.name != ''" class="menuleft-item" [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
-    <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}" (click)="onCloseMenu()">
+    <a draggable="false" [routerLink]="[media.link]" [queryParams]="media.queryParams" (click)="onCloseMenu()">
       <i class="{{ media.icon }}"></i> {{ media.name }}
     </a>
   </div>

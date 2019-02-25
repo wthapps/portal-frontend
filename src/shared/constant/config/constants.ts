@@ -209,7 +209,7 @@ export class ConstantsBase {
     },
     { name: 'Shared by me', link: '/shared-by-me', icon: 'fa fa-share-alt' },
     { name: 'Search', link: '/search', icon: 'fa fa-search' },
-    { name: 'Trash', link: '/trash', icon: 'fa fa-trash' }
+    { name: 'Trash', link: '/trash', queryParams: {model: 'Media::Photo'}, icon: 'fa fa-trash' }
   ];
 
   socialMenuItems: any = [

@@ -7,8 +7,8 @@ import {
 
 import { Store } from '@ngrx/store';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { Constants } from '@wth/shared/constant';
 import * as appStore from '../shared/store';
 import {
@@ -31,6 +31,7 @@ import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mi
 import { mediaConstants } from '@media/shared/config/constants';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { takeUntil } from 'rxjs/operators';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaAdditionalListMixin, MediaDownloadMixin])
 @Component({
@@ -67,10 +68,13 @@ export class ZMediaFavoriteListComponent implements OnInit,
   endLoading: any;
   disableMoreAction: boolean = true;
   title: string = 'Favorites';
+  destroy$: any = new Subject();
+  filters: any = [{ title: 'Photos', active: true, model: 'Media::Photo' }, { title: 'Albums', active: false, model: 'Media::Album' }];
 
   constructor(
     public apiBaseService: ApiBaseService,
     private router: Router,
+    private route: ActivatedRoute,
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
     public localStorageService: LocalStorageService,
@@ -78,6 +82,35 @@ export class ZMediaFavoriteListComponent implements OnInit,
     public commonEventService: CommonEventService,
     public resolver: ComponentFactoryResolver
   ) {
+  }
+
+  ngOnInit() {
+    this.loadObjects();
+    this.menuActions = this.getMenuActions();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      if (!params.model || params.model == 'Media::Photo') {
+        this.loadObjects({ 'filter[where][object_type]': 'Media::Photo', 'filter[or][object_type]': 'Media::Video' });
+        this.filters = this.filters.map(f => {
+          if (f.model == 'Media::Photo') {
+            f.active = true;
+          } else {
+            f.active = false;
+          }
+          return f;
+        })
+      } else {
+        this.loadObjects({ 'filter[where][object_type]': 'Media::Album' });
+        this.filters = this.filters.map(f => {
+          if (f.model == 'Media::Album') {
+            f.active = true;
+          } else {
+            f.active = false;
+          }
+          return f;
+        })
+      }
+    })
   }
 
   openModalShare: () => void;
@@ -131,19 +164,22 @@ export class ZMediaFavoriteListComponent implements OnInit,
       });
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
       this.objects = this.objects.filter(ob => ob.favorite);
+      this.selectedObjects = [];
     });
-  }
-
-  ngOnInit() {
-    this.loadObjects();
-    this.menuActions = this.getMenuActions();
-    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   doListEvent(e: any) {
     switch (e.action) {
       case 'viewDetails':
         this.viewDetails(e.payload);
+        break;
+      case 'filter':
+        this.filters.forEach(f => {
+          if (f.title == e.data.title) {
+            this.router.navigate(['/favorites'], { queryParams: { model: f.model } });
+          }
+          return f;
+        })
         break;
       case 'favorite':
         this.toggleFavorite(e.payload);

@@ -1,10 +1,108 @@
-<ng-container *ngIf="objects && objects.length > 0">
+<ng-container>
   <div class="page-body-content" infinite-scroll [infiniteScrollDistance]="2"
     [infiniteScrollThrottle]="500" [scrollWindow]="scrollWindow" (scrolled)="doEvent({action: 'getMore', payload: { nextLink: nextLink }})">
     <div class="page-body-content-in">
-      <w-grid-list-header [title]="title" [data]="objects" [view]="view" [field]="sorting.sort_name" [direction]="sorting.sort" (event)="doEvent($event)"
-        [hideScale]="hideScale"></w-grid-list-header>
-      <div id="list-photo" class="row-img row-img-{{ viewSize }}" [ngClass]="view" (dragenter)="onDragenter($event)"
+        <div class="grid-list-head">
+          <h5 *ngIf="!titleActions || titleActions.length == 0" class="ml10 pull-left mr10">{{title}}</h5>
+          <div *ngIf="titleActions && titleActions.length > 0" class="pull-left dropdown">
+            <a aria-expanded="true" aria-haspopup="true" class="btn dropdown-toggle" data-toggle="dropdown" tooltipposition="bottom"
+              type="button">
+              <span> {{title}} </span> <i class="caret"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li *ngFor="let action of titleActions">
+                <a href="javascript:void(0);" (click)="doEvent({action: 'emptyTrash'})">
+                  <span class="fileinput-button">
+                    <i [ngClass]="action.icon"></i> {{action.title}}
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <ul class="nav nav-tabs hidden-xs">
+            <li *ngFor="let f of filters" [ngClass]="f.active? 'active': ''">
+              <a href="javascript:void(0);" (click)="changeFilter(f)">
+                {{f.title}}
+              </a>
+            </li>
+          </ul>
+
+          <div *ngIf="filters && filters.length > 0" class="pull-left dropdown visible-xs-block">
+            <span class="btn btn-outline-default dropdown-toggle" style="cursor: pointer;" type="button" data-toggle="dropdown">
+              {{ (filters | wthFilterBy:'active':true)[0].title }} <i class="caret"></i>
+            </span>
+            <ul class="dropdown-menu">
+              <li *ngFor="let f of filters">
+                <a href="javascript:void(0);" (click)="changeFilter(f)">
+                  {{f.title}}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div *ngIf="view == 'grid'" class="clearfix sortbar-wrap">
+            <span class="btn btn-text pull-right" (click)="sort(sorting.sort_name)" style="cursor: pointer;">
+              <i class="fa" [ngClass]="{'fa-arrow-up': (sorting.sort == 'asc'), 'fa-arrow-down': (sorting.sort == 'desc')}"></i>
+            </span>
+            <div class="dropdown pull-right">
+              <span class="btn btn-text dropdown-toggle" style="cursor: pointer;" type="button" data-toggle="dropdown">
+                {{ sorting.sort_name ==='created_at' ? 'Date': sorting.sort_name }}
+              </span>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a (click)="sort('Date')" href="javascript:void(0);"> Date</a></li>
+                <li><a (click)="sort('Name')" href="javascript:void(0);"> Name</a></li>
+              </ul>
+            </div>
+
+            <div *ngIf="!hideScale" class="pull-right">
+              <div class="sortbar-slider">
+                <i draggable="false" class="fa fa-picture-o fz10"></i>
+                <div class="sortbar-slider-in" style="cursor: pointer;">
+                  <p-slider draggable="false" [(ngModel)]="sliderVal" (onChange)="zoom($event)" [step]="3" [min]="sliderMin"
+                    [max]="sliderMax"></p-slider>
+                </div>
+                <i draggable="false" class="fa fa-picture-o fz18"></i>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="view == 'list'">
+            <div class="photo-box-nav">
+              <div class="photo-box-figure">
+                <div (click)="sort('name')" class="photo-box-name can-click">
+                  Name <i *ngIf="field=='name'" class="fa" [ngClass]="{'fa-arrow-up': (direction == 'asc'), 'fa-arrow-down': (direction == 'desc')}"></i>
+                </div>
+                <div (click)="sort('owner')" class="photo-box-owner can-click">Owner
+                  <i *ngIf="field=='owner'" class="fa" [ngClass]="{'fa-arrow-up': (direction == 'asc'), 'fa-arrow-down': (direction == 'desc')}"></i>
+                </div>
+                <div (click)="sort('date')" class="photo-box-date can-click">
+                  Created Date <i *ngIf="field=='date'" class="fa" [ngClass]="{'fa-arrow-up': (direction == 'asc'), 'fa-arrow-down': (direction == 'desc')}"></i>
+                </div>
+                <div class="photo-box-size">Size</div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="view == 'timeline'" class="pull-right">
+            <span class="dropdown">
+              <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                type="button" style="margin-right: 10px; border: none; background: none">
+                {{ groupBy }}
+              </button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a (click)="changeView('timeline', 'Date');" href="javascript:void(0);"> Date</a></li>
+                <li><a (click)="changeView('timeline', 'Month')" href="javascript:void(0);"> Month</a></li>
+                <li><a (click)="changeView('timeline', 'Year')" href="javascript:void(0)"> Year</a></li>
+              </ul>
+            </span>
+            <i class="fa can-click" [ngClass]="{'fa-arrow-up': (direction == 'asc'), 'fa-arrow-down': (direction == 'desc')}"
+              (click)="sort(field)"></i>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+
+      <div *ngIf="objects && objects.length > 0" id="list-photo" class="row-img row-img-{{ viewSize }}" [ngClass]="view" (dragenter)="onDragenter($event)"
         (dragleave)="onDragleave($event)">
         <!-- Split timeline to handle performance -->
         <ng-container *ngIf="view != 'timeline'">
