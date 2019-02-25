@@ -65,6 +65,7 @@ export class AlbumListComponent implements OnInit,
   endLoading: any;
   subCreateAlbum: any;
   title: string = 'Albums';
+  filters: any = [];
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   openCreateAlbumModal: (selectedObjects: any) => void;

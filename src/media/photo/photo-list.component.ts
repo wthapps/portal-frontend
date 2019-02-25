@@ -71,6 +71,7 @@ MediaModalMixin {
   destroy$ = new Subject();
   channel = 'ZMediaPhotoListComponent';
   title: string = 'Photos';
+  filters: any = [];
 
   private sub: any;
 

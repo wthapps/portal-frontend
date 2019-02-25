@@ -49,6 +49,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   titleNoData: any = 'There are no media shared by you!';
   subTitleNoData: any = 'Media can be shared to your connected contact.';
   title: string = 'Shared by me';
+  filters: any = [];
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
