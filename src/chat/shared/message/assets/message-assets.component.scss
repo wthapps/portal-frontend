@@ -168,21 +168,37 @@ $message-assets-width: 400px;
         }
     
         .message-assets-item-body {
-            padding: 5px;
+            padding: 10px;
             margin-bottom: 2px;
             border-radius: 5px;
             border: 1px solid #ccc;
             overflow: hidden;
             cursor: 'pointer';
     
+            .media {
+              margin: 0px 10px;
+
+              .media-body {
+                a {
+                  display: block;
+                }
+              }
+            }
+
             a {
-                display: block;
                 width: 317px;
                 text-decoration: none;
                 color: $text-color;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
+            }
+
+            .wobject-box-title-note {
+              display: block;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
             }
 
             .wobject-box-content-note {
@@ -207,6 +223,7 @@ $message-assets-width: 400px;
               overflow: hidden;  
               position: relative;
               text-align: center;
+              margin: -10px -10px 0 -10px;
               padding-bottom: 75%;
               display: block;
               box-shadow: 0 2px 4px 0 rgba(164, 164, 164, 0.4);

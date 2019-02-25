@@ -7,6 +7,7 @@ export class Message {
   content_type: string;
   group_id: number;
   user: any;
+  owner;
   group: any; //this is conversation that message belongs to
   is_quote: boolean;
   sending_status: number;
@@ -27,6 +28,7 @@ export class Message {
     this.group = (obj && obj.group) || null;
     this.group_id = (obj && obj.group_id) || null;
     this.user = (obj && obj.user) || null;
+    this.owner = (obj && obj.owner) || null;
     this.is_quote = (obj && obj.is_quote) || false;
     this.sending_status = (obj && obj.sending_status) || 1;
     this.status = (obj && obj.status) || 'sending';

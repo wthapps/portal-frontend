@@ -65,6 +65,23 @@ export class MessageAssetsService {
     );
   }
 
+  /**
+   *
+   * @param messageList
+   * Merge message assets data with latest message list in current conversation: insert or delete assets.
+   */
+  mergeData(messageList) {
+    const inactiveIds = messageList.reduce((arr, item) => item.deleted ? [...arr, item.id] : arr, []);
+    const medias = this.mediasSubject.getValue();
+    if (medias && medias.length > 0) {
+      const withRemovedData = medias.filter(md => !inactiveIds.includes(md.id));
+      const reverseList = messageList.reverse().filter(msg => !msg.deleted);
+      const totalData = [...reverseList , ...withRemovedData ];
+      const updatedData = _.uniqBy(totalData, 'id');
+      this.mediasSubject.next(updatedData);
+    }
+  }
+
   removeMedia(item) {
     const medias = this.mediasSubject.getValue().filter(m => m.uuid !== item.uuid);
     this.mediasSubject.next(medias);

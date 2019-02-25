@@ -82,7 +82,7 @@
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
   
             <div class="message-assets-item-body" (click)="onClickItem(item)" >
-              <span class="bold name-clickable"><i class="fa fa-file"></i>
+              <span class="bold wobject-box-title-note name-clickable"><i class="fa fa-file"></i>
                 <a [href]="noteUrl + '/' + item.uuid" class="note-title" target="_blank"> {{ item?.file?.name === '' ? 'Untitled' :
                   item?.file?.name }} </a> </span>
               <div class="wobject-box-content-note" [innerHTML]="item?.file?.content | safeHtml"></div>
@@ -114,9 +114,9 @@
     </ng-container>
     <ng-template #templateItemHeader let-item="item">
         <div class="message-assets-item-header text-fade">
-            <span>{{ item?.owner | username }}, {{ item?.created_at | timeFormat }}</span>
+            <span>{{ (item?.owner || item?.user) | username }}, {{ item?.created_at | timeFormat }}</span>
 
-            <a href="javascript:;" *ngIf="item?.owner?.uuid === currentUser?.uuid" class="pull-right action" (click)="onRemove(item)"><i class="fa fa-trash"></i></a>
+            <a href="javascript:;" *ngIf="(item?.owner || item?.user)?.uuid === currentUser?.uuid" class="pull-right action" (click)="onRemove(item)"><i class="fa fa-trash"></i></a>
           </div>
     </ng-template>
     <ng-template #templateNodata>

@@ -63,6 +63,12 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     }
   ];
 
+  readonly validTypeMap = {
+    'photos': ['Media::Photo', 'Media::Video'],
+    'notes': ['Note::Note'],
+    'files': ['Common::GenericFile']
+  };
+
 
   tabsMember: WTab[] = [this.tabMember, ...this.tabsPhoto];
   tabs: WTab[] = [];
@@ -111,6 +117,15 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     this.messageAssetsService.medias$.pipe(
       takeUntil(this.destroy$))
     .subscribe(media => this.medias = media);
+
+    this.chatMessageService.getCurrentMessages().pipe(takeUntil(this.destroy$))
+    .subscribe(({data, meta}) => {
+      if (data && this.currentTab !== 'members') {
+        const filteredData = data.filter(msg => msg.file && this.validTypeMap[this.currentTab].includes(msg.file_type) );
+
+        this.messageAssetsService.mergeData(filteredData);
+      }
+    });
 
     this.chatConversationService.getStoreSelectedConversation().pipe(
       distinctUntilChanged((p, q) => p.id === q.id),

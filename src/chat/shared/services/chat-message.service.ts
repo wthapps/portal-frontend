@@ -110,7 +110,7 @@ export class ChatMessageService {
     });
   }
 
-  getCurrentMessages() {
+  getCurrentMessages(): Observable<any> {
     return this.store.select(STORE_MESSAGES);
   }
 

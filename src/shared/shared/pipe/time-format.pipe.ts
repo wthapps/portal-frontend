@@ -1,11 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
 
-
-@Pipe({name: 'timeFormat'})
+@Pipe({ name: 'timeFormat' })
 export class TimeFormatPipe implements PipeTransform {
   transform(value: string, format: string = 'default'): string {
-    switch(format) {
+    switch (format) {
       case 'day':
         return this.dayFormat(value);
       case 'second':
@@ -36,7 +35,7 @@ export class TimeFormatPipe implements PipeTransform {
         nextDay: '[Tomorrow]',
         lastDay: '[Yesterday]',
         lastWeek: 'll',
-        sameElse: 'll'
+        sameElse: 'MMM D Y'
       });
     }
   }
