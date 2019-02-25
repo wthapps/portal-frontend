@@ -63,63 +63,188 @@
   </div>
   <div class="note-editor-content" [ngClass]="{'show-aside': !!visibleTab}">
     <div class="note-editor-toolbar">
-      <div id="quill-toolbar">
-        <!--Mobile-->
-        <div class="ql-format-group ql-format-group-mobile visible-xs-block">
-          <div class="clearfix">
-            <div class="pull-left">
-              <div class="ql-formats">
-                <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()">
-                  <i class="fa fa-reply"></i>
-                </button>
-                <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()">
-                  <i class="fa fa-share"></i>
-                </button>
-                <button pTooltip="Paint format" tooltipPosition="bottom" type="button"
-                        (click)="copyFormat()">
-                  <i class="fa fa-paint-brush"></i>
-                </button>
-                <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
-              </div>
-            </div>
-            <div class="pull-right">
-              <div class="ql-formats">
-                <button pTooltip="Undo" tooltipPosition="bottom" type="button"
-                        (click)="showFormatGroupMobile = !showFormatGroupMobile">
-                  <span *ngIf="!showFormatGroupMobile">A</span>
-                  <span class="btn-show-format" *ngIf="showFormatGroupMobile"><i
-                          class="fa fa-times"></i></span>
-                </button>
-              </div>
-              <div class="ql-formats">
-                <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom"
-                        class="ql-link"></button>
-                <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
-                <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
-                <!--<button class="ql-video"></button>-->
-                <!--<button class="ql-formula"></button>-->
-              </div>
+      <ng-container *ngIf="note.permission === 'view';else templateQuillToolbar">
+        <div class="ql-toolbar ql-snow">
+          <div class="ql-container">
+            <div class="ql-formats">
+              <i class="fa fa-eye"></i> View only
             </div>
           </div>
+        </div>
+      </ng-container>
+      <ng-template # #templateQuillToolbar>
+        <div id="quill-toolbar">
+          <!--Mobile-->
+          <div class="ql-format-group ql-format-group-mobile visible-xs-block">
+            <div class="clearfix">
+              <div class="pull-left">
+                <div class="ql-formats">
+                  <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()">
+                    <i class="fa fa-reply"></i>
+                  </button>
+                  <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()">
+                    <i class="fa fa-share"></i>
+                  </button>
+                  <button pTooltip="Paint format" tooltipPosition="bottom" type="button"
+                          (click)="copyFormat()">
+                    <i class="fa fa-paint-brush"></i>
+                  </button>
+                  <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
+                </div>
+              </div>
+              <div class="pull-right">
+                <div class="ql-formats">
+                  <button pTooltip="Undo" tooltipPosition="bottom" type="button"
+                          (click)="showFormatGroupMobile = !showFormatGroupMobile">
+                    <span *ngIf="!showFormatGroupMobile">A</span>
+                    <span class="btn-show-format" *ngIf="showFormatGroupMobile"><i
+                            class="fa fa-times"></i></span>
+                  </button>
+                </div>
+                <div class="ql-formats">
+                  <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom"
+                          class="ql-link"></button>
+                  <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
+                  <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
+                  <!--<button class="ql-video"></button>-->
+                  <!--<button class="ql-formula"></button>-->
+                </div>
+              </div>
+            </div>
 
-          <div [ngClass]="{'hidden': !showFormatGroupMobile}" class="ql-format-group-mobile-content">
-            <div class="ql-formats no-right-margin">
+            <div [ngClass]="{'hidden': !showFormatGroupMobile}" class="ql-format-group-mobile-content">
+              <div class="ql-formats no-right-margin">
+                <select class="ql-header vh left-border-radius" title="Styles">
+                  <option *ngFor="let h of HEADINGS" [value]="h?.value"
+                          [attr.selected]="h?.value === '0' ? '' : null">{{ h?.name}}
+                  </option>
+                </select>
+
+                <select class="ql-font vh no-border-radius w150" title="Font">
+                  <option *ngFor="let font of FONTS" [value]="font?.value"
+                          [attr.selected]="font?.value === setting?.font ? '' : null">{{font?.name}}
+                  </option>
+                </select>
+
+                <select class="ql-size vh ql-size-sm no-border-radius" title="Font size">
+                  <option *ngFor="let size of FONT_SIZES" [value]="size?.value"
+                          [attr.selected]="size?.value === '14pt' ? setting?.font_size : null">{{
+                    size?.name}}
+                  </option>
+                </select>
+
+              </div>
+
+              <div class="ql-formats">
+                <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold"
+                        aria-label="Bold"></button>
+                <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic"
+                        aria-label="Italic"></button>
+                <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom"
+                        class="ql-underline"
+                        aria-label="Underline"></button>
+                <!-- <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike"
+                        aria-label="Strikethrough"></button> -->
+
+                <select class="ql-color no-border-radius" title="Text color">
+                  <option value="#000000"></option>
+                  <option value="#002966"></option>
+                  <option value="#0047b2"></option>
+                  <!--<option value="#0066cc"></option>-->
+                  <option value="#5c5cff"></option>
+                  <option value="#ff0000"></option>
+                  <option value="#0000ff"></option>
+                  <option value="#ffff00"></option>
+                  <option value="#00ff00"></option>
+                  <option value="#00ffff"></option>
+                  <option value="#ff00ff"></option>
+                  <option value="#bbbbbb"></option>
+                  <option value="#7f7f7f"></option>
+                  <option value="#888888"></option>
+                  <option value="#444444"></option>
+                  <option value="#ffffff"></option>
+                </select>
+
+                <!-- Add background -->
+                <select class="ql-background right-border-radius" title="Background">
+                  <option value="#ffffff"></option>
+                  <option value="#ffff00"></option>
+                  <option value="#00ff00"></option>
+                  <option value="#00ffff"></option>
+                  <option value="#ff00ff"></option>
+                  <option value="#ff9900"></option>
+                  <option value="#ff0000"></option>
+                  <option value="#bbbbbb"></option>
+                  <option value="#444444"></option>
+                  <option value="#000000"></option>
+
+                </select>
+              </div>
+              <div tooltipPosition="bottom" class="ql-formats">
+                <!-- <button pTooltip="Left align" tooltipPosition="bottom" class="ql-align" value=""></button> -->
+                <!-- <button pTooltip="Center align" tooltipPosition="bottom" class="ql-align" value="center"></button>
+                <button pTooltip="Right align" tooltipPosition="bottom" class="ql-align" value="right"></button>
+                <button pTooltip="Justify" tooltipPosition="bottom" class="ql-align" value="justify"></button> -->
+              </div>
+              <div class="ql-formats">
+                <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
+                <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list"
+                        value="ordered"></button>
+                <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list"
+                        value="bullet"></button>
+
+                <!-- <button pTooltip="Decrease indent" tooltipPosition="bottom" class="ql-indent" value="-1"></button>
+                <button pTooltip="Increase indent" tooltipPosition="bottom" class="ql-indent" value="+1"></button> -->
+              </div>
+
+              <div pTooltip="Divider line" tooltipPosition="bottom" class="ql-formats">
+                <button type="button" (click)="divider()">
+                  <i>&mdash;</i>
+                </button>
+              </div>
+
+              <!-- <div class="ql-formats">
+                <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
+                <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
+              </div> -->
+            </div>
+
+          </div>
+
+          <!--PC-->
+          <div class="ql-format-group hidden-xs">
+            <div class="ql-formats">
+              <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()">
+                <i class="fa fa-reply"></i>
+              </button>
+              <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()">
+                <i class="fa fa-share"></i>
+              </button>
+              <button pTooltip="Paint format" tooltipPosition="bottom" type="button" (click)="copyFormat()">
+                <i class="fa fa-paint-brush"></i>
+              </button>
+            </div>
+
+            <div class="ql-formats">
               <select class="ql-header vh left-border-radius" title="Styles">
                 <option *ngFor="let h of HEADINGS" [value]="h?.value"
                         [attr.selected]="h?.value === '0' ? '' : null">{{ h?.name}}
                 </option>
               </select>
+            </div>
 
-              <select class="ql-font vh no-border-radius w150" title="Font">
+            <div class="ql-formats">
+              <select class="ql-font vh w150 no-border-radius" title="Font">
                 <option *ngFor="let font of FONTS" [value]="font?.value"
                         [attr.selected]="font?.value === setting?.font ? '' : null">{{font?.name}}
                 </option>
               </select>
+            </div>
 
+            <div class="ql-formats">
               <select class="ql-size vh ql-size-sm no-border-radius" title="Font size">
                 <option *ngFor="let size of FONT_SIZES" [value]="size?.value"
-                        [attr.selected]="size?.value === '14pt' ? setting?.font_size : null">{{
-                  size?.name}}
+                        [attr.selected]="size?.value === setting?.font_size ? '' : null">{{size?.name}}
                 </option>
               </select>
 
@@ -167,16 +292,16 @@
                 <option value="#bbbbbb"></option>
                 <option value="#444444"></option>
                 <option value="#000000"></option>
-
               </select>
             </div>
-            <div tooltipPosition="bottom" class="ql-formats">
-              <!-- <button pTooltip="Left align" tooltipPosition="bottom" class="ql-align" value=""></button> -->
-              <!-- <button pTooltip="Center align" tooltipPosition="bottom" class="ql-align" value="center"></button>
-              <button pTooltip="Right align" tooltipPosition="bottom" class="ql-align" value="right"></button>
-              <button pTooltip="Justify" tooltipPosition="bottom" class="ql-align" value="justify"></button> -->
-            </div>
             <div class="ql-formats">
+              <select class="ql-align no-border-radius">
+                <option value=""></option>
+                <option value="center"></option>
+                <option value="right"></option>
+                <option value="justify"></option>
+              </select>
+
               <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
               <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list"
                       value="ordered"></button>
@@ -187,142 +312,28 @@
               <button pTooltip="Increase indent" tooltipPosition="bottom" class="ql-indent" value="+1"></button> -->
             </div>
 
-            <div pTooltip="Divider line" tooltipPosition="bottom" class="ql-formats">
-              <button type="button" (click)="divider()">
+            <div class="ql-formats">
+              <button pTooltip="Divider line" tooltipPosition="bottom" type="button" (click)="divider()">
                 <i>&mdash;</i>
               </button>
+              <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom"
+                      class="ql-link"></button>
+              <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
+              <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
+              <!--<button class="ql-video"></button>-->
+              <!--<button class="ql-formula"></button>-->
             </div>
-
             <!-- <div class="ql-formats">
+              <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
+            </div>
+            <div class="ql-formats">
               <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
               <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
             </div> -->
-          </div>
 
+          </div>
         </div>
-
-        <!--PC-->
-        <div class="ql-format-group hidden-xs">
-          <div class="ql-formats">
-            <button pTooltip="Undo" tooltipPosition="bottom" type="button" (click)="undo()">
-              <i class="fa fa-reply"></i>
-            </button>
-            <button pTooltip="Redo" tooltipPosition="bottom" type="button" (click)="redo()">
-              <i class="fa fa-share"></i>
-            </button>
-            <button pTooltip="Paint format" tooltipPosition="bottom" type="button" (click)="copyFormat()">
-              <i class="fa fa-paint-brush"></i>
-            </button>
-          </div>
-
-          <div class="ql-formats">
-            <select class="ql-header vh left-border-radius" title="Styles">
-              <option *ngFor="let h of HEADINGS" [value]="h?.value"
-                      [attr.selected]="h?.value === '0' ? '' : null">{{ h?.name}}
-              </option>
-            </select>
-          </div>
-
-          <div class="ql-formats">
-            <select class="ql-font vh w150 no-border-radius" title="Font">
-              <option *ngFor="let font of FONTS" [value]="font?.value"
-                      [attr.selected]="font?.value === setting?.font ? '' : null">{{font?.name}}
-              </option>
-            </select>
-          </div>
-
-          <div class="ql-formats">
-            <select class="ql-size vh ql-size-sm no-border-radius" title="Font size">
-              <option *ngFor="let size of FONT_SIZES" [value]="size?.value"
-                      [attr.selected]="size?.value === setting?.font_size ? '' : null">{{size?.name}}
-              </option>
-            </select>
-
-          </div>
-
-          <div class="ql-formats">
-            <button pTooltip="Bold ({{buttonControl}} + B)" tooltipPosition="bottom" class="ql-bold"
-                    aria-label="Bold"></button>
-            <button pTooltip="Italic ({{buttonControl}} + I)" tooltipPosition="bottom" class="ql-italic"
-                    aria-label="Italic"></button>
-            <button pTooltip="Underline ({{buttonControl}} + U)" tooltipPosition="bottom"
-                    class="ql-underline"
-                    aria-label="Underline"></button>
-            <!-- <button pTooltip="Strikethrough" tooltipPosition="bottom" class="ql-strike"
-                    aria-label="Strikethrough"></button> -->
-
-            <select class="ql-color no-border-radius" title="Text color">
-              <option value="#000000"></option>
-              <option value="#002966"></option>
-              <option value="#0047b2"></option>
-              <!--<option value="#0066cc"></option>-->
-              <option value="#5c5cff"></option>
-              <option value="#ff0000"></option>
-              <option value="#0000ff"></option>
-              <option value="#ffff00"></option>
-              <option value="#00ff00"></option>
-              <option value="#00ffff"></option>
-              <option value="#ff00ff"></option>
-              <option value="#bbbbbb"></option>
-              <option value="#7f7f7f"></option>
-              <option value="#888888"></option>
-              <option value="#444444"></option>
-              <option value="#ffffff"></option>
-            </select>
-
-            <!-- Add background -->
-            <select class="ql-background right-border-radius" title="Background">
-              <option value="#ffffff"></option>
-              <option value="#ffff00"></option>
-              <option value="#00ff00"></option>
-              <option value="#00ffff"></option>
-              <option value="#ff00ff"></option>
-              <option value="#ff9900"></option>
-              <option value="#ff0000"></option>
-              <option value="#bbbbbb"></option>
-              <option value="#444444"></option>
-              <option value="#000000"></option>
-            </select>
-          </div>
-          <div class="ql-formats">
-            <select class="ql-align no-border-radius">
-              <option value=""></option>
-              <option value="center"></option>
-              <option value="right"></option>
-              <option value="justify"></option>
-            </select>
-
-            <button pTooltip="Checkbox" tooltipPosition="bottom" class="ql-list" value="check"></button>
-            <button pTooltip="Ordered List" tooltipPosition="bottom" class="ql-list"
-                    value="ordered"></button>
-            <button pTooltip="Unordered List" tooltipPosition="bottom" class="ql-list"
-                    value="bullet"></button>
-
-            <!-- <button pTooltip="Decrease indent" tooltipPosition="bottom" class="ql-indent" value="-1"></button>
-            <button pTooltip="Increase indent" tooltipPosition="bottom" class="ql-indent" value="+1"></button> -->
-          </div>
-
-          <div class="ql-formats">
-            <button pTooltip="Divider line" tooltipPosition="bottom" type="button" (click)="divider()">
-              <i>&mdash;</i>
-            </button>
-            <button pTooltip="Insert Link ({{buttonControl}} + K)" tooltipPosition="bottom"
-                    class="ql-link"></button>
-            <button pTooltip="Insert Image" tooltipPosition="bottom" class="ql-image"></button>
-            <button pTooltip="Code View" tooltipPosition="bottom" class="ql-code-block"></button>
-            <!--<button class="ql-video"></button>-->
-            <!--<button class="ql-formula"></button>-->
-          </div>
-          <!-- <div class="ql-formats">
-            <button pTooltip="Clear formatting" tooltipPosition="bottom" class="ql-clean"></button>
-          </div>
-          <div class="ql-formats">
-            <button pTooltip="Subscript" tooltipPosition="bottom" class="ql-script" value="sub"></button>
-            <button pTooltip="Superscript" tooltipPosition="bottom" class="ql-script" value="super"></button>
-          </div> -->
-
-        </div>
-      </div>
+      </ng-template>
     </div>
     <div class="note-editor-body" id="scrolling-container">
       <div id="quill-editor"></div>

@@ -2,17 +2,16 @@ import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild, View
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable, Subject, Subscription, of, fromEvent, merge, interval } from 'rxjs';
+import { fromEvent, interval, merge, Observable, of, Subject, Subscription } from 'rxjs';
 import {
-  takeUntil,
-  switchMap,
-  filter,
-  mergeMap,
-  map,
   debounceTime,
-  tap,
   distinctUntilChanged,
+  filter,
+  map,
   skip,
+  switchMap,
+  takeUntil,
+  tap,
   withLatestFrom
 } from 'rxjs/operators';
 
@@ -45,7 +44,7 @@ import { NoteChannelService } from '@shared/channels/note-channel.service';
 import { User } from '@shared/shared/models/user.model';
 import { MessageService } from 'primeng/api';
 import { WUploader } from './../../shared/services/w-uploader';
-import { ZNoteSharedSettingsService, NoteSetting } from '@notes/shared/services/settings.service';
+import { NoteSetting, ZNoteSharedSettingsService } from '@notes/shared/services/settings.service';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -197,8 +196,11 @@ export class ZNoteDetailEditComponent
 
       if (user_name) {
         this.messageService.add({
-          severity: 'warn', detail: `User ${user_name} is editing`, life: 60000,
-          closable: false, sticky: true
+          severity: 'warn',
+          detail: `<i class="fa fa-lock mr5" aria-hidden="true"></i><strong>${user_name}</strong> is editing`,
+          life: 60000,
+          closable: false,
+          sticky: true
         });
       }
     });

@@ -1,3 +1,11 @@
 <div class="toast-message">
-  <p-toast position="top-center" [baseZIndex]="2000"></p-toast>
+  <p-toast position="top-center" [baseZIndex]="2000">
+    <ng-template let-message pTemplate="message">
+      <div class="ui-toast-message-text-content">
+        <div class="ui-toast-summary">{{message.summary}}</div>
+        <div class="ui-toast-detail" [innerHtml]="message.detail"></div>
+      </div>
+    </ng-template>
+  </p-toast>
+
 </div>

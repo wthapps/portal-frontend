@@ -193,7 +193,7 @@ $note-editor-aside-w: 400px;
     }
 
     #quill-toolbar .ql-font span[data-value="helvetica"]::before, .ql-font-helvetica {
-      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; 
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     #quill-toolbar .ql-font span[data-value="lato"]::before, .ql-font-lato {
@@ -211,13 +211,27 @@ $note-editor-aside-w: 400px;
     #quill-toolbar .ql-font span[data-value="trebuchet"]::before, .ql-font-trebuchet {
       font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
     }
-    
+
     #quill-toolbar .ql-font span[data-value="verdana"]::before, .ql-font-verdana {
       font-family: Verdana, Geneva, sans-serif;
     }
   }
 
+  @media (min-width: $screen-lg-min) {
+    .ql-container {
+      width: 960px;
+    }
+  }
   @media (min-width: $screen-sm-min) {
+    .note-editor-content {
+      padding-bottom: 20px;
+    }
+    .ql-container {
+      max-width: 100%;
+      margin: auto;
+      height: auto;
+      min-height: 100%;
+    }
     .note-editor-toolbar {
       margin-bottom: 10px;
       .ql-toolbar {
@@ -263,12 +277,6 @@ $note-editor-aside-w: 400px;
     }
     .note-editor-body {
       overflow: auto;
-      .ql-container {
-        max-width: 960px;
-        margin: auto;
-        height: auto;
-        min-height: 100%;
-      }
     }
   }
   @media (max-width: $screen-xs-max) {
