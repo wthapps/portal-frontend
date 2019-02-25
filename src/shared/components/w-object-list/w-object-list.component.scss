@@ -160,14 +160,16 @@ $wobject-checkbox: 30px;
         height: 20px;
         position: absolute;
         top: 5px;
-        left: 5px + 10px;
+        left: 15px;
+        border-radius: 4px;
+        border: 2px solid #ffffff;
         // remove because need to check
         // pointer-events: none;
         visibility: hidden;
         i {
-          width: 20px;
-          height: 20px;
-          border-radius: 2px;
+          width: 18px;
+          height: 18px;
+          border-radius: 4px;
           line-height: 22px;
           @include box-shadow(0 0 2px rgba(0, 0, 0, .5));
           &, &:hover, &:focus {
@@ -318,7 +320,7 @@ $wobject-checkbox: 30px;
       i {
         width: 18px;
         height: 18px;
-        border-radius: 3px;
+        border-radius: 4px;
         line-height: 16px;
       }
     }
