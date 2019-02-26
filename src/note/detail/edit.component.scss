@@ -200,11 +200,11 @@ $note-editor-aside-w: 400px;
       font-family: "Lato";
     }
 
-    #quill-toolbar .ql-font span[data-value="courier-new"]::before, .ql-font-courier-new {
+    #quill-toolbar .ql-font span[data-value="couriernew"]::before, .ql-font-couriernew {
       font-family: "Courier New", Courier, monospace;
     }
 
-    #quill-toolbar .ql-font span[data-value="times-new-roman"]::before, .ql-font-times-new-roman {
+    #quill-toolbar .ql-font span[data-value="timesnewroman"]::before, .ql-font-timesnewroman {
       font-family: "TimesNewRoman", "Times New Roman", Times, Baskerville, Georgia, serif;;
     }
 

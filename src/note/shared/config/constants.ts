@@ -97,9 +97,9 @@ export class NoteConstants extends ConstantsBase {
     { name: 'Gotham', value: 'gotham' },
     { name: 'Georgia', value: 'georgia' },
     { name: 'Helvetica', value: 'helvetica' },
-    { name: 'Courier New', value: 'courier-new' },
+    { name: 'Courier New', value: 'couriernew' },
     { name: 'Lato', value: 'lato' },
-    { name: 'Times New Roman', value: 'times-new-roman' },
+    { name: 'Times New Roman', value: 'timesnewroman' },
     { name: 'Trebuchet', value: 'trebuchet' },
     { name: 'Verdana', value: 'verdana' }
   ];

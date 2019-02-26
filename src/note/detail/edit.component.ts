@@ -26,6 +26,7 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
 import * as Delta from 'quill-delta/lib/delta';
+import DeltaOp from 'quill-delta/lib/op';
 import { CommonEventService, UserService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
 import { noteConstants } from '@notes/shared/config/constants';
@@ -411,14 +412,14 @@ export class ZNoteDetailEditComponent
       }
     };
 
-    const Font = Quill.import('formats/font');
-    Font.whitelist = [
+    const FontAttributor = Quill.import('attributors/class/font');
+    FontAttributor.whitelist = [
       'gotham',
       'georgia',
       'helvetica',
       'lato',
-      'courier-new',
-      'times-new-roman',
+      'couriernew',
+      'timesnewroman',
       'trebuchet',
       'verdana'
     ];
@@ -435,10 +436,11 @@ export class ZNoteDetailEditComponent
     DividerBlot.blotName = 'divider';
     DividerBlot.tagName = 'hr';
 
-    Quill.register(Font, true);
+    Quill.register(FontAttributor, true);
     Quill.register(Size, true);
     Quill.register(DividerBlot);
     this.extendClipboard(this);
+    // this.extendKeyboard(this);
     Quill.register('modules/counter', Counter, true);
     Quill.register('modules/customImage', CustomImage, true);
 
@@ -525,8 +527,8 @@ export class ZNoteDetailEditComponent
     const range = this.customEditor.getSelection(true);
     if (this.customEditor.getLength() <= 1) {
       console.log('this editor is blank', this.customEditor);
-      this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
-      this.customEditor.setSelection(range.index, 1, Quill.sources.SILENT);
+      // this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
+      // this.customEditor.setSelection(range.index, 1, Quill.sources.SILENT);
       this.customEditor.format('font', font);
       this.customEditor.format('size', font_size);
     } else {
@@ -568,13 +570,29 @@ export class ZNoteDetailEditComponent
             return;
           }
           const range = this.quill.getSelection();
+          const { font, size} = this.quill.getFormat();
+          // Filter font, size property only
+          const copyFormat = {};
+          if (font) { copyFormat['font'] = font; }
+          if (size) { copyFormat['size'] = size; }
+
+
           let delta = new Delta().retain(range.index);
           const scrollTop = this.quill.scrollingContainer.scrollTop;
           this.container.focus();
           this.quill.selection.update(Quill.sources.SILENT);
           setTimeout(() => {
             if (dataClipboard1[0].match('text/*')) {
-              delta = delta.concat(this.convert()).delete(range.length);
+              const conv = this.convert();
+              const ops = conv.ops.map( o => {
+                const attributes = {...o.attributes, ...copyFormat};
+                return {...o, attributes};
+              });
+              if (Object.keys(copyFormat).length > 0) {
+                delta = delta.concat({...conv, ops}).delete(range.length);
+              } else {
+                delta = delta.concat(conv).delete(range.length);
+              }
               this.quill.updateContents(delta, Quill.sources.USER);
               this.quill.setSelection(
                 delta.length() - range.length,
