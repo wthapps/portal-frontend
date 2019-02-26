@@ -15,7 +15,14 @@ import { take, filter, map, takeUntil } from 'rxjs/operators';
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { ApiBaseService, StorageService, UrlService, WMessageService, CommonEventService } from '@shared/services';
+import {
+  ApiBaseService,
+  StorageService,
+  UrlService,
+  WMessageService,
+  CommonEventService,
+  CommonEventHandler, AuthService
+} from '@shared/services';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
@@ -27,6 +34,7 @@ import {
   ConversationActions,
   ConversationSelectors
 } from '@chat/store';
+import { WebsocketService } from '@shared/channels/websocket.service';
 
 
 @Component({
@@ -35,7 +43,7 @@ import {
   styleUrls: ['sidebar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZChatSidebarComponent implements OnInit, OnDestroy {
+export class ZChatSidebarComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @HostBinding('class') cssClass = 'menuleft-chat';
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
   @Output() onSelectedConversation = new EventEmitter<any>();
@@ -62,16 +70,22 @@ export class ZChatSidebarComponent implements OnInit, OnDestroy {
 
   searched = false;
 
+  channel = 'CONVERSATION_ACTIONS';
+  userChannel: any;
+
   constructor(
     public chatService: ChatService,
     public chatConversationService: ChatConversationService,
     private router: Router,
     private store$: Store<AppState>,
     private renderer: Renderer2,
-    private commonEventService: CommonEventService,
+    public commonEventService: CommonEventService,
     private wthEmojiService: WTHEmojiService,
-    private apiBaseService: ApiBaseService
+    private apiBaseService: ApiBaseService,
+    private authService: AuthService,
+    private websocketService: WebsocketService
   ) {
+    super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
@@ -87,6 +101,24 @@ export class ZChatSidebarComponent implements OnInit, OnDestroy {
     });
 
     this.loadConversations();
+
+    // Init user channel
+    // Create new channel depends on selected conversation
+    // If channel has already been existing don't create new one
+    this.websocketService.subscribeChannel('user', this.authService.user.uuid)
+      .join({token: 'test token'})
+        .receive('ok', ({userInfo}) => {
+          console.log('JOINED USER CHANNEL', userInfo);
+          // Perform some tasks need to do after joining channel successfully
+          // this.store$.dispatch(new ConversationActions.Create(conversationId));
+        })
+        .receive('error', ({reason}) => console.log('failed join', reason) )
+        .receive('timeout', () => console.log('Networking issue. Still waiting...'))
+      .on('create_conversation_success', (conversation: any) => {
+        conversation['id'] = +(new Date());
+        console.log('CONVERSATION CREATED:::', conversation);
+        this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
+      });
   }
 
   /*
@@ -161,6 +193,17 @@ export class ZChatSidebarComponent implements OnInit, OnDestroy {
     // this.onSelectedConversation.emit(conversation);
   }
 
+  createConversation(payload: any) {
+
+    this.userChannel.push('create_conversation', payload)
+      .receive('ok', (conversation: any) => {
+        // this.store$.dispatch(new MessageActions.Create());
+      })
+      .receive('error', (reasons) => console.log('create failed', reasons) )
+      .receive('timeout', () => console.log('Networking issue...') );
+
+  }
+
   onAddContact() {
     this.commonEventService.broadcast({
       channel: 'ZChatShareAddContactComponent',
@@ -177,6 +220,9 @@ export class ZChatSidebarComponent implements OnInit, OnDestroy {
       from: 'ZChatSidebarComponents'
     });
   }
+
+
+
 
   onCloseMenu() {
     this.renderer.removeClass(document.body, 'left-sidebar-open');

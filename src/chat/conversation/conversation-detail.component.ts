@@ -150,7 +150,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
         this.store$.dispatch(new MessageActions.CreateSuccess({message: msg}));
       });
 
-      console.log('WEBSOCKET', this.websocketService.getSocket.channels);
     });
 
     // SELECTED CONVERSATION

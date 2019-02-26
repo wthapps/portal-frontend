@@ -6,6 +6,7 @@ import { ConfigByEnv } from '@env/environment';
 export class WebsocketService {
   private socket: any;
   private conversation: any;
+  private channels: Array<any> = [];
 
   createSocket(params: any) {
 
@@ -30,10 +31,28 @@ export class WebsocketService {
       return false;
     }
 
-    this.conversation = socket.channel(``)
+    this.conversation = socket.channel(``);
   }
 
   leaveConversation(socket: any, conversationId: string) {
 
   }
+
+  subscribeChannel(channelName: string = 'user' || 'conversation', params: any): any {
+    if (!this.socket) {
+      console.log('Please createSocket');
+      this.createSocket({token: params.token});
+    }
+    if (this.channels[channelName]) {
+      return this.channels[channelName];
+    } else {
+      this.channels[channelName] = this.socket.channel(`${channelName}:${params.topic}`);
+      return this.channels[channelName];
+    }
+  }
+
+  getChannelByName(channelName: string = 'user' || 'conversation'): any {
+    return this.channels[channelName];
+  }
+
 }

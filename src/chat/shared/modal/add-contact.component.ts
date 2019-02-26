@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subject } from 'rxjs/Subject';
@@ -26,6 +26,8 @@ declare var _: any;
 export class ZChatShareAddContactComponent extends CommonEventHandler implements OnInit {
 
   @ViewChild('modal') modal: BsModalComponent;
+  @Output() onSelect: EventEmitter<any> = new EventEmitter<any>();
+
   contacts: any;
   type = 'addContact';
   title = 'New Conversation';
@@ -71,7 +73,8 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
 
   add() {
     if (this.type === 'addChat') {
-      this.addContact();
+      // this.onSelect.emit({users: this.selectedUsers, type: 'CREATE_CONVERSATION'});
+      this.createConversation();
     }
     if (this.type === 'addMember') {
       this.addMember();
@@ -92,7 +95,8 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
       shareContacts: {
         title: 'Choose Contact'
       },
-    }
+    };
+
     Object.keys(options).forEach(key => {
       if (key == event.payload.option) {
         this.title = options[key].title;
@@ -122,13 +126,18 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
     this.resetData();
   }
 
-  addContact() {
-    this.chatContactService.addContact(this.selectedUsers.map(user => user.id)).then(res => {
-      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
-        this.chatConversationService.moveToFirst(res2.data);
-      });
-      this.chatConversationService.navigateToConversation(res.data.group_id);
+  createConversation() {
+    this.commonEventService.broadcast({
+      channel: 'CONVERSATION_ACTIONS',
+      action: 'createConversation',
+      payload: {users: this.selectedUsers}
     });
+    // this.chatContactService.addContact(this.selectedUsers.map(user => user.id)).then(res => {
+    //   this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
+    //     this.chatConversationService.moveToFirst(res2.data);
+    //   });
+    //   this.chatConversationService.navigateToConversation(res.data.group_id);
+    // });
     this.close();
   }
 

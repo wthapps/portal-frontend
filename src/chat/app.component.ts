@@ -97,6 +97,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.messageService.clear();
   }
 
+  // Conversation handle
+  createConversation(payload: any) {
+
+  }
+
+  // Conversation handle end
+
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
     this.hiddenSubscription.unsubscribe();
