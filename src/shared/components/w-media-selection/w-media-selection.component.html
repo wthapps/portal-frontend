@@ -82,8 +82,8 @@
         </div>
         <div *ngIf="currentTab === 'favourites'" class="modal-selection-toolbar-left pull-left">
             <div class="btn-group btn-group-filter" role="group" aria-label="object-filter">
-              <button type="button" class="btn" [ngClass]="subFilter === 'photo' ? 'btn-danger' : 'btn-default'" (click)="onSubFilter('photo')">Photos</button>
-              <button type="button" class="btn" [ngClass]="subFilter === 'album' ? 'btn-danger' : 'btn-default'" (click)="onSubFilter('album')">Albums</button>
+              <button type="button" class="btn" [ngClass]="subFilter === 'photo' ? 'btn-primary' : 'btn-outline-default'" (click)="onSubFilter('photo')">Photos</button>
+              <button type="button" class="btn" [ngClass]="subFilter === 'album' ? 'btn-primary' : 'btn-outline-default'" (click)="onSubFilter('album')">Albums</button>
             </div>
           </div>
         <w-object-toolbar-view [changeViewEnable]="false" [sortEnable]="true" (event)="onToolbarEvent($event)" class="pull-right"></w-object-toolbar-view>
