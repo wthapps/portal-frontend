@@ -187,6 +187,11 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onClick(item: any) {
+    if (item.object_type === 'Media::Album') {
+      this.completeDoubleClick.emit(item);
+      return;
+    }
+
     if (!this.hasMultipleSelection) {
       this.objectListService.clear();
       this.objectListService.addItem(

@@ -20,7 +20,7 @@ import { Media } from '@shared/shared/models/media.model';
               </button>
             </li>
             <li>
-              <span class="btn btn-text">{{ selectedObjects?.length }} selected</span>
+              <span class="selected-items">{{ selectedObjects?.length }} selected</span>
             </li>
           </ul>
 

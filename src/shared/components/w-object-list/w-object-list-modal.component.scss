@@ -26,7 +26,7 @@
     position: relative;
     background-color: #ffffff;
     @include clearfix;
-    @include box-shadow($box-shadow-bottom-sm);
+    // @include box-shadow($box-shadow-bottom-sm);
     .modal-selection-toolbar-left {
       ul {
         margin: 0;
@@ -60,6 +60,7 @@
 
   .wobject-selected-bar {
     @include border-top-radius(5px);
+    border: 1px solid #cccccc;
   }
 
   @media (min-width: $screen-sm-min) {
