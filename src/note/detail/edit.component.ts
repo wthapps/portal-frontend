@@ -25,7 +25,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
-import * as Delta from 'quill-delta/lib/delta';
+// import * as Delta from 'quill-delta/lib/delta';
+import Delta, { AttributeMap } from 'quill-delta';
+import Parchment from 'parchment';
 import DeltaOp from 'quill-delta/lib/op';
 import { CommonEventService, UserService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
@@ -150,8 +152,11 @@ export class ZNoteDetailEditComponent
     );
     // this.profile$ = this.userService.profile$;
     this.profile = this.userService.getSyncProfile();
-    // this.setting$ = this.noteSetting.setting$;
-    this.setting = this.noteSetting.setting;
+    // this.setting$ = this.setting$;
+    this.noteSetting.setting$.pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe(setting => this.setting = setting)
+    ;
 
     const getOs: any = this.clientDetectorService.getOs();
     this.buttonControl = getOs.name === 7 ? '⌘' : 'ctrl';
@@ -409,9 +414,170 @@ export class ZNoteDetailEditComponent
           this.addHyperLink(range, ctx);
           return true;
         }
+      },
+      tab: {
+        key: 'Tab',
+        handler(range, context) {
+          if (context.format.table) { return true; }
+          this.quill.history.cutoff();
+          const delta = new Delta()
+            .retain(range.index)
+            .delete(range.length)
+            .insert('\t', context.format);
+          this.quill.updateContents(delta, Quill.sources.USER);
+          this.quill.history.cutoff();
+          this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+          return false;
+        },
+      },
+      'checklist enter': {
+        key: 'Enter',
+        collapsed: true,
+        format: { list: 'checked' },
+        handler(range, ctx) {
+          const [line, offset] = this.quill.getLine(range.index);
+          console.log('inside checklist enter', range, ctx, line, offset);
+          // const formats = extend({}, line.formats(), { list: 'checked' });
+          const formats = {...line.formats(), ...ctx.format, list: 'checked'};
+          const delta = new Delta()
+            .retain(range.index)
+            .insert('\n', formats)
+            .retain(line.length() - offset - 1)
+            .retain(1, { list: 'unchecked' });
+          this.quill.updateContents(delta, Quill.sources.USER);
+          this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+          this.quill.scrollIntoView();
+        },
+      },
+      'header enter': {
+        key: 'Enter',
+        collapsed: true,
+        format: ['header'],
+        suffix: /^$/,
+        handler(range, context) {
+          const [line, offset] = this.quill.getLine(range.index);
+          const delta = new Delta()
+            .retain(range.index)
+            .insert('\n', context.format)
+            .retain(line.length() - offset - 1)
+            .retain(1, { header: null });
+          this.quill.updateContents(delta, Quill.sources.USER);
+          this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+          this.quill.scrollIntoView();
+        },
+      },
+      // 'table enter': {
+      //   key: 'Enter',
+      //   shiftKey: null,
+      //   format: ['table'],
+      //   handler(range) {
+      //     const module = this.quill.getModule('table');
+      //     if (module) {
+      //       const [table, row, cell, offset] = module.getTable(range);
+      //       const shift = tableSide(table, row, cell, offset);
+      //       if (shift == null) return;
+      //       let index = table.offset();
+      //       if (shift < 0) {
+      //         const delta = new Delta().retain(index).insert('\n');
+      //         this.quill.updateContents(delta, Quill.sources.USER);
+      //         this.quill.setSelection(
+      //           range.index + 1,
+      //           range.length,
+      //           Quill.sources.SILENT,
+      //         );
+      //       } else if (shift > 0) {
+      //         index += table.length();
+      //         const delta = new Delta().retain(index).insert('\n');
+      //         this.quill.updateContents(delta, Quill.sources.USER);
+      //         this.quill.setSelection(index, Quill.sources.USER);
+      //       }
+      //     }
+      //   },
+      // },
+      'list autofill': {
+        key: ' ',
+        shiftKey: null,
+        collapsed: true,
+        format: {
+          list: false,
+          'code-block': false,
+          blockquote: false,
+          header: false,
+          table: false,
+        },
+        prefix: /^\s*?(\d+\.|-|\*|\[ ?\]|\[x\])$/,
+        handler(range, context) {
+          if (this.quill.scroll.query('list') == null) { return true; }
+          const { length } = context.prefix;
+          const [line, offset] = this.quill.getLine(range.index);
+          if (offset > length) { return true; }
+          let value;
+          switch (context.prefix.trim()) {
+            case '[]':
+            case '[ ]':
+              value = 'unchecked';
+              break;
+            case '[x]':
+              value = 'checked';
+              break;
+            case '-':
+            case '*':
+              value = 'bullet';
+              break;
+            default:
+              value = 'ordered';
+          }
+          this.quill.insertText(range.index, ' ', context.format, Quill.sources.USER);
+          this.quill.history.cutoff();
+          const delta = new Delta()
+            .retain(range.index - offset)
+            .delete(length + 1)
+            .retain(line.length() - 2 - offset)
+            .retain(1, { list: value });
+          this.quill.updateContents(delta, Quill.sources.USER);
+          this.quill.history.cutoff();
+          this.quill.setSelection(range.index - length, Quill.sources.SILENT);
+          return false;
+        },
+      },
+      custom_backspace: {
+        key: 8,
+        collapsed: true,
+        altKey: null, ctrlKey: null, metaKey: null, shiftKey: null,
+        // prefix: /^.?$/,
+        handler: (range, ctx) => {
+          this.handleBackspace(range, ctx);
+          return;
+        }
+      }, custom_backspace_range: {
+        key: 8,
+        collapsed: false,
+        altKey: null, ctrlKey: null, metaKey: null, shiftKey: null,
+        prefix: /^.?$/,
+        handler: (range) => {
+          this.handleDeleteRange(range);
+          return;
+        }
+      }, custom_delete: {
+        key: 46,
+        collapsed: true,
+        altKey: null, ctrlKey: null, metaKey: null, shiftKey: null,
+        // suffix: /^.?$/,
+        handler: (range, ctx) => {
+          this.handleDelete(range, ctx);
+          return;
+        }
+      }, custom_delete_range: {
+        key: 46,
+        collapsed: false,
+        altKey: null, ctrlKey: null, metaKey: null, shiftKey: null,
+        suffix: /^.?$/,
+        handler: (range) => {
+          this.handleDeleteRange(range);
+          return;
+        }
       }
     };
-
     const FontAttributor = Quill.import('attributors/class/font');
     FontAttributor.whitelist = [
       'gotham',
@@ -522,7 +688,7 @@ export class ZNoteDetailEditComponent
 
   applyDefaultFormat() {
     // Default font, size setting
-    const { font, font_size } = this.noteSetting.setting;
+    const { font, font_size } = this.setting;
 
     const range = this.customEditor.getSelection(true);
     if (this.customEditor.getLength() <= 1) {
@@ -573,8 +739,8 @@ export class ZNoteDetailEditComponent
           const { font, size} = this.quill.getFormat();
           // Filter font, size property only
           const copyFormat = {};
-          if (font) { copyFormat['font'] = font; }
-          if (size) { copyFormat['size'] = size; }
+          copyFormat['font'] = font || self.setting.font;
+          copyFormat['size'] = size || self.setting.font_size;
 
 
           let delta = new Delta().retain(range.index);
@@ -646,6 +812,114 @@ export class ZNoteDetailEditComponent
     });
   }
 
+  handleDelete(range, context) {
+    const quill = this.customEditor;
+    // Check for astral symbols
+    const length = /^[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(context.suffix) ? 2 : 1;
+    if (range.index >= quill.getLength() - length) { return; }
+    let formats = {}, nextLength = 0;
+    const [line, ] = quill.getLine(range.index);
+    if (context.offset >= line.length() - 1) {
+      const [next, ] = quill.getLine(range.index + 1);
+      if (next) {
+        const curFormats = line.formats();
+        const nextFormats = quill.getFormat(range.index, 1);
+        formats = DeltaOp.attributes.diff(curFormats, nextFormats) || {};
+        nextLength = next.length();
+      }
+    }
+    quill.deleteText(range.index, length, Quill.sources.USER);
+    if (Object.keys(formats).length > 0) {
+      quill.formatLine(range.index + nextLength - 1, length, formats, Quill.sources.USER);
+    }
+
+    this.addDefaultFormat();
+  }
+
+  handleBackspace(range, context) {
+    const quill = this.customEditor;
+    if (range.index === 0 || quill.getLength() <= 1) { return; }
+    const [line, ] = quill.getLine(range.index);
+    let formats = {};
+    if (context.offset === 0) {
+      const [prev, ] = quill.getLine(range.index - 1);
+      if (prev != null && prev.length() > 1) {
+        const curFormats = line.formats();
+        const prevFormats = quill.getFormat(range.index - 1, 1);
+        formats = DeltaOp.attributes.diff(curFormats, prevFormats) || {};
+      }
+    }
+    // Check for astral symbols
+    const length = /[\uD800-\uDBFF][\uDC00-\uDFFF]$/.test(context.prefix) ? 2 : 1;
+    quill.deleteText(range.index - length, length, Quill.sources.USER);
+    if (Object.keys(formats).length > 0) {
+      quill.formatLine(range.index - length, length, formats, Quill.sources.USER);
+    }
+    quill.focus();
+
+    this.addDefaultFormat();
+  }
+
+  handleDeleteRange(range) {
+    const quill = this.customEditor;
+    const lines = quill.getLines(range);
+    let formats = {};
+    if (lines.length > 1) {
+      const firstFormats = lines[0].formats();
+      const lastFormats = lines[lines.length - 1].formats();
+      formats = DeltaOp.attributes.diff(lastFormats, firstFormats) || {};
+    }
+    quill.deleteText(range, Quill.sources.USER);
+    if (Object.keys(formats).length > 0) {
+      quill.formatLine(range.index, 1, formats, Quill.sources.USER);
+    }
+    quill.setSelection(range.index, Quill.sources.SILENT);
+    quill.focus();
+
+    this.addDefaultFormat();
+  }
+
+  // handleEnter(range, context) {
+  //   console.log('handle enter: ', range, context);
+  //   const quill = this.customEditor;
+
+  //   if (range.length > 0) {
+  //     quill.scroll.deleteAt(range.index, range.length);  // So we do not trigger text-change
+  //   }
+  //   const lineFormats = Object.keys(context.format).reduce(function(lf, format) {
+  //     if (Parchment.query(format, Parchment.Scope.BLOCK) && !Array.isArray(context.format[format])) {
+  //       lf[format] = context.format[format];
+  //     }
+  //     return lf;
+  //   }, {});
+  //   quill.insertText(range.index, '\n', lineFormats, Quill.sources.USER);
+  //   // Earlier scroll.deleteAt might have messed up our selection,
+  //   // so insertText's built in selection preservation is not reliable
+  //   quill.setSelection(range.index + 1, Quill.sources.SILENT);
+  //   quill.focus();
+  //   Object.keys(context.format).forEach((name) => {
+  //     if (lineFormats[name] != null) { return; }
+  //     if (Array.isArray(context.format[name])) { return; }
+  //     if (name === 'link') return;
+  //     quill.format(name, context.format[name], Quill.sources.USER);
+  //   });
+  // }
+
+
+  addDefaultFormat() {
+    // Appy default font, size format after deleting texts
+    const { font, font_size } = this.setting;
+    const format = this.customEditor.getFormat();
+    if (!format.font) {
+      this.customEditor.format('font', font);
+    }
+    if (!format.size) {
+      this.customEditor.format('size', font_size);
+    }
+
+    console.log('Current format: ', format);
+  }
+
   addHyperLink(range, ctx) {
     const [line, offset] = this.customEditor.getLine(range.index);
     const link = ctx.prefix.split(' ').pop();
@@ -655,8 +929,8 @@ export class ZNoteDetailEditComponent
       new Delta()
         .retain(range.index - link.length)
         .delete(link.length)
-        .insert(link, { link: fullUrl })
-        .insert(' ')
+        .insert(link, { ...ctx.format, link: fullUrl })
+        .insert(' ', ctx.format)
     );
     this.customEditor.history.cutoff();
     this.customEditor.setSelection(range.index + 1, Quill.sources.SILENT);
@@ -888,6 +1162,7 @@ export class ZNoteDetailEditComponent
 
   undo() {
     this.customEditor.history.undo();
+    this.addDefaultFormat();
   }
 
   redo() {

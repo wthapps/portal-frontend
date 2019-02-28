@@ -30,7 +30,7 @@
   </bs-modal-header>
   <bs-modal-body>
     <ng-container *ngIf="currentTab === 'upload'">
-      <div class="media-selection-content">
+      <div class="media-selection-content bg-white">
         <div class="media-selection-upload-wrap">
           <dropzone *ngIf="!allowCancelUpload" class="dropzone-container" [config]="dropzoneConfig" [disabled]="dropzoneDisabled"
             [message]="'<h3><i class=\'fa fa-picture-o\'></i><span>Drag your photos here</span></h3>or<div><span class=\'btn btn-outline-primary\'><i class=\'fa fa-cloud-upload\'></i> Upload Photo</span></div>'"
@@ -93,7 +93,7 @@
           
         <ng-container *ngIf="mediasList?.length; else templateNodata">
           
-          <w-object-list class="media-selection-content" [viewMode]="view$ | async" [data]="mediasList"
+          <w-object-list class="media-selection-content bg-white" [viewMode]="view$ | async" [data]="mediasList"
             [sortInline]="false" [isLoading]="isLoading" (completeSort)="onCompleteSort($event)" (completeLoadMore)="onCompleteLoadMore($event)"
             (completeDoubleClick)="onCompleteDoubleClick($event)">
             
@@ -140,7 +140,7 @@
           </w-object-list>
         </ng-container>
         <ng-template #templateNodata>
-          <div *ngIf="mediaParent; else templateNodataDetail" class="media-selection-content">
+          <div *ngIf="mediaParent; else templateNodataDetail" class="media-selection-content bg-white">
             <box-no-data *ngIf="mediaParent.model === 'Media::Playlist' || (mediaParent.model === 'Common::Sharing' && mediaParent.sharing_type === 'Media::Video')"
               [icon]="'fa fa-picture-o'" [title]="'There is no video!'" [subTitle]="'There is no video.'">
             </box-no-data>
@@ -149,7 +149,7 @@
             </box-no-data>
           </div>
           <ng-template #templateNodataDetail>
-            <div class="media-selection-content" [ngSwitch]="currentTab">
+            <div class="media-selection-content bg-white" [ngSwitch]="currentTab">
               <div class="align-self-center">
                 <box-no-data *ngSwitchCase="'photos'" [icon]="'fa fa-photo'" [title]="'There is no photo!'" [subTitle]="'There is no photo.'">
                 </box-no-data>
