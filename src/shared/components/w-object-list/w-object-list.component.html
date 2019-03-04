@@ -1,6 +1,6 @@
 <div class="wobject-view wobject-{{ viewMode }}" [ngClass]="{'has-scrollbar': hasScrollbar}">
   <div id="wobject-drag-body" class="wobject-row-body" infinite-scroll [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50" [scrollWindow]="scrollWindow" [infiniteScrollContainer]="media-selection-content" (scrolled)="onLoadMore()">
+    [infiniteScrollThrottle]="50" [scrollWindow]="scrollWindow" (scrolled)="onLoadMore()">
     <ng-content select=".object-toolbar-view"></ng-content>
     
     <ng-container *ngFor="let objects of data | groupByMap: groupBy : sortOrderGroup">

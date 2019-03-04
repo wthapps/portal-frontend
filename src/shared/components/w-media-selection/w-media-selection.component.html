@@ -104,7 +104,6 @@
             <ng-template #columnBox let-item>
                 <!-- ------------ Album view ------------- -->
               <ng-container *ngIf="item.object_type === 'Media::Album' || item.model === 'Media::Playlist' || item.model === 'Common::Sharing'">
-<!-- <<<<<<< HEAD -->
                   <div class="wobject-box-img">
                     <img [src]="item.thumbnail_url" alt="">
 
@@ -120,16 +119,6 @@
                     <!-- <div class="wobject-box-action">
                       <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}"></i>
                     </div> -->
-<!-- =======
-                <div class="wobject-box-img">
-                  <img [src]="item.thumbnail_url" alt="">
-
-                  <div *ngIf="item.model === 'Media::Playlist' || (item.model === 'Common::Sharing' && item.object_type === 'Media::Video')"
-                    class="wmedia-box-info">{{ item.child_count }} video{{(item.child_count > 1) ? 's' :''}}
-                  </div>
-                  <div *ngIf="item.model === 'Media::Album' || (item.model === 'Common::Sharing' && item.object_type === 'Media::Photo')"
-                    class="wmedia-box-info">{{ item.child_count }} photo{{(item.child_count > 1) ? 's' :''}}
->>>>>>> update: media merge one place #1031 -->
                   </div>
                 </ng-container>
 
