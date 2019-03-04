@@ -82,7 +82,7 @@
 </div>
 <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData"
              [icon]="iconNoData || 'fa fa-video-camera'"
-             [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
+             [subTitle]="subTitleNoData" class="box-no-data">
   <button *ngIf="actionNoData" class="btn btn-outline-primary" (click)="doEvent({action: 'noData'})">
     <i class="fa fa-plus-circle"></i> {{actionNoData}}
   </button>

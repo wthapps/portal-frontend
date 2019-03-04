@@ -74,7 +74,7 @@ AlbumCreateMixin {
     public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
     public mediaUploaderDataService: MediaUploaderDataService,
-    private commonEventService: CommonEventService,
+    public commonEventService: CommonEventService,
     private uploader: WUploader
     ) {
 
@@ -152,12 +152,7 @@ AlbumCreateMixin {
   /* AlbumCreateMixin This is album create methods, to
 custom method please overwirte any method*/
   openCreateAlbumModal: (selectedObjects: any) => void;
-  onDoneAlbum(e: any) {
-    this.apiBaseService.post(`media/albums`, { name: e.parents[0].name, description: e.parents[0].description,
-       photos: e.children.map(el => el.id) }).toPromise().then(res => {
-      this.router.navigate(['albums', res.data.uuid]);
-    });
-  }
+  onDoneAlbum:(e: any) => void;
   /* ================================== */
 
   /* AlbumAddMixin This is album add methods, to

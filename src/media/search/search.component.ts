@@ -364,53 +364,16 @@ export class ZMediaSearchComponent implements
     console.log('You should overwrite this one', e);
   }
 
-  // openSelectedModal() {
-
-  //   let options: any;
-
-  //   if (this.photoSharingTypes.includes(this.object.sharing_type)) {
-  //     options = {
-  //       selectedTab: 'photos',
-  //       hiddenTabs: ['videos', 'playlists'],
-  //       filter: 'photo',
-  //       allowedFileType: ['image/*'],
-  //       allowCancelUpload: true
-  //     };
-  //   } else if (this.videoSharingTypes.includes(this.object.sharing_type)) {
-  //     options = {
-  //       selectedTab: 'videos',
-  //       hiddenTabs: ['photos', 'albums'],
-  //       filter: 'video',
-  //       allowedFileType: ['video/*'],
-  //       allowCancelUpload: true,
-  //       uploadButtonText: 'Upload videos',
-  //       dragdropText: 'Drag your videos here'
-  //     };
-  //   }
-  //   this.mediaSelectionService.open(options);
-
-  //   if (this.subSelect) { this.subSelect.unsubscribe(); }
-  //   if (this.subUpload) { this.subUpload.unsubscribe(); }
-  //   this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
-  //     .subscribe(objects => {
-  //       this.afterSelectMediaAction(this.object, objects);
-  //     });
-
-  //   this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe(event => {
-  //     this.handleUploadFiles(event);
-  //   });
-  // }
-
   afterSelectMediaAction(parent: any, children: any) {
     if (this.object.model === 'Common::Sharing') {
-      if (this.videoSharingTypes.includes(this.object.sharing_type)) {
+      if (this.videoSharingTypes.includes(this.object.model)) {
         this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, {
           objects: children.filter(c => c.model === 'Media::Video')
         }).subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
       }
-      if (this.photoSharingTypes.includes(this.object.sharing_type)) {
+      if (this.photoSharingTypes.includes(this.object.model)) {
         this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, {
           objects: children.filter(c => c.model === 'Media::Photo')
         }).subscribe(res => {
@@ -429,9 +392,9 @@ export class ZMediaSearchComponent implements
         const file = event.payload.resp;
 
         // just allow allow files depend on sharing_type and file's content_type
-        if (this.videoSharingTypes.includes(this.object.sharing_type) && file.content_type.startsWith('video')) {
+        if (this.videoSharingTypes.includes(this.object.model) && file.content_type.startsWith('video')) {
           this.uploadingFiles.push({ ...file, model: 'Media::Video' });
-        } else if (this.photoSharingTypes.includes(this.object.sharing_type) && file.content_type.startsWith('image')) {
+        } else if (this.photoSharingTypes.includes(this.object.model) && file.content_type.startsWith('image')) {
           this.uploadingFiles.push({ ...file, model: 'Media::Photo' });
         }
         break;
@@ -458,7 +421,7 @@ export class ZMediaSearchComponent implements
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.object.sharing_type === 'Media::Album' ? this.tooltip.addPhotos : this.tooltip.addVideos,
+        tooltip: this.object.object_type === 'Media::Album' ? this.tooltip.addPhotos : this.tooltip.addVideos,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-plus-square'
       },

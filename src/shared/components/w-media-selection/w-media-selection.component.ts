@@ -415,19 +415,19 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
           urlAPI = `media/favorites?active=1`;
           if (this.subFilter === 'photo') {
             // tslint:disable-next-line:max-line-length
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Video&filter[or][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Video`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Video&filter[or][object_type]=Media::Photo&filter[or][object_type]=Media::Video`;
           } else if (this.subFilter === 'album') {
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][sharing_type]=Media::Album`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Media::Album`;
           }
         }
         if (this.filter === 'photo') {
           // tslint:disable-next-line:max-line-length
-          urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Album&filter[or][sharing_type]=Media::Album&filter[or][sharing_type]=Media::Photo`;
+          urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Album&filter[or][object_type]=Media::Album&filter[or][object_type]=Media::Photo`;
           if (this.subFilter === 'photo') {
             // tslint:disable-next-line:max-line-length
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][sharing_type]=Media::Photo`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Photo`;
           } else if (this.subFilter === 'album') {
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][sharing_type]=Media::Album`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Media::Album`;
           }
         }
         break;
@@ -450,10 +450,10 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       case 'shared_with_me':
         if (this.filter === 'all') { urlAPI = `media/sharings/shared_with_me?active=1`; }
         if (this.filter === 'photo') {
-        urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Album`;
+        urlAPI = `media/sharings/shared_with_me?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Album`;
         }
         if (this.filter === 'video') {
-        urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist`;
+        urlAPI = `media/sharings/shared_with_me?filter[where][object_type]=Media::Video&filter[or][object_type]=Media::Playlist`;
         }
         break;
       case 'shared_with_me_detail':

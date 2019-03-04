@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiBaseService } from '@wth/shared/services';
+import { ApiBaseService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
 import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 
 
@@ -11,7 +11,7 @@ declare var _: any;
   selector: 'media-create-modal',
   templateUrl: 'media-create-modal.component.html'
 })
-export class MediaCreateModalComponent implements OnInit {
+export class MediaCreateModalComponent extends CommonEventHandler implements OnInit {
   @Output() doneFormModal: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
   @Input() items: Array<any>;
@@ -25,13 +25,17 @@ export class MediaCreateModalComponent implements OnInit {
   tagItems: any;
   title: any;
   namePlaceholder: any;
+  done: any;
+  channel: string = 'MediaCreateModalComponent';
 
   arrayItems: Array<any> = [];
 
   constructor(private apiBaseService: ApiBaseService,
               private fb: FormBuilder,
+              public commonEventService: CommonEventService,
               private mediaCreateModalService: MediaCreateModalService
   ) {
+    super(commonEventService);
   }
 
   ngOnInit() {
@@ -56,7 +60,7 @@ export class MediaCreateModalComponent implements OnInit {
   open(options: any = {}) {
     this.modal.open().then();
     if (options) {
-      ({ title: this.title, namePlaceholder: this.namePlaceholder, selectedObjects: this.arrayItems } = options);
+      ({ title: this.title, namePlaceholder: this.namePlaceholder, selectedObjects: this.arrayItems, done: this.done } = options);
     }
     this.form.setControl('edit', this.name);
   }
@@ -66,11 +70,10 @@ export class MediaCreateModalComponent implements OnInit {
   }
 
   create(e: any) {
-    // this.apiBaseService.post(`media/playlists`, {playlist: e, videos: this.arrayItems}).subscribe(res => {
-    //   this.modal.close().then();
-    //   this.mediaCreateModalService.created.next(res.data);
-    // });
-    this.mediaCreateModalService.create.next({ parents: [e], children: this.arrayItems });
+    if(this.done){
+      this.modal.close().then();
+      this.done({ parents: [e], children: this.arrayItems });
+    }
   }
 
   onAction(action: string, data: any) {

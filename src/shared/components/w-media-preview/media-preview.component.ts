@@ -201,10 +201,10 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
   }
 
   infoAlbumClick(object) {
-    if (object.object_type === 'Media::Playlist') {
+    if (object.model === 'Media::Playlist') {
       this.router.navigate([`/playlists/${object.uuid}`]);
     }
-    if (object.object_type === 'sharing') {
+    if (object.model === 'Common::Sharing') {
       this.router.navigate([`/shared/${object.uuid}`]);
     }
   }

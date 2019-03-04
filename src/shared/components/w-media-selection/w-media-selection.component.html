@@ -90,19 +90,19 @@
       </div>
       <box-loading *ngIf="initLoading"></box-loading>
       <ng-container *ngIf="!initLoading && (medias$ | async) as mediasList;">
-          
+
         <ng-container *ngIf="mediasList?.length; else templateNodata">
-          
           <w-object-list class="media-selection-content bg-white" [viewMode]="view$ | async" [data]="mediasList"
             [sortInline]="false" [isLoading]="isLoading" (completeSort)="onCompleteSort($event)" (completeLoadMore)="onCompleteLoadMore($event)"
             (completeDoubleClick)="onCompleteDoubleClick($event)">
-            
+
             <ng-template #columnBox let-item>
                 <!-- ------------ Album view ------------- -->
               <ng-container *ngIf="item.object_type === 'Media::Album' || item.model === 'Media::Playlist' || item.model === 'Common::Sharing'">
+<!-- <<<<<<< HEAD -->
                   <div class="wobject-box-img">
                     <img [src]="item.thumbnail_url" alt="">
-  
+
                     <div *ngIf="item.model === 'Media::Playlist' || (item.model === 'Common::Sharing' && item.sharing_type === 'Media::Video')"
                       class="wmedia-box-info">{{ item.child_count }} video{{(item.child_count > 1) ? 's' :''}}
                     </div>
@@ -115,10 +115,20 @@
                     <!-- <div class="wobject-box-action">
                       <i class="fa fa-star" [ngClass]="{'fa-star-o': !item.favorite}"></i>
                     </div> -->
+<!-- =======
+                <div class="wobject-box-img">
+                  <img [src]="item.thumbnail_url" alt="">
+
+                  <div *ngIf="item.model === 'Media::Playlist' || (item.model === 'Common::Sharing' && item.object_type === 'Media::Video')"
+                    class="wmedia-box-info">{{ item.child_count }} video{{(item.child_count > 1) ? 's' :''}}
+                  </div>
+                  <div *ngIf="item.model === 'Media::Album' || (item.model === 'Common::Sharing' && item.object_type === 'Media::Photo')"
+                    class="wmedia-box-info">{{ item.child_count }} photo{{(item.child_count > 1) ? 's' :''}}
+>>>>>>> update: media merge one place #1031 -->
                   </div>
                 </ng-container>
-  
-  
+
+
                 <!-- ------------ Photo, Video view ------------- -->
                 <ng-container *ngIf="item.object_type === 'Media::Photo' || item.model === 'Media::Video'">
                   <div class="wobject-box-img">
@@ -126,7 +136,7 @@
                     <i *ngIf="item.model === 'Media::Video'" class="fa fa-play-circle-o"></i>
                   </div>
                   <div class="wobject-box-name">
-  
+
                     <span>{{ item.name }}.{{ item.extension }}</span>
                   </div>
                 </ng-container>
@@ -144,7 +154,7 @@
             <box-no-data *ngIf="mediaParent.model === 'Media::Playlist' || (mediaParent.model === 'Common::Sharing' && mediaParent.sharing_type === 'Media::Video')"
               [icon]="'fa fa-picture-o'" [title]="'There is no video!'" [subTitle]="'There is no video.'">
             </box-no-data>
-            <box-no-data *ngIf="mediaParent.model === 'Media::Album' || (mediaParent.model === 'Common::Sharing' && mediaParent.sharing_type === 'Media::Photo')"
+            <box-no-data *ngIf="mediaParent.model === 'Media::Album' || (mediaParent.model === 'Common::Sharing' && mediaParent.object_type === 'Media::Photo')"
               [icon]="'fa fa-picture-o'" [title]="'There is no photo!'" [subTitle]="'There is no photo.'">
             </box-no-data>
           </div>

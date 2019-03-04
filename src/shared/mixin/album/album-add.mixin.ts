@@ -1,4 +1,4 @@
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import { take, takeUntil } from 'rxjs/operators';
 
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
@@ -17,6 +17,7 @@ export class AlbumAddMixin implements AlbumCreateMixin {
     public mediaAddModalService: MediaAddModalService,
     public toastsService: ToastsService,
     public router: Router,
+    public commonEventService: CommonEventService,
     public mediaCreateModalService: MediaCreateModalService
   ) {}
   subAddAlbum: Subscription;

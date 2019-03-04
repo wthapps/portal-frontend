@@ -8,7 +8,8 @@ import * as Cropper from 'cropperjs';
 import {
   ApiBaseService,
   PhotoService,
-  UrlService
+  UrlService,
+  CommonEventService
 } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@shared/constant';
@@ -100,6 +101,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     public urlSerive: UrlService,
     public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
+    public commonEventService: CommonEventService,
     public location: Location) {
     this.showMenuAction = true;
   }
@@ -254,7 +256,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     if (object.object_type === 'album') {
       this.router.navigate([`/albums/${object.uuid}`]);
     }
-    if (object.object_type === 'sharing') {
+    if (object.model === 'Common::Sharing') {
       this.router.navigate([`/shared/${object.uuid}`]);
     }
   }

@@ -286,7 +286,7 @@ export class ZMediaSharingDetailComponent
         this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        if (['Media::Playlist', 'Media::Video'].includes(this.object.sharing_type)) {
+        if (['Media::Playlist', 'Media::Video'].includes(this.object.object_type)) {
           this.subMenuActions.edit.title = 'Add to Playlist';
           this.subMenuActions.remove.title = 'Remove from Playlist';
         } else {
@@ -416,7 +416,8 @@ export class ZMediaSharingDetailComponent
     const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
     const data: SharingCreateParams = {
       objects: objects.map(s => { return { id: s.id, model: s.model } }),
-      recipients: e.recipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id }}),
+      // recipients: e.recipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id }}),
+      recipients: e.users,
       role_id: e.role.id
     };
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
@@ -463,7 +464,7 @@ export class ZMediaSharingDetailComponent
 
     let options: any;
 
-    if (this.photoSharingTypes.includes(this.object.sharing_type)) {
+    if (this.photoSharingTypes.includes(this.object.object_type)) {
       options = {
         selectedTab: 'photos',
         hiddenTabs: ['videos', 'playlists'],
@@ -471,7 +472,7 @@ export class ZMediaSharingDetailComponent
         allowedFileType: ['image/*'],
         allowCancelUpload: true
       };
-    } else if (this.videoSharingTypes.includes(this.object.sharing_type)) {
+    } else if (this.videoSharingTypes.includes(this.object.object_type)) {
       options = {
         selectedTab: 'videos',
         hiddenTabs: ['photos', 'albums'],
@@ -498,13 +499,13 @@ export class ZMediaSharingDetailComponent
 
   afterSelectMediaAction(parent: any, children: any) {
     if (this.object.model === 'Common::Sharing') {
-      if (this.videoSharingTypes.includes(this.object.sharing_type)) {
+      if (this.videoSharingTypes.includes(this.object.object_type)) {
         this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, {
           objects: children.filter(c => c.model === 'Media::Video')}).subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
       }
-      if (this.photoSharingTypes.includes(this.object.sharing_type)) {
+      if (this.photoSharingTypes.includes(this.object.object_type)) {
         this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, {
           objects: children.filter(c => c.model === 'Media::Photo')}).subscribe(res => {
           this.loadObjects(this.object.uuid);
@@ -522,9 +523,9 @@ export class ZMediaSharingDetailComponent
         const file = event.payload.resp;
 
         // just allow allow files depend on sharing_type and file's content_type
-        if (this.videoSharingTypes.includes(this.object.sharing_type) && file.content_type.startsWith('video')) {
+        if (this.videoSharingTypes.includes(this.object.object_type) && file.content_type.startsWith('video')) {
           this.uploadingFiles.push({...file, model: 'Media::Video'});
-        } else if (this.photoSharingTypes.includes(this.object.sharing_type) && file.content_type.startsWith('image')) {
+        } else if (this.photoSharingTypes.includes(this.object.object_type) && file.content_type.startsWith('image')) {
           this.uploadingFiles.push({...file, model: 'Media::Photo'});
         }
         break;
@@ -551,7 +552,7 @@ export class ZMediaSharingDetailComponent
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.object.sharing_type === 'Media::Album' ? this.tooltip.addPhotos : this.tooltip.addVideos,
+        tooltip: this.tooltip.addItems,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-plus-square'
       },
@@ -692,7 +693,7 @@ export class ZMediaSharingDetailComponent
       },
       favorite: {
         active: true,
-        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: this.toggleFavorite.bind(this),
         class: 'btn btn-default',

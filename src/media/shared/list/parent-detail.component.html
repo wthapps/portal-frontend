@@ -81,7 +81,7 @@
       </div>
     </w-grid-list>
     <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
-      [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
+      [subTitle]="subTitleNoData" class="box-no-data">
 
       <button class="btn btn-outline-primary" (click)="openSelectedModal()">
         <i class="fa fa-cloud-upload"></i> {{object.model == 'Media::Playlist' ? 'Upload Video': 'Upload Photo'}}</button>
@@ -98,7 +98,7 @@
       </a>
     </h3>
     <div class="photo-detail-info-title">
-      <h4>Details</h4>
+      <h4 class="pull-left">Details</h4>
         <ng-container *ngIf="!object.role_id || object.role_id >= 3">
           <button class="btn btn-default pull-right" (click)="openEditModal(object)">
             <i class="fa fa-pencil"></i>
@@ -117,7 +117,7 @@
       <div class="row">
         <dt class="col-sm-4">Type</dt>
         <!-- <dd class="col-sm-6">{{ object.extension }}</dd> -->
-        <dd *ngIf="object.object_type == 'sharing'" class="col-sm-8">Sharing</dd>
+        <dd *ngIf="object.model == 'Common::Sharing'" class="col-sm-8">Sharing</dd>
         <dd *ngIf="object.object_type == 'Media::Album'" class="col-sm-8">Album</dd>
       </div>
       <div class="row">

@@ -91,10 +91,9 @@ MediaModalMixin {
   deSelect: () => void;
 
   ngOnInit() {
-    // this.loadObjects();
     this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params.model == 'Media::Photo') {
+      if (!params.model || params.model == 'Media::Photo') {
         this.loadObjects({ 'filter[where][object_type]': 'Media::Photo', 'filter[or][object_type]': 'Media::Video'});
         this.filters = this.filters.map(f => {
           if (f.model == 'Media::Photo') {
@@ -191,11 +190,7 @@ MediaModalMixin {
   /* AlbumCreateMixin This is album create methods, to
 custom method please overwirte any method*/
   openCreateAlbumModal: (selectedObjects: any) => void;
-  onDoneAlbum(e: any) {
-    this.apiBaseService.post(`media/albums`,{name: e.parents[0].name, description: e.parents[0].description, photos: e.children.map(el => el.id)}).subscribe(res => {
-      this.router.navigate(['albums', res.data.uuid]);
-    });
-  }
+  onDoneAlbum:(e: any) => void;
   /* ================================== */
 
   /* AlbumAddMixin This is album add methods, to

@@ -31,8 +31,7 @@ declare var _: any;
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin])
 @Component({
   templateUrl: '../shared/list/list.component.html',
-  styleUrls: [ './album-list.component.scss' ],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: [ './album-list.component.scss' ]
 })
 export class AlbumListComponent implements OnInit,
   MediaBasicListMixin,
@@ -119,6 +118,10 @@ export class AlbumListComponent implements OnInit,
       case 'selectedObjectsChanged':
         if (this.selectedObjects.length > 1) {
           this.menuActions.edit.active = false;
+          this.menuActions.preview.active = false;
+          this.menuActions.share.active = false;
+          this.menuActions.shareMobile.active = false;
+          this.menuActions.download.active = false;
         } else {
           this.menuActions.edit.active = true;
         }
@@ -294,7 +297,6 @@ export class AlbumListComponent implements OnInit,
 
   doEvent(event) {
     const {action} = event;
-    console.log('doEvent action: ', action);
     switch (action) {
       case 'noData': {
         this.openCreateAlbumModal([]);

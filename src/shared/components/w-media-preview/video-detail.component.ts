@@ -172,7 +172,7 @@ ngOnDestroy() {
     if (object.object_type === 'Media::Playlist') {
       this.router.navigate([`/playlists/${object.uuid}`]);
     }
-    if (object.object_type === 'sharing') {
+    if (object.model === 'Common::Sharing') {
       this.router.navigate([`/shared/${object.uuid}`]);
     }
   }

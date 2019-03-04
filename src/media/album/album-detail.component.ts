@@ -4,7 +4,8 @@ import {
   OnDestroy,
   ComponentFactoryResolver,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -56,7 +57,7 @@ declare var _: any;
 ])
 @Component({
   templateUrl: '../shared/list/parent-detail.component.html',
-  styleUrls: ['album-detail.component.scss']
+  styleUrls: ['album-detail.component.scss'],
 })
 export class ZMediaAlbumDetailComponent
   implements
@@ -354,7 +355,7 @@ export class ZMediaAlbumDetailComponent
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        if (this.object.sharing_type === 'Media::Playlist' || this.object.sharing_type === 'Media::Video') {
+        if (this.object.model === 'Media::Playlist' || this.object.model === 'Media::Video') {
           this.subMenuActions.edit.title = 'Add to Playlist';
           this.subMenuActions.remove.title = 'Remove from Playlist';
         } else {
@@ -525,7 +526,7 @@ export class ZMediaAlbumDetailComponent
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.tooltip.addPhotos,
+        tooltip: this.tooltip.addItems,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-plus-square'
       },

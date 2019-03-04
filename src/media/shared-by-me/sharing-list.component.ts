@@ -96,14 +96,20 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
     this.modalIns.event.subscribe(event => {
       switch (event.action) {
         case 'editInfo':
-          this.apiBaseService.put(`media/sharings/${event.params.selectedObject.id}`,
-            {
-              name: event.params.selectedObject.name,
-              description: event.params.selectedObject.description
-            })
-            .subscribe(res => {
-              // this.object = res.data;
+          if (event.params.selectedObject.model == 'Media::Album') {
+            this.apiBaseService.put(`media/albums/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
+
             });
+          } else {
+            this.apiBaseService.put(`media/sharings/${event.params.selectedObject.id}`,
+              {
+                name: event.params.selectedObject.name,
+                description: event.params.selectedObject.description
+              })
+              .subscribe(res => {
+                // this.object = res.data;
+              });
+          }
       }
     });
   };
@@ -119,6 +125,10 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         if(this.selectedObjects && this.selectedObjects.length > 1) {
           this.menuActions.share.active = false;
           this.menuActions.shareMobile.active = false;
+          this.menuActions.shareMobile.active = false;
+          this.menuActions.preview.active = false;
+          this.menuActions.edit.active = false;
+          this.menuActions.download.active = false;
         } else {
           this.menuActions.share.active = true;
           this.menuActions.shareMobile.active = true;
@@ -212,6 +222,20 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
     }
   };
 
+  shareSelectedObject() {
+    if (this.selectedObjects[0].model == "Media::Album") {
+      this.openModalShare([this.selectedObjects[0].sharing_object]);
+      const sub = this.sharingModalService.update$.subscribe(res => {
+        if (!this.selectedObjects[0].sharing_object) {
+          this.selectedObjects[0].sharing_object = res.sharing_object;
+        }
+        sub.unsubscribe();
+      })
+    } else {
+      this.openModalShare();
+    }
+  }
+
   getMenuActions() {
     return {
       preview: {
@@ -231,7 +255,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         active: true,
         // needPermission: 'view',
         inDropDown: false, // Outside dropdown list
-        action: this.openModalShare.bind(this),
+        action: this.shareSelectedObject.bind(this),
         class: 'btn btn-default',
         liclass: 'hidden-xs',
         tooltip: this.tooltip.share,
@@ -242,7 +266,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
-        action: this.openModalShare.bind(this),
+        action: this.shareSelectedObject.bind(this),
         class: '',
         liclass: 'visible-xs-block',
         tooltip: this.tooltip.share,

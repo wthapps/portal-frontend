@@ -125,7 +125,7 @@
                   </div>
                   <div class="album-card-content-created-date">
                     <span> {{ album.created_at | date: 'MMM dd, yyyy'}} </span>
-                    <i *ngIf="album.object_type=='sharing'" class="fw fw-shared-with-me"></i>
+                    <i *ngIf="album.model == 'Common::Sharing'" class="fw fw-shared-with-me"></i>
                   </div>
                 </div>
               </div>

@@ -97,7 +97,7 @@ export class MediaBasicListMixin {
   }
 
   deleteObjects(term: any = 'items') {
-    let isIgnoreConfirmFile = this.selectedObjects.some(ob => { return ob.model == 'Media::Photo' || ob.model == 'Media::Video'});
+    let isIgnoreConfirmFile = this.selectedObjects.some(ob => { return ob.model == 'Media::Photo' || ob.model == 'Media::Video' || ob.model == 'Media::Album'});
     if (isIgnoreConfirmFile) {
       this.loading = true;
       this.objects = this.objects.filter(ob => {

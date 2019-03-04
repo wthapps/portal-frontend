@@ -9,7 +9,7 @@ export class Media {
   photo_number: number;
   created_at: any;
   photo_default: any;
-  sharing_type: string;
+  object_type: string;
   favorite: boolean;
   tags: any = [];
   tags_json: any = [];
@@ -21,7 +21,6 @@ export class Media {
   url: string;
   json_shares: any;
   content_type: string;
-  object_type: string;
   child_count: number;
 
   constructor(fields: {
@@ -33,11 +32,10 @@ export class Media {
     photo_number?: number,
     created_at?: any,
     photo_default?: any,
-    sharing_type?: string,
+    object_type?: string,
     favorite?: boolean,
     tags?: any,
     tags_json?: any,
-
     extension?: string,
     dimensions?: string,
     size?: string,
@@ -45,7 +43,6 @@ export class Media {
     url?: string,
     json_shares?: any,
     content_type?: string,
-    object_type?: string,
     child_count?: number
   }) {
     if (fields) {

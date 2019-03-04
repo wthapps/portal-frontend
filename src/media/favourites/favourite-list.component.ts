@@ -85,10 +85,10 @@ export class ZMediaFavoriteListComponent implements OnInit,
   }
 
   ngOnInit() {
-    this.loadObjects();
     this.menuActions = this.getMenuActions();
     this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      this.selectedObjects = [];
       if (!params.model || params.model == 'Media::Photo') {
         this.loadObjects({ 'filter[where][object_type]': 'Media::Photo', 'filter[or][object_type]': 'Media::Video' });
         this.filters = this.filters.map(f => {
@@ -100,7 +100,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
           return f;
         })
       } else {
-        this.loadObjects({ 'filter[where][object_type]': 'Media::Album' });
+        this.loadObjects({ 'filter[where][object_type]': 'Media::Album', 'filter[or][object_type]': 'Common::Sharing' });
         this.filters = this.filters.map(f => {
           if (f.model == 'Media::Album') {
             f.active = true;
@@ -123,8 +123,8 @@ export class ZMediaFavoriteListComponent implements OnInit,
   custom method please overwirte any method*/
   selectedObjectsChanged: (objectsChanged?: any) => void;
   deleteObjects (term: any) {
-    const sharings_with_me = this.selectedObjects.filter(s => s.object_type == 'sharing' && s.role_id < 5);
-    const others = this.selectedObjects.filter(s => !(s.object_type == 'sharing' && s.role_id < 5));
+    const sharings_with_me = this.selectedObjects.filter(s => s.model == 'Common::Sharing' && s.role_id < 5);
+    const others = this.selectedObjects.filter(s => !(s.model == 'Common::Sharing' && s.role_id < 5));
     this.confirmService.confirm({
       header: 'Delete',
       acceptLabel: 'Delete',
@@ -217,6 +217,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
         } else {
           // only view when select many
           this.validateActions(this.menuActions, 1);
+          this.menuActions.preview.active = false;
           this.menuActions.download.active = false;
           this.menuActions.share.active = false;
           this.menuActions.shareMobile.active = false;
@@ -365,7 +366,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
         permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          if (this.selectedObjects[0].object_type == 'sharing') {
+          if (this.selectedObjects[0].model == 'Common::Sharing') {
             this.apiBaseService.get(`media/sharings/${this.selectedObjects[0].uuid}/objects`).subscribe(res => {
               this.downloadMedia(res.data);
             });

@@ -72,6 +72,10 @@ MediaModalMixin {
   channel = 'ZMediaPhotoListComponent';
   title: string = 'Photos';
   filters: any = [];
+  // ============
+  titleNoData: any = 'There are no items!';
+  subTitleNoData: any = 'Drop photos or videos or use "New" button to upload photos and videos.';
+  iconNoData: any = 'fa fa-photo';
 
   private sub: any;
 
@@ -144,12 +148,7 @@ MediaModalMixin {
 custom method please overwirte any method*/
   // tslint:disable-next-line:member-ordering
   openCreateAlbumModal: (selectedObjects: any) => void;
-  onDoneAlbum(e: any) {
-    this.apiBaseService.post(`media/albums`, {name: e.parents[0].name, description: e.parents[0].description,
-       photos: e.children.map(el => el.id)}).subscribe(res => {
-      this.router.navigate(['albums', res.data.uuid]);
-    });
-  }
+  onDoneAlbum:(e: any) => void;
   /* ================================== */
 
   /* AlbumAddMixin This is album add methods, to
@@ -356,6 +355,20 @@ custom method please overwirte any method*/
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-plus-square'
       },
+      edit: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          this.openEditModal(this.selectedObjects[0]);
+        },
+        class: '',
+        liclass: '',
+        title: 'Edit Information',
+        tooltip: this.tooltip.edit,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-pencil'
+      },
       download: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
@@ -369,20 +382,6 @@ custom method please overwirte any method*/
         tooltip: this.tooltip.info,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-download'
-      },
-      edit: {
-        active: true,
-        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
-        inDropDown: true, // Outside dropdown list
-        action: () => {
-          this.openEditModal(this.selectedObjects[0]);
-        },
-        class: '',
-        liclass: '',
-        title: 'Edit Information',
-        tooltip: this.tooltip.edit,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-edit'
       },
       deleteMobile: {
         active: true,
