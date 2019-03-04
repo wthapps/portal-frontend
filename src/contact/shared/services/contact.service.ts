@@ -135,7 +135,7 @@ export class ZContactService extends BaseEntityService<any> {
   }
 
   getSettings(): Observable<any> {
-    return this.apiBaseService.post(`contact/wcontacts2/settings`);
+    return this.apiBaseService.post(`contact/wcontacts/get_settings`);
   }
 
   resetPageNumber() {

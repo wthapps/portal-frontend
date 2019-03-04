@@ -82,7 +82,7 @@
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
   
             <div class="message-assets-item-body" (click)="onClickItem(item)" >
-              <span class="bold wobject-box-title-note name-clickable"><i class="fa fa-file"></i>
+              <span class="bold wobject-box-title-note name-clickable"><i class="fa fa-sticky-note"></i>
                 <a [href]="noteUrl + '/' + item.uuid" class="note-title" target="_blank"> {{ item?.file?.name === '' ? 'Untitled' :
                   item?.file?.name }} </a> </span>
               <div class="wobject-box-content-note" [innerHTML]="item?.file?.content | safeHtml"></div>
