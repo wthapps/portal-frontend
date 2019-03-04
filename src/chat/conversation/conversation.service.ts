@@ -4,12 +4,15 @@ import { WHttpClientService } from '@shared/services/w-http-client.service';
 import { HttpClient } from '@angular/common/http';
 import { Conversation } from '@chat/store';
 import { map } from 'rxjs/operators';
+import { ApiBaseService } from '@shared/services';
 
 @Injectable()
 export class ConversationService {
-  constructor(private api: WHttpClientService, private httpClient: HttpClient) {}
-  url = 'http://localhost:5000/v1/chat/conversations';
-  pageSize = 10;
+  constructor(private api: WHttpClientService, private httpClient: HttpClient, private apiBaseService: ApiBaseService) {}
+  // url = 'http://localhost:5000/v1/chat/conversations';
+  url = 'http://localhost:4000/chat/conversations';
+  path = 'chat/conversations';
+  pageSize = 30;
   // url = 'chat/conversations';
 
 
@@ -19,7 +22,9 @@ export class ConversationService {
 
   getAll(query: any): Observable<any> {
     if (!query) {
-      query = `?page[size]=${this.pageSize}`;
+      // query = `?page[size]=${this.pageSize}`;
+      query = `?per_page=${this.pageSize}`;
+
     } else {
       query = `?${query}`;
     }
@@ -30,10 +35,10 @@ export class ConversationService {
   create(payload: any): Observable<any> {
     const conversation = {
       conversation: {
-        users: payload
+        users: payload.users
       }
     };
-    return this.api.post(this.url, conversation);
+    return this.apiBaseService.post(this.path, conversation);
   }
 
   update(id: any, payload: any): Observable<any> {

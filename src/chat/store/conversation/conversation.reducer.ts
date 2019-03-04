@@ -16,6 +16,8 @@ export interface ConversationState extends EntityState<Conversation> {
   selectedConversationId: string | null;
   selectedConversation: Conversation | null;
   searchedConversations: Conversation[] | [];
+  doing?: boolean;
+  done?: boolean;
   isLoading?: boolean;
   isLoadingMore?: boolean;
   error?: any;
@@ -40,6 +42,8 @@ export const initialConversationState: ConversationState = conversationAdapter.g
     selectedConversationId: null,
     selectedConversation: null,
     searchedConversations: [],
+    doing: false,
+    done: false,
     isLoading: false,
     isLoadingMore: false,
     error: null,
@@ -150,6 +154,38 @@ export function reducer(state = initialConversationState, action: Actions): Conv
         error: action.payload.error
       };
     }
+
+    // Create actions
+    // Update Self actions
+    case ActionTypes.CREATE: {
+      return {
+        ...state,
+        doing: true,
+        done: false,
+        error: null
+      };
+    }
+
+    case ActionTypes.CREATE_SUCCESS: {
+      const conversation = action.payload.conversation;
+      return conversationAdapter.addOne(
+        conversation, {
+        ...state,
+        doing: false,
+        done: true,
+        error: null,
+      });
+    }
+
+    case ActionTypes.CREATE_ERROR: {
+      return {
+        ...state,
+        doing: false,
+        done: true,
+        error: action.payload.error
+      };
+    }
+
 
     // Update Self actions
     case ActionTypes.UPDATE_SELF: {

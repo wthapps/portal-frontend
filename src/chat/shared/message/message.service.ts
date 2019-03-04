@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class MessageService {
-  url = 'http://localhost:5000/v1/chat/conversations';
+  // url = 'http://localhost:5000/v1/chat/conversations';
+  url = 'http://localhost:4000/chat/conversations';
 
   constructor(private api: WHttpClientService, private httpClient: HttpClient) {
   }
@@ -14,9 +15,9 @@ export class MessageService {
     return this.httpClient.get(`${this.url}/${id}`);
   }
 
-  getAll(groupId: number|string, queryParams?: {cursor: 1541674034512}): Observable<any> {
+  getAll(conversationId: number|string, queryParams?: {cursor: 1541674034512}): Observable<any> {
     // return this.api.get(this.url, query);
-    return this.httpClient.get<any>(`${this.url}/${groupId}/messages?cursor=${queryParams.cursor}`, {headers: {Accept: 'application/json'}});
+    return this.httpClient.get<any>(`${this.url}/${conversationId}/messages?cursor=${queryParams.cursor}`, {headers: {Accept: 'application/json'}});
   }
 
 }

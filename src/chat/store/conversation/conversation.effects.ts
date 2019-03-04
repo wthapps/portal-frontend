@@ -69,6 +69,21 @@ export class ConversationEffects {
     )
   );
 
+  @Effect()
+  create: Observable<Action> = this.actions$.pipe(
+    ofType<ConversationActions.Create>(ConversationActions.ActionTypes.CREATE),
+    switchMap(action =>
+      this.conversationService.create(action.payload).pipe(
+        map(response => {
+          const conversation = response.data.attributes;
+          return new ConversationActions.UpdateSuccess({conversation: conversation});
+        }),
+        catchError(error =>
+          of(new ConversationActions.CreateError({ error }))
+        )
+      )
+    )
+  );
 
   @Effect()
   updateUser$: Observable<Action> = this.actions$.pipe(

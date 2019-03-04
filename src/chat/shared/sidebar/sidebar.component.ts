@@ -35,6 +35,7 @@ import {
   ConversationSelectors
 } from '@chat/store';
 import { WebsocketService } from '@shared/channels/websocket.service';
+import { ChannelEvents } from '@shared/channels';
 
 
 @Component({
@@ -105,20 +106,28 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     // Init user channel
     // Create new channel depends on selected conversation
     // If channel has already been existing don't create new one
-    this.websocketService.subscribeChannel('user', this.authService.user.uuid)
-      .join({token: 'test token'})
+    this.userChannel = this.websocketService.subscribeChannel(`user:${this.authService.user.uuid}`, {token: this.authService.user.uuid});
+    this.userChannel.join({token: 'test token'})
         .receive('ok', ({userInfo}) => {
           console.log('JOINED USER CHANNEL', userInfo);
           // Perform some tasks need to do after joining channel successfully
           // this.store$.dispatch(new ConversationActions.Create(conversationId));
         })
         .receive('error', ({reason}) => console.log('failed join', reason) )
-        .receive('timeout', () => console.log('Networking issue. Still waiting...'))
-      .on('create_conversation_success', (conversation: any) => {
+        .receive('timeout', () => console.log('Networking issue. Still waiting...'));
+
+    this.userChannel.on('create_conversation_success', (conversation: any) => {
         conversation['id'] = +(new Date());
-        console.log('CONVERSATION CREATED:::', conversation);
+        console.log('CONVERSATION CREATED SUCCESSFUL:::', conversation);
         this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
       });
+
+    this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_CREATED, (response: any) => {
+      // conversation['id'] = +(new Date());
+      const conversation = response.data;
+      console.log('CONVERSATION CREATED:::', conversation);
+      // this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
+    });
   }
 
   /*
@@ -195,12 +204,14 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
 
   createConversation(payload: any) {
 
-    this.userChannel.push('create_conversation', payload)
-      .receive('ok', (conversation: any) => {
-        // this.store$.dispatch(new MessageActions.Create());
-      })
-      .receive('error', (reasons) => console.log('create failed', reasons) )
-      .receive('timeout', () => console.log('Networking issue...') );
+    this.store$.dispatch(new ConversationActions.Create(payload));
+
+    // this.userChannel.push('create_conversation', payload)
+    //   .receive('ok', (conversation: any) => {
+    //     // this.store$.dispatch(new MessageActions.Create());
+    //   })
+    //   .receive('error', (reasons) => console.log('create failed', reasons) )
+    //   .receive('timeout', () => console.log('Networking issue...') );
 
   }
 

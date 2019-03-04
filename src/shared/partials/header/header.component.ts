@@ -135,8 +135,7 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
   }
 
   countChatNotification(): void {
-    this.apiBaseService
-      .addCommand(ConversationApiCommands.notificationsCount())
+    this.apiBaseService.get('chat/notifications/count')
       .subscribe((res: any) => {
         this.notificationCount = res.data.count;
         this.commonEventService.broadcast({

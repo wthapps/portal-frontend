@@ -34,6 +34,7 @@ import { MessageActions, MessageSelectors } from '@chat/store/message';
 import { WebsocketService } from '@shared/channels/websocket.service';
 import { Channel, Presence } from 'phoenix';
 import { filter, map, skip, take } from 'rxjs/operators';
+import { ChannelEvents } from '@shared/channels';
 
 declare var $: any;
 
@@ -57,8 +58,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   networkOnline$: Observable<boolean>;
   tokens: any;
   destroy$ = new Subject<any>();
-  channel: any;
   cursor: number;
+  conversationChannel: any;
 
   constructor(
     private chatService: ChatService,
@@ -126,12 +127,11 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
       // Create new channel depends on selected conversation
       // If channel has already been existing don't create new one
-      this.channel = this.websocketService.getSocket.channel(`conversation:${conversationId}`, {
-        token: this.userService.getSyncProfile().uuid
-      });
+      this.conversationChannel = this.websocketService.subscribeChannel(`conversation:${conversationId}`,
+        {token: this.userService.getSyncProfile().uuid});
 
       // Join selected conversation channel
-      this.channel.join()
+      this.conversationChannel.join()
         .receive('ok', ({message}) => {
           console.log('JOIN:::', message);
           // Perform some tasks need to do after joining channel successfully
@@ -140,16 +140,19 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
         .receive('error', ({reason}) => console.log('failed join', reason) )
         .receive('timeout', () => console.log('Networking issue. Still waiting...'));
 
-      const presence = new Presence(this.channel);
-      presence.onSync(() => {
-        console.log('presence list', presence.list());
-      });
+    });
 
-      this.channel.on('message_created', (msg: any) => {
-        msg['id'] = +(new Date());
-        this.store$.dispatch(new MessageActions.CreateSuccess({message: msg}));
-      });
 
+
+
+    const presence = new Presence(this.conversationChannel);
+    presence.onSync(() => {
+      console.log('presence list', presence.list());
+    });
+
+    this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_CREATED, (response: any) => {
+      // msg['id'] = +(new Date());
+      this.store$.dispatch(new MessageActions.CreateSuccess({message: response.data}));
     });
 
     // SELECTED CONVERSATION
@@ -205,7 +208,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
 
   createMessage(message: any) {
-    this.channel.push('new_message', message)
+    // this.store$.dispatch(new MessageActions.Create(message));
+    this.conversationChannel.push('new_message', message)
       .receive('ok', (msg) => {
         // this.store$.dispatch(new MessageActions.Create());
       })
