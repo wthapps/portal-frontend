@@ -19,6 +19,7 @@ $wobject-checkbox: 30px;
     user-select: none;
   }
 
+  
   @include flexbox;
   @include flex-direction(column);
   .wobject-row-header {
@@ -38,19 +39,55 @@ $wobject-checkbox: 30px;
   .wobject-row-body {
     max-height: 100%;
     overflow: auto;
+
+    .wobject-row {
+      .wobject-box-img {
+        img {
+          background-color: transparent;
+          background-repeat: no-repeat;
+          background-position: center center;
+          -webkit-background-size: cover !important;
+          background-size: cover !important;
+        }
+        .wmedia-box-info {
+          display: none;
+        }
+
+        }
+
+      &:hover {
+        .wobject-row-checkbox {
+          visibility: visible;
+
+          i.form-checkbox {
+            // background-color: $theme-color;
+
+            &:before {
+              visibility: visible;
+            }
+          }
+        }
+    
+        .wobject-row-ui  {
+          &:before {
+            content: '';
+            position: absolute;
+            height: 50px;
+            max-height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            opacity: .2;
+            z-index: 4;
+            background-image: linear-gradient(0deg, rgba(#404040, 0) 0, #404040 100%);
+          }
+        }
+    }
+
+
   }
 
-  .wobject-box-img {
-    img {
-      background-color: transparent;
-      background-repeat: no-repeat;
-      background-position: center center;
-      -webkit-background-size: cover !important;
-      background-size: cover !important;
-    }
-    .wmedia-box-info {
-      display: none;
-    }
+  
   }
   .wobject-click:not(.wobject-drag) + .wobject-row-checkbox, .wobject-row-checkbox.disabled {
     pointer-events: none;
@@ -61,7 +98,7 @@ $wobject-checkbox: 30px;
   }
   .wobject-row-checkbox {
     text-align: center;
-    z-index: 2;
+    z-index: 5;
     cursor: pointer;
     i {
       @include center();
@@ -83,14 +120,15 @@ $wobject-checkbox: 30px;
   }
   .wobject-row {
     word-break: break-word;
-    &.active .wobject-row-checkbox i, & .wobject-row-checkbox i.active {
+    &.active .wobject-row-checkbox i {
       background-color: $theme-color !important;
-      border-color: $theme-color !important;
-      color: #ffffff !important;
+      // border-color: $theme-color !important;
+      // color: #ffffff !important;
       &:before {
         visibility: visible;
       }
     }
+
   }
 
   .wobject-click {
@@ -135,21 +173,22 @@ $wobject-checkbox: 30px;
     }
     .wobject-row-toolbar {
       display: block;
-      padding: 5px 10px 5px;
+      padding: 5px 10px 0;
       @include clearfix;
     }
   }
   .wobject-row-body {
     padding: 0 5px 15px;
-    @include flexbox();
-    @include flex-flow(row wrap);
-    @include justify-content(initial);
-    @include align-items(flex-start);
+    // @include flexbox();
+    // @include flex-flow(row wrap);
+    // @include justify-content(initial);
+    // @include align-items(flex-start);
 
     .wobject-row {
       margin: 0 0 20px;
       padding: 0 10px;
       position: relative;
+      float: left;
       width: percentage(2/12);
       @media (max-width: $screen-xs-max) {
         width: percentage(6/12);
@@ -164,19 +203,24 @@ $wobject-checkbox: 30px;
         border-radius: 4px;
         border: 2px solid #ffffff;
         // remove because need to check
-        // pointer-events: none;
+        // pointer-e`vents: none;
         visibility: hidden;
         i {
-          width: 18px;
-          height: 18px;
+          width: 20px;
+          height: 20px;
           border-radius: 4px;
           line-height: 22px;
           @include box-shadow(0 0 2px rgba(0, 0, 0, .5));
-          &, &:hover, &:focus {
-            border: 2px solid #FFF;
-            background-color: #FFF; 
-            color: #404040;
+          border: 2px solid #FFF;
+          background-color: #FFF; 
+
+          &:before {
+            visibility: hidden;
           }
+
+          // &, &:focus {
+          //   color: #404040;
+          // }
         }
       }
       // change top 30px and height 80% because need check on circle
@@ -393,6 +437,7 @@ $wobject-checkbox: 30px;
     &.active {
       .wobject-row-checkbox, .wobject-row-ui {
         background-color: rgba(#d4d4d4, 0.5);
+        color: #404040;
       }
 
       .wobject-row-checkbox {

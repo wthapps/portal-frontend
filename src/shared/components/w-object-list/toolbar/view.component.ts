@@ -52,10 +52,11 @@ export class WObjectToolbarViewComponent {
   @Input() data: Media;
   @Input() changeViewEnable = true;
   @Input() sortEnable = false;
+  @Input() field = 'created_at';
+  @Input() direction = 'desc';
+
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
-  field = 'created_at';
-  direction = 'desc';
   view$: Observable<string>;
 
   constructor(private objectListService: WObjectListService) {

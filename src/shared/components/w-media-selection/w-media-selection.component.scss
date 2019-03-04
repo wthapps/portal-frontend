@@ -60,8 +60,18 @@
 }
 
 .btn-group-filter {
-  border: 1px solid #cccccc;
-  border-radius: 4px;
+  // border: 1px solid #cccccc;
+  // border-radius: 4px;
+}
+
+.object-toolbar-view {
+  padding: 10px 0;
+  overflow: auto;
+
+  .object-toolbar-view-title {
+    // padding: 8px;
+    float: left;
+  }
 }
 
 .bb1 {

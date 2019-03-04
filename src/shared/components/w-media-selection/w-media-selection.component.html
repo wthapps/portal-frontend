@@ -86,7 +86,7 @@
               <button type="button" class="btn" [ngClass]="subFilter === 'album' ? 'btn-primary' : 'btn-outline-default'" (click)="onSubFilter('album')">Albums</button>
             </div>
           </div>
-          <w-object-toolbar-view [changeViewEnable]="false" [sortEnable]="true" (event)="onToolbarEvent($event)" class="pull-right object-toolbar-view"></w-object-toolbar-view>
+          
       </div>
       <box-loading *ngIf="initLoading"></box-loading>
       <ng-container *ngIf="!initLoading && (medias$ | async) as mediasList;">
@@ -95,7 +95,12 @@
           <w-object-list class="media-selection-content bg-white" [viewMode]="view$ | async" [data]="mediasList"
             [sortInline]="false" [isLoading]="isLoading" (completeSort)="onCompleteSort($event)" (completeLoadMore)="onCompleteLoadMore($event)"
             (completeDoubleClick)="onCompleteDoubleClick($event)">
-
+            
+            <div class="object-toolbar-view">
+                <div class="object-toolbar-view-title"> <span class="btn btn-text">  {{ tabNameMap[currentTab] }} </span> </div>
+                <w-object-toolbar-view [field]="sortName" [direction]="sortDirection" [changeViewEnable]="false" [sortEnable]="true" (event)="onToolbarEvent($event)" class="pull-right"></w-object-toolbar-view>
+            </div>
+            
             <ng-template #columnBox let-item>
                 <!-- ------------ Album view ------------- -->
               <ng-container *ngIf="item.object_type === 'Media::Album' || item.model === 'Media::Playlist' || item.model === 'Common::Sharing'">

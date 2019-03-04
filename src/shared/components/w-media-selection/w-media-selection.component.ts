@@ -86,8 +86,17 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   multipleSelection$: Observable<boolean>;
   view$: Observable<string>;
   initLoading = true;
+  sortName = 'created_at';
+  sortDirection = 'desc';
 
   currentTab: string; // upload, photos, albums, albums_detail, favourites, shared_with_me
+  readonly tabNameMap = {
+    photos: 'Photos',
+    albums: 'Albums',
+    albums_detail: '',
+    favourites: 'Favourites',
+    shared_with_me: 'Shared with me'
+  };
 
   nextLink: string;
   isLoading: boolean;
@@ -298,6 +307,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.nextLink = this.buildNextLink();
       this.objectListService.setObjectsDisabled([]);
 
+      this.initLoading = true;
       this.getObjects(true);
     } else {
       this.onInsert();
@@ -307,6 +317,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   async onCompleteSort(event: any) {
     if (event) {
       this.nextLink = this.buildNextLink() + `&sort=${event.sortOrder}&sort_name=${event.sortBy}`;
+      this.sortName = event.sortBy;
+      this.sortDirection = event.sortOrder;
       const mediaParent = this.mediaParent;
       this.mediaSelectionService.clear();
       this.mediaSelectionService.setMediaParent(mediaParent);
@@ -448,12 +460,14 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         }
         break;
       case 'shared_with_me':
-        if (this.filter === 'all') { urlAPI = `media/sharings/shared_with_me?active=1`; }
+        if (this.filter === 'all') { urlAPI = `media/sharings/shared_with_me?active=1&disallowReshare=true`; }
         if (this.filter === 'photo') {
-        urlAPI = `media/sharings/shared_with_me?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Album`;
+        urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Album
+        &disallowReshare=true`;
         }
         if (this.filter === 'video') {
-        urlAPI = `media/sharings/shared_with_me?filter[where][object_type]=Media::Video&filter[or][object_type]=Media::Playlist`;
+        urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist
+        &disallowReshare=true`;
         }
         break;
       case 'shared_with_me_detail':
