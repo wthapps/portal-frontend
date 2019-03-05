@@ -77,6 +77,30 @@ $note-editor-aside-w: 400px;
         .ql-editor {
           @include flex(1);
         }
+
+        &[data-size="8pt"] .ql-blank::before {
+          font-size: 8pt;
+        }
+        &[data-size="10pt"] .ql-blank::before {
+          font-size: 10pt;
+        }
+        &[data-size="12pt"] .ql-blank::before {
+          font-size: 12pt;
+        }
+        &[data-size="14pt"] .ql-blank::before {
+          font-size: 14pt;
+        }
+        &[data-size="18pt"] .ql-blank::before {
+          font-size: 18pt;
+        }
+        &[data-size="24pt"] .ql-blank::before {
+          font-size: 24pt;
+        }
+        
+        &[data-size="36pt"] .ql-blank::before {
+          font-size: 36pt;
+        }
+        
       }
     }
 
