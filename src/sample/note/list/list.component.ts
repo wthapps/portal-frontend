@@ -76,8 +76,14 @@ export class NNoteListComponent implements OnInit {
   }
 
   async onSortComplete(event: any) {
+    console.log(event);
     const data = await this.dataService.sort(event).toPromise();
     this.next = data.meta.links.next;
+  }
+
+  onViewComplete(event: any) {
+    this.dataView.viewMode = event
+    this.dataView.updateSelect()
   }
 
   onSelectCompleted() {

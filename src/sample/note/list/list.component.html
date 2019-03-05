@@ -1,5 +1,7 @@
 <div class="objects-main">
-  <w-dataView-nav (sortComplete)="onSortComplete($event)">
+  <w-dataView-nav [showViewMode]="true"
+                  (sortComplete)="onSortComplete($event)"
+                  (viewComplete)="onViewComplete($event)">
       <h4 class="title">My Note</h4>
   </w-dataView-nav>
   <ng-container *ngIf="data$ | async as list; else templateloading">
@@ -8,14 +10,27 @@
                   (loadMoreCompleted)="onLoadMoreCompleted($event)"
                   (selectCompleted)="onSelectCompleted()"
                   #dataView>
+        <ng-template #viewHeader>
+          <div class="item-media-name">
+              <span class="can-click" (click)="onSortComplete({sortBy: 'Name', orderBy: 'desc'})">Name</span>
+          </div>
+          <div class="item-note-owner">Owner</div>
+          <div class="item-note-date">Last Modified</div>
+        </ng-template>
         <ng-template #viewBody let-item>
-          <div class="item-media-img">
+          <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === 'Note::Note'}">
             <i *ngIf="item.object_type === 'Note::Folder'" class="fa fa-folder-o"></i>
-            <span *ngIf="item.object_type === 'Note::Note'" [innerHTML]="item?.content"></span>
+            <ng-container *ngIf="item.object_type === 'Note::Note'">
+              <i class="fa fa-sticky-note"></i><span [innerHTML]="item?.content | safeHtml"></span>
+            </ng-container>
           </div>
           <div class="item-media-name">
             <span>{{ item.name || 'Untitled' }}</span>
           </div>
+          <div class="item-note-owner">
+            {{ item.user.name }}
+          </div>
+          <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
         </ng-template>
       </w-dataView>
       <w-dataView-selected *ngIf="dataView.selectedDocuments?.length"

@@ -28,4 +28,20 @@
   <button (click)="onSort(sortBy, (orderBy === 'desc' ? 'asc' : 'desc'))" class="btn btn-default" type="button">
     <i [ngClass]="{'fa-arrow-down': orderBy === 'desc'}" class="fa fa-arrow-up"></i>
   </button>
+  <ng-container *ngIf="showViewMode">
+    <div class="btn-group">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+      <ng-container *ngFor="let item of viewState">
+        <span *ngIf="viewBy === item.key"><i class="{{item.icon}}"></i></span>
+      </ng-container>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right">
+      <li *ngFor="let item of viewState">
+        <a (click)="onView(item.key)" href="#">
+          <i class="{{item.icon}}"></i> {{item.value}}
+        </a>
+      </li>
+    </ul>
+    </div>
+  </ng-container>
 </div>

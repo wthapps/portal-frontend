@@ -12,8 +12,10 @@ export interface SortDataView {
 export class WDataViewNavComponent {
   @HostBinding('class') class = 'objects-main-nav';
   @Input() sliderView;
+  @Input() showViewMode;
   @Output() sliderViewCompleted: EventEmitter<number> = new EventEmitter<number>();
   @Output() sortComplete: EventEmitter<SortDataView> = new EventEmitter<SortDataView>(null);
+  @Output() viewComplete: EventEmitter<string> = new EventEmitter<string>(null);
 
   sortState = [
     {
@@ -26,8 +28,23 @@ export class WDataViewNavComponent {
     }
   ];
 
+  viewState = [
+    {
+      key: 'grid',
+      icon: 'fa fa-th-large',
+      value: 'Grid'
+    },
+    {
+      key: 'list',
+      icon: 'fa fa-th-list',
+      value: 'List'
+    }
+  ];
+
   sortBy = 'Name';
   orderBy = 'asc';
+
+  viewBy = 'grid';
 
   onSlideChange(event: any) {
     this.sliderViewCompleted.emit(event.value);
@@ -36,6 +53,11 @@ export class WDataViewNavComponent {
   onSort(sortBy, orderBy) {
     this.sortBy = sortBy;
     this.orderBy = orderBy;
-    this.sortComplete.emit({ sortBy, orderBy });
+    this.sortComplete.emit({sortBy, orderBy});
+  }
+
+  onView(view) {
+    this.viewBy = view;
+    this.viewComplete.emit(view);
   }
 }

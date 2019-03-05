@@ -20,6 +20,7 @@ import { NoteRoutingModule } from './note-routing.module';
 import { NNoteListComponent } from './list/list.component';
 import { NoteService } from './shared/note.service';
 import { NoteComponent } from './note.component';
+import { PipeModule } from '@shared/shared/pipe/pipe.module';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { NoteComponent } from './note.component';
     WthConfirmModule,
     DirectiveModule,
     ToastModule,
-    WModalsModule
+    WModalsModule,
+    PipeModule
   ],
   declarations: [
     NNoteListComponent,

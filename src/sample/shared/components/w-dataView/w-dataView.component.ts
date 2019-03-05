@@ -22,9 +22,11 @@ export class WDataViewComponent {
   @Input() data: any;
   @Input() scrollWindow: false;
   @Input() sliderView = 3;
+  @Input() viewMode = 'grid';
   @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadMoreCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ContentChild('viewBody') viewBodyTmpl: TemplateRef<any>;
+  @ContentChild('viewHeader') viewHeaderTmpl: TemplateRef<any>;
   @ViewChild('container') container: SelectContainerComponent;
 
   selectedDocuments: any;
@@ -38,5 +40,10 @@ export class WDataViewComponent {
 
   onLoadMore() {
     this.loadMoreCompleted.emit(true);
+    this.updateSelect();
+  }
+
+  updateSelect() {
+    this.container.update();
   }
 }

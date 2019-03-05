@@ -36,8 +36,13 @@
   .objects-main-content {
     @include flex(1);
     position: relative;
-    .dts-select-container {
+    .content-grid {
       padding: 30px;
+    }
+    .content-list {
+      .content-item-header {
+        margin-top: 10px;
+      }
     }
   }
 }
