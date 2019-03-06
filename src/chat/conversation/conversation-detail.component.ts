@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router';
 
 import { select, Store } from '@ngrx/store';
-import { Subscription, Observable, Subject } from 'rxjs';
+import { Subscription, Observable, Subject, of } from 'rxjs';
 
 
 import { ChatService } from '../shared/services/chat.service';
@@ -60,6 +60,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   destroy$ = new Subject<any>();
   cursor: number;
   conversationChannel: any;
+  conversationId: string;
 
   constructor(
     private chatService: ChatService,
@@ -105,29 +106,24 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
 
     this.route.params.forEach((params: Params) => {
-      const conversationId = params['id'];
-
-      console.log('CONVERSATION_ID:::', conversationId);
+      this.conversationId = params['id'];
 
       // Always plus 1 to make sure it is greater than current message cursor
-      this.selectedConversation$ = this.store$.pipe(select(ConversationSelectors.getSelectedConversation));
+      this.selectedConversation$ = this.store$.pipe(
+        select(ConversationSelectors.getSelectedConversation),
+        map(response => {
+          console.log('GET SELECTED CONVERSATION', response);
+          return response;
+        })
+      );
 
-      // map((conversation: any) => {
-      //   console.log('CONVERSATION:::', conversation);
-      //   if (conversation) {
-      //     this.store$.dispatch(new MessageActions.GetAll({ groupId: conversationId, queryParams: {
-      //         cursor: 1541674034512 + 1
-      //       }}));
-      //   }
-      //   return conversation;
-      // })
-      this.store$.dispatch(new MessageActions.GetItems({ groupId: conversationId, queryParams: {
-          cursor: 1541674034512 + 1
+      this.store$.dispatch(new MessageActions.GetItems({ groupId: this.conversationId, queryParams: {
+          cursor: 1551780895167 + 1
         }}));
 
       // Create new channel depends on selected conversation
       // If channel has already been existing don't create new one
-      this.conversationChannel = this.websocketService.subscribeChannel(`conversation:${conversationId}`,
+      this.conversationChannel = this.websocketService.subscribeChannel(`conversation:${this.conversationId}`,
         {token: this.userService.getSyncProfile().uuid});
 
       // Join selected conversation channel
@@ -135,15 +131,12 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
         .receive('ok', ({message}) => {
           console.log('JOIN:::', message);
           // Perform some tasks need to do after joining channel successfully
-          this.store$.dispatch(new ConversationActions.GetItem(conversationId));
+          this.store$.dispatch(new ConversationActions.GetItem(this.conversationId));
         })
         .receive('error', ({reason}) => console.log('failed join', reason) )
         .receive('timeout', () => console.log('Networking issue. Still waiting...'));
 
     });
-
-
-
 
     const presence = new Presence(this.conversationChannel);
     presence.onSync(() => {
@@ -151,8 +144,12 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     });
 
     this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_CREATED, (response: any) => {
-      // msg['id'] = +(new Date());
-      this.store$.dispatch(new MessageActions.CreateSuccess({message: response.data}));
+
+      console.log(ChannelEvents.CHAT_MESSAGE_CREATED, response);
+      const message = response.data.attributes;
+
+
+      this.createMessageCallback(message);
     });
 
     // SELECTED CONVERSATION
@@ -207,14 +204,39 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   // Conversation action handle end
 
 
+  // TEXT = 'text'
+  // FILE = 'file'
+  // NOTIFICATION = 'notification'
+  // CREATED_CONVERSATION = 'created_conversation'
+  // REQUEST = 'request'
+  // SHARE_CONTACT_MESSAGE = 'share_contact_message'
+  // REQUEST_ACCEPTED = 'request_accepted',
+  // MESSAGE_DELETED = 'message_deleted'
+  /**
+   * Create new message then broadcast to members in being joining conversation
+   * @param message: {
+   *     message_type
+   * }
+   */
   createMessage(message: any) {
-    // this.store$.dispatch(new MessageActions.Create(message));
-    this.conversationChannel.push('new_message', message)
-      .receive('ok', (msg) => {
-        // this.store$.dispatch(new MessageActions.Create());
-      })
-      .receive('error', (reasons) => console.log('create failed', reasons) )
-      .receive('timeout', () => console.log('Networking issue...') );
+    this.store$.dispatch(new MessageActions.Create({
+      conversationId: this.conversationId,
+      message: message,
+    }));
+    // this.conversationChannel.push('new_message', message)
+    //   .receive('ok', (msg) => {
+    //     // this.store$.dispatch(new MessageActions.Create());
+    //   })
+    //   .receive('error', (reasons) => console.log('create failed', reasons) )
+    //   .receive('timeout', () => console.log('Networking issue...') );
+  }
+
+  createMessageCallback(message: any) {
+    this.store$.dispatch(new MessageActions.CreateSuccess({message: message}));
+  }
+
+  updateMessage(message: any) {
+
   }
 
   deleteMessage(event: CommonEvent) {
@@ -268,6 +290,11 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
     }
     return message;
+  }
+
+
+  showEditorError(error: any) {
+
   }
 
   /*

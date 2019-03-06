@@ -123,10 +123,8 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       });
 
     this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_CREATED, (response: any) => {
-      // conversation['id'] = +(new Date());
-      const conversation = response.data;
-      console.log('CONVERSATION CREATED:::', conversation);
-      // this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
+      const conversation = response.data.attributes;
+      this.createConversationCallback(conversation);
     });
   }
 
@@ -206,13 +204,23 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
 
     this.store$.dispatch(new ConversationActions.Create(payload));
 
-    // this.userChannel.push('create_conversation', payload)
+    // this.userChannel.push('CHAT_CONVERSATION_CREATED', payload)
     //   .receive('ok', (conversation: any) => {
-    //     // this.store$.dispatch(new MessageActions.Create());
     //   })
     //   .receive('error', (reasons) => console.log('create failed', reasons) )
     //   .receive('timeout', () => console.log('Networking issue...') );
+  }
 
+  createConversationCallback(conversation: any) {
+    // if currentUser is owner then redirect to that conversation and join
+    console.log('CREATED CONVERSATION:::', conversation);
+    // if currentUser is a member then add to conversation list
+    this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
+
+    if (this.authService.user.id === conversation.creator_id) {
+      // Redirect to created conversation
+      this.router.navigate(['/conversations', conversation.uuid]).then();
+    }
   }
 
   onAddContact() {
@@ -281,3 +289,5 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     this.destroy$.complete();
   }
 }
+
+

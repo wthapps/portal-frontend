@@ -136,11 +136,11 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   }
 
   onAddContact(contact: any) {
-    this.requestModal.contact = contact;
-    this.chatContactService.addContact([contact.id], '').then(res => {
-      this.chatConversationService.updateStoreConversation(res.data);
-      this.chatConversationService.navigateToConversation(res.data.group_id);
-    });
+    // this.requestModal.contact = contact;
+    // this.chatContactService.addContact([contact.id], '').then(res => {
+    //   this.chatConversationService.updateStoreConversation(res.data);
+    //   this.chatConversationService.navigateToConversation(res.data.group_id);
+    // });
   }
 
   doEvent(event: any) {

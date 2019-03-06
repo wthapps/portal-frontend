@@ -4,7 +4,6 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import * as fromMessage from './message.reducer';
 import { MessageEffects } from './message.effects';
-import { ZChatMessageModule } from '@chat/shared/message/message.module';
 import { MessageService } from '@chat/shared/message/message.service';
 
 @NgModule({

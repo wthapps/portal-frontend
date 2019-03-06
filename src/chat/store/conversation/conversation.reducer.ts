@@ -15,6 +15,8 @@ export const conversationAdapter: EntityAdapter<Conversation> = createEntityAdap
 export interface ConversationState extends EntityState<Conversation> {
   selectedConversationId: string | null;
   selectedConversation: Conversation | null;
+  joinedConversationId: string | null;
+  joinedConversation: Conversation | null;
   searchedConversations: Conversation[] | [];
   doing?: boolean;
   done?: boolean;
@@ -41,6 +43,8 @@ export const initialConversationState: ConversationState = conversationAdapter.g
   {
     selectedConversationId: null,
     selectedConversation: null,
+    joinedConversationId: null,
+    joinedConversation: null,
     searchedConversations: [],
     doing: false,
     done: false,
@@ -142,6 +146,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       return {
         ...state,
         selectedConversation: item,
+        selectedConversationId: item.id,
         isLoading: false,
         error: null
       };
@@ -168,6 +173,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.CREATE_SUCCESS: {
       const conversation = action.payload.conversation;
+      console.log('dispatch created conversation:::', conversation);
       return conversationAdapter.addOne(
         conversation, {
         ...state,
@@ -225,7 +231,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
     case ActionTypes.SELECT_ITEM: {
       return {
         ...state,
-        selectedConversation: action.payload
+        // selectedConversation: action.payload
       };
     }
     default: {

@@ -164,7 +164,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
     case ActionTypes.CREATE: {
       return {
         ...state,
-        loading: true,
+        sending: true,
         error: null
       };
     }
@@ -172,7 +172,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
     case ActionTypes.CREATE_SUCCESS: {
       return messageAdapter.addOne(action.payload.message, {
         ...state,
-        loading: false,
+        sending: false,
         error: null,
       });
       // return {

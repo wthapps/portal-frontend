@@ -66,4 +66,21 @@ export class MessageEffects {
     )
   );
 
+  @Effect()
+  create$: Observable<Action> = this.actions$.pipe(
+    ofType<MessageActions.Create>(MessageActions.ActionTypes.CREATE),
+    switchMap(action =>
+      this.messageService.create(action.payload).pipe(
+        map(response => {
+          const message = response.data.attributes;
+
+          return new MessageActions.CreateSuccess({message: message});
+        }),
+        catchError(error =>
+          of(new MessageActions.CreateError({ error }))
+        )
+      )
+    )
+  );
+
 }

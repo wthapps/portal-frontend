@@ -132,12 +132,12 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
       action: 'createConversation',
       payload: {users: this.selectedUsers}
     });
-    this.chatContactService.addContact(this.selectedUsers.map(user => user.id)).then(res => {
-      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
-        this.chatConversationService.moveToFirst(res2.data);
-      });
-      this.chatConversationService.navigateToConversation(res.data.group_id);
-    });
+    // this.chatContactService.addContact(this.selectedUsers.map(user => user.id)).then(res => {
+    //   this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
+    //     this.chatConversationService.moveToFirst(res2.data);
+    //   });
+    //   this.chatConversationService.navigateToConversation(res.data.group_id);
+    // });
     this.close();
   }
 

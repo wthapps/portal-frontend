@@ -28,6 +28,8 @@
                     [isDisabled]="!conversation.active || conversation.blacklist || !(networkOnline$ | async)"
                     [conversation]="conversation"
                     (onCreate)="createMessage($event)"
+                    (onUpdate)="updateMessage($event)"
+                    (onError)="showEditorError($event)"
                     >
     </message-editor>
     <message-assets class="message-assets"

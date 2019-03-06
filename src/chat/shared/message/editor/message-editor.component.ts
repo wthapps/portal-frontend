@@ -210,18 +210,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     this.resetEditor();
   }
 
-  validateAndSend() {
-    if (!this.messageService.notEmptyHtml(this.message.message)) {
-      return;
-    }
-    if (this.stripHtml.transform(this.message.message).length > this.maxLengthAllow) {
-      // console.error('Chat messages exceed maximum length of ', this.maxLengthAllow);
-      this.longMessageModal.open();
-      return;
-    }
-    this.send();
-  }
-
   handleImagePaste(file) {
     const { type } = file;
     const message = new Message({
@@ -357,6 +345,17 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     });
   }
 
+  private validateMessage(): boolean {
+    if (!this.messageService.notEmptyHtml(this.message.message)) {
+      return false;
+    }
+    if (this.stripHtml.transform(this.message.message).length > this.maxLengthAllow ) {
+      this.longMessageModal.open();
+      return false;
+    }
+    return true;
+  }
+
   private send() {
     if (this.mode === FORM_MODE.EDIT) {
       this.chatService
@@ -366,8 +365,13 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
           this.resetEditor();
         });
     } else {
-      this.messageService.scrollToBottom();
+      // this.messageService.scrollToBottom();
       this.chatMessageService.createTextMessage(this.message.message);
+
+      this.onCreate.emit({
+        ...this.message,
+        group_id: this.conversation.id,
+      });
 
       this.resetEditor();
     }
