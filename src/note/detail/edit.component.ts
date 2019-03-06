@@ -383,13 +383,6 @@ export class ZNoteDetailEditComponent
       });
   }
 
-  // editing() {
-  //   this.editStatus = this.EDIT_STATUS.editing;
-
-  //   this.noteChannel.editing(this.note.uuid);
-  //   this.checkIdle();
-  // }
-
   viewing() {
     if (!this.noteChannel) {
       return;
@@ -693,8 +686,6 @@ export class ZNoteDetailEditComponent
     const range = this.customEditor.getSelection(true);
     if (this.customEditor.getLength() <= 1) {
       console.log('this editor is blank', this.customEditor);
-      // this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
-      // this.customEditor.setSelection(range.index, 1, Quill.sources.SILENT);
       this.customEditor.format('font', font);
       this.customEditor.format('size', font_size);
     } else {
@@ -878,33 +869,6 @@ export class ZNoteDetailEditComponent
 
     this.addDefaultFormat();
   }
-
-  // handleEnter(range, context) {
-  //   console.log('handle enter: ', range, context);
-  //   const quill = this.customEditor;
-
-  //   if (range.length > 0) {
-  //     quill.scroll.deleteAt(range.index, range.length);  // So we do not trigger text-change
-  //   }
-  //   const lineFormats = Object.keys(context.format).reduce(function(lf, format) {
-  //     if (Parchment.query(format, Parchment.Scope.BLOCK) && !Array.isArray(context.format[format])) {
-  //       lf[format] = context.format[format];
-  //     }
-  //     return lf;
-  //   }, {});
-  //   quill.insertText(range.index, '\n', lineFormats, Quill.sources.USER);
-  //   // Earlier scroll.deleteAt might have messed up our selection,
-  //   // so insertText's built in selection preservation is not reliable
-  //   quill.setSelection(range.index + 1, Quill.sources.SILENT);
-  //   quill.focus();
-  //   Object.keys(context.format).forEach((name) => {
-  //     if (lineFormats[name] != null) { return; }
-  //     if (Array.isArray(context.format[name])) { return; }
-  //     if (name === 'link') return;
-  //     quill.format(name, context.format[name], Quill.sources.USER);
-  //   });
-  // }
-
 
   addDefaultFormat() {
     // Appy default font, size format after deleting texts
@@ -1257,23 +1221,25 @@ export class ZNoteDetailEditComponent
 
       if (this.editMode === Constants.modal.add) {
         if (this.note.permission !== 'view') {
-          this.store.dispatch(
-            new note.Add({
-              ...value,
-              parent_id: this.parentId,
-              content: this.editorElement.innerHTML
-            })
-          );
+          this.onFirstSave();
+          // this.store.dispatch(
+          //   new note.Add({
+          //     ...value,
+          //     parent_id: this.parentId,
+          //     content: this.editorElement.innerHTML
+          //   })
+          // );
         }
       } else {
         if (this.note.permission !== 'view') {
-          this.store.dispatch(
-            new note.Update({
-              ...value,
-              id: this.note.id,
-              content: this.editorElement.innerHTML
-            })
-          );
+          this.updateNote();
+          // this.store.dispatch(
+          //   new note.Update({
+          //     ...value,
+          //     id: this.note.id,
+          //     content: this.editorElement.innerHTML
+          //   })
+          // );
         }
       }
     }
@@ -1296,7 +1262,7 @@ export class ZNoteDetailEditComponent
     const res = await this.noteService
       .create({
         ...this.form.value,
-        content: this.editorElement.innerHTML,
+        content: this.getValidHtml(),
         parent_id: this.parentId
       })
       .toPromise();
@@ -1307,6 +1273,10 @@ export class ZNoteDetailEditComponent
     // return await this.router.navigate([
     //   { outlets: { detail: ['notes', this.note.id] } }
     // ]);
+  }
+
+  getValidHtml() {
+    return this.editorElement.innerHTML.replace(/<span class="ql-cursor">[^<>]*<\/span>/, '');
   }
 
   download(file: any) {
@@ -1392,7 +1362,7 @@ export class ZNoteDetailEditComponent
       return;
     }
     const noteObj: any = Object.assign({}, this.note, this.form.value, {
-      content: this.editorElement.innerHTML
+      content: this.getValidHtml()
     });
     this.store.dispatch(new note.Update(noteObj));
     return Promise.resolve();
