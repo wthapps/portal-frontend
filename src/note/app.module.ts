@@ -63,7 +63,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
       : [],
     ServiceWorkerModule.register('/ngsw-worker.js', {
-      enabled: false
+      enabled: environment.production
     })
 
     // SharedModule.forRoot(),

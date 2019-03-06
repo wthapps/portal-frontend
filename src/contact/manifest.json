@@ -5,6 +5,8 @@
 
   "theme_color": "#f48c5b",
   "background_color": "#ffffff",
+  
+  "prefer_related_applications": false,
 
   "display": "standalone",
   "orientation": "portrait",
