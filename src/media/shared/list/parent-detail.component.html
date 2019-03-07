@@ -28,8 +28,8 @@
     </li>
   </ul>
 </ng-template>
-<div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
-  <box-loading></box-loading>
+<div class="page-body-content has-page-body-control" *ngIf="loading">
+  <box-loading *ngIf="loading"></box-loading>
 </div>
 
 <div *ngIf="object" class="page-over-full-wrap parent-detail bg-white" [ngClass]="{'active-info': showDetailsInfo}">
