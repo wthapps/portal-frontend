@@ -79,6 +79,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private noteService: ZNoteService,
     private mixedEntityService: MixedEntityService,
     private swPush: SwPushService,
+    private checUpdate: CheckForUpdateService,
     private promptUpdate: PromptUpdateService
   ) {
 

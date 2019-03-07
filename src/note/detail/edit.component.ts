@@ -106,7 +106,6 @@ export class ZNoteDetailEditComponent
   private destroySubject: Subject<any> = new Subject<any>();
   private editMode = Constants.modal.add;
   private parentId: string;
-  private noSave$: Observable<any>;
   private defaultImg = Constants.img.default;
   private editorElement: any;
   private copiedFormat: any = {};
@@ -145,12 +144,6 @@ export class ZNoteDetailEditComponent
     private commonEventService: CommonEventService
   ) {
     this.renderer.addClass(document.body, 'modal-open');
-    this.noSave$ = merge(
-      this.noSaveSubject.asObservable(),
-      this.destroySubject,
-      this.closeSubject
-    );
-    // this.profile$ = this.userService.profile$;
     this.profile = this.userService.getSyncProfile();
     // this.setting$ = this.setting$;
     this.noteSetting.setting$.pipe(
@@ -459,34 +452,6 @@ export class ZNoteDetailEditComponent
           this.quill.scrollIntoView();
         },
       },
-      // 'table enter': {
-      //   key: 'Enter',
-      //   shiftKey: null,
-      //   format: ['table'],
-      //   handler(range) {
-      //     const module = this.quill.getModule('table');
-      //     if (module) {
-      //       const [table, row, cell, offset] = module.getTable(range);
-      //       const shift = tableSide(table, row, cell, offset);
-      //       if (shift == null) return;
-      //       let index = table.offset();
-      //       if (shift < 0) {
-      //         const delta = new Delta().retain(index).insert('\n');
-      //         this.quill.updateContents(delta, Quill.sources.USER);
-      //         this.quill.setSelection(
-      //           range.index + 1,
-      //           range.length,
-      //           Quill.sources.SILENT,
-      //         );
-      //       } else if (shift > 0) {
-      //         index += table.length();
-      //         const delta = new Delta().retain(index).insert('\n');
-      //         this.quill.updateContents(delta, Quill.sources.USER);
-      //         this.quill.setSelection(index, Quill.sources.USER);
-      //       }
-      //     }
-      //   },
-      // },
       'list autofill': {
         key: ' ',
         shiftKey: null,
@@ -585,7 +550,6 @@ export class ZNoteDetailEditComponent
 
     const Size = Quill.import('attributors/style/size');
     Size.whitelist = ['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt'];
-    // Size.whitelist = ['8px', '10px', '12px', '14px', '18px', '24px', '36px'];
 
     const BlockEmbed = Quill.import('blots/block/embed');
 

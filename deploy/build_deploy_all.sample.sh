@@ -2,6 +2,7 @@
 # TODO: put PEM key to a secret variable
 echo "=== Start deploy all modules to ENV: $ENV ==="
 echo "=== USAGE: ENV='stag/prod' sh build_deploy_all.sh | tee build_deploy.log ===="
+FAILED_LOG=build_deploy_failed.log
 
 case $ENV in
   prod)
@@ -38,7 +39,7 @@ proceed() {
 
   echo " ===== Start backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
   ssh -i $PEM_KEY $TARGET_MACHINE "cp -rf $TARGET_FOLDER/$var $TARGET_FOLDER/${ENV}_${var}_${BK}" &&
-  echo " ===== Finish backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
+  echo " ===== Finish backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/${ENV}_${var}_${BK} ... " &&
 
 
   echo " ===== Start deploying folder [$var] from /dist/$var/* to $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
@@ -48,7 +49,7 @@ proceed() {
 
 failed() {
   app=$1
-  echo "=== FAILED at $app"
+  echo "=== FAILED at $app - $date" >> $FAILED_LOG
   return 1
 }
 
