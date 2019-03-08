@@ -4,7 +4,7 @@
     <ng-content select=".object-toolbar-view"></ng-content>
     
     <ng-container *ngFor="let objects of data | groupByMap: groupBy : sortOrderGroup">
-      <div class="wobject-row-title"><span>{{ objects.key }}</span></div>
+      <div class="wobject-row-title" *ngIf="objects?.key && objects?.key !== 'undefined'"><span>{{ objects.key }}</span></div>
       <div *ngFor="let item of objects.value; trackBy: item?.id" class="wobject-row" [ngClass]="{active: isActive(item)}">
         <button (dblclick)="onDoubleClick(item)" (click)="onClick(item)" type="button" class="wobject-click" [ngClass]="{'wobject-drag': isSelected(item)}"
           [attr.data-id]="item.id" [attr.data-type]="item.object_type">

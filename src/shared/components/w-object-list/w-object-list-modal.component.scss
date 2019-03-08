@@ -28,6 +28,7 @@
     @include clearfix;
     // @include box-shadow($box-shadow-bottom-sm);
     .modal-selection-toolbar-left {
+      margin-bottom: 5px;
       ul {
         margin: 0;
         li {
