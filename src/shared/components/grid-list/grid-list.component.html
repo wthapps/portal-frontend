@@ -20,13 +20,13 @@
             </ul>
           </div>
 
-          <ul class="nav nav-tabs hidden-xs">
-            <li *ngFor="let f of filters" [ngClass]="f.active? 'active': ''">
-              <a href="javascript:void(0);" (click)="changeFilter(f)">
-                {{f.title}}
-              </a>
-            </li>
-          </ul>
+          <div class="btn-group " role="group" aria-label="...">
+            <button class="btn" type="button"
+            *ngFor="let f of filters"
+             [ngClass]="f.active? 'btn-primary': 'btn-outline-default'"
+             (click)="changeFilter(f)"
+            >{{f.title}}</button>
+          </div>
 
           <div *ngIf="filters && filters.length > 0" class="pull-left dropdown visible-xs-block">
             <span class="btn btn-outline-default dropdown-toggle" style="cursor: pointer;" type="button" data-toggle="dropdown">

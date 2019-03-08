@@ -654,7 +654,6 @@ export class ZNoteDetailEditComponent
       this.customEditor.format('size', font_size);
     } else {
       this.customEditor.setSelection(range, Quill.sources.SILENT);
-
     }
 
     this.noSaveSubject.next('');

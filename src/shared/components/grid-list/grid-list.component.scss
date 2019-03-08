@@ -122,34 +122,3 @@ $wobject-checkbox: 30px;
     color: inherit;
   }
 }
-
-.nav-tabs {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  float: left;
-  li {
-    a {
-      color: inherit;
-      padding: 5px 10px;
-      margin: 0px;
-    }
-    margin-bottom: -2px;
-  }
-  li:first-child{
-    border-radius: 5px 0 0 5px;
-  }
-  li:last-child{
-    border-radius: 0 5px 5px 0;
-  }
-  li.active > a {
-    background-color: $theme-color;
-    border: none;
-    color: white !important;
-    border-radius: inherit;
-    &:hover {
-      background-color: $theme-color;
-      border: none;
-      color: white;
-    }
-  }
-}
