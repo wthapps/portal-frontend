@@ -913,8 +913,6 @@ export class ZNoteDetailEditComponent
   }
 
   selectInlinePhotos4Note() {
-    // this.mediaSelectionService.open();
-    // this.mediaSelectionService.setMultipleSelection(true);
     this.mediaSelectionService.open({
       allowSelectMultiple: true,
       hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
@@ -1005,6 +1003,9 @@ export class ZNoteDetailEditComponent
         this.copiedFormat = {};
         this.isCopied = false;
       } else {
+        const curFormat = this.customEditor.getFormat();
+        if (!curFormat.font) { this.customEditor.format('font', this.setting.font); }
+        if (!curFormat.size) { this.customEditor.format('size', this.setting.font_size); }
       }
     });
   }

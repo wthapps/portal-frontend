@@ -156,6 +156,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.store.dispatch(new note.ResetCurrentNote());
         this.router.navigate([{ outlets: { detail: ['new_note'] } }], {
           queryParamsHandling: 'preserve',
+          skipLocationChange: true,
           preserveFragment: true
         });
         break;
