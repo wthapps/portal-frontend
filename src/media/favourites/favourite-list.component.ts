@@ -212,8 +212,8 @@ export class ZMediaFavoriteListComponent implements OnInit,
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        if(e.payload && e.payload.length == 1) {
-          this.validateActions(this.menuActions, e.payload[0].role_id);
+        if (this.selectedObjects && this.selectedObjects.length == 1) {
+          this.validateActions(this.menuActions, this.selectedObjects[0].role_id);
         } else {
           // only view when select many
           this.validateActions(this.menuActions, 1);

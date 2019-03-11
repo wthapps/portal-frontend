@@ -248,11 +248,8 @@ export class ZMediaAlbumDetailComponent
         this.uploadingFiles = [];
         break;
       case 'success':
-        const file = event.payload.resp;
-        // just add to playlist all files are videos
-        if (file.content_type.startsWith('image')) {
-          this.uploadingFiles.push({...file, model: this.objectType});
-        }
+        const file = event.payload.resp.data;
+        this.uploadingFiles.push(file);
         break;
       case 'complete':
         if (this.uploadingFiles.length > 0) {

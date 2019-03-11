@@ -100,7 +100,7 @@
     <div class="photo-detail-info-title">
       <h4 class="pull-left">Details</h4>
         <ng-container *ngIf="!object.role_id || object.role_id >= 3">
-          <button class="btn btn-default pull-right" (click)="openEditModal(object)">
+          <button class="btn btn-default pull-right" (click)="openEditModal(object)" style="padding-top: 0;">
             <i class="fa fa-pencil"></i>
           </button>
         </ng-container>

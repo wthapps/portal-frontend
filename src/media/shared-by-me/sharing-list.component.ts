@@ -125,13 +125,15 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         if(this.selectedObjects && this.selectedObjects.length > 1) {
           this.menuActions.share.active = false;
           this.menuActions.shareMobile.active = false;
-          this.menuActions.shareMobile.active = false;
           this.menuActions.preview.active = false;
           this.menuActions.edit.active = false;
           this.menuActions.download.active = false;
         } else {
           this.menuActions.share.active = true;
           this.menuActions.shareMobile.active = true;
+          this.menuActions.preview.active = true;
+          this.menuActions.edit.active = true;
+          this.menuActions.download.active = true;
         }
         this.menuActions.favorite.iconClass = this.favoriteAll? 'fa fa-star' : 'fa fa-star-o';
         break;

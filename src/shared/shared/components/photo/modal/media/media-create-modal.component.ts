@@ -46,15 +46,6 @@ export class MediaCreateModalComponent extends CommonEventHandler implements OnI
     });
     this.name = this.form.controls['name'];
     this.description = this.form.controls['description'];
-
-    this.mediaCreateModalService.onOpen$.subscribe(e => {
-      this.open(e);
-    });
-    this.mediaCreateModalService.onClose$.subscribe(e => {
-      this.close(e);
-      this.name.setValue('');
-      this.description.setValue('');
-    });
   }
 
   open(options: any = {}) {
@@ -66,6 +57,8 @@ export class MediaCreateModalComponent extends CommonEventHandler implements OnI
   }
 
   close(options?: any) {
+    this.name.setValue('');
+    this.description.setValue('');
     this.modal.close().then();
   }
 
