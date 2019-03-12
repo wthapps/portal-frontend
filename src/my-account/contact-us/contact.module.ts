@@ -8,8 +8,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FooterModule } from '@wth/shared/partials/footer/footer.module';
 
-// import { PortalSharedModule } from '../shared/shared.module';
-
 @NgModule({
   imports: [
     ContactRoutingModule,
@@ -17,7 +15,6 @@ import { FooterModule } from '@wth/shared/partials/footer/footer.module';
     FormsModule,
     ReactiveFormsModule,
     FooterModule,
-    // PortalSharedModule.forRoot(),
     ReCaptchaModule
   ],
   declarations: [ContactComponent],

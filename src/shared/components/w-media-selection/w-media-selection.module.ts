@@ -35,19 +35,13 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     PartialModule,
     WNavTabModule
   ],
-  declarations: [
-    WMediaSelectionComponent
-  ],
-  exports: [
-    WMediaSelectionComponent
-  ],
+  declarations: [DatePipe, WMediaSelectionComponent],
+  exports: [DatePipe, WMediaSelectionComponent],
   providers: [
-    DatePipe,
     {
       provide: DROPZONE_CONFIG,
       useValue: DEFAULT_DROPZONE_CONFIG
     }
-  ],
+  ]
 })
-export class WMediaSelectionModule {
-}
+export class WMediaSelectionModule {}

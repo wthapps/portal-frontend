@@ -4,7 +4,7 @@ import { MyStorageComponent } from '@account/settings/storage/storage.component'
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
-import { SharedModule } from '@wth/shared/shared.module';
+// import { SharedModule } from '@wth/shared/shared.module';
 
 import { MySharedModule } from '../shared/shared.module';
 import { MyAccountComponent } from './account/account.component';
@@ -23,9 +23,7 @@ import { AutofocusModule } from '@shared/directives/autofocus';
     MySettingRoutingModule,
     ModalModule,
     AutofocusModule,
-    MySharedModule.forRoot(),
-    SharedModule.forRoot(),
-    SharedServicesModule.forRoot()
+    MySharedModule
   ],
   declarations: [
     MySettingComponent,
@@ -38,5 +36,4 @@ import { AutofocusModule } from '@shared/directives/autofocus';
   ],
   exports: [MySettingComponent]
 })
-export class MySettingModule {
-}
+export class MySettingModule {}

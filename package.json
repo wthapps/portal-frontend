@@ -130,7 +130,7 @@
     "ngx-cookie": "2.0.1",
     "ngx-drag-to-select": "^3.1.1",
     "ngx-dropzone-wrapper": "^5.3.4",
-    "ngx-infinite-scroll": "6.0.1",
+    "ngx-infinite-scroll": "^6.0.1",
     "parchment": "^1.1.4",
     "payment": "^2.3.0",
     "primeicons": "^1.0.0",

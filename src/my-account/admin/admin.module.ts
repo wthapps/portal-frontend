@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { MySharedModule } from '../shared/shared.module';
 import { MyAdminRoutingModule } from './admin-routing.module';
 
-import { SharedModule } from '@wth/shared/shared.module';
+// import { SharedModule } from '@wth/shared/shared.module';
 import { PipeModule } from '@wth/shared/shared/pipe/pipe.module';
 
 import { MyAdminComponent } from './admin.component';
@@ -29,7 +29,7 @@ import { InviteContactModule } from '@shared/partials/invite-contact/invite-cont
     PipeModule,
     MyAdminRoutingModule,
     MySharedModule,
-    SharedModule
+    // SharedModule
   ],
   declarations: [
     MyAdminComponent,
