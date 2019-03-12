@@ -94,7 +94,7 @@ export class ConstantsBase {
       link: '/my-note',
       icon: 'icon-zone-note'
     },
-    { name: 'Settings', value: 'settings', icon: 'fa fa-cog'},
+    { name: 'Settings', value: 'settings', icon: 'fa fa-cog' },
     { name: 'Recent', value: 'recent', link: '/recent', icon: 'fa fa-clock-o' },
     {
       name: 'Favourite',
@@ -201,7 +201,7 @@ export class ConstantsBase {
     // { name: 'Videos', link: '/videos', icon: 'fa fa-video-camera' },
     // { name: 'Playlists', link: '/playlists', icon: 'fa fa-file-video-o' },
 
-    { name: 'Favorites', link: '/favorites', icon: 'fa fa-star' },
+    { name: 'Favorites', link: '/favorites/photos', icon: 'fa fa-star' },
     {
       name: 'Shared with me',
       link: '/shared-with-me',
@@ -241,7 +241,7 @@ export class ConstantsBase {
   };
 
   urls: any = {
-    default: `${Config.SUB_DOMAIN.MYACCOUNT}/dashboard` ,
+    default: `${Config.SUB_DOMAIN.MYACCOUNT}/dashboard`,
     zoneSoPosts: 'zone/social_network/posts',
     zoneSoComments: 'zone/social_network/comments',
     zoneSoMyPosts: 'zone/social_network/my_posts',

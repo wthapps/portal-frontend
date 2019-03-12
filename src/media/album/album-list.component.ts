@@ -31,7 +31,7 @@ declare var _: any;
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin])
 @Component({
   templateUrl: '../shared/list/list.component.html',
-  styleUrls: [ './album-list.component.scss' ]
+  styleUrls: ['./album-list.component.scss']
 })
 export class AlbumListComponent implements OnInit,
   MediaBasicListMixin,
@@ -63,6 +63,7 @@ export class AlbumListComponent implements OnInit,
   sorting: any;
   endLoading: any;
   subCreateAlbum: any;
+  disableMoreAction: boolean;
   title: string = 'Albums';
   filters: any = [];
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -124,8 +125,14 @@ export class AlbumListComponent implements OnInit,
           this.menuActions.download.active = false;
         } else {
           this.menuActions.edit.active = true;
+          this.menuActions.preview.active = true;
+          this.menuActions.share.active = true;
+          this.menuActions.shareMobile.active = true;
+          this.menuActions.download.active = true;
         }
         this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        this.disableMoreAction = (Object.keys(this.menuActions)
+          .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
         break;
       default:
         break;
@@ -178,6 +185,7 @@ export class AlbumListComponent implements OnInit,
           this.shareSelectedObject();
         },
         class: '',
+        mobile: true,
         liclass: 'visible-xs-block',
         tooltip: this.tooltip.share,
         title: 'Share',
@@ -247,6 +255,7 @@ export class AlbumListComponent implements OnInit,
           this.deleteObjects('albums');
         },
         class: '',
+        mobile: true,
         liclass: 'visible-xs-block',
         title: 'Delete',
         tooltip: this.tooltip.delete,
@@ -296,12 +305,12 @@ export class AlbumListComponent implements OnInit,
   }
 
   doEvent(event) {
-    const {action} = event;
+    const { action } = event;
     switch (action) {
       case 'noData': {
         this.openCreateAlbumModal([]);
       }
-      break;
+        break;
     }
   }
 
@@ -320,7 +329,7 @@ export class AlbumListComponent implements OnInit,
   }
 
   viewDetail(uuid: string) {
-    this.router.navigate([`/albums/${uuid}`], {queryParams: {returnUrls: ['/', '/albums']}});
+    this.router.navigate([`/albums/${uuid}`], { queryParams: { returnUrls: ['/', '/albums'] } });
   }
 
   onAfterEditModal() {

@@ -14,10 +14,15 @@ import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
         canActivate: [AuthGuard]
       },
       {
-        path: 'favorites/:id',
-        component: ZMediaFavoriteDetailComponent,
+        path: 'favorites/:filter',
+        component: ZMediaFavoriteListComponent,
         canActivate: [AuthGuard]
       },
+      // {
+      //   path: 'favorites/:filter/:id',
+      //   component: ZMediaFavoriteDetailComponent,
+      //   canActivate: [AuthGuard]
+      // },
       {
         path: 'album/:id',
         component: ZMediaAlbumDetailComponent,
@@ -27,4 +32,4 @@ import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
   ],
   exports: [RouterModule]
 })
-export class ZMediaFavoriteRoutingModule {}
+export class ZMediaFavoriteRoutingModule { }

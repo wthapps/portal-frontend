@@ -31,9 +31,9 @@ export class MediaCreateModalComponent extends CommonEventHandler implements OnI
   arrayItems: Array<any> = [];
 
   constructor(private apiBaseService: ApiBaseService,
-              private fb: FormBuilder,
-              public commonEventService: CommonEventService,
-              private mediaCreateModalService: MediaCreateModalService
+    private fb: FormBuilder,
+    public commonEventService: CommonEventService,
+    private mediaCreateModalService: MediaCreateModalService
   ) {
     super(commonEventService);
   }
@@ -54,16 +54,16 @@ export class MediaCreateModalComponent extends CommonEventHandler implements OnI
       ({ title: this.title, namePlaceholder: this.namePlaceholder, selectedObjects: this.arrayItems, done: this.done } = options);
     }
     this.form.setControl('edit', this.name);
+    this.name.setValue('');
+    this.description.setValue('');
   }
 
   close(options?: any) {
-    this.name.setValue('');
-    this.description.setValue('');
     this.modal.close().then();
   }
 
   create(e: any) {
-    if(this.done){
+    if (this.done) {
       this.modal.close().then();
       this.done({ parents: [e], children: this.arrayItems });
     }

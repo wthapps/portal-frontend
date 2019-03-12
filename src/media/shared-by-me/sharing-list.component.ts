@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
@@ -17,7 +17,7 @@ import { SharingService } from '@wth/shared/shared/components/photo/modal/sharin
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
@@ -49,6 +49,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   titleNoData: any = 'There are no media shared by you!';
   subTitleNoData: any = 'Media can be shared to your connected contact.';
   title: string = 'Shared by me';
+  disableMoreAction: boolean;
   filters: any = [];
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -84,14 +85,20 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
     })
   }
 
-  loadMoreObjects:(input?: any) => void;
+  loadMoreObjects: (input?: any) => void;
 
-  viewDetail(input?: any) {
+  viewDetail(object?: any) {
     /* this method is load detail object */
-    this.router.navigate(['/shared', input]);
+    // this.router.navigate(['/shared', input]);
+    if (object.model == 'Media::Album'){
+      this.router.navigate(['albums', object.uuid]);
+    } else {
+      this.router.navigate(['shared', object.uuid]);
+    }
+    // this.router.navigate(['shared', object.uuid]);
   }
 
-  selectedObjectsChanged:(objectsChanged?: any) => void;
+  selectedObjectsChanged: (objectsChanged?: any) => void;
   onAfterEditModal() {
     this.modalIns.event.subscribe(event => {
       switch (event.action) {
@@ -114,15 +121,15 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
     });
   };
 
-  toggleFavorite:(items?: any) => void;
+  toggleFavorite: (items?: any) => void;
 
   onListChanges(e: any) {
     switch (e.action) {
-      case 'favorite' :
-        this.menuActions.favorite.iconClass = this.favoriteAll? 'fa fa-star' : 'fa fa-star-o';
+      case 'favorite':
+        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
-      case 'selectedObjectsChanged' :
-        if(this.selectedObjects && this.selectedObjects.length > 1) {
+      case 'selectedObjectsChanged':
+        if (this.selectedObjects && this.selectedObjects.length > 1) {
           this.menuActions.share.active = false;
           this.menuActions.shareMobile.active = false;
           this.menuActions.preview.active = false;
@@ -135,14 +142,16 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
           this.menuActions.edit.active = true;
           this.menuActions.download.active = true;
         }
-        this.menuActions.favorite.iconClass = this.favoriteAll? 'fa fa-star' : 'fa fa-star-o';
+        this.disableMoreAction = (Object.keys(this.menuActions)
+          .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
+        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       default:
         break;
     }
   }
 
-  deleteObjects:(term: any) => void;
+  deleteObjects: (term: any) => void;
 
   doListEvent(e: any) {
     switch (e.action) {
@@ -153,7 +162,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         this.toggleFavorite(e.payload);
         break;
       case 'viewDetails':
-        this.viewDetail(e.payload.selectedObject.uuid);
+        this.viewDetail(e.payload.selectedObject);
         break;
       case 'openModal':
         this.openEditModal(e.payload.selectedObject)
@@ -172,7 +181,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
 
   doModalAction(e: any) {
     switch (e.action) {
-      case 'editName' :
+      case 'editName':
         this.apiBaseService.put(`media/sharings/${e.params.selectedObject.id}`, e.params.selectedObject).subscribe(res => {
           this.toastsService.success('Updated successfully')
         })
@@ -197,28 +206,32 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
       this.downloadMedia(res.data);
     });
   }
-  downloadMedia:(media) => void;
+  downloadMedia: (media) => void;
 
-  openModalShare:(array?: any) => void;
+  openModalShare: (array?: any) => void;
 
-  onSaveShare:(input: any) => void;
-  onEditShare:(input: any, sharing: any) => void;
+  onSaveShare: (input: any) => void;
+  onEditShare: (input: any, sharing: any) => void;
 
   viewDetails(payload: any) {
-    const object = payload.selectedObject;
-    this.router.navigate(['shared', object.uuid]);
+    // const object = payload.selectedObject;
+    // if (object.model == 'Media::Album'){
+    //   this.router.navigate(['albums', object.uuid]);
+    // } else {
+    //   this.router.navigate(['shared', object.uuid]);
+    // }
   }
 
-  changeViewMode:(mode: any) => void;
+  changeViewMode: (mode: any) => void;
 
   loadModalComponent: (component: any) => void;
 
-  openEditModal:(object: any) => void;
+  openEditModal: (object: any) => void;
 
-  loadingEnd:() => void;
+  loadingEnd: () => void;
 
   openEditModalCustom() {
-    if(this.selectedObjects && this.selectedObjects.length == 1) {
+    if (this.selectedObjects && this.selectedObjects.length == 1) {
       this.openEditModal(this.selectedObjects[0]);
       this.modalIns.event.subscribe(e => this.doModalAction(e));
     }
@@ -245,7 +258,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: () => {
-          this.viewDetail(this.selectedObjects[0].uuid);
+          this.viewDetail(this.selectedObjects[0]);
         },
         class: 'btn btn-default',
         liclass: '',
@@ -268,6 +281,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         active: true,
         // needPermission: 'view',
         inDropDown: true, // Inside dropdown list
+        mobile: true,
         action: this.shareSelectedObject.bind(this),
         class: '',
         liclass: 'visible-xs-block',
@@ -276,17 +290,17 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-share-alt'
       },
-      favorite: {
-        active: true,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: this.toggleFavorite.bind(this),
-        class: 'btn btn-default',
-        liclass: '',
-        tooltip: this.tooltip.addToFavorites,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-star'
-      },
+      // favorite: {
+      //   active: true,
+      //   // needPermission: 'view',
+      //   inDropDown: false, // Outside dropdown list
+      //   action: this.toggleFavorite.bind(this),
+      //   class: 'btn btn-default',
+      //   liclass: '',
+      //   tooltip: this.tooltip.addToFavorites,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-star'
+      // },
       delete: {
         active: true,
         // needPermission: 'view',
@@ -328,6 +342,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         inDropDown: true, // Inside dropdown list
         action: this.deleteObjects.bind(this, 'sharings'),
         class: '',
+        mobile: true,
         liclass: 'visible-xs-block',
         title: 'Delete',
         tooltip: this.tooltip.delete,

@@ -281,18 +281,18 @@ MediaAdditionalListMixin {
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-share-alt'
       },
-      favorite: {
-        active: true,
-        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
-        // needPermission: 'view',
-        inDropDown: false, // Outside dropdown list
-        action: this.toggleFavorite.bind(this),
-        class: 'btn btn-default',
-        liclass: '',
-        tooltip: this.tooltip.addToFavorites,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-star'
-      },
+      // favorite: {
+      //   active: true,
+      //   permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
+      //   // needPermission: 'view',
+      //   inDropDown: false, // Outside dropdown list
+      //   action: this.toggleFavorite.bind(this),
+      //   class: 'btn btn-default',
+      //   liclass: '',
+      //   tooltip: this.tooltip.addToFavorites,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-star'
+      // },
       delete: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,

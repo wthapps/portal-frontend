@@ -8,7 +8,7 @@ export class MediaListDetailMixin {
   showDetailsInfo: any;
   returnUrls: any;
 
-  constructor(public router: Router, public route: ActivatedRoute, public location: Location) {}
+  constructor(public router: Router, public route: ActivatedRoute, public location: Location) { }
 
   loadObject(input?: any) {
     throw new Error('Should be overwrite');
@@ -24,7 +24,7 @@ export class MediaListDetailMixin {
         this.router.navigate([this.returnUrls]);
       } else {
         const link = this.returnUrls.pop();
-        this.router.navigate([link], {queryParams: {returnUrls: this.returnUrls}});
+        this.router.navigate([link], { queryParams: { returnUrls: this.returnUrls } });
       }
     } else {
       const outlet = this.route.snapshot.outlet;

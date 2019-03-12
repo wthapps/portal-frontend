@@ -22,7 +22,7 @@ import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
 import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingCreateParams, SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
 import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
@@ -56,16 +56,16 @@ import { LocalStorageService } from 'angular-2-local-storage';
 })
 export class ZMediaSharingDetailComponent
   implements
-    OnInit,
-    OnDestroy,
-    MediaListDetailMixin,
-    MediaBasicListMixin,
-    MediaAdditionalListMixin,
-    LoadModalAble,
-    SharingModalMixin,
-    MediaModalMixin,
-    PlaylistAddMixin,
-    MediaDownloadMixin {
+  OnInit,
+  OnDestroy,
+  MediaListDetailMixin,
+  MediaBasicListMixin,
+  MediaAdditionalListMixin,
+  LoadModalAble,
+  SharingModalMixin,
+  MediaModalMixin,
+  PlaylistAddMixin,
+  MediaDownloadMixin {
   objects: any;
   object: any;
   cloneObjects: any;
@@ -98,6 +98,7 @@ export class ZMediaSharingDetailComponent
   subSelect: any;
   endLoading: any;
   returnUrls: any;
+  disableMoreAction: boolean;
   destroy$ = new Subject();
   title: string = 'Shares';
   // ============
@@ -121,7 +122,7 @@ export class ZMediaSharingDetailComponent
     public localStorageService: LocalStorageService,
     public route: ActivatedRoute,
     public location: Location,
-    private uploader: WUploader ) { }
+    private uploader: WUploader) { }
 
   onAddedToPlaylist: (data: any) => void;
 
@@ -133,7 +134,7 @@ export class ZMediaSharingDetailComponent
     this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
-  back:() => void;
+  back: () => void;
 
   ngOnDestroy() {
     if (this.subUpload) { this.subUpload.unsubscribe(); }
@@ -198,13 +199,15 @@ export class ZMediaSharingDetailComponent
       this.parentMenuActions = this.getMenuActions();
       this.subMenuActions = this.getSubMenuActions();
       this.menuActions = this.parentMenuActions;
-      if (this.object.favorite) {
-        this.menuActions.favorite.iconClass = 'fa fa-star';
-      } else {
-        this.menuActions.favorite.iconClass = 'fa fa-star-o';
-      }
+      // if (this.object.favorite) {
+      //   this.menuActions.favorite.iconClass = 'fa fa-star';
+      // } else {
+      //   this.menuActions.favorite.iconClass = 'fa fa-star-o';
+      // }
       this.validateActions(this.subMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
       this.validateActions(this.parentMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
+      this.disableMoreAction = (Object.keys(this.menuActions)
+        .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
     }, err => {
       if (err.status == 403) {
         this.confirmService.confirm({
@@ -237,8 +240,8 @@ export class ZMediaSharingDetailComponent
   }
   validateActions: (menuActions: any, role_id: number) => any;
 
-  loadMoreObjects:(input?: any) => void;
-  loadingEnd:(input?: any) => void;
+  loadMoreObjects: (input?: any) => void;
+  loadingEnd: (input?: any) => void;
 
   viewDetail(input?: any) {
     if (this.selectedObjects[0].model === 'Media::Photo') {
@@ -277,13 +280,13 @@ export class ZMediaSharingDetailComponent
     this.modalIns.open({ selectedObject: this.object });
   }
 
-  selectedObjectsChanged:(objectsChanged?: any) => void;
+  selectedObjectsChanged: (objectsChanged?: any) => void;
 
   onListChanges(e: any) {
     switch (e.action) {
       case 'favorite':
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
-        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
+        // this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
         if (['Media::Playlist', 'Media::Video'].includes(this.object.object_type)) {
@@ -295,8 +298,10 @@ export class ZMediaSharingDetailComponent
         }
         this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
         this.validateActions(this.menuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
-        this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
+        // this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
         if (this.selectedObjects.length > 0) this.showDetailsInfo = false;
+        this.disableMoreAction = (Object.keys(this.menuActions)
+          .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
         break;
       default:
         break;
@@ -501,13 +506,15 @@ export class ZMediaSharingDetailComponent
     if (this.object.model === 'Common::Sharing') {
       if (this.videoSharingTypes.includes(this.object.object_type)) {
         this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, {
-          objects: children.filter(c => c.model === 'Media::Video')}).subscribe(res => {
+          objects: children.filter(c => c.model === 'Media::Video')
+        }).subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
       }
       if (this.photoSharingTypes.includes(this.object.object_type)) {
         this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, {
-          objects: children.filter(c => c.model === 'Media::Photo')}).subscribe(res => {
+          objects: children.filter(c => c.model === 'Media::Photo')
+        }).subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
       }
@@ -524,9 +531,9 @@ export class ZMediaSharingDetailComponent
 
         // just allow allow files depend on sharing_type and file's content_type
         if (this.videoSharingTypes.includes(this.object.object_type) && file.content_type.startsWith('video')) {
-          this.uploadingFiles.push({...file, model: 'Media::Video'});
+          this.uploadingFiles.push({ ...file, model: 'Media::Video' });
         } else if (this.photoSharingTypes.includes(this.object.object_type) && file.content_type.startsWith('image')) {
-          this.uploadingFiles.push({...file, model: 'Media::Photo'});
+          this.uploadingFiles.push({ ...file, model: 'Media::Photo' });
         }
         break;
       case 'complete':
@@ -569,6 +576,7 @@ export class ZMediaSharingDetailComponent
       },
       shareMobile: {
         active: true,
+        mobile: true,
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Inside dropdown list
         action: () => {
@@ -581,17 +589,17 @@ export class ZMediaSharingDetailComponent
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-share-alt'
       },
-      favorite: {
-        active: true,
-        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
-        inDropDown: false, // Outside dropdown list
-        action: this.toggleFavoriteParent.bind(this),
-        class: 'btn btn-default',
-        liclass: '',
-        tooltip: this.tooltip.addToFavorites,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-star'
-      },
+      // favorite: {
+      //   active: true,
+      //   permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
+      //   inDropDown: false, // Outside dropdown list
+      //   action: this.toggleFavoriteParent.bind(this),
+      //   class: 'btn btn-default',
+      //   liclass: '',
+      //   tooltip: this.tooltip.addToFavorites,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-star'
+      // },
       delete: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
@@ -607,7 +615,7 @@ export class ZMediaSharingDetailComponent
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Outside dropdown list
-        action: () => { this.editName(this.object)},
+        action: () => { this.editName(this.object) },
         class: '',
         liclass: '',
         title: 'Edit Information',
@@ -641,6 +649,7 @@ export class ZMediaSharingDetailComponent
       },
       deleteMobile: {
         active: true,
+        mobile: true,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: true, // Inside dropdown list
         action: this.deleteParent.bind(this),
@@ -691,17 +700,17 @@ export class ZMediaSharingDetailComponent
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-share-alt'
       },
-      favorite: {
-        active: true,
-        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
-        inDropDown: false, // Outside dropdown list
-        action: this.toggleFavorite.bind(this),
-        class: 'btn btn-default',
-        liclass: '',
-        tooltip: this.tooltip.addToFavorites,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-star'
-      },
+      // favorite: {
+      //   active: true,
+      //   permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+      //   inDropDown: false, // Outside dropdown list
+      //   action: this.toggleFavorite.bind(this),
+      //   class: 'btn btn-default',
+      //   liclass: '',
+      //   tooltip: this.tooltip.addToFavorites,
+      //   tooltipPosition: 'bottom',
+      //   iconClass: 'fa fa-star'
+      // },
       edit: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
@@ -731,8 +740,8 @@ export class ZMediaSharingDetailComponent
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          this.selectedObjects = this.selectedObjects.map(el => {el._destroy = true; return {id: el.id, model: el.model, _destroy: el._destroy}});
-          this.apiBaseService.put(`media/sharings/${this.object.id}/objects`, { objects: this.selectedObjects}).subscribe(res => {
+          this.selectedObjects = this.selectedObjects.map(el => { el._destroy = true; return { id: el.id, model: el.model, _destroy: el._destroy } });
+          this.apiBaseService.put(`media/sharings/${this.object.id}/objects`, { objects: this.selectedObjects }).subscribe(res => {
             this.selectedObjects = [];
             this.hasSelectedObjects = false;
             this.selectedObjectsChanged(this.selectedObjects);
