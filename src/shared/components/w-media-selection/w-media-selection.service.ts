@@ -41,9 +41,9 @@ export class WMediaSelectionService {
   private multipleSelectionSubject: Subject<boolean> = new Subject<boolean>();
 
   private options = DEFAULT_OPTIONS;
-  private datePipe = new DatePipe('en-US');
   constructor(private apiBaseService: ApiBaseService,
-              private objectListService: WObjectListService) {
+              private objectListService: WObjectListService,
+              private datePipe: DatePipe) {
     this.medias$ = this.mediasSubject.asObservable();
     this.uploadingMedias$ = this.uploadingMediaSubject.asObservable();
     this.selectedMedias$ = this.selectedMediasSubject.asObservable();

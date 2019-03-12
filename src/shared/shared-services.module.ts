@@ -52,6 +52,7 @@ import { LogUpdateService } from './services/service-worker/log-update.service';
 import { SwPushService } from './services/service-worker/sw-push.service';
 import { PageVisibilityService } from './services/page-visibility.service';
 import { NoteChannelService } from './channels/note-channel.service';
+import { DatePipe } from '@angular/common';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -79,6 +80,8 @@ export class SharedServicesModule {
     return {
       ngModule: SharedServicesModule,
       providers: [
+        DatePipe,
+
         ApiBaseService,
         ClientDetectorService,
         LoadingService,
