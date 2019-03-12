@@ -31,6 +31,7 @@
     "anl-social": "webpack-bundle-analyzer dist/social/stats.json",
     "stats-social": "ng build social --stats-json && webpack-bundle-analyzer dist/social/stats.json",
     "stats-contact": "ng build contact --stats-json && webpack-bundle-analyzer dist/contact/stats.json",
+    "stats-chat": "ng build chat --stats-json && webpack-bundle-analyzer dist/chat/stats.json",
     "build-portal": "ng build --prod portal && http-server -p 3000 dist/portal",
     "build-deploy-portal": "ng build --prod portal && cp -R dist/portal/* ~/deployment/fe-portal",
     "build-account": "ng build --prod my-account && http-server -p 3005 dist/my-account",

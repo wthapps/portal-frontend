@@ -212,28 +212,35 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   async onSubFilter(subFilter: 'photo' | 'album') {
-    this.subFilter = subFilter;
-    await this.tabAction({link: this.currentTab});
+    await this.tabAction({link: this.currentTab}, subFilter);
   }
 
   async getObjects(override?: boolean) {
-    if (this.nextLink && !this.isLoading) {
-      this.isLoading = true;
-      const res = await this.mediaSelectionService.getMedias(this.nextLink, override).toPromise();
-      this.nextLink = res.meta.links.next;
+    try {
+      if (this.nextLink && !this.isLoading) {
+        this.isLoading = true;
+        const res = await this.mediaSelectionService.getMedias(this.nextLink, override).toPromise();
+        this.nextLink = res.meta.links.next;
+        this.isLoading = false;
+        this.initLoading = false;
+        return res;
+      } else {
+        this.isLoading = false;
+        this.initLoading = false;
+        return Promise.resolve(null);
+      }
+    } catch (e) {
+      console.warn('exception: ', e);
       this.isLoading = false;
-      this.initLoading = false;
-      return res;
-    } else {
-      this.initLoading = false;
-      return Promise.resolve(null);
+      return Promise.reject(e);
     }
   }
 
-  async tabAction(event: any = {link: this.currentTab}) {
+  async tabAction(event: any = {link: this.currentTab}, subFilter: 'photo' | 'album' | undefined = 'photo') {
     this.mediaSelectionService.clear();
     this.currentTab = event.link;
     this.initLoading = true;
+    this.subFilter = subFilter;
 
     if (this.currentTab !== 'upload') {
       this.nextLink = this.buildNextLink();
@@ -257,9 +264,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'favourites_detail') {
       this.currentTab = 'favourites';
+      this.subFilter = 'photo';
       this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'shared_with_me_detail') {
       this.currentTab = 'shared_with_me';
+      this.subFilter = 'photo';
       this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'search') {
       this.currentTab = 'photos';
