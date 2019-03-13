@@ -258,7 +258,6 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   isActive(item: any) {
-    console.log('is active', item);
     return (_.find(this.selectedObjects, {'id': item.id}) || item.selected);
   }
 

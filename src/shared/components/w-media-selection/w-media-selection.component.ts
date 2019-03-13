@@ -264,11 +264,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'favourites_detail') {
       this.currentTab = 'favourites';
-      this.subFilter = 'photo';
+      // this.subFilter = 'photo';
       this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'shared_with_me_detail') {
       this.currentTab = 'shared_with_me';
-      this.subFilter = 'photo';
+      // this.subFilter = 'photo';
       this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'search') {
       this.currentTab = 'photos';
@@ -438,7 +438,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
             // tslint:disable-next-line:max-line-length
             urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Video&filter[or][object_type]=Media::Photo&filter[or][object_type]=Media::Video`;
           } else if (this.subFilter === 'album') {
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Media::Album`;
+            // urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Media::Album`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Common::Sharing`;
           }
         }
         if (this.filter === 'photo') {
@@ -448,7 +449,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
             // tslint:disable-next-line:max-line-length
             urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Photo`;
           } else if (this.subFilter === 'album') {
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Media::Album`;
+            // urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Media::Album`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Common::Sharing`;
           }
         }
         break;
@@ -458,7 +460,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
             urlAPI = `media/playlists/${this.mediaParent.uuid}/videos`;
             break;
           case 'Media::Album':
-            urlAPI = `media/media/${this.mediaParent.uuid}/objects?model=Media::Album`;
+            urlAPI = `media/albums/${this.mediaParent.uuid}/objects?model=Media::Album`;
             break;
           case 'Common::Sharing':
             urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;

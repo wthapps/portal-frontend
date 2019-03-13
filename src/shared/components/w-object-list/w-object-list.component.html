@@ -12,7 +12,7 @@
         <div (click)="onMultiSelected(item)" class="wobject-row-checkbox">
           <i class="form-checkbox"></i>
         </div>
-        <div class="wobject-row-ui">
+        <div class="wobject-row-ui" (click)="onClick(item)">
           <div class="wobject-item">
             <div class="wobject-column wobject-box">
               <ng-container *ngTemplateOutlet="columnBoxTmpl, context: { $implicit: item }"></ng-container>

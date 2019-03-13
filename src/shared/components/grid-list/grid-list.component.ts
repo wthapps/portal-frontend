@@ -37,10 +37,10 @@ export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
   @Input() viewSize: number = Constants.mediaSliderViewNumber.default;
   @Input() sorting: any = { sort_name: 'Date', sort: 'desc' };
 
-  @Input() view: string = 'grid';
+  @Input() view = 'grid';
   @Input() objects: Array<any> = new Array<any>();
   @Input() nextLink: string = null;
-  @Input() hasMultipleSelection: boolean = true;
+  @Input() hasMultipleSelection = true;
   @Input() title: string;
   @Input() titleActions: Array<any> = [];
   @Input() filters: Array<any> = [];
@@ -50,7 +50,7 @@ export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
 
   selectedObjects: Array<any> = [];
 
-  groupByTime: string = 'date';
+  groupByTime = 'date';
   // this is used in detail pages
   object: any;
   page: string;
@@ -66,13 +66,13 @@ export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
 
   hasScrollbar: boolean;
   field: any;
-  direction: any;
+  direction: any = 'asc';
   groupBy = 'Date';
   sliderVal: number = Constants.mediaSliderViewNumber.default;
   sliderMin: number = Constants.mediaSliderViewNumber.min;
   sliderMax: number = Constants.mediaSliderViewNumber.max;
 
-  private pressingCtrlKey: boolean = false;
+  private pressingCtrlKey = false;
   private destroySubject: Subject<any> = new Subject<any>();
 
   /**
@@ -95,7 +95,7 @@ export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
       this.pressingCtrlKey = false;
     }
 
-    //if pressing ESC key
+    // if pressing ESC key
     if (ke.keyCode === 27) {
       this.deSelectAll();
     }
@@ -152,8 +152,8 @@ export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
           this.sorting.sort_name = event.payload.queryParams.sort_name;
           this.sorting.sort = event.payload.queryParams.sort;
         }
-        if (event.action == 'clickOnCircle' || event.action == 'clickOnItem') {
-          if ((this.pressingCtrlKey || event.action == 'clickOnCircle') && this.hasMultipleSelection) {
+        if (event.action === 'clickOnCircle' || event.action === 'clickOnItem') {
+          if ((this.pressingCtrlKey || event.action === 'clickOnCircle') && this.hasMultipleSelection) {
             this.toggleObject(event.payload.object);
           } else {
             this.deSelectAll();
@@ -165,7 +165,7 @@ export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  changeFilter(data: any){
+  changeFilter(data: any) {
     this.event.emit({action: 'filter', data: data});
   }
 
@@ -220,23 +220,23 @@ export class WGridListComponent implements OnInit, OnDestroy, OnChanges {
   private deSelectAll() {
     this.objects.forEach(ob => {
       ob.selected = false;
-    })
+    });
   }
 
   private selectObject(object: any) {
     this.objects.forEach(ob => {
-      if (ob.id == object.id && ob.object_type == object.object_type) {
+      if (ob.id === object.id && ob.object_type === object.object_type) {
         ob.selected = true;
       }
-    })
+    });
   }
 
   private toggleObject(object) {
     this.objects.forEach(ob => {
-      if (ob.id == object.id && ob.object_type == object.object_type ) {
+      if (ob.id === object.id && ob.object_type === object.object_type ) {
         ob.selected = !ob.selected;
       }
-    })
+    });
   }
 
   private pressedCtrlKey(ke: KeyboardEvent): boolean {

@@ -106,14 +106,11 @@
             
             <ng-template #columnBox let-item>
                 <!-- ------------ Album view ------------- -->
-              <ng-container *ngIf="item.object_type === 'Media::Album' || item.model === 'Media::Playlist' || item.model === 'Common::Sharing'">
+              <ng-container *ngIf="item.model === 'Media::Album' || item.model === 'Media::Playlist' || item.model === 'Common::Sharing'">
                   <div class="wobject-box-img">
                     <img [src]="item.thumbnail_url" alt="">
 
-                    <div *ngIf="item.model === 'Media::Playlist' || (item.model === 'Common::Sharing' && item.sharing_type === 'Media::Video')"
-                      class="wmedia-box-info">{{ item.child_count }} video{{(item.child_count > 1) ? 's' :''}}
-                    </div>
-                    <div *ngIf="item.model === 'Media::Album' || (item.model === 'Common::Sharing' && item.sharing_type === 'Media::Photo')"
+                    <div *ngIf="item.model === 'Media::Album' || (item.model === 'Common::Sharing')"
                       class="wmedia-box-info">{{ item.child_count }} photo{{(item.child_count > 1) ? 's' :''}}
                     </div>
                   </div>
@@ -127,7 +124,7 @@
 
 
                 <!-- ------------ Photo, Video view ------------- -->
-                <ng-container *ngIf="item.object_type === 'Media::Photo' || item.model === 'Media::Video'">
+                <ng-container *ngIf="item.model === 'Media::Photo' || item.model === 'Media::Video'">
                   <div class="wobject-box-img">
                     <img [src]="item.thumbnail_url" alt="">
                     <i *ngIf="item.model === 'Media::Video'" class="fa fa-play-circle-o"></i>
