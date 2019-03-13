@@ -15,6 +15,7 @@ import { Config } from '@wth/shared/constant';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { AuthService } from '@wth/shared/services';
 import { routeAnimation } from '@wth/shared/shared/animations/route.animation';
+import { PageVisibilityService } from './../shared/services/page-visibility.service';
 
 /**
  * This class represents the main application component.
@@ -33,7 +34,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   activeOutlets: {[id: string]: boolean} = {'primary': true, 'detail': false, 'modal': false};
   readonly PRIMARY: string = 'primary';
 
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService,
+    private visibilityService: PageVisibilityService,
+    private router: Router) {}
 
   ngOnInit() {
     this.routerSubscription = this.router.events
@@ -43,6 +46,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
+
+      this.visibilityService.reloadIfProfileInvalid();
   }
 
   ngAfterViewInit() {

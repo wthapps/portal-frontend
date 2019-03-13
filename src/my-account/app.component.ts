@@ -30,6 +30,7 @@ import * as fromRoot from './store';
 import * as fromAccount from './store/account';
 import { AuthService, UserService } from '@wth/shared/services';
 import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
+import { PageVisibilityService } from '@shared/services/page-visibility.service';
 
 
 /**
@@ -68,6 +69,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private subscriptionService: SubscriptionService,
     private toastsService: ToastsService,
     private userService: UserService,
+    private visibilityService: PageVisibilityService,
     private store: Store<fromRoot.State>
   ) {
     this.commonEventService
@@ -75,6 +77,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((event: any) => {
         this.doEvent(event);
       });
+
+    this.visibilityService.reloadIfProfileInvalid();
   }
 
   ngOnInit() {

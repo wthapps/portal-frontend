@@ -9,6 +9,8 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 // import { AppSandbox } from './app.sandbox';
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+import { PageVisibilityService } from './../shared/services/page-visibility.service';
+
 
 /**
  * This class represents the main application component.
@@ -33,6 +35,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public authService: AuthService,
     private router: Router,
+    private visibilityService: PageVisibilityService,
     private wthConfirmService: WthConfirmService
   ) {
     this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
@@ -53,6 +56,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       window.scrollTo(0, 0);
     });
+
+    this.visibilityService.reloadIfProfileInvalid();
   }
 
   ngAfterViewInit() {

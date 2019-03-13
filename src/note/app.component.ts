@@ -36,6 +36,8 @@ import { PromptUpdateService } from '@shared/services/service-worker/prompt-upda
 import { LogUpdateService } from '@shared/services/service-worker/log-update.service';
 import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
 import { SwPushService } from '@shared/services/service-worker/sw-push.service';
+import { PageVisibilityService } from '@shared/services/page-visibility.service';
+import { SwUpdate } from '@angular/service-worker';
 
 declare var _: any;
 
@@ -78,6 +80,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private store: Store<fromRoot.State>,
     private noteService: ZNoteService,
     private mixedEntityService: MixedEntityService,
+    private visibilityService: PageVisibilityService,
     private swPush: SwPushService,
     private checUpdate: CheckForUpdateService,
     private promptUpdate: PromptUpdateService
@@ -101,6 +104,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((folder: any) => {
         this.currentFolder = folder;
       });
+
+    this.visibilityService.reloadIfProfileInvalid();
   }
 
   ngOnInit() {

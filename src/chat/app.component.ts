@@ -68,6 +68,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
+
+    this.visibilityService.reloadIfProfileInvalid();
   }
 
   ngAfterViewInit() {

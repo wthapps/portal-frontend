@@ -40,6 +40,7 @@ import { CardEditModalComponent } from './shared/card/components';
 import { SwPushService } from '@shared/services/service-worker/sw-push.service';
 import { ProfileService } from '@shared/user/services';
 import { CardService } from '@contacts/shared/card';
+import { PageVisibilityService } from '@shared/services/page-visibility.service';
 
 
 const GAPI_TIMEOUT = 2000;
@@ -86,9 +87,9 @@ export class AppComponent
     private groupService: GroupService,
     private profileService: ProfileService,
     private googleApiService: GoogleApiService,
+    private visibilityService: PageVisibilityService,
     private swPush: SwPushService,
     public cardService: CardService,
-    // private checkUpdate: CheckForUpdateService,
     private promptUpdate: PromptUpdateService
   ) {
     this.user$ = authService.user$;
@@ -124,6 +125,8 @@ export class AppComponent
         document.body.scrollTop = 0;
       });
     this.cardService.getSharedCardNum();
+
+    this.visibilityService.reloadIfProfileInvalid();
   }
 
   ngAfterViewInit() {

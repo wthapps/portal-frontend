@@ -11,6 +11,7 @@ import { filter } from 'rxjs/operators';
 
 import { AuthService } from '@wth/shared/services';
 import { PromptUpdateService } from '@shared/services/service-worker/prompt-update.service';
+import { PageVisibilityService } from './../shared/services/page-visibility.service';
 
 declare let $: any;
 
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
   constructor(public authService: AuthService, private router: Router,
+    private visibilityService: PageVisibilityService,
     private prompUpdate: PromptUpdateService) {}
 
   ngOnInit() {
@@ -50,6 +52,8 @@ export class AppComponent implements OnInit, OnDestroy {
       }
       window.scrollTo(0, 0);
     });
+
+    this.visibilityService.reloadIfProfileInvalid();
   }
 
   ngOnDestroy() {

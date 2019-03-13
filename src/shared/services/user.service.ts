@@ -160,8 +160,15 @@ export class UserService {
   }
 
   validProfile() {
-    const profile = this._profile.getValue();
-    return profile && Object.keys(profile).length > 0;
+    return this.cookieService.get(Constants.cookieKeys.loggedIn) && this.cookieService.get(Constants.cookieKeys.profile);
+  }
+
+  isProfileUpdated(): boolean {
+    if (this.cookieService.get(Constants.cookieKeys.loggedIn) && this.cookieService.get(Constants.cookieKeys.profile)) {
+      const currentProfile = this.getSyncProfile();
+      const latestProfile = JSON.parse(this.cookieService.get(Constants.cookieKeys.profile));
+      return currentProfile.uuid !== latestProfile.uuid;
+    } else return false;
   }
 
   updateProfile(profile: any) {
