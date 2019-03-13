@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { UserService, CommonEventService } from '@shared/services';
 import { ChatService } from '../shared/services/chat.service';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
@@ -17,7 +16,6 @@ export class ConversationListComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     private chatConversationService: ChatConversationService,
     private commonEventService: CommonEventService,
-    private addContactService: ZChatShareAddContactService
   ) {
   }
 

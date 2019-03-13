@@ -19,7 +19,6 @@ import { ChatNoteListModule } from '@shared/components/note-list/chat-module/cha
 
 import { ZChatShareAddToConversationComponent } from './add-to-conversation.component';
 import { ZChatShareEditConversationComponent } from './edit-conversation.component';
-import { ZChatShareAddContactComponent } from './add-contact.component';
 import { ZChatShareRequestContactComponent } from './request-contact.component';
 import { ZChatShareUserModule } from '../user/user.module';
 import { ZChatPipeModule } from '../pipe/chat-pipe.module';
@@ -53,7 +52,6 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
   declarations: [
     ZChatShareAddToConversationComponent,
     ZChatShareEditConversationComponent,
-    ZChatShareAddContactComponent,
     ZChatShareRequestContactComponent
   ],
   exports: [
@@ -70,7 +68,6 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
 
     ZChatShareAddToConversationComponent,
     ZChatShareEditConversationComponent,
-    ZChatShareAddContactComponent,
     ZChatShareRequestContactComponent
   ],
   providers: []

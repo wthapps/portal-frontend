@@ -1,36 +1,37 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { map, debounceTime, distinctUntilChanged, switchMap, takeUntil, filter } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
-import { Constants } from '@shared/constant';
-import { ApiBaseService, ChatCommonService, CommonEventHandler, CommonEventService, CommonEvent } from '@shared/services';
-import { ChatService } from '../services/chat.service';
-import { ConversationService } from '@chat/conversation/conversation.service';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
-import { ChatContactService } from '../services/chat-contact.service';
-import { ChatConversationService } from '../services/chat-conversation.service';
+import { Constants } from '../../../../shared/constant';
+import { ApiBaseService, ChatCommonService, CommonEventHandler, CommonEventService } from '../../../../shared/services';
+import { ChatService } from '../../services/chat.service';
+import { ChatContactService } from '../../services/chat-contact.service';
+import { ChatConversationService } from '../../services/chat-conversation.service';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 
 
-declare var _: any;
+const CONTACT_SELECTION = {
+  ADD_MEMBER: 'ADD_MEMBER',
+  SHARE_CONTACT: 'SHARE_CONTACT',
+  NEW_CHAT: 'NEW_CHAT',
+}
 
 @Component({
-  selector: 'z-chat-share-add-contact',
-  templateUrl: 'add-contact.component.html',
+  selector: 'w-contact-selection',
+  templateUrl: 'contact-selection.component.html',
   styleUrls: ['contact-selection.component.scss']
 })
 
-export class ZChatShareAddContactComponent extends CommonEventHandler implements OnInit {
+export class ContactSelectionComponent extends CommonEventHandler implements OnInit {
 
   @ViewChild('modal') modal: BsModalComponent;
-  @Output() onSelect: EventEmitter<any> = new EventEmitter<any>();
 
   contacts: any;
-  type = 'addContact';
-  title = 'New Conversation';
+  type = CONTACT_SELECTION.ADD_MEMBER || CONTACT_SELECTION.NEW_CHAT || CONTACT_SELECTION.SHARE_CONTACT;
+  title = 'Select Contacts' || 'New Chat' || 'Add Members';
   filter: any;
   loading = false;
   selectedUsers: Array<any> = [];
@@ -42,7 +43,14 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
 
   subscription: Subscription;
   searchSubscription: Subscription;
+
+
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
+  private DEFAULT_OPTIONS = {
+    title: 'Select Contacts',
+    path: '',
+  };
+  // private destroy$ = new Subject();
 
   constructor(
     private chatService: ChatService,
@@ -51,7 +59,8 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
     private chatConversationService: ChatConversationService,
     private chatCommonService: ChatCommonService,
     public commonEventService: CommonEventService,
-    private router: Router
+    private router: Router,
+    private contactSelectionService: ContactSelectionService
   ) {
     super(commonEventService);
   }
@@ -69,52 +78,57 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
           console.log('error', error);
         }
       );
+
+
+    this.contactSelectionService.onOpen$.pipe(
+      filter(options => options != null),
+      takeUntil(this.destroy$)
+
+    ).subscribe(options => {
+      this.open(options);
+    });
   }
 
   add() {
-    if (this.type === 'addChat') {
-      // this.onSelect.emit({users: this.selectedUsers, type: 'CREATE_CONVERSATION'});
+    if ([
+      CONTACT_SELECTION.NEW_CHAT,
+      CONTACT_SELECTION.SHARE_CONTACT,
+      CONTACT_SELECTION.ADD_MEMBER,
+    ].includes(this.type)) {
+      this.contactSelectionService.select({
+        eventName: this.type,
+        payload: {
+          data: this.selectedUsers
+        }
+      });
+
+    }
+    if (this.type === 'NEW_CHAT') {
       this.createConversation();
     }
-    if (this.type === 'addMember') {
+    if (this.type === 'ADD_MEMBER') {
       this.addMember();
     }
-    if (this.type === 'shareContacts') {
-      this.shareContact();
+    if (this.type === 'SHARE_CONTACT') {
     }
+    this.modal.close();
   }
 
-  open(event: CommonEvent) {
-    const options: any = {
-      addMember: {
-        title: 'Add Members'
-      },
-      addChat: {
-        title: 'New Chat'
-      },
-      shareContacts: {
-        title: 'Choose Contact'
-      },
-    };
+  open(options: any) {
+    this.type = options.type || CONTACT_SELECTION.SHARE_CONTACT;
+    this.title = options.title || 'Select Contacts';
+    const path = options.path || `account/get_my_contacts_accounts?size=1000`;
+    // {
+    //   link = `zone/chat/group/${options.conversationSelected.group_id}/contacts_not_in_group`;
 
-    Object.keys(options).forEach(key => {
-      if (key == event.payload.option) {
-        this.title = options[key].title;
-        this.type = key;
-      }
-    });
+
     this.loading = true;
     this.resetData();
     this.modal.open().then();
 
-    let link = "";
-    if (event.payload.option == 'addMember') {
-      link = `zone/chat/group/${event.payload.conversationSelected.group_id}/contacts_not_in_group`;
-    } else {
-      link = `account/get_my_contacts_accounts?size=1000`
-    }
-
-    this.apiBaseService.get(link).subscribe(res => {
+    this.apiBaseService.get(path).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(res => {
       this.contacts = res.data;
       this.users = res.data;
       this.loading = false;
@@ -124,6 +138,8 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
   close() {
     this.modal.close().then();
     this.resetData();
+    // this.destroy$.next();
+    // this.destroy$.complete();
   }
 
   createConversation() {
@@ -147,14 +163,6 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
       action: 'apiAddMembers',
       payload: this.selectedUsers
     })
-    this.modal.close();
-  }
-
-  shareContact() {
-    // const contacts = _.filter(this.contacts, { checked: true });
-    // const ids = _.map(contacts, 'id');
-    const ids = this.selectedUsers.map(u => u.id);
-    this.chatService.shareContact(ids);
     this.modal.close();
   }
 

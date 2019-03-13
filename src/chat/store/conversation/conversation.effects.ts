@@ -17,7 +17,7 @@ export class ConversationEffects {
   getAll$: Observable<Action> = this.actions$.pipe(
     ofType<ConversationActions.GetItems>(ConversationActions.ActionTypes.GET_ITEMS),
     switchMap(action =>
-      this.conversationService.getAll(action.payload.query).pipe(
+      this.conversationService.getAll(action.payload.query, action.payload.path).pipe(
         map(response => {
           const conversations = [];
           response.data.forEach(item => {
@@ -51,7 +51,7 @@ export class ConversationEffects {
   );
 
   @Effect()
-  getSearch$: Observable<Action> = this.actions$.pipe(
+  search$: Observable<Action> = this.actions$.pipe(
     ofType<ConversationActions.Search>(ConversationActions.ActionTypes.SEARCH),
     switchMap(action =>
       this.conversationService.getAll(action.payload).pipe(
@@ -86,21 +86,38 @@ export class ConversationEffects {
   );
 
   @Effect()
-  updateUser$: Observable<Action> = this.actions$.pipe(
-    ofType<ConversationActions.UpdateSelf>(ConversationActions.ActionTypes.UPDATE_SELF),
+  update$: Observable<Action> = this.actions$.pipe(
+    ofType<ConversationActions.Update>(ConversationActions.ActionTypes.UPDATE),
     switchMap(action =>
-      this.apiBaseService.put(`zone/chat/group_user/${action.payload.id}`, action.payload.body).pipe(
+      this.conversationService.update(action.payload.id, action.payload.body).pipe(
         map(response => {
           const conversationMember = response.data;
 
-          return new ConversationActions.UpdateSelfSuccess({conversation: {
-            id: conversationMember.group_id,
-            favorite: conversationMember.favorite,
-            notification: conversationMember.notification,
-          }});
+          return new ConversationActions.UpdateSuccess({conversation: {
+              id: conversationMember.group_id,
+              favorite: conversationMember.favorite,
+              notification: conversationMember.notification,
+            }});
         }),
         catchError(error =>
-          of(new ConversationActions.UpdateSelfError({ error }))
+          of(new ConversationActions.UpdateError({ error }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  updateDisplay$: Observable<Action> = this.actions$.pipe(
+    ofType<ConversationActions.UpdateDisplay>(ConversationActions.ActionTypes.UPDATE_DISPLAY),
+    switchMap(action =>
+      this.conversationService.updateDisplay(action.payload.id, action.payload.body).pipe(
+        map(response => {
+          const conversation = response.data.attributes;
+
+          return new ConversationActions.UpdateDisplaySuccess({conversation: conversation});
+        }),
+        catchError(error =>
+          of(new ConversationActions.UpdateDisplayError({ error }))
         )
       )
     )

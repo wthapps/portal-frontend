@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil, distinctUntilChanged, tap } from 'rxjs/operators';
+import { filter, map, takeUntil, distinctUntilChanged, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
@@ -13,13 +13,13 @@ import { ChatService } from '@chat/shared/services/chat.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService, AuthService, ChatCommonService, UserService } from '@shared/services';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
 import { User } from '@shared/shared/models';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 
 
 @Component({
@@ -94,7 +94,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public authService: AuthService,
     private wthConfirmService: WthConfirmService,
-    private addContactService: ZChatShareAddContactService,
     private messageAssetsService: MessageAssetsService,
     private objectListService: WObjectListService,
     private chatConversationService: ChatConversationService,
@@ -104,6 +103,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private chatMessageService: ChatMessageService,
     private store: Store<any>,
     private router: Router,
+    private contactSelectionService: ContactSelectionService
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
     this.currentUser = userService.getSyncProfile();
@@ -127,21 +127,29 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.chatConversationService.getStoreSelectedConversation().pipe(
-      distinctUntilChanged((p: any, q: any) => p.id === q.id),
-      takeUntil(this.destroy$)
-    ).subscribe(sc => {
-      this.conversation = sc;
-      if (this.conversation && this.conversation.group_type === 'couple') {
-        this.tabs = this.tabsPhoto;
-      } else {
-        this.tabs = this.tabsMember;
-      }
-      this.tabAction(this.tabs[0]);
-    });
+    // this.chatConversationService.getStoreSelectedConversation().pipe(
+    //   distinctUntilChanged((p: any, q: any) => p.id === q.id),
+    //   takeUntil(this.destroy$)
+    // ).subscribe(sc => {
+    //   this.conversation = sc;
+    //   if (this.conversation && this.conversation.group_type === 'couple') {
+    //     this.tabs = this.tabsPhoto;
+    //   } else {
+    //     this.tabs = this.tabsMember;
+    //   }
+    //   this.tabAction(this.tabs[0]);
+    // });
   }
 
   ngOnInit() {
+
+    this.contactSelectionService.onSelect$.pipe(
+      filter((event: any) => event.eventName === 'ADD_MEMBER'),
+      map((event: any) => event.payload.data),
+      takeUntil(this.destroy$)
+    ).subscribe((data: any) => {
+      console.log('ADD MEMBER', data);
+    });
   }
 
   ngOnDestroy() {
@@ -151,6 +159,14 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
   open() {
     this.objectListService.setMultipleSelection(false);
+
+
+    if (this.conversation && this.conversation.group_type === 'couple') {
+      this.tabs = this.tabsPhoto;
+    } else {
+      this.tabs = this.tabsMember;
+    }
+    this.tabAction(this.tabs[0]);
   }
 
   tabAction(event: WTab) {
@@ -166,7 +182,9 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     } else {
       this.isLoading = true;
       // this.conversations$ = this.store.select(STORE_CONVERSATIONS);
-      this.apiBaseService.get('zone/chat/group/' + this.conversation.group_id + '/users').subscribe(res => {
+      this.apiBaseService.get('chat/conversations/' + this.conversation.uuid + '/members').pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(res => {
         this.users = res.data;
       });
     }

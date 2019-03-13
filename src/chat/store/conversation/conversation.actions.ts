@@ -17,9 +17,9 @@ export enum ActionTypes  {
   UPDATE                = 'CONVERSATION_UPDATE',
   UPDATE_SUCCESS        = 'CONVERSATION_UPDATE_SUCCESS',
   UPDATE_ERROR          = 'CONVERSATION_UPDATE_ERROR',
-  UPDATE_SELF           = 'CONVERSATION_UPDATE_SELF',
-  UPDATE_SELF_SUCCESS   = 'CONVERSATION_UPDATE_SELF_SUCCESS',
-  UPDATE_SELF_ERROR     = 'CONVERSATION_UPDATE_SELF_ERROR',
+  UPDATE_DISPLAY        = 'CONVERSATION_UPDATE_DISPLAY',
+  UPDATE_DISPLAY_SUCCESS   = 'CONVERSATION_UPDATE_DISPLAY_SUCCESS',
+  UPDATE_DISPLAY_ERROR     = 'CONVERSATION_UPDATE_DISPLAY_ERROR',
   HIDE                  = 'CONVERSATION_HIDE',
   HIDE_SUCCESS          = 'CONVERSATION_HIDE_SUCCESS',
   HIDE_ERROR            = 'CONVERSATION_HIDE_ERROR',
@@ -155,20 +155,20 @@ export class UpdateError implements Action {
 /**
  * This class is use for update favorite, notification
  */
-export class UpdateSelf implements Action {
-  readonly type = ActionTypes.UPDATE_SELF;
+export class UpdateDisplay implements Action {
+  readonly type = ActionTypes.UPDATE_DISPLAY;
 
   constructor(public payload: any) { }
 }
 
-export class UpdateSelfSuccess implements Action {
-  readonly type = ActionTypes.UPDATE_SELF_SUCCESS;
+export class UpdateDisplaySuccess implements Action {
+  readonly type = ActionTypes.UPDATE_DISPLAY_SUCCESS;
 
   constructor(public payload: any = null) { }
 }
 
-export class UpdateSelfError implements Action {
-  readonly type = ActionTypes.UPDATE_SELF_ERROR;
+export class UpdateDisplayError implements Action {
+  readonly type = ActionTypes.UPDATE_DISPLAY_ERROR;
 
   constructor(public payload: any = null) { }
 }
@@ -351,9 +351,9 @@ export type Actions =
   Update |
   UpdateSuccess |
   UpdateError |
-  UpdateSelf |
-  UpdateSelfSuccess |
-  UpdateSelfError |
+  UpdateDisplay |
+  UpdateDisplaySuccess |
+  UpdateDisplayError |
   Hide |
   HideSuccess |
   Hide |

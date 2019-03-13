@@ -103,7 +103,12 @@ export class WUploader {
       // type: "application/pdf"
       // add more files that you need to pass to server here
       file.meta = {
-        ...file.meta, file_upload_id: file.id + '-' + new Date().getTime(), after_callback_url: options.afterCallBackUrl, before_callback_url: options.beforeCallBackUrl, payload: JSON.stringify({ ...options.payload, ...file.progress})};
+        ...file.meta,
+        file_upload_id: file.id + '-' + new Date().getTime(),
+        after_callback_url: options.afterCallBackUrl,
+        before_callback_url: options.beforeCallBackUrl,
+        payload: JSON.stringify({ ...options.payload, ...file.progress})
+      };
       this.event$.next({action: 'file-added', payload: {file: file}});
     });
 

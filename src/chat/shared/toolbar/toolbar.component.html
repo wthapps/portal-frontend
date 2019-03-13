@@ -7,7 +7,7 @@
     </div>
     <div *ngIf="conversation && !conversation.blacklist" class="page-body-nav-right">
       <button *ngIf="conversation.group_type == 'multiple' && (userService.profile.id == conversation.creator_id || conversation.allow_add)"
-        type="button" class="btn btn-default" (click)="onAddMember()" pTooltip="{{ tooltip.addMembers }}" tooltipPosition="top">
+        type="button" class="btn btn-default" (click)="addMember()" pTooltip="{{ tooltip.addMembers }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
       <button type="button" class="btn btn-default" (click)="favorite()" pTooltip="{{ (conversation.favorite) ? tooltip.removeFromFavorites : tooltip.addToFavorites }}"

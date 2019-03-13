@@ -4,33 +4,36 @@ import { WHttpClientService } from '@shared/services/w-http-client.service';
 import { HttpClient } from '@angular/common/http';
 import { Conversation } from '@chat/store';
 import { map } from 'rxjs/operators';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, BaseEntityService } from '@shared/services';
 
 @Injectable()
-export class ConversationService {
-  constructor(private api: WHttpClientService, private httpClient: HttpClient, private apiBaseService: ApiBaseService) {}
+export class ConversationService extends BaseEntityService<any> {
   // url = 'http://localhost:5000/v1/chat/conversations';
-  url = 'http://localhost:4000/chat/conversations';
+  // url = 'http://localhost:4000/chat/conversations';
+  url = 'chat/conversations';
   path = 'chat/conversations';
   pageSize = 30;
   // url = 'chat/conversations';
 
-
-  get(id: any): Observable<any> {
-    return this.httpClient.get(`${this.url}/${id}`);
+  constructor(private api: WHttpClientService, private httpClient: HttpClient, protected apiBaseService: ApiBaseService) {
+    super(apiBaseService);
   }
 
-  getAll(query: any): Observable<any> {
-    if (!query) {
-      // query = `?page[size]=${this.pageSize}`;
-      query = `?per_page=${this.pageSize}`;
+  // get(id: any): Observable<any> {
+  //   return this.get(`${this.url}/${id}`);
+  // }
 
-    } else {
-      query = `?${query}`;
-    }
-    // return this.api.get(this.url, query);
-    return this.httpClient.get<any>(`${this.url}${query}`, {headers: {Accept: 'application/json'}});
-  }
+  // getAll(query: any): Observable<any> {
+  //   if (!query) {
+  //     // query = `?page[size]=${this.pageSize}`;
+  //     query = `?per_page=${this.pageSize}`;
+  //
+  //   } else {
+  //     query = `?${query}`;
+  //   }
+  //   // return this.api.get(this.url, query);
+  //   return this.httpClient.get<any>(`${this.url}${query}`, {headers: {Accept: 'application/json'}});
+  // }
 
   create(payload: any): Observable<any> {
     const conversation = {
@@ -42,7 +45,11 @@ export class ConversationService {
   }
 
   update(id: any, payload: any): Observable<any> {
-    return this.api.put(`${this.url}/${id}`, payload);
+    return this.apiBaseService.patch(`${this.url}/${id}`, payload);
+  }
+
+  updateDisplay(id: any, payload: any): Observable<any> {
+    return this.apiBaseService.patch(`${this.url}/${id}/display`, payload);
   }
 
   delete(id: any): Observable<any> {

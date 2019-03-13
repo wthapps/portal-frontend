@@ -17,6 +17,9 @@ export class Message {
   created_at: string;
   updated_at: string;
   client_id: string;
+  file_id: number;
+  file_type: string;
+
 
   constructor(obj?: any) {
     this.id = (obj && obj.id) || 0;
@@ -35,5 +38,7 @@ export class Message {
     this.client_id = (obj && obj.client_id) || '';
     this.deleted = (obj && obj.deleted) || false;
     this.meta_data = (obj && obj.meta_data) || {};
+    this.file_id = (obj && obj.file_id) || null;
+    this.file_type = (obj && obj.file_type) || null;
   }
 }

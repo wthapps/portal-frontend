@@ -1,27 +1,25 @@
-<z-chat-share-toolbar [conversation]="selectedConversation$|async" class="page-body-control"
-  (onFavorite)="favorite($event)"
-  (onNotify)="toggleNotification($event)"
->
-</z-chat-share-toolbar>
+<ng-container *ngIf="joinedConversation$ | async as conversation;">
+  <z-chat-share-toolbar [conversation]="conversation" class="page-body-control"
+                        (onFavorite)="toggleFavorite($event)"
+                        (onNotify)="toggleNotification($event)"
+                        (onAddMember)="addMembers($event)"
+  >
+  </z-chat-share-toolbar>
+  <div class="page-body-content page-body-content-chat has-page-body-control"
+       (drop)="drop($event)"
+       (dragover)="drag($event)"
+       (dragenter)="drag($event)">
 
-<ng-container *ngIf="selectedConversation$ | async as conversation;">
-
-  <div class="page-body-content page-body-content-chat has-page-body-control" (drop)="drop($event)"
-       (dragover)="drag($event)" (dragenter)="drag($event)">
-
-    <message-invitation
-      [conversation]="conversation"
-      [message]="(messages$ | async)[0]"
-      (onAccept)="doAccept(conversation)"
-      (onDecline)="doDecline(conversation)"
-    >
+    <message-invitation [conversation]="conversation"
+                        [message]="(messages$ | async)[0]"
+                        (onAccept)="doAccept(conversation)"
+                        (onDecline)="doDecline(conversation)">
     </message-invitation>
 
     <message-list class="message-list-body" #messageList
                   [messages]="messages$ | async"
                   [conversation]="conversation"
-                  [currentUser]="currentUser$ | async"
-                  >
+                  [currentUser]="currentUser$ | async">
     </message-list>
     <message-editor class="chat-message-container"
                     #messageEditor
@@ -29,11 +27,9 @@
                     [conversation]="conversation"
                     (onCreate)="createMessage($event)"
                     (onUpdate)="updateMessage($event)"
-                    (onError)="showEditorError($event)"
-                    >
+                    (onError)="showEditorError($event)">
     </message-editor>
-    <message-assets class="message-assets"
-                    [conversation]="conversation"></message-assets>
+    <message-assets class="message-assets" [conversation]="conversation"></message-assets>
   </div>
 </ng-container>
 

@@ -16,7 +16,7 @@ export const getIsLoading = (state: ConversationState): boolean => state.isLoadi
 
 // export const getItems = (state: State): Array<Conversation> => state.items;
 
-export const getSelectedItem = (state: ConversationState): Conversation => state.selectedConversation;
+// export const getSelectedItem = (state: ConversationState): Conversation => state.selectedConversation;
 
 
 export const selectConversationState: MemoizedSelector<
@@ -45,8 +45,17 @@ export const selectConversationTotal: (
 export const selectSearchedConversations  =
   createSelector(selectConversationState, (state: ConversationState) => state.searchedConversations);
 
-export const getSelectedConversation   =
-  createSelector(selectConversationState, (state: ConversationState) => state.selectedConversation);
+// export const selectSelectedConversation   =
+//   createSelector(selectConversationState, (state: ConversationState) => state.selectedConversation);
+export const selectSelectedConversationId   =
+  createSelector(selectConversationState, (state: ConversationState) => state.selectedConversationId);
+
+export const selectJoinedConversation   =
+  createSelector(selectConversationState, (state: ConversationState) => state.joinedConversation);
+
+export const selectJoinedConversationId   =
+  createSelector(selectConversationState, (state: ConversationState) => state.joinedConversationId);
+
 export const getLinks   = createSelector(selectConversationState, (state: ConversationState) => state.links);
 
 

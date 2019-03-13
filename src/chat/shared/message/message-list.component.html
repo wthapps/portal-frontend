@@ -21,7 +21,7 @@
         <ng-container *ngIf="messages?.length > 0; else templateNodata">
            <div class="message-item-dv" *ngFor="let message of messages; trackBy: message?.uuid">
             <message-item [message]="message"
-                          [byMe]="message.byMe"
+                          [byMe]="message.user_id === currentUser.id"
                           [prevMessage]="getPrevMessage(message)"
                           [emojiMap]="emojiMap$ | async"
                           (onAddContact)="onAddContact($event)"

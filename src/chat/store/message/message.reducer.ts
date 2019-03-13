@@ -1,5 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Actions, ActionTypes } from './message.actions';
+import { conversationAdapter } from '@chat/store';
 
 export const FEATURE_NAME = 'message';
 
@@ -186,7 +187,32 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       // };
     }
 
-    case ActionTypes.CREATE_SUCCESS: {
+    case ActionTypes.CREATE_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
+    }
+
+    // Create actions
+    case ActionTypes.UPDATE: {
+      return {
+        ...state,
+        error: null
+      };
+    }
+
+    case ActionTypes.UPDATE_SUCCESS: {
+      const message = action.payload.message;
+
+      return messageAdapter.updateOne({
+        id: message.id,
+        changes: message
+      }, state);
+    }
+
+    case ActionTypes.UPDATE_ERROR: {
       return {
         ...state,
         loading: false,

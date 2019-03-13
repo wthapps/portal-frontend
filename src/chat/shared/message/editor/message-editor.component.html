@@ -18,19 +18,19 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-right" *ngIf="!isDisabled">
         <li>
-          <a (click)="onOpenSelectPhotos()" href="javascript:;">
+          <a (click)="openPhotosSelection()" href="javascript:void(0);">
             <i class="icon-zone-media"></i> Share photos</a>
         </li>
         <li>
-          <a (click)="noteSelectOpen()" href="javascript:;">
+          <a (click)="openNotesSelection()" href="javascript:void(0);">
             <i class="icon-zone-note"></i> Share notes</a>
         </li>
         <li>
-          <a (click)="shareContacts()" href="javascript:;">
+          <a (click)="openContactsSelection()" href="javascript:void(0);">
             <i class="fa fa-user-plus"></i> Share contacts</a>
         </li>
         <li>
-          <a (click)="openAddFile()" href="javascript:;">
+          <a (click)="openAddFile()" href="javascript:void(0);">
             <i class="fa fa-paperclip"></i> Add files</a>
         </li>
       </ul>
@@ -43,7 +43,7 @@
     </a>
   </div>
 </form>
-<chat-note-list-modal #noteList (insertNoteEvent)="noteSelectOnInsert()">
+<chat-note-list-modal #noteList (onSelect)="createMessage('notes', $event)">
 </chat-note-list-modal>
 <long-message-modal #longMessageModal></long-message-modal>
 

@@ -13,9 +13,8 @@ export const conversationAdapter: EntityAdapter<Conversation> = createEntityAdap
 });
 
 export interface ConversationState extends EntityState<Conversation> {
-  selectedConversationId: string | null;
-  selectedConversation: Conversation | null;
-  joinedConversationId: string | null;
+  selectedConversationId: number | null;
+  joinedConversationId: number | null;
   joinedConversation: Conversation | null;
   searchedConversations: Conversation[] | [];
   doing?: boolean;
@@ -42,7 +41,6 @@ export interface ConversationState extends EntityState<Conversation> {
 export const initialConversationState: ConversationState = conversationAdapter.getInitialState(
   {
     selectedConversationId: null,
-    selectedConversation: null,
     joinedConversationId: null,
     joinedConversation: null,
     searchedConversations: [],
@@ -142,11 +140,11 @@ export function reducer(state = initialConversationState, action: Actions): Conv
     }
 
     case ActionTypes.GET_ITEM_SUCCESS: {
-      const item = action.payload.data.attributes;
+      const conversation = action.payload.data.attributes;
       return {
         ...state,
-        selectedConversation: item,
-        selectedConversationId: item.id,
+        joinedConversation: conversation,
+        joinedConversationId: conversation.id,
         isLoading: false,
         error: null
       };
@@ -193,33 +191,68 @@ export function reducer(state = initialConversationState, action: Actions): Conv
     }
 
 
-    // Update Self actions
-    case ActionTypes.UPDATE_SELF: {
+    // Update Display actions
+    case ActionTypes.UPDATE: {
       return {
         ...state,
         error: null
       };
     }
 
-    case ActionTypes.UPDATE_SELF_SUCCESS: {
+    case ActionTypes.UPDATE_SUCCESS: {
       const conversation = action.payload.conversation;
 
       return conversationAdapter.updateOne({
         id: conversation.id,
-        changes: {
-          favorite: conversation.favorite,
-          notification: conversation.notification,
-        }
+        changes: conversation
       }, {
         ...state,
-        selectedConversation: {
-          ...state.selectedConversation,
+        joinedConversation: {
+          ...state.joinedConversation,
           ...conversation
         }
       });
     }
 
-    case ActionTypes.UPDATE_SELF_ERROR: {
+    case ActionTypes.UPDATE_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+    }
+
+
+    // Update Display actions
+    case ActionTypes.UPDATE_DISPLAY: {
+      return {
+        ...state,
+        isLoading: false,
+        error: null
+      };
+    }
+
+    case ActionTypes.UPDATE_DISPLAY_SUCCESS: {
+      const conversation = action.payload.conversation;
+
+      return conversationAdapter.updateOne({
+        id: conversation.id,
+        changes: conversation
+      }, {
+        ...state,
+        joinedConversation: conversation,
+        isLoading: false,
+      });
+      return {
+        ...state,
+        joinedConversation: {
+          ...conversation
+        },
+        isLoading: false,
+      };
+    }
+
+    case ActionTypes.UPDATE_DISPLAY_ERROR: {
       return {
         ...state,
         isLoading: false,

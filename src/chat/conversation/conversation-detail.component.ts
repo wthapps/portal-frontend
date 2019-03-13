@@ -15,17 +15,12 @@ import {
   CommonEventService,
   PhotoService, UserService, ChatCommonService, StorageService, WMessageService, ApiBaseService
 } from '@wth/shared/services';
-import {
-  CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, NETWORK_ONLINE,
-  STORE_CONVERSATIONS, STORE_CONTEXT
-} from '@wth/shared/constant';
+import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, NETWORK_ONLINE } from '@wth/shared/constant';
 import { User } from '@wth/shared/shared/models';
 import { WUploader } from '@shared/services/w-uploader';
 import { Message } from '@chat/shared/models/message.model';
 import { CommonEventHandler } from '@shared/services/common-event/common-event.handler';
-import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
-import { merge, mergeMap, mergeMapTo, map, filter, withLatestFrom, combineLatest, takeUntil } from 'rxjs/operators';
 import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 import * as ConversationSelectors from '@chat/store/conversation/conversation.selectors';
 import { AppState } from '@chat/store';
@@ -33,8 +28,9 @@ import * as ConversationActions from '@chat/store/conversation/conversation.acti
 import { MessageActions, MessageSelectors } from '@chat/store/message';
 import { WebsocketService } from '@shared/channels/websocket.service';
 import { Channel, Presence } from 'phoenix';
-import { filter, map, skip, take } from 'rxjs/operators';
+import { filter, map, skip, take, takeUntil } from 'rxjs/operators';
 import { ChannelEvents } from '@shared/channels';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 
 declare var $: any;
 
@@ -47,13 +43,10 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
   // @Input() channel = 'ConversationDetailComponent';
   events: any;
-  currentMessages: any;
-  groupId: any;
-  selectedConversation: any;
-  selectedConversation$: Observable<any>;
+  joinedConversation$: Observable<any>;
+  joinedConversationId$: Observable<any>;
   messages$: Observable<any>;
 
-  chatConversations$: Observable<any>;
   currentUser$: Observable<User>;
   networkOnline$: Observable<boolean>;
   tokens: any;
@@ -72,16 +65,42 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     private route: ActivatedRoute,
     public userService: UserService,
     public storage: StorageService,
-    // public store: Store<any>,
     private store$: Store<AppState>,
     public apiBaseService: ApiBaseService,
     private conversationService: ConversationService,
     private uploader: WUploader,
-    private websocketService: WebsocketService
+    private websocketService: WebsocketService,
+    private contactSelectionService: ContactSelectionService
   ) {
     super(commonEventService);
     this.currentUser$ = userService.profile$;
     this.networkOnline$ = this.storage.getAsync(NETWORK_ONLINE);
+
+    // Load joined conversation then load message list
+    this.joinedConversation$ = this.store$.pipe(
+      select(ConversationSelectors.selectJoinedConversation),
+      filter(conversation => (conversation != null)),
+      map((conversation: any) => {
+        const cursor = conversation.latest_message.cursor + 1;
+        console.log('JOINED CONVERSATION', conversation);
+        this.store$.dispatch(new MessageActions.GetItems({ groupId: this.conversationId, queryParams: {
+            cursor: cursor
+          }}));
+        return conversation;
+      })
+    );
+    // this.store$.pipe(
+    //   select(ConversationSelectors.selectJoinedConversationId),
+    //   filter(conversationId => (conversationId != null)),
+    //   takeUntil(this.destroy$),
+    // ).subscribe(conversationId => {
+    //   this.store$.dispatch(new MessageActions.GetItems({ groupId: this.conversationId, queryParams: {
+    //       cursor: null
+    //     }}));
+    //   return conversationId;
+    // });
+    // Load message list
+    this.messages$ = this.store$.select(MessageSelectors.selectAllMessages);
   }
 
   updateMessageHandler(event: CommonEvent) {
@@ -101,26 +120,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
   ngOnInit() {
     // Get conversation details such as conversation information and message list
-
-    this.messages$ = this.store$.select(MessageSelectors.selectAllMessages);
-
-
     this.route.params.forEach((params: Params) => {
       this.conversationId = params['id'];
-
-      // Always plus 1 to make sure it is greater than current message cursor
-      this.selectedConversation$ = this.store$.pipe(
-        select(ConversationSelectors.getSelectedConversation),
-        map(response => {
-          console.log('GET SELECTED CONVERSATION', response);
-          return response;
-        })
-      );
-
-      this.store$.dispatch(new MessageActions.GetItems({ groupId: this.conversationId, queryParams: {
-          cursor: 1551780895167 + 1
-        }}));
-
       // Create new channel depends on selected conversation
       // If channel has already been existing don't create new one
       this.conversationChannel = this.websocketService.subscribeChannel(`conversation:${this.conversationId}`,
@@ -143,13 +144,25 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       console.log('presence list', presence.list());
     });
 
+    // Handle message created successfully
     this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_CREATED, (response: any) => {
-
       console.log(ChannelEvents.CHAT_MESSAGE_CREATED, response);
       const message = response.data.attributes;
-
-
       this.createMessageCallback(message);
+    });
+
+    // Handle message updated successfully
+    this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_UPDATED, (response: any) => {
+      console.log(ChannelEvents.CHAT_MESSAGE_UPDATED, response);
+      const message = response.data.attributes;
+      this.updateMessageCallback(message);
+    });
+
+    // handle adding members
+    this.contactSelectionService.onSelect$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((contacts: any) => {
+      console.log('ADD MEMBER', contacts);
     });
 
     // SELECTED CONVERSATION
@@ -239,6 +252,10 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
   }
 
+  updateMessageCallback(message: any) {
+    this.store$.dispatch(new MessageActions.UpdateSuccess({message: message}));
+  }
+
   deleteMessage(event: CommonEvent) {
     this.chatMessageService
       .deleteMessage(event.payload.group_id, event.payload.id)
@@ -301,17 +318,26 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
    * Conversation actions
    */
 
-  favorite(conversation: any) {
-    this.store$.dispatch(new ConversationActions.UpdateSelf({id: conversation.id, body: {favorite: conversation.favorite}}));
+  toggleFavorite(conversation: any) {
+    this.store$.dispatch(new ConversationActions.UpdateDisplay({id: conversation.uuid, body: {conversation: conversation}}));
   }
 
   toggleNotification(conversation: any) {
-    this.store$.dispatch(new ConversationActions.UpdateSelf({id: conversation.id, body: {notification: conversation.notification}}));
+    this.store$.dispatch(new ConversationActions.UpdateDisplay({id: conversation.uuid, body: {conversation: conversation}}));
   }
 
   /*
    * Conversation actions ending
    */
+
+
+  addMembers(conversation: any) {
+    this.contactSelectionService.open({
+      type: 'ADD_MEMBER',
+      title: 'Add Members',
+      // path: `chat/conversations/${conversation.uuid}/members/not_in`
+    });
+  }
 
   drop(e: any) {
     e.preventDefault();

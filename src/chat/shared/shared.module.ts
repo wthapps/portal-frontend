@@ -29,7 +29,6 @@ import { ChatService } from './services/chat.service';
 import { ChatContactService } from './services/chat-contact.service';
 import { ZChatSharedHeaderComponent } from './header/header.component';
 import { ChatCommonService } from '@wth/shared/services';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 import { ChatMessageService } from './services/chat-message.service';
 import { ChatConversationService } from './services/chat-conversation.service';
@@ -158,7 +157,6 @@ export class ZChatSharedModule {
         ChatConversationService,
         ChatCommonService,
         MessageService,
-        ZChatShareAddContactService
       ]
     };
   }

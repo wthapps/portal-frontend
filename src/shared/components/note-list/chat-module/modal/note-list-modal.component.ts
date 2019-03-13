@@ -16,7 +16,7 @@ import { WObjectListService } from '@shared/components/w-object-list/w-object-li
 })
 export class ChatNoteListModalComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
-  @Output() insertNoteEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onSelect: EventEmitter<any> = new EventEmitter<any>();
   actives: any = [true, false, false];
 
   breadcrumb: any;
@@ -233,7 +233,7 @@ export class ChatNoteListModalComponent implements OnInit {
   }
 
   insertNotes() {
-    this.insertNoteEvent.emit();
+    this.onSelect.emit(this.selectedObjects);
   }
 
   doEvent(e: any) {

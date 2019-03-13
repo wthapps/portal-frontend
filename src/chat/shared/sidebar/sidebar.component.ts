@@ -101,7 +101,7 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       this.links = links;
     });
 
-    this.loadConversations();
+    this.loadConversations({per_page: 7});
 
     // Init user channel
     // Create new channel depends on selected conversation
@@ -131,42 +131,37 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   /*
     Load conversations
    */
-  loadConversations() {
-    this.store$.dispatch(new ConversationActions.GetItems({query: null}));
+  loadConversations(query: any = {}) {
+    this.store$.dispatch(new ConversationActions.GetItems({query: query}));
   }
 
   loadMoreConversations(links: any) {
     if (links && links.next) {
-      const query = links.next.split('?')[1];
-      this.store$.dispatch(new ConversationActions.GetItems({query: query}));
+      this.store$.dispatch(new ConversationActions.GetItems({path: links.next}));
     }
 
   }
 
   doFilter(param) {
-    if (param === 'unread') {
-      this.chatConversationService.apiGetConversations({ 'filter[where][gt][notification_count]': 0 })
-        .then((res: any) => {
-          this.filter = 'Unread';
-        });
-    }
-    if (param === 'all') {
-      this.chatConversationService.apiGetConversations().then((res: any) => {
+    let query = {};
+    switch (param) {
+      case 'all':
         this.filter = 'All';
-      });
+        break;
+      case 'unread':
+        query = {unread: true};
+        this.filter = 'Unread';
+        break;
+      case 'sent':
+        query = {status: 'sent_request'};
+        this.filter = 'Sent Request';
+        break;
+      case 'pending':
+        query = {status: 'pending'};
+        this.filter = 'Pending Request';
+        break;
     }
-    if (param === 'sent') {
-      this.chatConversationService.apiGetConversations({ 'filter[where][status]': 'sent_request' })
-        .then((res: any) => {
-          this.filter = 'Sent Request';
-        });
-    }
-    if (param === 'pending') {
-      this.chatConversationService.apiGetConversations({ 'filter[where][status]': 'pending' })
-        .then((res: any) => {
-          this.filter = 'Pending Request';
-        });
-    }
+    this.loadConversations(query);
   }
 
   selectConversation(conversation: any, event: any) {
@@ -224,11 +219,11 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   onAddContact() {
-    this.commonEventService.broadcast({
-      channel: 'ZChatShareAddContactComponent',
-      action: 'open',
-      payload: { option: 'addChat' }
-    });
+    // this.commonEventService.broadcast({
+    //     channel: 'ZChatShareAddContactComponent',
+    //     action: 'open',
+    //     payload: {option: 'addChat'}
+    // });
   }
 
   openContactModal() {
@@ -258,8 +253,8 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     this.searched = false;
 
     this.store$.dispatch(new ConversationActions.Search({
-      query: null,
       q: keyword,
+      sort: 'name'
     }));
     this.searched = true;
   }

@@ -27,6 +27,7 @@ import { ChatNoteListModule } from '@shared/components/note-list/chat-module/cha
 import { ZChatProfileModule } from '@chat/profile/profile.module';
 import { AppStoreModule } from '@chat/store';
 import { JwtIntercepter } from '@shared/services/auth/jwt-intercepter';
+import { ContactSelectionModule } from '@chat/shared/selections/contact';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { JwtIntercepter } from '@shared/services/auth/jwt-intercepter';
     ZChatPhotoModule,
     // ZChatMyProfileModule,
     ChatNoteListModule,
+    ContactSelectionModule,
 
     AppRoutingModule,
     ModalModule,

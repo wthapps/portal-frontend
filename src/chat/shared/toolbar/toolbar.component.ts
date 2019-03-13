@@ -5,13 +5,12 @@ import { takeUntil, merge } from 'rxjs/operators';
 
 import { ChatService } from '../services/chat.service';
 import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
-import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@wth/shared/constant';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { UserService, CommonEventService } from '@shared/services';
 import { ChatConversationService } from '../services/chat-conversation.service';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 
 
 declare let $: any;
@@ -26,11 +25,11 @@ declare let window: any;
 
 export class ZChatToolbarComponent implements OnInit, OnDestroy {
   @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
-  @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   @Input() conversation: any;
   @Input() inContactBook = true;
   @Output() onFavorite: EventEmitter<any> = new EventEmitter<any>();
   @Output() onNotify: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onAddMember: EventEmitter<any> = new EventEmitter<any>();
 
 
   showMemberBar = false;
@@ -49,10 +48,11 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     private chatConversationService: ChatConversationService,
     private wthConfirmService: WthConfirmService,
-    private addContactService: ZChatShareAddContactService,
     private commonEventService: CommonEventService,
     private renderer: Renderer2,
-    private messageAssetsService: MessageAssetsService) {
+    private messageAssetsService: MessageAssetsService,
+    private contactSelectionService: ContactSelectionService
+    ) {
     this.profileUrl = this.chatService.constant.profileUrl;
 
     this.messageAssetsService.open$
@@ -80,21 +80,23 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   onAddContact() {
-    this.addContactService.open('addContact');
+    // this.addContactService.open('addContact');
+    this.contactSelectionService.open({type: 'addContact'});
   }
 
-  onAddMember() {
-    // this.addContactService.open('addMember');
-    this.commonEventService.broadcast({
-      channel: 'ZChatShareAddContactComponent',
-      action: 'open',
-      payload: {option: 'addMember', conversationSelected: this.conversation}
-    })
+  addMember() {
+    this.onAddMember.emit(this.conversation);
+    // this.commonEventService.broadcast({
+    //   channel: 'ZChatShareAddContactComponent',
+    //   action: 'open',
+    //   payload: {option: 'addMember', conversationSelected: this.conversation}
+    // })
 
   }
 
   sendContact() {
-    this.addContactService.open('shareContact');
+    // this.addContactService.open('shareContact');
+    this.contactSelectionService.open({type: 'shareContact'});
   }
 
   onEditConversation() {
@@ -103,12 +105,12 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
 
   favorite() {
     // this.chatConversationService.apiFavoriteGroupUser(this.conversation);
-    this.onFavorite.emit({...this.conversation, favorite: !this.conversation.favorite});
+    this.onFavorite.emit(Object.assign({}, {...this.conversation, favorite: !this.conversation.favorite}));
   }
 
   toggleNotification() {
     // this.chatConversationService.apiNotificationGroupUser(this.conversation);
-    this.onNotify.emit({...this.conversation, notification: !this.conversation.notification});
+    this.onNotify.emit(Object.assign({}, {...this.conversation, notification: !this.conversation.notification}));
 
   }
 

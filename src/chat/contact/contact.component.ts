@@ -3,10 +3,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ChatService } from '../shared/services/chat.service';
-import { ZChatShareAddContactComponent } from '../shared/modal/add-contact.component';
 import { ApiBaseService } from '@wth/shared/services';
-import { CHAT_CONVERSATIONS } from '@wth/shared/constant';
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 
 @Component({
   selector: 'z-chat-contact',
@@ -15,13 +14,13 @@ import { ChatContactService } from '@chat/shared/services/chat-contact.service';
 export class ZChatContactComponent implements OnInit {
   contact$: any;
   usersOnlineItem$: Observable<any>;
-  @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
   count: any;
 
   constructor(
     private chatService: ChatService,
     public apiBaseService: ApiBaseService,
-    private chatContactService: ChatContactService
+    private chatContactService: ChatContactService,
+    private contactSelectionService: ContactSelectionService
   ) {}
 
   ngOnInit() {
@@ -39,7 +38,6 @@ export class ZChatContactComponent implements OnInit {
   }
 
   newContact() {
-    this.addContact.type = 'addContact';
-    this.addContact.open({});
+    this.contactSelectionService.open({type: 'addContact'});
   }
 }

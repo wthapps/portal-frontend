@@ -14,8 +14,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Subject, Subscription, Observable, from, merge } from 'rxjs';
-import { filter, take, takeUntil, mergeMap } from 'rxjs/operators';
+import { Subject, Subscription,  Observable, from, merge } from 'rxjs';
+import { filter, take, takeUntil, mergeMap, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
@@ -29,10 +29,10 @@ import { noteConstants } from '@notes/shared/config/constants';
 import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
 import { WUploader } from '@shared/services/w-uploader';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { LongMessageModalComponent } from '@shared/components/modal/long-message-modal.component';
 import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
 import { ChatMessageService } from '@chat/shared/services/chat-message.service';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 
 
 declare var $: any;
@@ -53,6 +53,8 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   @Input() maxLengthAllow = 2000;
 
   @Output() onCreate: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onUpdate: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onError: EventEmitter<any> = new EventEmitter<any>();
 
   channel = 'MessageEditorComponent';
 
@@ -84,13 +86,13 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     private store: Store<any>,
     private storage: StorageService,
     private fb: FormBuilder,
-    private addContactService: ZChatShareAddContactService,
     private messageService: WMessageService,
     private chatMessageService: ChatMessageService,
     public commonEventService: CommonEventService,
     private uploadService: PhotoUploadService,
     private uploader: WUploader,
-    private emojiService: WTHEmojiService
+    private emojiService: WTHEmojiService,
+    private contactSelectionService: ContactSelectionService,
   ) {
     super(commonEventService);
     this.createForm();
@@ -112,6 +114,15 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     ).subscribe(event => {
       this.sendFileEvent(event);
     });
+
+    this.contactSelectionService.onSelect$.pipe(
+      filter((event: any) => event.eventName === 'SHARE_CONTACT'),
+      map((event: any) => event.payload.data),
+      takeUntil(this.destroy$)
+    ).subscribe((contacts: any) => {
+      this.createMessage('contacts', contacts);
+    });
+
   }
 
   ngOnChanges(changes: any) {
@@ -126,7 +137,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     this.focus();
   }
 
-  noteSelectOpen() {
+  openNotesSelection() {
     this.notesListModal.open();
   }
 
@@ -219,7 +230,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       meta_data: {}
     });
 
-    const fakeMessage = this.chatMessageService.create(this.conversation.group_id, message);
+    const fakeMessage = this.chatMessageService.create(this.conversation.id, message);
     const uploadedMessage = this.uploadService.uploadPhotos([file]).toPromise();
     Promise.all([fakeMessage, uploadedMessage]).then(([fake, uploaded]) => {
       const updateMessage = { ...fake.data, file: uploaded['data'], content_type: type };
@@ -227,20 +238,24 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     });
   }
 
-  shareContacts() {
-    this.commonEventService.broadcast({
-      channel: 'ZChatShareAddContactComponent',
-      action: 'open',
-      payload: { option: 'shareContacts' }
+  openContactsSelection() {
+    // this.commonEventService.broadcast({
+    //   channel: 'ZChatShareAddContactComponent',
+    //   action: 'open',
+    //   payload: {option: 'shareContacts'}
+    // });
+    this.contactSelectionService.open({
+      type: 'SHARE_CONTACT',
+      title: 'Select Contacts'
     });
   }
 
   openAddFile() {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
       allowedFileTypes: null,
-      beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
-      afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
-      payload: {group_id: this.conversation.group_id},
+      beforeCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/before_upload_file',
+      afterCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/after_upload_file',
+      payload: {group_id: this.conversation.id},
       module: 'chat'
     });
   }
@@ -250,11 +265,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     this.editor.addEmoj(`${e.replace(/\\/gi, '')}`);
   }
 
-  onChangeValue(event: any) {
-    // console.log('changing.............', event.target.innerHtml);
-  }
-
-  onOpenSelectPhotos() {
+  openPhotosSelection() {
     this.mediaSelectionService.open({
       allowSelectMultiple: true,
       hiddenTabs: ['videos', 'playlists'],
@@ -262,19 +273,66 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       filter: 'all',
       allowCancelUpload: true,
       allowedFileTypes: ['image/*'],
-      beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
-      afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
-      payload: { group_id: this.conversation.group_id },
-  });
+      beforeCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/before_upload_file',
+      afterCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/after_upload_file',
+      payload: { group_id: this.conversation.id },
+    });
 
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.close$), filter((items: any[]) => items.length > 0))
       .subscribe(photos => {
-        this.chooseDone(photos);
+        this.createMessage('photos', photos);
       });
   }
 
+  createMessage(messageType: string, payload: any) {
+    switch (messageType) {
+      case 'photos':
+        const photos = payload;
+        photos.forEach(p => {
+          this.message = new Message({
+            message_type: 'file',
+            file_id: p.id,
+            file_type: p.object_type,
+          });
+          console.log('SELECTED PHOTOS', this.message);
+        });
+        break;
+      case 'notes':
+        const notes = payload;
+
+        this.notesListModal.close();
+        notes.forEach(p => {
+          this.message = new Message({
+            message_type: 'file',
+            file_id: p.object_id,
+            file_type: p.object_type,
+          });
+          console.log('SELECTED NOTES', this.message);
+        });
+        break;
+      case 'contacts':
+        const contacts = payload;
+        console.log('SELECTED CONTACTS', contacts);
+        contacts.forEach(contact => {
+          this.message = new Message({
+            message_type: 'share_contact_message',
+            file_id: contact.id,
+            file_type: '::User',
+          });
+          console.log('SELECTED CONTACTS', this.message);
+        });
+        break;
+
+    }
+  }
+
+  sendMessage(message: any) {
+
+  }
+
   chooseDone(allMedia: any[]) {
+    console.log('handle send photo', allMedia);
     // Create multiple chat messages in batches of CONCURRENT_UPLOAD (default value is 2)
     from(allMedia).pipe(
       mergeMap(media => this.chatMessageService.createMediaMessage(media),
