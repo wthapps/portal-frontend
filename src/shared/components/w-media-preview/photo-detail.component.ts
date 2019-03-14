@@ -64,6 +64,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
   subCreateAlbum: any;
   returnUrls: any;
   model: any;
+  disableMoreAction: any;
   sharings: any = [];
   listIds: DoublyLinkedLists;
   destroy$ = new Subject();
@@ -150,6 +151,8 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
             }
           }
         });
+      this.disableMoreAction = (Object.keys(this.menuActions)
+        .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
     });
   }
 

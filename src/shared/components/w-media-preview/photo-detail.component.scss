@@ -218,6 +218,12 @@
       margin: 7px 0;
     }
   }
+  
+  .limit-length {
+    width: 400px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }
 
 
