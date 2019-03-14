@@ -1,4 +1,4 @@
-import {Component, OnInit, ComponentFactoryResolver, OnDestroy, ViewContainerRef, ViewChild} from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, OnDestroy, ViewContainerRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -10,7 +10,7 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -35,12 +35,12 @@ declare var _: any;
   templateUrl: 'trash.component.html'
 })
 export class ZMediaTrashComponent implements OnInit, OnDestroy,
-SharingModalMixin,
-MediaBasicListMixin,
-AlbumAddMixin,
-AlbumCreateMixin,
-MediaDownloadMixin,
-MediaModalMixin {
+  SharingModalMixin,
+  MediaBasicListMixin,
+  AlbumAddMixin,
+  AlbumCreateMixin,
+  MediaDownloadMixin,
+  MediaModalMixin {
   currentQuery: string;
   tooltip: any = Constants.tooltip;
   type = 'photo';
@@ -63,10 +63,10 @@ MediaModalMixin {
   modalIns: any;
   modalRef: any;
   endLoading: any;
-  sorting: any =  {sort_name: "Date", sort: "desc"};
+  sorting: any = { sort_name: "Date", sort: "desc" };
   destroy$ = new Subject();
   title: string = 'Trash';
-  filters: any = [{ title: 'Photos', active: true, model: 'Media::Photo' }, { title: 'Albums', active: false, model: 'Media::Album'  }];
+  filters: any = [{ title: 'Photos', active: true, model: 'Media::Photo' }, { title: 'Albums', active: false, model: 'Media::Album' }];
 
   private sub: any;
 
@@ -86,7 +86,7 @@ MediaModalMixin {
     public commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
     private uploader: WUploader
-  ) {}
+  ) { }
 
   deSelect: () => void;
 
@@ -94,7 +94,7 @@ MediaModalMixin {
     this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       if (!params.model || params.model == 'Media::Photo') {
-        this.loadObjects({ 'filter[where][object_type]': 'Media::Photo', 'filter[or][object_type]': 'Media::Video'});
+        this.loadObjects({ 'filter[where][object_type]': 'Media::Photo', 'filter[or][object_type]': 'Media::Video' });
         this.filters = this.filters.map(f => {
           if (f.model == 'Media::Photo') {
             f.active = true;
@@ -104,7 +104,7 @@ MediaModalMixin {
           return f;
         })
       } else {
-        this.loadObjects({ 'filter[where][object_type]': 'Media::Album'});
+        this.loadObjects({ 'filter[where][object_type]': 'Media::Album' });
         this.filters = this.filters.map(f => {
           if (f.model == 'Media::Album') {
             f.active = true;
@@ -124,7 +124,7 @@ MediaModalMixin {
 
   loadObjects(opts: any = {}) {
     this.loading = true;
-    opts = {...opts, model: 'Media::Trash'};
+    opts = { ...opts, model: 'Media::Trash' };
     this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
     this.apiBaseService.get('media/trashes', opts).subscribe(res => {
       this.objects = res.data;
@@ -134,13 +134,13 @@ MediaModalMixin {
     });
   }
 
-  restore(){
-    this.apiBaseService.post(`media/trashes/restore`, {objects: this.selectedObjects.map(e => {return {id: e.id, model: e.model} })}).subscribe(res => {
+  restore() {
+    this.apiBaseService.post(`media/trashes/restore`, { objects: this.selectedObjects.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
       this.loadObjects();
     })
   }
 
-  delete(){
+  delete() {
     this.confirmService.confirm({
       header: 'Delete',
       acceptLabel: 'Delete',
@@ -158,7 +158,7 @@ MediaModalMixin {
     })
   }
 
-  emptyTrash(){
+  emptyTrash() {
     this.confirmService.confirm({
       header: 'Empty Trash',
       acceptLabel: 'Delete',
@@ -166,15 +166,15 @@ MediaModalMixin {
       accept: () => {
         let tmp = this.objects;
         this.objects = [];
-        this.apiBaseService.post(`media/trashes/really_destroy`, { objects: tmp.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
+        this.apiBaseService.post(`media/trashes/really_destroy`).subscribe(res => {
         })
       }
     })
   }
 
-  loadMoreObjects:() => void;
+  loadMoreObjects: () => void;
 
-  loadingEnd:() => void;
+  loadingEnd: () => void;
 
   doToolbarEvent(e: any) {
     switch (e.action) {
@@ -190,7 +190,7 @@ MediaModalMixin {
   /* AlbumCreateMixin This is album create methods, to
 custom method please overwirte any method*/
   openCreateAlbumModal: (selectedObjects: any) => void;
-  onDoneAlbum:(e: any) => void;
+  onDoneAlbum: (e: any) => void;
   /* ================================== */
 
   /* AlbumAddMixin This is album add methods, to
@@ -199,11 +199,11 @@ custom method please overwirte any method*/
   onAddToAlbum(e: any) {
     this.apiBaseService
       .post(`media/albums/${e.parents[0].id}/photos`, {
-          photos: this.selectedObjects
-        })
-        .subscribe(res => {
-          this.toastsService.success('You just added to Album success');
-        });
+        photos: this.selectedObjects
+      })
+      .subscribe(res => {
+        this.toastsService.success('You just added to Album success');
+      });
   }
   onAddedToAlbum: (data: any) => void;
   /* ================================== */
@@ -215,8 +215,8 @@ custom method please overwirte any method*/
         break;
       case 'filter':
         this.filters.forEach(f => {
-          if(f.title == event.data.title) {
-            this.router.navigate(['/trash'], {queryParams: {model: f.model}});
+          if (f.title == event.data.title) {
+            this.router.navigate(['/trash'], { queryParams: { model: f.model } });
           }
           return f;
         })
@@ -269,12 +269,12 @@ custom method please overwirte any method*/
 
   /* MediaListMixin This is media list methods, to
 custom method please overwirte any method*/
-  selectedObjectsChanged:(objectsChanged?: any) => void;
+  selectedObjectsChanged: (objectsChanged?: any) => void;
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
-    let data: any = { returnUrls: '/photos' , preview: true};
+    let data: any = { returnUrls: '/photos', preview: true };
     if (this.selectedObjects && this.selectedObjects.length > 1) data.ids = this.selectedObjects.map(s => s.id).join(',')
-    this.router.navigate([`/photos/${id}`], {queryParams: data});
+    this.router.navigate([`/photos/${id}`], { queryParams: data });
   }
 
   // ============= MediaListMixin ===============
@@ -290,21 +290,21 @@ custom method please overwirte any method*/
   /* MediaViewMixin This is media view methods, to
 custom method please overwirte any method*/
   // changeViewMode:(mode: any) => void;
-  changeViewMode:(mode: any) => void;
+  changeViewMode: (mode: any) => void;
   /* MediaSortMixin This is media sort methods, to
 custom method please overwirte any method*/
-  sortMedia:() => void;
+  sortMedia: () => void;
 
-  downloadMedia:(media: any) => void;
+  downloadMedia: (media: any) => void;
 
   loadModalComponent: (component: any) => void;
 
-  openEditModal:(object: any) => void;
+  openEditModal: (object: any) => void;
   onAfterEditModal() {
     /* this method is load objects to display on init */
     const sub = this.modalIns.event.subscribe(event => {
       this.apiBaseService.put(`media/photos/${event.params.selectedObject.id}`, event.params.selectedObject).subscribe(res => {
-        if(sub) sub.unsubscribe();
+        if (sub) sub.unsubscribe();
       })
     });
   }
