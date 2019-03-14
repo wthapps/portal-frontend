@@ -6,10 +6,7 @@ import { map, debounceTime, distinctUntilChanged, switchMap, takeUntil, filter }
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { Constants } from '../../../../shared/constant';
-import { ApiBaseService, ChatCommonService, CommonEventHandler, CommonEventService } from '../../../../shared/services';
-import { ChatService } from '../../services/chat.service';
-import { ChatContactService } from '../../services/chat-contact.service';
-import { ChatConversationService } from '../../services/chat-conversation.service';
+import { ApiBaseService } from '../../../../shared/services';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 
 
@@ -17,7 +14,7 @@ const CONTACT_SELECTION = {
   ADD_MEMBER: 'ADD_MEMBER',
   SHARE_CONTACT: 'SHARE_CONTACT',
   NEW_CHAT: 'NEW_CHAT',
-}
+};
 
 @Component({
   selector: 'w-contact-selection',
@@ -25,7 +22,7 @@ const CONTACT_SELECTION = {
   styleUrls: ['contact-selection.component.scss']
 })
 
-export class ContactSelectionComponent extends CommonEventHandler implements OnInit {
+export class ContactSelectionComponent implements OnInit {
 
   @ViewChild('modal') modal: BsModalComponent;
 
@@ -36,7 +33,6 @@ export class ContactSelectionComponent extends CommonEventHandler implements OnI
   loading = false;
   selectedUsers: Array<any> = [];
   suggestedUsers: Array<any> = [];
-  channel = 'ZChatShareAddContactComponent';
 
   users: any = [];
   search$ = new Subject<string>();
@@ -46,6 +42,7 @@ export class ContactSelectionComponent extends CommonEventHandler implements OnI
 
 
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
+  private destroy$ = new Subject();
   private DEFAULT_OPTIONS = {
     title: 'Select Contacts',
     path: '',
@@ -53,16 +50,9 @@ export class ContactSelectionComponent extends CommonEventHandler implements OnI
   // private destroy$ = new Subject();
 
   constructor(
-    private chatService: ChatService,
-    private chatContactService: ChatContactService,
     private apiBaseService: ApiBaseService,
-    private chatConversationService: ChatConversationService,
-    private chatCommonService: ChatCommonService,
-    public commonEventService: CommonEventService,
-    private router: Router,
     private contactSelectionService: ContactSelectionService
   ) {
-    super(commonEventService);
   }
 
   ngOnInit() {
@@ -103,14 +93,7 @@ export class ContactSelectionComponent extends CommonEventHandler implements OnI
       });
 
     }
-    if (this.type === 'NEW_CHAT') {
-      this.createConversation();
-    }
-    if (this.type === 'ADD_MEMBER') {
-      this.addMember();
-    }
-    if (this.type === 'SHARE_CONTACT') {
-    }
+
     this.modal.close();
   }
 
@@ -140,34 +123,6 @@ export class ContactSelectionComponent extends CommonEventHandler implements OnI
     this.resetData();
     // this.destroy$.next();
     // this.destroy$.complete();
-  }
-
-  createConversation() {
-    this.commonEventService.broadcast({
-      channel: 'CONVERSATION_ACTIONS',
-      action: 'createConversation',
-      payload: {users: this.selectedUsers}
-    });
-    // this.chatContactService.addContact(this.selectedUsers.map(user => user.id)).then(res => {
-    //   this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
-    //     this.chatConversationService.moveToFirst(res2.data);
-    //   });
-    //   this.chatConversationService.navigateToConversation(res.data.group_id);
-    // });
-    this.close();
-  }
-
-  addMember() {
-    this.commonEventService.broadcast({
-      channel: 'ChatConversationService',
-      action: 'apiAddMembers',
-      payload: this.selectedUsers
-    })
-    this.modal.close();
-  }
-
-  search() {
-    this.chatService.router.navigate([`${this.chatService.constant.searchNewContactsUrl}`]);
   }
 
   selectUser(user: any) {

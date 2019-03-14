@@ -199,10 +199,10 @@
   <div class="wapper message-item-content message-item-content-contact-sharing">
     <div class="message-item-content-contact-sharing-info" >
       <span class="avatar-xs">
-        <img [src]="message?.display?.share_contact?.profile_image" alt="">
+        <img [src]="message?.file?.profile_image" alt="">
       </span>
       <span class="message-item-content-contact-sharing">
-        {{message?.display?.share_contact?.name}}
+        {{ message?.file?.name }}
       </span>
     </div>
     <div class="message-padding can-click">

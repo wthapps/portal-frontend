@@ -26,6 +26,7 @@ const host = 'localhost';
 export const ConfigByEnv: EnvConfig = {
   CDN: `http://${host}:4000/assets`,
   API: `http://${host}:4000`,
+  SOCKET_API: `ws://127.0.0.1:5000/socket`,
   ENV: 'DEV',
   DOMAIN: 'localhost',
   SUB_DOMAIN: {

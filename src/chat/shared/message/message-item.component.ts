@@ -134,7 +134,7 @@ export class MessageItemComponent implements OnInit {
   }
 
   onAdd() {
-    this.onAddContact.emit(this.message.display.share_contact);
+    this.onAddContact.emit(this.message.file);
   }
 
   onShareContact(data: any) {

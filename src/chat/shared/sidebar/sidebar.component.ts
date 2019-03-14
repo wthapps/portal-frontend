@@ -36,6 +36,7 @@ import {
 } from '@chat/store';
 import { WebsocketService } from '@shared/channels/websocket.service';
 import { ChannelEvents } from '@shared/channels';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 
 
 @Component({
@@ -84,7 +85,8 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     private wthEmojiService: WTHEmojiService,
     private apiBaseService: ApiBaseService,
     private authService: AuthService,
-    private websocketService: WebsocketService
+    private websocketService: WebsocketService,
+    private contactSelectionService: ContactSelectionService
   ) {
     super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
@@ -102,6 +104,15 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     });
 
     this.loadConversations({per_page: 7});
+
+
+    // handle adding members
+    this.contactSelectionService.onSelect$.pipe(
+      filter((event: any) => event.eventName === 'NEW_CHAT'),
+      takeUntil(this.destroy$)
+    ).subscribe((response: any) => {
+      this.createConversation({users: response.payload.data});
+    });
 
     // Init user channel
     // Create new channel depends on selected conversation
@@ -218,12 +229,10 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     }
   }
 
-  onAddContact() {
-    // this.commonEventService.broadcast({
-    //     channel: 'ZChatShareAddContactComponent',
-    //     action: 'open',
-    //     payload: {option: 'addChat'}
-    // });
+  openContactSelectionModal() {
+    this.contactSelectionService.open({
+      type: 'NEW_CHAT'
+    });
   }
 
   openContactModal() {

@@ -13,8 +13,7 @@ export interface EnvConfigSubDomain {
 export interface EnvConfig {
   CDN?: string;
   API?: string;
-  CHAT_API?: string;
-  CHAT_SOCKET?: string;
+  SOCKET_API?: string;
   ENV?: string;
   DOMAIN?: string;
   SUB_DOMAIN?: EnvConfigSubDomain;

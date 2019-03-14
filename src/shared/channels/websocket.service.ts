@@ -12,7 +12,7 @@ export class WebsocketService {
     if (this.socket) {
       return;
     }
-    this.socket = new Socket(ConfigByEnv.CHAT_SOCKET, {
+    this.socket = new Socket(ConfigByEnv.SOCKET_API, {
       params: params,
       logger: (kind, msg, data) => {
         // console.log(`SOCKET CONNECTED::: ${kind}: ${msg}`, data);

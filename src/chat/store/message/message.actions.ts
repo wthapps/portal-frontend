@@ -17,6 +17,9 @@ export enum ActionTypes  {
   UPDATE            = 'MESSAGE_UPDATE',
   UPDATE_SUCCESS    = 'MESSAGE_UPDATE_SUCCESS',
   UPDATE_ERROR      = 'MESSAGE_UPDATE_ERROR',
+  UPDATE_CURSOR            = 'MESSAGE_UPDATE_CURSOR',
+  UPDATE_CURSOR_SUCCESS    = 'MESSAGE_UPDATE_CURSOR_SUCCESS',
+  UPDATE_CURSOR_ERROR      = 'MESSAGE_UPDATE_CURSOR_ERROR',
   DELETE            = 'MESSAGE_DELETE',
   DELETE_SUCCESS    = 'MESSAGE_DELETE_SUCCESS',
   DELETE_ERROR      = 'MESSAGE_DELETE_ERROR'
@@ -126,6 +129,25 @@ export class UpdateError implements Action {
   constructor(public payload: any = null) { }
 }
 
+// Update Cursor actions
+export class UpdateCursor implements Action {
+  readonly type = ActionTypes.UPDATE_CURSOR;
+
+  constructor(public payload: any = null) { }
+}
+
+export class UpdateCursorSuccess implements Action {
+  readonly type = ActionTypes.UPDATE_CURSOR_SUCCESS;
+
+  constructor(public payload: any = null) { }
+}
+
+export class UpdateCursorError implements Action {
+  readonly type = ActionTypes.UPDATE_CURSOR_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
 // Delete actions
 export class Delete implements Action {
   readonly type = ActionTypes.DELETE;
@@ -162,6 +184,9 @@ export type Actions =
   Update |
   UpdateSuccess |
   UpdateError |
+  UpdateCursor |
+  UpdateCursorSuccess |
+  UpdateCursorError |
   Delete |
   DeleteSuccess |
   DeleteError |

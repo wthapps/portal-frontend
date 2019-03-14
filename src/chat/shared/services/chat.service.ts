@@ -268,7 +268,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   getSetting() {
-    return this.apiBaseService.get('zone/chat/setting');
+    return this.apiBaseService.get('chat/settings');
   }
 
   updateSetting(body: any) {

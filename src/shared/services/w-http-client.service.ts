@@ -28,7 +28,7 @@ export class WHttpClientService {
     responseType?: 'json';
     withCredentials?: boolean;
   };
-  private baseUrl: string = Constants.baseUrls.apiChat;
+  private baseUrl = '';
   private headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',

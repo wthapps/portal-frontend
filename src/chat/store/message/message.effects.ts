@@ -83,4 +83,24 @@ export class MessageEffects {
     )
   );
 
+  @Effect()
+  update$: Observable<Action> = this.actions$.pipe(
+    ofType<MessageActions.Create>(MessageActions.ActionTypes.UPDATE),
+    switchMap(action =>
+      this.messageService.update(
+        action.payload.message,
+        false,
+        `${action.payload.group_id}/messages/${action.payload.message.uuid}`).pipe(
+        map(response => {
+          const message = response.data.attributes;
+
+          return new MessageActions.UpdateSuccess({message: message});
+        }),
+        catchError(error =>
+          of(new MessageActions.UpdateError({ error }))
+        )
+      )
+    )
+  );
+
 }

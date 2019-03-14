@@ -286,16 +286,16 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   createMessage(messageType: string, payload: any) {
+    const messages = [];
     switch (messageType) {
       case 'photos':
         const photos = payload;
         photos.forEach(p => {
-          this.message = new Message({
+          messages.push(new Message({
             message_type: 'file',
             file_id: p.id,
             file_type: p.object_type,
-          });
-          console.log('SELECTED PHOTOS', this.message);
+          }));
         });
         break;
       case 'notes':
@@ -303,33 +303,32 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
         this.notesListModal.close();
         notes.forEach(p => {
-          this.message = new Message({
+          messages.push(new Message({
             message_type: 'file',
             file_id: p.object_id,
             file_type: p.object_type,
-          });
-          console.log('SELECTED NOTES', this.message);
+          }));
         });
         break;
       case 'contacts':
         const contacts = payload;
-        console.log('SELECTED CONTACTS', contacts);
         contacts.forEach(contact => {
-          this.message = new Message({
+          messages.push(new Message({
             message_type: 'share_contact_message',
             file_id: contact.id,
             file_type: '::User',
-          });
-          console.log('SELECTED CONTACTS', this.message);
+          }));
         });
         break;
-
     }
+
+    messages.forEach(message => {
+      console.log('SEND MESSAGE:::', this.message);
+      this.sendMessage(message);
+    });
+
   }
 
-  sendMessage(message: any) {
-
-  }
 
   chooseDone(allMedia: any[]) {
     console.log('handle send photo', allMedia);
@@ -424,15 +423,19 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
         });
     } else {
       // this.messageService.scrollToBottom();
-      this.chatMessageService.createTextMessage(this.message.message);
+      // this.chatMessageService.createTextMessage(this.message.message);
 
-      this.onCreate.emit({
-        ...this.message,
-        group_id: this.conversation.id,
-      });
+      this.sendMessage(this.message);
 
       this.resetEditor();
     }
+  }
+
+  private sendMessage(message: any) {
+    this.onCreate.emit({
+      ...message,
+      group_id: this.conversation.id,
+    });
   }
 
   private buildQuoteMessage(message: any): string {

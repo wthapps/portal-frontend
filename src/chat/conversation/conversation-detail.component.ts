@@ -81,11 +81,13 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       select(ConversationSelectors.selectJoinedConversation),
       filter(conversation => (conversation != null)),
       map((conversation: any) => {
-        const cursor = conversation.latest_message.cursor + 1;
         console.log('JOINED CONVERSATION', conversation);
-        this.store$.dispatch(new MessageActions.GetItems({ groupId: this.conversationId, queryParams: {
-            cursor: cursor
-          }}));
+        const cursor = conversation.latest_message.cursor + 1;
+        // update message cursor for joined conversation
+        this.store$.dispatch(new MessageActions.UpdateCursorSuccess({ cursor: cursor}));
+
+        // Load messages for joined conversation
+        this.store$.dispatch(new MessageActions.GetItems({ groupId: this.conversationId, queryParams: {}}));
         return conversation;
       })
     );
@@ -160,6 +162,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
     // handle adding members
     this.contactSelectionService.onSelect$.pipe(
+      filter((event: any) => event.eventName === 'ADD_MEMBER'),
       takeUntil(this.destroy$)
     ).subscribe((contacts: any) => {
       console.log('ADD MEMBER', contacts);

@@ -18,6 +18,7 @@ export class MessageService extends BaseEntityService<any> {
   }
 
   getAll(conversationId: number|string, queryParams?: {cursor: 1541674034512}): Observable<any> {
+    console.log('getAll', queryParams);
     // return this.api.get(this.url, query);
     return this.httpClient.get<any>(`${this.url}/${conversationId}/messages?cursor=${queryParams.cursor}`, {headers: {Accept: 'application/json'}});
   }

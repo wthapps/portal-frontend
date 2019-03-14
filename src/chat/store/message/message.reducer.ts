@@ -54,8 +54,8 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
 
     // Get all actions
     case ActionTypes.GET_ITEMS: {
-      console.log('GET ALL cursor value:::', state.cursor);
-
+      console.log('GET ALL cursor value:::', state.currentCursor, action.payload);
+      action.payload.queryParams['cursor'] = state.currentCursor;
       return {
         ...state,
         loading: true,
@@ -63,30 +63,28 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       };
     }
     case ActionTypes.GET_ITEMS_SUCCESS: {
-      // const messages = [];
-      // action.payload.data.forEach(message => {
-      //   messages.push(message.attributes);
-      // });
       const links = Object.assign({}, {...state.links}, action.payload.links);
 
-      // return {
-      //   ...state,
-      //   messages: [
-      //     ...messages.reverse(),
-      //     ...state.messages
-      //   ],
-      //   cursor: messages[messages.length - 1].cursor,
-      //   loading: false,
-      //   error: null,
-      //   links: links
-      // };
-      return messageAdapter.addAll(action.payload.messages.reverse(), {
-        ...state,
-        cursor: action.payload.messages[action.payload.messages.length - 1].cursor,
-        loading: false,
-        error: null,
-        links: links
-      });
+      // If response has items
+      if (action.payload.messages.length > 0) {
+        const currentCursor = action.payload.messages[action.payload.messages.length - 1].cursor;
+        return messageAdapter.addAll(action.payload.messages.reverse(), {
+          ...state,
+          currentCursor: currentCursor,
+          loading: false,
+          error: null,
+          links: links
+        });
+
+      // If response has no item
+      } else {
+        return {
+          ...state,
+          loading: false,
+          error: null,
+          links: links,
+        };
+      }
     }
     case ActionTypes.GET_ITEMS_ERROR: {
       return {
@@ -106,7 +104,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
     }
     case ActionTypes.GET_MORE_SUCCESS: {
       const currentCursor = action.payload.messages[action.payload.messages.length - 1].cursor;
-
+      console.log('LOAD MORE MESSAGE:::', currentCursor);
       return messageAdapter.addAll([
         ...action.payload.messages.reverse(),
         ...Object.values(state.entities)
@@ -219,6 +217,31 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
         error: action.payload.error,
       };
     }
+
+    // Create actions
+    case ActionTypes.UPDATE_CURSOR: {
+      return {
+        ...state,
+        error: null
+      };
+    }
+
+    case ActionTypes.UPDATE_CURSOR_SUCCESS: {
+      return {
+        ...state,
+        currentCursor: action.payload.cursor,
+      };
+
+    }
+
+    case ActionTypes.UPDATE_CURSOR_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
+    }
+
 
     default: {
       return state;

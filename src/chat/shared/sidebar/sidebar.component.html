@@ -4,13 +4,13 @@
 
 <div class="menuleft-chat-header">
   <div class="menuleft-chat-nav">
-    <a href="javascript:void(0);" (click)="onAddContact(); onCloseMenu()">
+    <a href="javascript:void(0);" (click)="openContactSelectionModal(); onCloseMenu()">
       <i class="fa fa-plus"></i> Chat
     </a>
     <a href="javascript:void(0);" (click)="openContactModal();">
       <i class="fa fa-address-book-o"></i> Contacts
     </a>
-    <a [routerLink]="['/setting']" [routerLinkActive]="['active']" href="javascript:void(0);" (click)="onCloseMenu()">
+    <a [routerLink]="['/settings']" [routerLinkActive]="['active']" href="javascript:void(0);" (click)="onCloseMenu()">
       <i class="fa fa-cog"></i> Settings
     </a>
   </div>
