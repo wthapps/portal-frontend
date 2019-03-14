@@ -538,7 +538,6 @@ export class ZNoteDetailEditComponent
     };
     const FontAttributor = Quill.import('attributors/class/font');
     FontAttributor.whitelist = [
-      'gotham',
       'georgia',
       'helvetica',
       'lato',

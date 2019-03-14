@@ -227,9 +227,9 @@ $note-editor-aside-w: 400px;
       font-size: 200px;
     }
 
-    #quill-toolbar .ql-font span[data-value="gotham"]::before, .ql-font-gotham {
-      font-family: 'Gotham', sans-serif, serif;
-    }
+    //#quill-toolbar .ql-font span[data-value="gotham"]::before, .ql-font-gotham {
+    //  font-family: 'Gotham', sans-serif, serif;
+    //}
 
     #quill-toolbar .ql-font span[data-value="georgia"]::before, .ql-font-georgia {
       font-family: Georgia, Times, "Times New Roman", serif
