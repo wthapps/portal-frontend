@@ -232,6 +232,10 @@
   .header-nav-notification {
     .dropdown-menu {
       width: 400px;
+
+      @media (max-width: $screen-xs-max) {
+        width: 100%;
+      }
     }
     .dropdown-menu-bar {
       padding: 10px;

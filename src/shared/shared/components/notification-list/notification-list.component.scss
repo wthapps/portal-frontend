@@ -17,10 +17,10 @@
 
     .noti-item-content {
       @include flex(1);
-      @include flexbox();
+      // @include flexbox();
       @include align-items(center);
       line-height: 1.2;
-      padding: 5px 5px 5px 0;
+      padding: 10px 5px 5px 0;
       .help-block {
         margin: 3px 0 0;
       }
@@ -30,9 +30,9 @@
         margin-top: 0;
         margin-bottom: 0;
       }
-      br {
-        display: none;
-      }
+      // br {
+      //   display: none;
+      // }
       p {
         margin: 0;
       }

@@ -7,10 +7,14 @@
       </span>
     </div>
     <div class="noti-item-content can-click" (click)="navigateTo(notification?.actions, notification?.id)">
-      <div class="bold" [routerLink]="['/profile', notification?.actor.uuid]" style="width: 65px; overflow: hidden; text-overflow: ellipsis">
+      <!-- <div class="bold noti-item-content-user" [routerLink]="['/profile', notification?.actor.uuid]">
         {{ notification?.actor?.name }}
+      </div> -->
+      <div class="noti-item-content-text">
+        <span><a class="bold user-name" [routerLink]="['/profile', notification?.actor.uuid]" routerLinkActive="router-link-active" > {{ notification?.actor?.name }} </a></span>
+        <span [innerHTML]="notification?.text"></span>
+        
       </div>
-      <div style="min-width: 164px;" [innerHTML]="notification?.text"></div>
       <div class="bold" href="javascript:;" (click)="navigateToSocial(['/communities', notification?.community?.uuid])"
         *ngIf="notification?.community?.name">
         {{ notification?.community?.name }}</div>
@@ -53,7 +57,7 @@
 
 
 <!--Connection-->
-<ng-container *ngIf="type == 'connection' && notification?.actions.length>0">
+<!-- <ng-container *ngIf="type == 'connection' && notification?.actions.length>0">
   <div class="noti-item" *ngIf="!notification?.isHidden">
     <div class="noti-item-avatar can-click" [routerLink]="['/profile', notification?.actor.uuid]">
       <span class="avatar-xs">
@@ -111,8 +115,8 @@
       </ul>
     </div>
   </div>
-</ng-container>
-<!-- End Connection -->
+</ng-container> -->
+<!-- End Connection --> 
 
 <app-partials-notification-undo *ngIf="!!notification?.isHidden" [notification]="notification" [type]="type">
 </app-partials-notification-undo>

@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 export class CommonNotificationsComponent implements OnInit {
   selectedNotifications: string[] = ['social', 'chat', 'note'];
   readonly profileUrl: string = '/' + Constants.urls.profile;
-  @Input() type: string = 'update'; // update, connection
+  @Input() type = 'update'; // update, connection
 
   @ViewChild('notifications') notificationListComponent: NotificationListComponent;
 
@@ -22,7 +22,7 @@ export class CommonNotificationsComponent implements OnInit {
               public connectionService: ConnectionNotificationService,
               private route: ActivatedRoute) {
     route.queryParamMap.subscribe((queryParamMap: any) => {
-      if(queryParamMap.get('type'))
+      if (queryParamMap.get('type'))
         this.type = queryParamMap.get('type');
     });
   }
@@ -33,21 +33,21 @@ export class CommonNotificationsComponent implements OnInit {
 
   onSelectedTab(type: string) {
     this.type = type;
-    if(this.type == 'connection')
+    if (this.type === 'connection')
       this.connectionService.getLatestNotifications();
     else
       this.notificationService.getLatestNotifications();
   }
 
   getMoreNotifications() {
-    if(this.type == 'connection')
+    if (this.type === 'connection')
       this.connectionService.getMoreNotifications();
     else
       this.notificationService.getMoreNotifications();
   }
 
   isLoadingDone() {
-    if(this.type == 'connection')
+    if (this.type === 'connection')
       return this.connectionService.isLoadingDone();
     else
       return this.notificationService.isLoadingDone();

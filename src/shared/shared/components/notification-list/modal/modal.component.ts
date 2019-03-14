@@ -19,6 +19,7 @@ export class NotificationSettingModalComponent implements OnInit, OnDestroy {
   chat: Boolean = false;
   note: Boolean = false;
   media: Boolean = false;
+  contact = false;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -27,11 +28,12 @@ export class NotificationSettingModalComponent implements OnInit, OnDestroy {
     this.userService.notificationSetting$.pipe(
       takeUntil(this.destroySubject)
     ).subscribe((data: any) => {
-      if(!_.isEmpty(data)) {
+      if (!_.isEmpty(data)) {
         this.social = data.enable_social;
         this.chat = data.enable_chat;
         this.note = data.enable_note;
         this.media = data.enable_media;
+        this.contact = data.enable_contact;
       }
     });
   }
@@ -55,7 +57,7 @@ export class NotificationSettingModalComponent implements OnInit, OnDestroy {
     console.log(this.social, this.chat, this.note);
 
     this.userService.updateNotificationSetting({enable_social: this.social, enable_chat: this.chat,
-      enable_note: this.note, enable_media: this.media });
+      enable_note: this.note, enable_media: this.media, enable_contact: this.contact });
     this.modal.close();
   }
 

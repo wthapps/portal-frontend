@@ -10,7 +10,7 @@
   <div id="nav-notification-list" class="nav-notification-list dropdown-menu dropdown-menu-right">
     <div class="nav-notification-list-header">
       <nav class="nav-tabs-wrap pl10 pr10 clearfix">
-        <div class="pull-right">
+        <!-- <div class="pull-right">
           <button class="btn btn-default btn-default-no-border" type="button" (click)="onSettingModal()"><i class="fa fa-cog"></i></button>
         </div>
         <ul class="nav nav-tabs pull-left list-unstyled clearfix visible-md-block visible-lg-block">
@@ -24,9 +24,19 @@
               Connection <span class="badge" [ngClass]="{'active': (connectionService.newNotifCount > 0)}"> {{ connectionService.newNotifCount }}</span>
             </a>
           </li>
-        </ul>
+        </ul> -->
+
+        <div class="pull-right p10">
+            <span class="pr15"><a href="javascript:;"> Mark all as read</a></span>
+            <!-- <button class="btn btn-sm btn-outline-default" type="button" (click)="onSettingModal()" ><i class="fa fa-cog"></i></button> -->
+            <span class="can-click" (click)="onSettingModal()"><i class="fa fa-cog"></i></span>
+          </div>
+          <div class="fwb pull-left p10">
+            <span >Notifications</span>
+          </div>
       </nav>
     </div>
+      
     <div class="nav-notification-list-content"
          lockYOffset="30"
          observeAttributes="true"

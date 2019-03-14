@@ -10,9 +10,14 @@
       <div class="panel panel-default">
         <div class="panel-heading p0">
           <div class="pull-right p10">
-            <button class="btn btn-sm btn-outline-default" type="button" (click)="onSettingModal()" ><i class="fa fa-cog"></i> Settings</button>
+            <span class="pr15"><a href="javascript:;"> Mark all as read</a></span>
+            <!-- <button class="btn btn-sm btn-outline-default" type="button" (click)="onSettingModal()" ><i class="fa fa-cog"></i></button> -->
+            <span class="can-click" (click)="onSettingModal()"><i class="fa fa-cog"></i></span>
           </div>
-          <nav class="nav-tabs-wrap pl10 pr10 nav-tabs-wrap-md clearfix">
+          <div class="fwb pull-left p10">
+            <span >Notifications</span>
+          </div>
+          <!-- <nav class="nav-tabs-wrap pl10 pr10 nav-tabs-wrap-md clearfix">
             <ul class="nav nav-tabs pull-left list-unstyled clearfix">
               <li [ngClass]="type==undefined || type == 'update' ? 'active': ''">
                 <a (click)="onSelectedTab('update')" href="javascript:;">Update <span class="badge" [ngClass]="{'active': (notificationService.newNotifCount > 0)}"> {{ notificationService.newNotifCount }}</span></a>
@@ -21,7 +26,7 @@
                 <a (click)="onSelectedTab('connection')" href="javascript:;">Connection <span class="badge" [ngClass]="{'active': (connectionService.newNotifCount > 0)}"> {{ connectionService.newNotifCount }}</span></a>
               </li>
             </ul>
-          </nav>
+          </nav> -->
         </div>
         <div class="panel-body p0">
           <app-partials-notification-list #notifications [type]="type"></app-partials-notification-list>

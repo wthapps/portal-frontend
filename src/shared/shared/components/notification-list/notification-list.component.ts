@@ -13,8 +13,8 @@ declare let $: any;
 })
 
 export class NotificationListComponent {
-  @Input() type: string = 'update'; // update, connection
-  @Input() size: string = 'sm'; // xs, sm, md, lg
+  @Input() type = 'update'; // update, connection
+  @Input() size = 'sm'; // xs, sm, md, lg
   @Input() notifications: any[] = [];
   @ViewChild('settingModal') settingModal: NotificationSettingModalComponent;
 

@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BsModalModule } from 'ng2-bs3-modal';
 
-import { MySharedMenuComponent } from './menu/menu.component';
 import { SubscriptionEditModalComponent } from './subscription/modal/subscription-edit-modal.component';
 import {
   AccountListEditModalComponent,
@@ -17,7 +16,6 @@ import {
 import { AccountService } from './account/account.service';
 import { SubscriptionService } from './subscription/subscription.service';
 // import { SharedModule } from '@shared/shared.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountConfirmPasswordModalComponent } from '@account/shared/account/modal/account-confirm-password-modal.component';
 import { WthCommonModule } from '@shared/common/wth-common.module';
 // import { Ng2HdModule } from '@shared/shared/ng2-hd';
@@ -48,6 +46,7 @@ import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-da
 import { BreadcrumbModule } from '@shared/shared/components/breadcrumb/breadcrumb.module';
 import { TableModule } from 'primeng/table';
 import { TablePricingModule } from '@shared/shared/components/table-pricing/table-pricing.module';
+import { MySharedMenuModule } from './menu/menu.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -59,23 +58,17 @@ import { TablePricingModule } from '@shared/shared/components/table-pricing/tabl
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    BrowserAnimationsModule,
 
     BsModalModule,
     WthCommonModule,
+    MySharedMenuModule,
 
     // custom component
     BreadcrumbModule,
-    // Ng2HdModule,
-    // ModalModule,
-    // WMediaSelectionModule,
     ComponentsModule,
     FileModule,
     PartialModule,
-    // PartialsProfileModule,
-    // CoverProfileModule,
     ModalDockModule,
-    // ZSharedMenuModule,
     BoxNoDataModule,
     WNavTabModule,
     TablePricingModule,
@@ -97,8 +90,6 @@ import { TablePricingModule } from '@shared/shared/components/table-pricing/tabl
     // SharedModule
   ],
   declarations: [
-    MySharedMenuComponent,
-
     // modals
     AccountEditModalComponent,
     AccountDeleteModalComponent,
@@ -118,14 +109,10 @@ import { TablePricingModule } from '@shared/shared/components/table-pricing/tabl
 
     // custom component
     BreadcrumbModule,
-    // Ng2HdModule,
     ModalDockModule,
-    // ModalModule,
     FileModule,
     PartialModule,
-    // WMediaSelectionModule,
     ComponentsModule,
-    // ZSharedMenuModule,
     BoxNoDataModule,
     WNavTabModule,
     TablePricingModule,
@@ -142,7 +129,7 @@ import { TablePricingModule } from '@shared/shared/components/table-pricing/tabl
     TooltipModule,
     WCountriesModule,
 
-    MySharedMenuComponent,
+    MySharedMenuModule,
 
     // modals
     AccountEditModalComponent,

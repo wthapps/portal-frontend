@@ -16,6 +16,11 @@ import { RouterModule } from '@angular/router';
         path: 'contact',
         loadChildren: './contact-us/contact.module#ContactUsModule'
       },
+      {
+        path: 'notifications',
+        loadChildren:
+          './notifications/notifications.module#MyNotificationModule'
+      }
       // {
       //   path: 'dashboard',
       //   children: [

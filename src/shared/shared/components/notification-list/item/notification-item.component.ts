@@ -21,6 +21,7 @@ declare let _: any;
 @Component({
   selector: 'notification-item',
   templateUrl: 'notification-item.component.html',
+  styleUrls: ['./notification-item.component.scss'],
   entryComponents: [NotificationUndoComponent]
 })
 
