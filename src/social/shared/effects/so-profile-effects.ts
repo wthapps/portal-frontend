@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Action, Store } from '@ngrx/store';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 
 import { of } from 'rxjs';
 import { delayWhen, filter, map, catchError, concatMap, retry } from 'rxjs/operators';
@@ -21,34 +21,32 @@ export class SoProfileEffects {
               private soUserService: SoUserService) {
   }
 
-  @Effect() loadSoProfile = this.actions
-    .ofType(fromRoot.SO_PROFILE_LOAD)
-    .pipe(
-      // delayWhen( authService.user$.pipe(
-      //   filter(u => !!u && Object.keys(u).length > 0)
-      // )),
-      concatMap(() => this.soUserService.get()),
-      retry(3),
-      map((res: any) => {
-        return ({type: fromRoot.SO_PROFILE_UPDATE_DONE, payload: res['data']});
-      }),
-      catchError(() => {
-        this.toastsService.danger('Profile loading FAIL, something\'s wrong happened');
-        return of({type: fromRoot.COMMON_FAILED });
-      })
-    );
+  @Effect() loadSoProfile = this.actions.pipe(
+    ofType(fromRoot.SO_PROFILE_LOAD),
+    // delayWhen( authService.user$.pipe(
+    //   filter(u => !!u && Object.keys(u).length > 0)
+    // )),
+    concatMap(() => this.soUserService.get()),
+    retry(3),
+    map((res: any) => {
+      return ({type: fromRoot.SO_PROFILE_UPDATE_DONE, payload: res['data']});
+    }),
+    catchError(() => {
+      this.toastsService.danger('Profile loading FAIL, something\'s wrong happened');
+      return of({type: fromRoot.COMMON_FAILED });
+    })
+  );
 
 
-  @Effect() updateSoProfile = this.actions
-    .ofType(fromRoot.SO_PROFILE_UPDATE)
-    .pipe(
-      concatMap(() => this.soUserService.get()),
-      map((res: any) => {
-        return ({type: fromRoot.SO_PROFILE_UPDATE_DONE, payload: res['data']});
-      }),
-      catchError(() => {
-        this.toastsService.danger('Profile update FAIL, something\'s wrong happened');
-        return of({type: fromRoot.COMMON_FAILED });
-      })
-    );
+  @Effect() updateSoProfile = this.actions.pipe(
+    ofType(fromRoot.SO_PROFILE_UPDATE),
+    concatMap(() => this.soUserService.get()),
+    map((res: any) => {
+      return ({type: fromRoot.SO_PROFILE_UPDATE_DONE, payload: res['data']});
+    }),
+    catchError(() => {
+      this.toastsService.danger('Profile update FAIL, something\'s wrong happened');
+      return of({type: fromRoot.COMMON_FAILED });
+    })
+  );
 }

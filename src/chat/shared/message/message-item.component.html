@@ -123,7 +123,7 @@
       <h5>
         <i class="icon-zone-note"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
       </h5>
-      <div class="message-item-content-note-in" [innerHTML]="message.file?.content"></div>
+      <div class="message-item-content-note-in" [innerHTML]="message?.file?.content | safeHtml"></div>
     </a>
   </div>
 
