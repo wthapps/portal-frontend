@@ -2,7 +2,7 @@ import { PartialModule } from './../../shared/partials/partial.module';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Ng2HdModule } from '@shared/shared/ng2-hd/ng2-hd.module';
+// import { Ng2HdModule } from '@shared/shared/ng2-hd/ng2-hd.module';
 import { ZNoteSharedToolBarComponent } from './toolbar/toolbar.component';
 import { ZNoteSharedActionBarComponent } from './toolbar/actions-bar.component';
 import { NoteListComponent } from './list/note-list.component';
@@ -29,21 +29,21 @@ import { ZNoteSharedSettingModule } from './modal/settings/settings.module';
 import { ZNoteSharedSettingsService } from './services/settings.service';
 import { WthCommonModule } from '@shared/common/wth-common.module';
 import { ModalDockModule } from '@shared/shared/components/modal/dock.module';
-import { FileModule } from '@shared/shared/components/file/file.module';
+// import { FileModule } from '@shared/shared/components/file/file.module';
 import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
 import { ComponentsModule } from '@shared/components/components.module';
 // import { ZSharedMenuModule } from '@shared/shared/components/menu/menu.module';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
-import { TagInputModule } from 'ngx-chips';
+// import { TagInputModule } from 'ngx-chips';
 import {
   InputSwitchModule,
   CheckboxModule,
   TooltipModule,
   RadioButtonModule,
   AutoCompleteModule,
-  PanelMenuModule,
-  CalendarModule
+  PanelMenuModule
+  // CalendarModule
 } from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from '@shared/components/modal/modal.module';
@@ -53,7 +53,7 @@ import { ModalModule } from '@shared/components/modal/modal.module';
 
 @NgModule({
   imports: [
-    Ng2HdModule,
+    // Ng2HdModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -63,7 +63,7 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     // custom component
     ModalDockModule,
     ModalModule,
-    FileModule,
+    // FileModule,
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
@@ -72,12 +72,12 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     WNavTabModule,
 
     // third party libs
-    TagInputModule,
+    // TagInputModule,
     InputSwitchModule,
     CheckboxModule,
     RadioButtonModule,
     AutoCompleteModule,
-    CalendarModule,
+    // CalendarModule,
     PanelMenuModule,
     TooltipModule
   ],
@@ -107,7 +107,7 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     // custom component
     ModalDockModule,
     ModalModule,
-    FileModule,
+    // FileModule,
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
@@ -116,12 +116,12 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     ZNoteSharedSettingModule,
 
     // third party libs
-    TagInputModule,
+    // TagInputModule,
     InputSwitchModule,
     CheckboxModule,
     RadioButtonModule,
     AutoCompleteModule,
-    CalendarModule,
+    // CalendarModule,
     PanelMenuModule,
     TooltipModule,
     // WCountriesModule,
