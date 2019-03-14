@@ -66,6 +66,7 @@ export class ZMediaSharingDetailComponent
   MediaModalMixin,
   PlaylistAddMixin,
   MediaDownloadMixin {
+  returnUrls: any = ["/"];
   objects: any;
   object: any;
   cloneObjects: any;
@@ -97,7 +98,6 @@ export class ZMediaSharingDetailComponent
   subUpload: any;
   subSelect: any;
   endLoading: any;
-  returnUrls: any;
   disableMoreAction: boolean;
   destroy$ = new Subject();
   title: string = 'Shares';
@@ -130,6 +130,9 @@ export class ZMediaSharingDetailComponent
     this.route.params.subscribe(p => {
       this.loadObjects(p.uuid);
       this.loadObject(p.uuid);
+    });
+    this.route.queryParams.subscribe(p => {
+      this.returnUrls = p.returnUrls;
     });
     this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
@@ -244,11 +247,10 @@ export class ZMediaSharingDetailComponent
   loadingEnd: (input?: any) => void;
 
   viewDetail(input?: any) {
-    if (this.selectedObjects[0].model === 'Media::Photo') {
-      this.router.navigate([`photos/`, this.selectedObjects[0].uuid]);
-    } else {
-      this.router.navigate([`videos/`, this.selectedObjects[0].uuid]);
-    }
+    const data: any = {
+      returnUrls: [...this.returnUrls, `/shared/${this.object.uuid}`], model: this.selectedObjects[0].object_type
+    };
+    this.router.navigate([`photos/`, this.selectedObjects[0].uuid], { queryParams: data });
   }
 
   openEditModal: (object: any) => void;

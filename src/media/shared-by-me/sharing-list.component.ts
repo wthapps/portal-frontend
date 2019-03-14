@@ -90,12 +90,11 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   viewDetail(object?: any) {
     /* this method is load detail object */
     // this.router.navigate(['/shared', input]);
-    if (object.model == 'Media::Album'){
-      this.router.navigate(['albums', object.uuid]);
+    if (object.model == 'Media::Album') {
+      this.router.navigate(['/albums', object.uuid], { queryParams: { returnUrls: ["shared-by-me"] } });
     } else {
-      this.router.navigate(['shared', object.uuid]);
+      this.router.navigate(['/shared', object.uuid], { queryParams: { returnUrls: ["shared-by-me"] } });
     }
-    // this.router.navigate(['shared', object.uuid]);
   }
 
   selectedObjectsChanged: (objectsChanged?: any) => void;
@@ -126,7 +125,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   onListChanges(e: any) {
     switch (e.action) {
       case 'favorite':
-        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
         if (this.selectedObjects && this.selectedObjects.length > 1) {
@@ -144,7 +143,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
         }
         this.disableMoreAction = (Object.keys(this.menuActions)
           .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
-        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       default:
         break;

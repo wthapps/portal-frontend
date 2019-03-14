@@ -19,7 +19,7 @@ export class MediaListDetailMixin {
   }
 
   back() {
-    if (this.returnUrls && this.returnUrls !== 'undefined') {
+    if (this.returnUrls && this.returnUrls !== 'undefined' && this.returnUrls.length > 0) {
       if (typeof this.returnUrls === 'string') {
         this.router.navigate([this.returnUrls]);
       } else {

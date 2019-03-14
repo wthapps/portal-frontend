@@ -19,7 +19,7 @@ import { SharingService } from '@wth/shared/shared/components/photo/modal/sharin
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
@@ -34,10 +34,10 @@ import { LocalStorageService } from 'angular-2-local-storage';
   templateUrl: '../shared/list/list.component.html'
 })
 export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
-SharingModalMixin,
-MediaModalMixin,
-MediaDownloadMixin,
-MediaAdditionalListMixin {
+  SharingModalMixin,
+  MediaModalMixin,
+  MediaDownloadMixin,
+  MediaAdditionalListMixin {
   objects: any;
   links: any;
   hasSelectedObjects: boolean;
@@ -101,7 +101,7 @@ MediaAdditionalListMixin {
 
   viewDetail(input?: any) {
     /* this method is load detail object */
-    this.router.navigate(['/shared', input]);
+    this.router.navigate(['/shared', input], { queryParams: { returnUrls: ["shared-with-me"] } });
   }
 
   selectedObjectsChanged: (objectsChanged?: any) => void;
@@ -111,7 +111,7 @@ MediaAdditionalListMixin {
   onListChanges(e: any) {
     switch (e.action) {
       case 'favorite':
-        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
         let hasDownload = true;
@@ -135,9 +135,9 @@ MediaAdditionalListMixin {
         if (this.selectedObjects && this.selectedObjects.length === 1) {
           this.validateActions(this.menuActions, this.selectedObjects[0].recipient.role_id);
           this.disableMoreAction = (Object.keys(this.menuActions)
-          .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
+            .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
         }
-        this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       default:
         break;
