@@ -155,7 +155,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
 
   }
 
-  private subToggle(e: any) {
+  subToggle(e: any) {
     e.stopPropagation();
     e.preventDefault();
     $(e.target)

@@ -13,6 +13,7 @@ import { NotificationUndoComponent } from '@shared/shared/components/notificatio
 import { Router } from '@angular/router';
 import { NotificationService, ApiBaseService } from '@shared/services';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
+import { Constants } from '@shared/constant';
 
 declare let _: any;
 
@@ -25,7 +26,7 @@ declare let _: any;
 
 export class NotificationItemComponent implements OnInit {
   @ViewChild('notificationUndo', {read: ViewContainerRef}) undoNotificationRef: ViewContainerRef;
-  @ViewChild('notiItemMenuEl') notiItemMenuEl: ElementRef;
+  // @ViewChild('notiItemMenuEl') notiItemMenuEl: ElementRef;
   @Input() notification: any;
   @Input() type = 'update';
 
@@ -33,16 +34,17 @@ export class NotificationItemComponent implements OnInit {
   itemSettings: any = {};
   showToggle: boolean;
   modules: string[] = ['', 'social', 'chat', 'media', 'portal', 'contact', 'note', 'profile'];
+  readonly tooltip = Constants.tooltip;
   // Should be consistent with Constants.moduleMap
 
 
-  @HostListener('document:click', ['$event']) clickedOutside(event: Event) {
-    // here you can hide your menu
-    const tmpOld = document.getElementById('notiItemMenuEl');
-    if (tmpOld) {
-      this.renderer.removeChild(document.body, tmpOld);
-    }
-  }
+  // @HostListener('document:click', ['$event']) clickedOutside(event: Event) {
+  //   // here you can hide your menu
+  //   const tmpOld = document.getElementById('notiItemMenuEl');
+  //   if (tmpOld) {
+  //     this.renderer.removeChild(document.body, tmpOld);
+  //   }
+  // }
 
   constructor(public notificationService: NotificationService,
               public connectionService: ConnectionNotificationService,
@@ -56,42 +58,66 @@ export class NotificationItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  clickedInside(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+  // clickedInside(event: Event) {
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  // }
+
+  // showMenu(event: any) {
+  //   const tmpOld = document.getElementById('notiItemMenuEl');
+  //   if (tmpOld) {
+  //     this.renderer.removeChild(document.body, tmpOld);
+  //   }
+  //   const el = this.notiItemMenuEl.nativeElement.cloneNode(true);
+  //   const tmp = document.createElement('div');
+  //   tmp.setAttribute('id', 'notiItemMenuEl');
+  //   tmp.appendChild(el);
+  //   if (tmp.querySelector('.js-confirmHideNotification') !== null) {
+  //     tmp.querySelector('.js-confirmHideNotification').addEventListener('click', (e: any) => {
+  //       this.hideNotificationById(e.currentTarget.id);
+  //     });
+  //   }
+
+  //   if (tmp.querySelector('.js-toggleNotification') !== null) {
+  //     tmp.querySelector('.js-toggleNotification').addEventListener('click', (e: any) => {
+  //       this.toggleNotificationById(e.currentTarget.id);
+  //     });
+  //   }
+
+  //   if (tmp.querySelector('.js-markAsUnread') !== null) {
+  //     tmp.querySelector('.js-markAsUnread').addEventListener('click', (e: any) => {
+  //       this.markAsUnread(this.notification);
+  //     });
+  //   }
+  //   // js-markAsUnread
+
+  //   this.renderer.appendChild(document.body, tmp);
+  //   this.renderer.setStyle(tmp, 'top', event.clientY + 'px');
+  //   this.renderer.setStyle(tmp, 'left', event.clientX + 'px');
+  // }
+
+  hideActionsMenu(e: any) {
+    console.log('hide actions menu: ', e);
+
+    e.stopPropagation();
+    e.preventDefault();
+    // $('#common-notification-list')
+    //   .find('ul.dropdown-menu')
+    //   .hide();
+    $('.noti-item-action ul.dropdown-menu').hide();
   }
 
-  showMenu(event: any) {
-    const tmpOld = document.getElementById('notiItemMenuEl');
-    if (tmpOld) {
-      this.renderer.removeChild(document.body, tmpOld);
-    }
-    const el = this.notiItemMenuEl.nativeElement.cloneNode(true);
-    const tmp = document.createElement('div');
-    tmp.setAttribute('id', 'notiItemMenuEl');
-    tmp.appendChild(el);
-    if (tmp.querySelector('.js-confirmHideNotification') !== null) {
-      tmp.querySelector('.js-confirmHideNotification').addEventListener('click', (e: any) => {
-        this.hideNotificationById(e.currentTarget.id);
-      });
-    }
-
-    if (tmp.querySelector('.js-toggleNotification') !== null) {
-      tmp.querySelector('.js-toggleNotification').addEventListener('click', (e: any) => {
-        this.toggleNotificationById(e.currentTarget.id);
-      });
-    }
-
-    if (tmp.querySelector('.js-markAsUnread') !== null) {
-      tmp.querySelector('.js-markAsUnread').addEventListener('click', (e: any) => {
-        this.markAsUnread(this.notification);
-      });
-    }
-    // js-markAsUnread
-
-    this.renderer.appendChild(document.body, tmp);
-    this.renderer.setStyle(tmp, 'top', event.clientY + 'px');
-    this.renderer.setStyle(tmp, 'left', event.clientX + 'px');
+  subToggle(e: any) {
+    console.log('sub toggle: ', e);
+    e.stopPropagation();
+    e.preventDefault();
+    $(e.target)
+      .next('ul')
+      .toggle();
+    $('#chat-header-notification')
+      .find('ul.dropdown-menu')
+      .not($(e.target).next('ul'))
+      .hide();
   }
 
 

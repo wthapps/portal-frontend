@@ -10,7 +10,7 @@
       <div class="panel panel-default no-border">
         <div class="panel-heading p0">
           <div class="pull-right p10">
-            <span class="pr15"><a href="javascript:;"> Mark all as read</a></span>
+            <span class="pr15"><a href="javascript:;" (click)="markAllAsRead()"> Mark all as read</a></span>
             <!-- <button class="btn btn-sm btn-outline-default" type="button" (click)="onSettingModal()" ><i class="fa fa-cog"></i></button> -->
             <span class="can-click" (click)="onSettingModal()"><i class="fa fa-cog"></i></span>
           </div>
@@ -28,7 +28,7 @@
             </ul>
           </nav> -->
         </div>
-        <div class="panel-body p0">
+        <div id="common-notification-list" class="panel-body p0">
           <app-partials-notification-list #notifications [type]="type"></app-partials-notification-list>
         </div>
         <div class="panel-footer text-center">

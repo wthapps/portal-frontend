@@ -127,6 +127,14 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
     }
   }
 
+  markAllAsRead() {
+    if (this.type === 'connection') {
+      this.connectionService.markAllAsRead();
+    } else {
+      this.notificationService.markAllAsRead();
+    }
+  }
+
   onSelectedTab(tab: string) {
     this.type = tab;
     this.getLatestNotifications();

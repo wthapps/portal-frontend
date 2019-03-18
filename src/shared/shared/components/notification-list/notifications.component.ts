@@ -32,6 +32,13 @@ export class CommonNotificationsComponent implements OnInit {
     this.notificationService.getLatestNotifications();
   }
 
+  markAllAsRead() {
+    if (this.type === 'connection')
+      this.connectionService.markAllAsRead();
+    else
+      this.notificationService.markAllAsRead();
+  }
+
   onSelectedTab(type: string) {
     this.type = type;
     if (this.type === 'connection')

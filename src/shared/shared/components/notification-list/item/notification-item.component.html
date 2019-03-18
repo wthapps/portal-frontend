@@ -35,24 +35,25 @@
         <li>
           <i class="icon-zone-{{ modules[(notification?.actions[0]?.module || notification?.module)] }}"></i>
         </li>
-        <li (click)="clickedInside($event)">
-          <i (click)="showMenu($event)" class="fa fa-ellipsis-v"></i>
-          <ul #notiItemMenuEl class="dropdown-menu">
+        <li class="dropdown-submenu" (click)="hideActionsMenu($event); subToggle($event)">
+          <i class="fa fa-ellipsis-v"></i>
+          <ul class="dropdown-menu dropdown-menu-right" style="width: auto !important; top: 22px">
             <li>
-              <a class="js-toggleNotification" id="data-toggle-{{ notification?.id }}" href="javascript:;" *ngIf="showToggle"
+              <a href="javascript:;" *ngIf="showToggle"
                 (click)="toggleNotification()">{{ itemSettings?.mute ? 'Enable' : 'Disable' }} Notification for this
                 post</a>
             <li>
-              <a class="js-confirmHideNotification" id="{{ notification?.id }}" href="javascript:;" (click)="confirmHideNotification(notification)">Hide
+              <a href="javascript:;" (click)="confirmHideNotification(notification)">Hide
                 this notification</a>
             </li>
             <li>
-                <a class="js-markAsUnread" id="{{ notification?.id }}" href="javascript:;" (click)="markAsUnread(notification)">Mark as unread</a>
+                <a href="javascript:;" (click)="markAsUnread(notification)">Mark as unread</a>
               </li>
           </ul>
         </li>
       </ul>
     </div>
+
   </div>
 </ng-container>
 
