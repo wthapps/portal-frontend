@@ -89,10 +89,9 @@
     </w-grid-list>
     <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData"
       [icon]="iconNoData || 'fa fa-video-camera'" [subTitle]="subTitleNoData" class="box-no-data">
-
-      <button class="btn btn-outline-primary" (click)="openSelectedModal()">
-        <i class="fa fa-cloud-upload"></i>
-        {{object.model == 'Media::Playlist' ? 'Upload Video': 'Upload Photo'}}</button>
+      <button *ngIf="actionNoData" class="btn btn-outline-primary" (click)="doListEvent({action: 'noData'})">
+        <i class="fa fa-plus"></i> {{actionNoData}}
+      </button>
     </box-no-data>
     <ng-template #modalContainer></ng-template>
   </div>

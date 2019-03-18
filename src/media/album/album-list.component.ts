@@ -58,8 +58,7 @@ export class AlbumListComponent implements OnInit,
   modalRef: any;
   readonly iconNoData: any = 'wthico-album gray';
   readonly titleNoData: any = 'There are no albums!';
-  readonly subTitleNoData: any = 'Try to create an album';
-  readonly actionNoData: any = 'Create Album';
+  readonly subTitleNoData: any = 'User "New" button to create new albums.';
   sorting: any;
   endLoading: any;
   subCreateAlbum: any;

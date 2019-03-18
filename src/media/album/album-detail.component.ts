@@ -90,8 +90,8 @@ export class ZMediaAlbumDetailComponent
   sharings: any;
   moreRecipients: any;
   // ============
-  titleNoData: any = 'There are no photos!';
-  subTitleNoData: any = 'Try to add a photo';
+  titleNoData: any = 'There are no items in this albums!';
+  actionNoData: any = 'Add items';
   iconNoData: any = 'fa fa-file-image-o';
   // ===========
   menuActions: any = {};
@@ -165,6 +165,9 @@ export class ZMediaAlbumDetailComponent
       case 'sort':
         this.sorting = event.payload.queryParams;
         this.loadObjects(this.object.uuid, this.sorting);
+        break;
+      case 'noData':
+        this.openSelectedModal();
         break;
       case 'clickOnItem':
       case 'clickOnCircle':
@@ -748,7 +751,7 @@ export class ZMediaAlbumDetailComponent
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.selectedObjects = this.selectedObjects.map(el => {
-          el._destroy = true;
+            el._destroy = true;
             return { id: el.id, model: el.model, _destroy: el._destroy };
           });
           this.apiBaseService.put(`media/albums/${this.object.id}/objects`, { objects: this.selectedObjects }).subscribe(res => {

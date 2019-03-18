@@ -50,8 +50,8 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
   menuActions: any = {};
   modalIns: any;
   iconNoData: any = 'fw fw-shared-with-me';
-  titleNoData: any = 'There are no media shared with you!';
-  subTitleNoData: any = 'Media can be shared to your connected contact.';
+  titleNoData: any = 'Nobody has shared files with you yet';
+  subTitleNoData: any = 'Albums can be shared by your connected contacts.';
   modalRef: any;
   sorting: any;
   endLoading: any;

@@ -61,8 +61,8 @@ export class ZMediaFavoriteListComponent implements OnInit,
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
   // ============
-  titleNoData: any = 'There are no favorite photos or albums';
-  subTitleNoData: any = 'Add star to items to find easier';
+  titleNoData: any = 'There are no favorite items!';
+  subTitleNoData: any = '"Favorite" photos, videos or albums to easily find them later';
   iconNoData: any = 'fa fa-star';
   sorting: any;
   endLoading: any;
