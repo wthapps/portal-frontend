@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { NotificationService } from '@wth/shared/services';
 import { Constants } from '@wth/shared/constant';
 import { NotificationListComponent } from '@shared/shared/components/notification-list/notification-list.component';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'common-notifications',
@@ -44,13 +45,6 @@ export class CommonNotificationsComponent implements OnInit {
       this.connectionService.getMoreNotifications();
     else
       this.notificationService.getMoreNotifications();
-  }
-
-  isLoadingDone() {
-    if (this.type === 'connection')
-      return this.connectionService.isLoadingDone();
-    else
-      return this.notificationService.isLoadingDone();
   }
 
 

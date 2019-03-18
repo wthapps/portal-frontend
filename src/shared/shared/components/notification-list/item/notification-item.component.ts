@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   Input,
-  ViewEncapsulation,
   HostBinding,
   ViewContainerRef,
   ViewChild,
@@ -14,7 +13,6 @@ import { NotificationUndoComponent } from '@shared/shared/components/notificatio
 import { Router } from '@angular/router';
 import { NotificationService, ApiBaseService } from '@shared/services';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
-import { Constants } from '@wth/shared/constant';
 
 declare let _: any;
 
@@ -84,24 +82,17 @@ export class NotificationItemComponent implements OnInit {
       });
     }
 
-    // $('body').on('click', '#notiItemMenuEl .js-confirmHideNotification', (e: any) => {
-    //   console.debug('_this.hideNotificationById');
-    //   // _this.hideNotificationById(e.currentTarget.id);
-    // });
-    //
-    // $('body').on('click', '#notiItemMenuEl .js-toggleNotification', (e: any) => {
-    //   _this.toggleNotificationById(e.currentTarget.id);
-    // });
-
+    if (tmp.querySelector('.js-markAsUnread') !== null) {
+      tmp.querySelector('.js-markAsUnread').addEventListener('click', (e: any) => {
+        this.markAsUnread(this.notification);
+      });
+    }
+    // js-markAsUnread
 
     this.renderer.appendChild(document.body, tmp);
     this.renderer.setStyle(tmp, 'top', event.clientY + 'px');
     this.renderer.setStyle(tmp, 'left', event.clientX + 'px');
   }
-
-  // navigateTo(actions: any[], notif_id: string): void {
-  //   this.notificationService.navigateTo(actions, notif_id);
-  // }
 
 
   hideNotificationById(id: any) {
@@ -115,22 +106,18 @@ export class NotificationItemComponent implements OnInit {
     console.log(id);
   }
 
-  confirmHideNotification(notification: any) {
-    // this.hideNotification(notification);
-  }
-
-  hideNotification(notification: any) {
-    // if(this.type === 'connection')
-    //   this.connectionService.hideNotification(notification);
-    // else
-    //   this.notificationService.hideNotification(notification);
-  }
-
   viewProfile(user: any) {
     this.router.navigate(['/profile', user.uuid]);
   }
 
-  // TODO:
+  markAsUnread(notification) {
+    console.log('mark as unread, ', notification);
+    if (this.type === 'connection')
+      this.connectionService.markAsRead(notification);
+    else
+      this.notificationService.markAsRead(notification);
+  }
+
   toggleNotification() {
     switch (this.notification.object_type) {
       case 'SocialNetwork::Post':

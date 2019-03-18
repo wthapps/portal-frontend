@@ -77,7 +77,7 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
 
   viewAllNotifications() {
     // Close mini notification dropdown box in the header
-    $('.navbar-nav-notification').removeClass('open');
+    $('.header-nav-notification').removeClass('open');
 
     // Navigate to notification page of social module
     if (this.navigateService.inSameModule([Constants.baseUrls.myAccount])) {

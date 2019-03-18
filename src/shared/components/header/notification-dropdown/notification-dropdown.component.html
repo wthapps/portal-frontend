@@ -41,7 +41,7 @@
          lockYOffset="30"
          observeAttributes="true"
          infinite-scroll
-         [scrollWindow]="true"
+         [scrollWindow]="false"
          (scrolled)="getMoreNotifications()">
       <app-partials-notification-list #notifications [size]="'xs'" [type]="type"></app-partials-notification-list>
 
@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class="nav-notification-list-footer">
-      <a href="javascript:;" (click)="viewAllNotifications()">View all {{ type == 'connection' ? 'connections' : 'updates'}}</a>
+      <a href="javascript:;" (click)="viewAllNotifications()">View all {{ type == 'connection' ? 'connections' : 'notifications'}}</a>
     </div>
   </div>
 </div>

@@ -7,7 +7,7 @@
   <div class="page-body-content-in zone-social">
 
     <div class="zone-social-in">
-      <div class="panel panel-default">
+      <div class="panel panel-default no-border">
         <div class="panel-heading p0">
           <div class="pull-right p10">
             <span class="pr15"><a href="javascript:;"> Mark all as read</a></span>
@@ -32,8 +32,8 @@
           <app-partials-notification-list #notifications [type]="type"></app-partials-notification-list>
         </div>
         <div class="panel-footer text-center">
-          <a href="javascript:;" class="bold text-bigger" (click)="getMoreNotifications()" *ngIf="!isLoadingDone()">
-            View more
+          <a href="javascript:;" class="bold text-bigger" (click)="getMoreNotifications()" *ngIf="!(type === 'connection' ? connectionService?.loadingDone : notificationService?.loadingDone)">
+            View more notifications
           </a>
         </div>
       </div>

@@ -167,7 +167,7 @@ export class CommonNotificationInterface {
 
   markAsRead(notification: any) {
     // Mark this notification as read
-    if (notification && !notification.is_read) {
+    if (notification) {
       this.toggleReadStatus(notification);
     }
   }
@@ -243,13 +243,10 @@ export class CommonNotificationInterface {
       );
   }
 
-  isLoadingDone() {
-    return this.loadingDone;
-  }
-
   getMoreNotifications() {
     // if(this.loadingDone) {
-    if (this.isLoadingDone() || this.nextLink === undefined) {
+    if (this.loadingDone || !this.nextLink) {
+      this.loadingDone = true;
       return;
     }
     if (!(this.authService.loggedIn && this.authService.user)) { return; }
