@@ -1,4 +1,4 @@
-import {Component, OnInit, ComponentFactoryResolver, OnDestroy, ViewContainerRef, ViewChild} from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, OnDestroy, ViewContainerRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -10,7 +10,7 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ApiBaseService, CommonEventService, CommonEventHandler } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -38,12 +38,12 @@ const MAX_CONCURRENT_FILES = 4;
   templateUrl: '../shared/list/list.component.html'
 })
 export class ZMediaPhotoListComponent extends CommonEventHandler implements OnInit, OnDestroy,
-SharingModalMixin,
-MediaBasicListMixin,
-AlbumAddMixin,
-AlbumCreateMixin,
-MediaDownloadMixin,
-MediaModalMixin {
+  SharingModalMixin,
+  MediaBasicListMixin,
+  AlbumAddMixin,
+  AlbumCreateMixin,
+  MediaDownloadMixin,
+  MediaModalMixin {
   currentQuery: string;
   tooltip: any = Constants.tooltip;
   type = 'photo';
@@ -67,7 +67,7 @@ MediaModalMixin {
   modalRef: any;
   endLoading: any;
   menuActions: any;
-  sorting: any =  {sort_name: 'Date', sort: 'desc'};
+  sorting: any = { sort_name: 'created_at', sort: 'desc' };
   destroy$ = new Subject();
   channel = 'ZMediaPhotoListComponent';
   title: string = 'Photos';
@@ -103,8 +103,8 @@ MediaModalMixin {
     this.loadObjects();
     this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').pipe(
       takeUntil(this.destroy$)).subscribe((event: any) => {
-      this.doListEvent(event);
-    });
+        this.doListEvent(event);
+      });
     this.menuActions = this.getMenuActions();
     this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
@@ -116,8 +116,8 @@ MediaModalMixin {
 
   loadObjects(opts: any = {}) {
     this.loading = true;
-    opts = {...opts, model: 'Media::Photo'};
-    this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
+    opts = { ...opts, model: 'Media::Photo' };
+    this.sorting = { sort_name: opts.sort_name || 'created_at', sort: opts.sort || 'desc' };
     this.apiBaseService.get('media/media/index_combine', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
@@ -148,7 +148,7 @@ MediaModalMixin {
 custom method please overwirte any method*/
   // tslint:disable-next-line:member-ordering
   openCreateAlbumModal: (selectedObjects: any) => void;
-  onDoneAlbum:(e: any) => void;
+  onDoneAlbum: (e: any) => void;
   /* ================================== */
 
   /* AlbumAddMixin This is album add methods, to
@@ -158,11 +158,11 @@ custom method please overwirte any method*/
   onAddToAlbum(e: any) {
     this.apiBaseService
       .post(`media/albums/${e.parents[0].id}/photos`, {
-          photos: this.selectedObjects
-        })
-        .toPromise().then(res => {
-          this.toastsService.success('You just added to Album success');
-        });
+        photos: this.selectedObjects
+      })
+      .toPromise().then(res => {
+        this.toastsService.success('You just added to Album success');
+      });
   }
   // tslint:disable-next-line:member-ordering
   onAddedToAlbum: (data: any) => void;
@@ -233,9 +233,9 @@ custom method please overwirte any method*/
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
     const model = this.selectedObjects[0].object_type;
-    const data: any = { returnUrls: '/photos', preview: true, model: model};
+    const data: any = { returnUrls: '/photos', preview: true, model: model };
     if (this.selectedObjects && this.selectedObjects.length > 1) { data.objects = this.selectedObjects.map(s => `${s.uuid},${s.object_type}`); }
-    this.router.navigate([`/photos/${id}`], {queryParams: data});
+    this.router.navigate([`/photos/${id}`], { queryParams: data });
   }
 
   // ============= MediaListMixin ===============
