@@ -120,6 +120,7 @@ export class ZMediaPhotoListComponent extends CommonEventHandler implements OnIn
     this.sorting = { sort_name: opts.sort_name || 'created_at', sort: opts.sort || 'desc' };
     this.apiBaseService.get('media/media/index_combine', opts).subscribe(res => {
       this.objects = res.data;
+      this.objects = [];
       this.links = res.meta.links;
       this.loading = false;
       this.loadingEnd();
