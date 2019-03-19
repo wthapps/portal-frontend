@@ -12,6 +12,7 @@ import { ChatGroupBlackListPipe } from './chat-group-black-list.pipe';
 import { ChatGroupRecentPipe } from './chat-group-recent.pipe';
 import { ChatGroupFavoritePipe } from './chat-group-favorite.pipe';
 import { ChatGroupHistoryPipe } from './chat-group-history.pipe';
+import { MessageDisplayPipe } from '@chat/shared/pipe/message-display.pipe';
 
 @NgModule({
   imports: [CommonModule],
@@ -26,7 +27,8 @@ import { ChatGroupHistoryPipe } from './chat-group-history.pipe';
     ChatUserOnlinePipe,
     ChatGroupRecentPipe,
     ChatGroupFavoritePipe,
-    ChatGroupHistoryPipe
+    ChatGroupHistoryPipe,
+    MessageDisplayPipe,
   ],
   exports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { ChatGroupHistoryPipe } from './chat-group-history.pipe';
     ChatUserOnlinePipe,
     ChatGroupRecentPipe,
     ChatGroupFavoritePipe,
-    ChatGroupHistoryPipe
+    ChatGroupHistoryPipe,
+    MessageDisplayPipe,
   ],
   providers: []
 })

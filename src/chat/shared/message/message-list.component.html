@@ -2,16 +2,14 @@
   <!--TODO: fix scrollup like below link-->
   <!--https://embed.plnkr.co/DrEDetYnZkFxR7OWWrxS/-->
   <div #listEl class="message-wrapper"
-       scrollToBottom
-       [detectChange]="conversation.group_id"
        infiniteScroll
        [infiniteScrollDistance]="1"
        [infiniteScrollUpDistance]="0.2"
        [scrollWindow]="false"
-       (scrolledUp)="onLoadMore()"
+       (scrolledUp)="loadMoreMessages()"
        (scrolled)="scrollDown()"
     >
-    <ng-container *ngIf="loadingMore">
+    <ng-container *ngIf="loadingMore$|async">
       <div class="text-center">
         Updating message....
       </div>
@@ -22,7 +20,6 @@
            <div class="message-item-dv" *ngFor="let message of messages; trackBy: message?.uuid">
             <message-item [message]="message"
                           [byMe]="message.user_id === currentUser.id"
-                          [prevMessage]="getPrevMessage(message)"
                           [emojiMap]="emojiMap$ | async"
                           (onAddContact)="onAddContact($event)"
                           (event)="doEvent($event)"></message-item>

@@ -43,7 +43,6 @@ export class MessageItemComponent implements OnInit {
     private chatService: ChatService,
     private storageService: StorageService,
     private pubSubEventService: CommonEventService,
-    private messageService: WMessageService
   ) {
     // this.profileUrl = this.chatService.constant.profileUrl;
   }
@@ -149,38 +148,5 @@ export class MessageItemComponent implements OnInit {
 
   cancelContactRequest(contact: any) { }
 
-  hasShowOwner(): boolean {
-    if (this.prevMessage == null) {
-      return true;
-    }
-    if (
-      this.message.user &&
-      this.prevMessage.user &&
-      this.message.user.id === this.prevMessage.user.id
-    ) {
-      return false;
-    }
-    return true;
-  }
 
-  // hasShowDate(): boolean {
-  //   if (this.prevMessage == null || this.message.status == 'pending') {
-  //     return true;
-  //   }
-  //   if (
-  //     this.message.created_at &&
-  //     this.prevMessage.created_at &&
-  //     this.message.created_at.slice(0, 10) ===
-  //       this.prevMessage.created_at.slice(0, 10)
-  //   ) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
-  onImgLoaded() {
-    // setTimeout(() => {
-    //   this.messageService.scrollToBottom();
-    // }, 200);
-  }
 }

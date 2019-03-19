@@ -22,7 +22,8 @@ export enum ActionTypes  {
   UPDATE_CURSOR_ERROR      = 'MESSAGE_UPDATE_CURSOR_ERROR',
   DELETE            = 'MESSAGE_DELETE',
   DELETE_SUCCESS    = 'MESSAGE_DELETE_SUCCESS',
-  DELETE_ERROR      = 'MESSAGE_DELETE_ERROR'
+  DELETE_ERROR      = 'MESSAGE_DELETE_ERROR',
+  UPDATE_STATE      = 'UPDATE_STATE'
 }
 
 // Get all actions
@@ -167,6 +168,12 @@ export class DeleteError implements Action {
   constructor(public payload: any = null) { }
 }
 
+export class UpdateState implements Action {
+  readonly type = ActionTypes.UPDATE_STATE;
+
+  constructor(public payload: any = null) { }
+}
+
 
 export type Actions =
   GetItems |
@@ -190,4 +197,5 @@ export type Actions =
   Delete |
   DeleteSuccess |
   DeleteError |
-  SelectItem;
+  SelectItem |
+  UpdateState;

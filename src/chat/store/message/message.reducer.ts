@@ -22,6 +22,7 @@ export interface MessageState extends EntityState<any> {
   error?: any;
   cursor: number;
   currentCursor: number;
+  scrollable: boolean;
   links: {
     self: string | null,
     prev: string | null,
@@ -40,6 +41,7 @@ export const initialMessageState: MessageState = messageAdapter.getInitialState(
   error: null,
   cursor: 0,
   currentCursor: 0,
+  scrollable: false,
   links: {
     self: null,
     prev: null,
@@ -64,7 +66,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
     }
     case ActionTypes.GET_ITEMS_SUCCESS: {
       const links = Object.assign({}, {...state.links}, action.payload.links);
-
+console.log('links:::', links);
       // If response has items
       if (action.payload.messages.length > 0) {
         const currentCursor = action.payload.messages[action.payload.messages.length - 1].cursor;
@@ -113,6 +115,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
         currentCursor: currentCursor,
         loadingMore: false,
         error: null,
+        links: action.payload.links,
       });
     }
     case ActionTypes.GET_MORE_ERROR: {
@@ -242,6 +245,12 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       };
     }
 
+    case ActionTypes.UPDATE_STATE: {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
 
     default: {
       return state;

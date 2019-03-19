@@ -49,6 +49,8 @@ export const getCurrentCursor = createSelector(selectMessageState, (state: Messa
 export const getItems   = createSelector(selectMessageState, (state: MessageState) => state.messages);
 export const getMessage   = createSelector(selectMessageState, (state: MessageState) => state.selectedItem);
 export const getLinks   = createSelector(selectMessageState, (state: MessageState) => state.links);
+export const getScrollable   = createSelector(selectMessageState, (state: MessageState) => state.scrollable);
+
 
 export const selectById = (id: string) =>
   createSelector(this.selectAllItems, (allMyFeatures: any[]) => {

@@ -16,13 +16,15 @@ export class MessageEffects {
   getAll$: Observable<Action> = this.actions$.pipe(
     ofType<MessageActions.GetItems>(MessageActions.ActionTypes.GET_ITEMS),
     switchMap(action =>
-      this.messageService.getAll(action.payload.groupId, action.payload.queryParams).pipe(
+      this.messageService.getAll(
+        action.payload.queryParams,
+        action.payload.path).pipe(
         map(response => {
           const messages = [];
           response.data.forEach(message => {
             messages.push(message.attributes);
           });
-          return new MessageActions.GetItemsSuccess({messages: messages});
+          return new MessageActions.GetItemsSuccess({messages: messages, links: response.links});
         }),
         catchError(error =>
           of(new MessageActions.GetItemsError({ error }))
@@ -35,14 +37,16 @@ export class MessageEffects {
   getMore$: Observable<Action> = this.actions$.pipe(
     ofType<MessageActions.GetMore>(MessageActions.ActionTypes.GET_MORE),
     switchMap(action =>
-      this.messageService.getAll(action.payload.groupId, action.payload.queryParams).pipe(
+      this.messageService.getAll(
+        {},
+        action.payload.path).pipe(
         map(response => {
           const messages = [];
           response.data.forEach(message => {
             messages.push(message.attributes);
           });
 
-          return new MessageActions.GetMoreSuccess({messages: messages});
+          return new MessageActions.GetMoreSuccess({messages: messages, links: response.links});
         }),
         catchError(error =>
           of(new MessageActions.GetItemsError({ error }))

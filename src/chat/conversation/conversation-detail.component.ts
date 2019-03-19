@@ -31,6 +31,7 @@ import { Channel, Presence } from 'phoenix';
 import { filter, map, skip, take, takeUntil } from 'rxjs/operators';
 import { ChannelEvents } from '@shared/channels';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
+import { UpdateState } from '@chat/store/message/message.actions';
 
 declare var $: any;
 
@@ -60,7 +61,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     public commonEventService: CommonEventService,
     private chatConversationService: ChatConversationService,
     private chatMessageService: ChatMessageService,
-    public wMessageService: WMessageService,
     private router: Router,
     private route: ActivatedRoute,
     public userService: UserService,
@@ -84,10 +84,16 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
         console.log('JOINED CONVERSATION', conversation);
         const cursor = conversation.latest_message.cursor + 1;
         // update message cursor for joined conversation
-        this.store$.dispatch(new MessageActions.UpdateCursorSuccess({ cursor: cursor}));
+        this.store$.dispatch(new MessageActions.UpdateCursorSuccess({cursor: cursor}));
 
         // Load messages for joined conversation
-        this.store$.dispatch(new MessageActions.GetItems({ groupId: this.conversationId, queryParams: {}}));
+        this.store$.dispatch(new MessageActions.GetItems({
+          path: `chat/conversations/${this.conversationId}/messages`, queryParams: {}
+        }));
+
+        setTimeout(() => {
+          this.store$.dispatch(new MessageActions.UpdateState({scrollable: true}));
+        }, 200);
         return conversation;
       })
     );
@@ -102,9 +108,9 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     //   return conversationId;
     // });
     // Load message list
-    this.messages$ = this.store$.select(MessageSelectors.selectAllMessages);
-  }
+    this.messages$ = this.store$.pipe(select(MessageSelectors.selectAllMessages));
 
+  }
   updateMessageHandler(event: CommonEvent) {
     // this.updateMessage(data.group_id, data);
     this.chatMessageService.addCurrentMessages(event.payload);
@@ -191,7 +197,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
   }
 
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
@@ -249,6 +254,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
   createMessageCallback(message: any) {
     this.store$.dispatch(new MessageActions.CreateSuccess({message: message}));
+    this.store$.dispatch(new MessageActions.UpdateState({scrollable: true}));
   }
 
   updateMessage(message: any) {

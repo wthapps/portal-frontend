@@ -1,4 +1,3 @@
-import { StorageService } from './../../../shared/services/storage.service';
 import {
   Component,
   OnInit,
@@ -10,25 +9,23 @@ import {
   EventEmitter,
   ViewEncapsulation,
   ElementRef,
-  OnDestroy
+  OnDestroy, AfterViewInit
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
-import { WMessageService, CommonEventHandler, CommonEventService, CommonEvent } from '@wth/shared/services';
 import { Router } from '@angular/router';
 import { User } from '@wth/shared/shared/models';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
-import { ChatMessageService } from '../services/chat-message.service';
 import { ChatConversationService } from '../services/chat-conversation.service';
 
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { AppState } from '@chat/store';
 import { MessageActions, MessageSelectors } from '@chat/store/message';
 
@@ -42,7 +39,7 @@ declare var $: any;
   styleUrls: ['message-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MessageListComponent extends CommonEventHandler implements OnInit, OnDestroy {
+export class MessageListComponent implements OnInit, OnDestroy {
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
   @ViewChild('listEl') listEl: ElementRef;
 
@@ -52,79 +49,73 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   @Input() channel = 'MessageListComponent';
 
   emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
-  prevMessage: any;
   loading$: Observable<boolean>;
-  loadingMore = false;
-  currentCursor$: Observable<number>;
-  currentCursor = 1536829920761;
-  // currentMessages: any[] = [];
+  loadingMore$: Observable<boolean>;
+  currentCursor: number;
+  links: any;
 
-  private destroySubject: Subject<any> = new Subject();
+  private destroy$ = new Subject();
 
   constructor(
     private chatService: ChatService,
     private router: Router,
     private store$: Store<AppState>,
-    private messageService: WMessageService,
-    private storageService: StorageService,
-    public commonEventService: CommonEventService,
     private chatContactService: ChatContactService,
     private chatConversationService: ChatConversationService,
-    private chatMessageService: ChatMessageService,
     private wthEmojiService: WTHEmojiService
   ) {
-    // this.messageService.scrollToBottom$
-    //   .pipe(
-    //     takeUntil(this.destroySubject)
-    //   )
-    //   .subscribe((res: boolean) => {
-    //   if (res && this.listEl) {
-    //     this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
-    //   }
-    // });
-    super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
-  // ngOnDestroy() {
-  //   this.destroySubject.next('');
-  //   this.destroySubject.complete();
-  // }
+
 
   ngOnInit() {
-    // setInterval(() => {
-      //   this.item = this.chatService.getCurrentMessages();
-      //   this.contactItem = this.chatService.getContactSelect();
-      //   this.ref.markForCheck();
-      // }, 200);
-
-    this.loading$ = this.store$.select(MessageSelectors.getLoading);
-    this.currentCursor$ = this.store$.select(MessageSelectors.getCurrentCursor);
-    this.currentCursor$.subscribe(cursor => {
+    this.loading$ = this.store$.pipe(select(MessageSelectors.getLoading));
+    this.loadingMore$ = this.store$.pipe(select(MessageSelectors.getLoadingMore));
+    this.store$.pipe(
+      select(MessageSelectors.getCurrentCursor),
+      takeUntil(this.destroy$)
+    ).subscribe(cursor => {
       if (cursor !== 0) {
         this.currentCursor = cursor;
       }
     });
+
+    this.store$.pipe(
+      select(MessageSelectors.getLinks),
+      takeUntil(this.destroy$)
+    ).subscribe(links => {
+        this.links = links;
+    });
+
+    this.store$.pipe(
+      select(MessageSelectors.getScrollable),
+      filter(scrollable => scrollable === true),
+      takeUntil(this.destroy$)
+    ).subscribe(scrollable => {
+      this.scrollToBottom(scrollable);
+    });
   }
 
-  scrollToBottom(event: CommonEvent) {
-    if (event && this.listEl) {
-      this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  scrollToBottom(scrollable: any) {
+    if (scrollable && this.listEl) {
+      setTimeout(() => {
+        this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
+        this.store$.dispatch(new MessageActions.UpdateState({scrollable: false}));
+      }, 200);
     }
   }
 
-  onLoadMore() {
-    this.loadingMore = true;
-    // this.chatMessageService.loadMoreMessages();
-
-    // this.store$.select(MessageSelectors.getLinks).subscribe(links => {
-    //   console.log('get links:::', links);
-      // if (links.next && links.next !== links.self) {
-        this.store$.dispatch(new MessageActions.GetMore({groupId: this.conversation.uuid, queryParams: {cursor: this.currentCursor}}));
-
-      // }
-    // });
-    this.loadingMore = false;
+  loadMoreMessages() {
+    if (this.links.next && this.links.next !== this.links.self) {
+      this.store$.dispatch(new MessageActions.GetMore({path: this.links.next}));
+    }
   }
 
   scrollDown() {
@@ -158,12 +149,5 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
           });
         break;
     }
-  }
-
-  getPrevMessage(currentMessage: any) {
-    const curMsgIndex = _.findIndex(this.messages, {
-      id: currentMessage.id
-    });
-    return curMsgIndex <= 0 ? null : this.messages[curMsgIndex - 1];
   }
 }

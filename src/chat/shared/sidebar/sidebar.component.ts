@@ -19,7 +19,6 @@ import {
   ApiBaseService,
   StorageService,
   UrlService,
-  WMessageService,
   CommonEventService,
   CommonEventHandler, AuthService
 } from '@shared/services';

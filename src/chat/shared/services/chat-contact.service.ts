@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiBaseService, ChatCommonService, StorageService, UserService } from '@wth/shared/services';
+import { ApiBaseService } from '@wth/shared/services';
 import { ChatConversationService } from './chat-conversation.service';
 
 
@@ -11,7 +11,6 @@ declare var Promise: any;
 export class ChatContactService {
 
   constructor(
-    public storage: StorageService,
     public apiBaseService: ApiBaseService,
     public chatConversationService: ChatConversationService,
     public router: Router

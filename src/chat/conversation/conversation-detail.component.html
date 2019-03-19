@@ -17,7 +17,7 @@
     </message-invitation>
 
     <message-list class="message-list-body" #messageList
-                  [messages]="messages$ | async"
+                  [messages]="messages$ | async | messageDisplay:(currentUser$|async)"
                   [conversation]="conversation"
                   [currentUser]="currentUser$ | async">
     </message-list>
