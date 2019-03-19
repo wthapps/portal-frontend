@@ -94,7 +94,7 @@ export class NoteConstants extends ConstantsBase {
   };
 
   FONTS = [
-    { name: 'Gotham', value: 'gotham' },
+    // { name: 'Gotham', value: 'gotham' },
     { name: 'Georgia', value: 'georgia' },
     { name: 'Helvetica', value: 'helvetica' },
     { name: 'Courier New', value: 'couriernew' },
