@@ -74,7 +74,7 @@ export class ZMediaPhotoListComponent extends CommonEventHandler implements OnIn
   filters: any = [];
   // ============
   titleNoData: any = 'There are no items!';
-  subTitleNoData: any = 'Drop photos or videos or use "New" button to upload <br> photos and videos.';
+  subTitleNoData: any = 'Drop photos or videos or use "New" button to upload photos and videos.';
   iconNoData: any = 'fa fa-photo';
 
   private sub: any;
