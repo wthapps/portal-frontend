@@ -1,0 +1,14 @@
+@import "../../../../assets/styles/global";
+
+.header-nav-apps {
+  @media (min-width: $screen-lg-min) {
+    .dropdown-menu {
+      @include clearfix;
+      right: -150px;
+      width: 400px;
+      > li {
+        width: percentage(4/12);
+      }
+    }
+  }
+}
