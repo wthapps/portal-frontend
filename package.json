@@ -31,6 +31,7 @@
     "prettier": "prettier {src,e2e}/**/**/*.{ts,scss} --write",
     "anl-social": "webpack-bundle-analyzer dist/social/stats.json",
     "stats-social": "ng build social --stats-json && webpack-bundle-analyzer dist/social/stats.json",
+    "stats-portal": "ng build portal --stats-json && webpack-bundle-analyzer dist/portal/stats.json",
     "stats-contact": "ng build contact --stats-json && webpack-bundle-analyzer dist/contact/stats.json",
     "stats-note": "ng build note --stats-json && webpack-bundle-analyzer dist/note/stats.json",
     "stats-chat": "ng build chat --stats-json && webpack-bundle-analyzer dist/chat/stats.json",

@@ -64,6 +64,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/portal/../environments/environment.ts",
@@ -81,6 +82,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/portal/../environments/environment.ts",

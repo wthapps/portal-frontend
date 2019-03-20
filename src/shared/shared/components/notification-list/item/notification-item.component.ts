@@ -16,6 +16,7 @@ import { ConnectionNotificationService } from '@wth/shared/services/connection-n
 import { Constants } from '@shared/constant';
 
 declare let _: any;
+declare let $: any;
 
 @Component({
   selector: 'notification-item',
