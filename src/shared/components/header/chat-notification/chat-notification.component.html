@@ -1,7 +1,6 @@
 <div class="btn-group header-nav-notification visible-xs-inline-block">
   <button (click)="gotoChat()" type="button" class="btn btn-default dropdown-toggle"
-          pTooltip="{{ tooltip.notifications }}"
-          tooltipPosition="bottom">
+          pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
     <span *ngIf="notificationCount > 0" class="notification-num">
       {{notificationCount | maxCount: 10}}
@@ -10,9 +9,9 @@
 </div>
 
 <div class="btn-group header-nav-notification hidden-xs" id="chat-header-notification">
-  <button (click)="toggleViewNotifications()" type="button" class="btn btn-default dropdown-toggle"
-          data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.chat }}" tooltipPosition="bottom">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false" pTooltip="{{ tooltip.chat }}" tooltipPosition="bottom"
+          (click)="toggleViewNotifications()" >
     <i class="fa fa-comments-o"></i>
     <span *ngIf="notificationCount > 0" class="notification-num">
       {{notificationCount | maxCount: 10}}
@@ -31,29 +30,33 @@
          (scrolled)="getMore()">
 
       <div class="notification-list notification-list-xs">
-        <div *ngFor="let conversation of conversations.data" class="noti-item can-click"
+        <div *ngFor="let conversation of conversations$|async" class="noti-item can-click"
              [ngClass]="conversation?.notification_count > 0 ? 'conversation_active' : ''">
           <div class="noti-item-avatar">
             <!-- <img *ngIf="conversation.group_type != 'multiple'" class="avatar-xs" [src]="conversation?.display?.image"
                  alt="">
             <img *ngIf="conversation.group_type == 'multiple'" class="avatar-xs" [src]="conversation?.group?.profile_image"
                  alt=""> -->
-            <img class="avatar-xs" [src]="conversation?.avatar" alt="">
+            <img class="avatar-xs" [src]="conversation?.profile_image" alt="">
           </div>
           <div class="noti-item-content" (click)="navigate(conversation)">
             <div>
-              <span class="bold">{{conversation?.name | maxLength:30}}</span>
+              <span class="bold">{{ conversation?.name | maxLength:30 }}</span>
               <br>
-              <span *ngIf="conversation.latest_message as latest_message" class="pt5 message emojione-sm">
-                <span *ngIf="latest_message?.message_type == 'text'"
-                      [innerHtml]="latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify | safeHtml"></span>
-                <span *ngIf="latest_message?.message_type == 'request'"> Sent a request </span>
-                <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
+              <span class="pt5 message emojione-sm">
+                <ng-container *ngIf="conversation?.latest_message?.message_type == 'text'">
+                  <span [innerHtml]="conversation?.latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify | safeHtml"></span>
+                </ng-container>
+                <ng-container *ngIf="conversation?.latest_message?.message_type == 'request'">
+                  <span> Sent a request </span>
+                </ng-container>
+                <ng-container *ngIf="conversation?.latest_message?.message_type == 'file'">
+                  <span> Sent a file </span>
+                </ng-container>
               </span>
               <br>
-              <small *ngIf="conversation.latest_message" class="text-fade"> {{conversation?.latest_message?.created_at |
-                timeFormat}}
-              </small>
+              <!--<small class="text-fade"> {{ conversation?.latest_message?.created_at | timeFormat }}-->
+              <!--</small>-->
             </div>
           </div>
           <div class="noti-item-action">
@@ -68,12 +71,9 @@
                   <a href="javascript:;" (click)="markAsRead(conversation); parentHide($event);">Mark as read</a>
                 </li>
                 <li>
-                  <a *ngIf="conversation.notification" href="javascript:;"
-                     (click)="updateNotification(conversation); parentHide($event);">
-                    Disable notification</a>
-                  <a *ngIf="!conversation.notification" href="javascript:;"
-                     (click)="updateNotification(conversation); parentHide($event);">
-                    Enable notification</a>
+                  <a href="javascript:void(0);" (click)="updateNotification(conversation); parentHide($event);">
+                    {{ conversation?.notification ? 'Disable notification' : 'Enable notification'}}
+                  </a>
                 </li>
               </ul>
             </div>

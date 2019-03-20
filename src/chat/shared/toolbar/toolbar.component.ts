@@ -27,9 +27,8 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
   @Input() conversation: any;
   @Input() inContactBook = true;
-  @Output() onFavorite: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onNotify: EventEmitter<any> = new EventEmitter<any>();
   @Output() onAddMember: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onUpdateDisplay: EventEmitter<any> = new EventEmitter<any>();
 
 
   showMemberBar = false;
@@ -86,12 +85,6 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
 
   addMember() {
     this.onAddMember.emit(this.conversation);
-    // this.commonEventService.broadcast({
-    //   channel: 'ZChatShareAddContactComponent',
-    //   action: 'open',
-    //   payload: {option: 'addMember', conversationSelected: this.conversation}
-    // })
-
   }
 
   sendContact() {
@@ -105,37 +98,37 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
 
   favorite() {
     // this.chatConversationService.apiFavoriteGroupUser(this.conversation);
-    this.onFavorite.emit(Object.assign({}, {...this.conversation, favorite: !this.conversation.favorite}));
+    this.onUpdateDisplay.emit(Object.assign({}, {...this.conversation, favorite: !this.conversation.favorite}));
   }
 
   toggleNotification() {
     // this.chatConversationService.apiNotificationGroupUser(this.conversation);
-    this.onNotify.emit(Object.assign({}, {...this.conversation, notification: !this.conversation.notification}));
+    this.onUpdateDisplay.emit(Object.assign({}, {...this.conversation, notification: !this.conversation.notification}));
 
   }
 
   leaveConversation() {
-    this.chatConversationService.leaveConversation(this.conversation);
+    this.onUpdateDisplay.emit({...this.conversation, left: true});
   }
 
-  onHideConversation() {
+  hideConversation() {
     this.wthConfirmService.confirm({
       acceptLabel: 'Hide',
       message: 'Are you sure you want to hide this conversation?',
       header: 'Hide Chat',
       accept: () => {
-        this.chatConversationService.apHideConversation(this.conversation);
+        this.onUpdateDisplay.emit({...this.conversation, hidden: true});
       }
     });
   }
 
-  onDeleteConversation() {
+  deleteConversation() {
     this.wthConfirmService.confirm({
       acceptLabel: 'Delete',
       message: 'This conversation will be deleted from your message list only. not everyone else.<br><br> This action can\'t be undone',
       header: 'Delete Conversation',
       accept: () => {
-        this.chatConversationService.apiDeleteConversation(this.conversation);
+        this.onUpdateDisplay.emit({conversation: {...this.conversation, deleted: true}});
       }
     });
   }

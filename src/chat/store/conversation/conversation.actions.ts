@@ -17,6 +17,9 @@ export enum ActionTypes  {
   UPDATE                = 'CONVERSATION_UPDATE',
   UPDATE_SUCCESS        = 'CONVERSATION_UPDATE_SUCCESS',
   UPDATE_ERROR          = 'CONVERSATION_UPDATE_ERROR',
+  UPSERT                = 'CONVERSATION_UPSERT',
+  UPSERT_SUCCESS        = 'CONVERSATION_UPSERT_SUCCESS',
+  UPSERT_ERROR          = 'CONVERSATION_UPSERT_ERROR',
   UPDATE_DISPLAY        = 'CONVERSATION_UPDATE_DISPLAY',
   UPDATE_DISPLAY_SUCCESS   = 'CONVERSATION_UPDATE_DISPLAY_SUCCESS',
   UPDATE_DISPLAY_ERROR     = 'CONVERSATION_UPDATE_DISPLAY_ERROR',
@@ -150,6 +153,26 @@ export class UpdateError implements Action {
 
   constructor(public payload: any = null) { }
 }
+
+// Update actions
+export class Upsert implements Action {
+  readonly type = ActionTypes.UPSERT;
+
+  constructor(public payload: any) { }
+}
+
+export class UpsertSuccess implements Action {
+  readonly type = ActionTypes.UPSERT_SUCCESS;
+
+  constructor(public payload: any = null) { }
+}
+
+export class UpsertError implements Action {
+  readonly type = ActionTypes.UPSERT_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
 
 // Update User actions
 /**
@@ -351,12 +374,15 @@ export type Actions =
   Update |
   UpdateSuccess |
   UpdateError |
+  Upsert |
+  UpsertSuccess |
+  UpsertError |
   UpdateDisplay |
   UpdateDisplaySuccess |
   UpdateDisplayError |
   Hide |
   HideSuccess |
-  Hide |
+  HideError |
   Join |
   JoinSuccess |
   JoinError |

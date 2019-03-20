@@ -7,13 +7,16 @@ export function sortByName(a: Conversation, b: Conversation): number {
   return a.name.localeCompare(b.name);
 }
 
+export function sortByDate(c1: Conversation, c2: Conversation): number {
+  return c2.updated_chat_at.localeCompare(c1.updated_chat_at);
+}
+
 export const conversationAdapter: EntityAdapter<Conversation> = createEntityAdapter<Conversation>({
   selectId: model => model.id,
-  sortComparer: sortByName,
+  sortComparer: sortByDate,
 });
 
 export interface ConversationState extends EntityState<Conversation> {
-  selectedConversationId: number | null;
   joinedConversationId: number | null;
   joinedConversation: Conversation | null;
   searchedConversations: Conversation[] | [];
@@ -40,7 +43,6 @@ export interface ConversationState extends EntityState<Conversation> {
 
 export const initialConversationState: ConversationState = conversationAdapter.getInitialState(
   {
-    selectedConversationId: null,
     joinedConversationId: null,
     joinedConversation: null,
     searchedConversations: [],
@@ -76,17 +78,28 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       };
     }
     case ActionTypes.GET_ITEMS_SUCCESS: {
-      console.log('LINKS IN EFFECTS', action.payload.links);
-
-      return conversationAdapter.addAll([
-        ...Object.values(state.entities),
-        ...action.payload.conversations
-      ], {
-        ...state,
-        isLoading: false,
-        error: null,
-        links: {...action.payload.links},
-      });
+      const links = action.payload.links;
+      // if it is first load
+      if (!links.prev) {
+        return conversationAdapter.addAll([
+          ...action.payload.conversations
+        ], {
+          ...state,
+          isLoading: false,
+          error: null,
+          links: {...action.payload.links},
+        });
+      } else {
+        return conversationAdapter.addMany([
+          ...Object.values(state.entities),
+          ...action.payload.conversations
+        ], {
+          ...state,
+          isLoading: false,
+          error: null,
+          links: {...action.payload.links},
+        });
+      }
     }
     case ActionTypes.GET_ITEMS_ERROR: {
       return {
@@ -171,7 +184,6 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.CREATE_SUCCESS: {
       const conversation = action.payload.conversation;
-      console.log('dispatch created conversation:::', conversation);
       return conversationAdapter.addOne(
         conversation, {
         ...state,
@@ -191,7 +203,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
     }
 
 
-    // Update Display actions
+    // Update actions
     case ActionTypes.UPDATE: {
       return {
         ...state,
@@ -222,6 +234,37 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       };
     }
 
+    // Update Display actions
+    case ActionTypes.UPSERT: {
+      return {
+        ...state,
+        error: null
+      };
+    }
+
+    case ActionTypes.UPSERT_SUCCESS: {
+      const conversation = action.payload.conversation;
+
+      return conversationAdapter.upsertOne(conversation, {
+        ...state,
+        isLoading: false,
+        error: null,
+      });
+      // return conversationAdapter.up({
+      //   id: conversation.id,
+      //   changes: conversation
+      // }, {
+      //   ...state,
+      // });
+    }
+
+    case ActionTypes.UPSERT_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+    }
 
     // Update Display actions
     case ActionTypes.UPDATE_DISPLAY: {
@@ -234,22 +277,16 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.UPDATE_DISPLAY_SUCCESS: {
       const conversation = action.payload.conversation;
+      const joinedConversation = state.joinedConversationId === conversation.id ? conversation : state.joinedConversation;
 
       return conversationAdapter.updateOne({
         id: conversation.id,
         changes: conversation
       }, {
         ...state,
-        joinedConversation: conversation,
+        joinedConversation: joinedConversation,
         isLoading: false,
       });
-      return {
-        ...state,
-        joinedConversation: {
-          ...conversation
-        },
-        isLoading: false,
-      };
     }
 
     case ActionTypes.UPDATE_DISPLAY_ERROR: {

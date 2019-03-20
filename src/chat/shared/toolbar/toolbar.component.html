@@ -36,10 +36,10 @@
           </li>
           <!--show if current isn't one user-->
           <li>
-            <a href="javascript:;" (click)="onHideConversation()">Hide chat</a>
+            <a href="javascript:;" (click)="hideConversation()">Hide chat</a>
           </li>
           <li>
-            <a href="javascript:;" (click)="onDeleteConversation()">Delete Chat</a>
+            <a href="javascript:;" (click)="deleteConversation()">Delete Chat</a>
           </li>
           <!--show if current is one user-->
           <li *ngIf="conversation.group_type == 'couple'">

@@ -47,6 +47,7 @@ import { ZSharedReportModule } from '@shared/shared/components/zone/report/repor
 import { ZChatSharedModalModule } from './modal/chat-shared-modal.module';
 import { ZChatPipeModule } from './pipe/chat-pipe.module';
 import { CardUserModule } from '@shared/components/card-user/card-user.module';
+import { ChatNotificationService, MemberService } from '@chat/shared/services';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -157,6 +158,8 @@ export class ZChatSharedModule {
         ChatConversationService,
         ChatCommonService,
         MessageService,
+        ChatNotificationService,
+        MemberService,
       ]
     };
   }

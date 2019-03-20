@@ -6,6 +6,7 @@ export interface Conversation {
   favorite: boolean;
   blacklist: boolean;
   allow_add: boolean;
-
+  updated_chat_at: any;
+  notification_count: number;
   notification: boolean;
 }

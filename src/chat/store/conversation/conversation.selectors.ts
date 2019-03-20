@@ -47,8 +47,8 @@ export const selectSearchedConversations  =
 
 // export const selectSelectedConversation   =
 //   createSelector(selectConversationState, (state: ConversationState) => state.selectedConversation);
-export const selectSelectedConversationId   =
-  createSelector(selectConversationState, (state: ConversationState) => state.selectedConversationId);
+// export const selectSelectedConversationId   =
+//   createSelector(selectConversationState, (state: ConversationState) => state.selectedConversationId);
 
 export const selectJoinedConversation   =
   createSelector(selectConversationState, (state: ConversationState) => state.joinedConversation);

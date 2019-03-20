@@ -1,8 +1,7 @@
-<ng-container *ngIf="joinedConversation$ | async as conversation;">
+<ng-container *ngIf="joinedConversation$ | async as conversation">
   <z-chat-share-toolbar [conversation]="conversation" class="page-body-control"
-                        (onFavorite)="toggleFavorite($event)"
-                        (onNotify)="toggleNotification($event)"
-                        (onAddMember)="addMembers($event)"
+                        (onUpdateDisplay)="updateDisplay($event)"
+                        (onAddMember)="openContactSelection($event)"
   >
   </z-chat-share-toolbar>
   <div class="page-body-content page-body-content-chat has-page-body-control"
@@ -12,8 +11,8 @@
 
     <message-invitation [conversation]="conversation"
                         [message]="(messages$ | async)[0]"
-                        (onAccept)="doAccept(conversation)"
-                        (onDecline)="doDecline(conversation)">
+                        (onAccept)="acceptInvitation(conversation)"
+                        (onDecline)="declineInvitation(conversation)">
     </message-invitation>
 
     <message-list class="message-list-body" #messageList

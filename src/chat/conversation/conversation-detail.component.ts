@@ -81,32 +81,41 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       select(ConversationSelectors.selectJoinedConversation),
       filter(conversation => (conversation != null)),
       map((conversation: any) => {
-        console.log('JOINED CONVERSATION', conversation);
+        console.log('JOINED CONVERSATION', conversation.favorite);
         const cursor = conversation.latest_message.cursor + 1;
-        // update message cursor for joined conversation
-        this.store$.dispatch(new MessageActions.UpdateCursorSuccess({cursor: cursor}));
-
-        // Load messages for joined conversation
-        this.store$.dispatch(new MessageActions.GetItems({
-          path: `chat/conversations/${this.conversationId}/messages`, queryParams: {}
-        }));
-
-        setTimeout(() => {
-          this.store$.dispatch(new MessageActions.UpdateState({scrollable: true}));
-        }, 200);
+      //   // update message cursor for joined conversation
+        this.store$.dispatch(new MessageActions.UpdateCursorSuccess({ cursor: cursor}));
+      //
+      //   // Load messages for joined conversation
+      //   this.store$.dispatch(new MessageActions.GetItems({
+      //     path: `chat/conversations/${this.conversationId}/messages`, queryParams: {}
+      //   }));
+      //
+      //   setTimeout(() => {
+      //     // scroll to bottom
+      //     this.store$.dispatch(new MessageActions.UpdateState({scrollable: true}));
+      //   }, 200);
+      //   this.resetConversationNotifications();
         return conversation;
       })
     );
-    // this.store$.pipe(
-    //   select(ConversationSelectors.selectJoinedConversationId),
-    //   filter(conversationId => (conversationId != null)),
-    //   takeUntil(this.destroy$),
-    // ).subscribe(conversationId => {
-    //   this.store$.dispatch(new MessageActions.GetItems({ groupId: this.conversationId, queryParams: {
-    //       cursor: null
-    //     }}));
-    //   return conversationId;
-    // });
+    this.store$.pipe(
+      select(ConversationSelectors.selectJoinedConversationId),
+      filter(conversationId => (conversationId != null)),
+      takeUntil(this.destroy$),
+    ).subscribe(conversationId => {
+      // Load messages for joined conversation
+      this.store$.dispatch(new MessageActions.GetItems({
+        path: `chat/conversations/${this.conversationId}/messages`, queryParams: {}
+      }));
+
+      setTimeout(() => {
+        // scroll to bottom
+        this.store$.dispatch(new MessageActions.UpdateState({scrollable: true}));
+      }, 200);
+      this.resetConversationNotifications();
+
+    });
     // Load message list
     this.messages$ = this.store$.pipe(select(MessageSelectors.selectAllMessages));
 
@@ -167,12 +176,12 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     });
 
     // handle adding members
-    this.contactSelectionService.onSelect$.pipe(
-      filter((event: any) => event.eventName === 'ADD_MEMBER'),
-      takeUntil(this.destroy$)
-    ).subscribe((contacts: any) => {
-      console.log('ADD MEMBER', contacts);
-    });
+    // this.contactSelectionService.onSelect$.pipe(
+    //   filter((event: any) => event.eventName === 'ADD_MEMBER'),
+    //   takeUntil(this.destroy$)
+    // ).subscribe((contacts: any) => {
+    //   console.log('ADD MEMBER', contacts);
+    // });
 
     // SELECTED CONVERSATION
     // this.chatConversationService.getStoreConversations().pipe(
@@ -201,29 +210,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-  // Conversation actions handle
-
-  doAccept(conversation: any) {
-    console.log('ACCTEPTED');
-    this.store$.dispatch(new ConversationActions.AcceptInvitation(conversation));
-    // this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(contact => {
-    //   this.chatConversationService.acceptRequest(contact).then(res => {
-    //     this.chatMessageService.getMessages(contact.group_id)
-    //   });
-    // })
-  }
-
-  doDecline(conversation: any) {
-    this.store$.dispatch(new ConversationActions.DeclineInvitation(conversation));
-    console.log('DECLINED');
-    // this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(contact => {
-    //   this.chatConversationService.declineRequest(contact);
-    // })
-  }
-
-  // Conversation action handle end
-
 
   // TEXT = 'text'
   // FILE = 'file'
@@ -255,6 +241,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   createMessageCallback(message: any) {
     this.store$.dispatch(new MessageActions.CreateSuccess({message: message}));
     this.store$.dispatch(new MessageActions.UpdateState({scrollable: true}));
+    this.resetConversationNotifications();
   }
 
   updateMessage(message: any) {
@@ -327,24 +314,39 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
    * Conversation actions
    */
 
-  toggleFavorite(conversation: any) {
+  acceptInvitation(conversation: any) {
+    console.log('ACCTEPTED');
+    this.store$.dispatch(new ConversationActions.AcceptInvitation(conversation));
+  }
+
+  declineInvitation(conversation: any) {
+    // this.store$.dispatch(new ConversationActions.DeclineInvitation(conversation));
+    this.store$.dispatch(new ConversationActions.UpdateDisplay({id: conversation.uuid, body: {
+      conversation: {status: 'decline'}
+    }}));
+
+    // update status = 'decline'
+    console.log('DECLINED');
+
+  }
+
+  // Conversation action handle end
+
+  updateDisplay(conversation: any) {
     this.store$.dispatch(new ConversationActions.UpdateDisplay({id: conversation.uuid, body: {conversation: conversation}}));
   }
 
-  toggleNotification(conversation: any) {
-    this.store$.dispatch(new ConversationActions.UpdateDisplay({id: conversation.uuid, body: {conversation: conversation}}));
-  }
 
   /*
    * Conversation actions ending
    */
 
 
-  addMembers(conversation: any) {
+  openContactSelection(conversation: any) {
     this.contactSelectionService.open({
       type: 'ADD_MEMBER',
       title: 'Add Members',
-      // path: `chat/conversations/${conversation.uuid}/members/not_in`
+      path: `chat/conversations/${conversation.uuid}/members/my_contacts`
     });
   }
 
@@ -361,5 +363,12 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   drag(e: any) {
     e.preventDefault();
     e.stopPropagation();
+  }
+
+  private resetConversationNotifications() {
+    // update notification_count as read
+    this.store$.dispatch(new ConversationActions.UpdateDisplay({
+      id: this.conversationId, body: {conversation: {notification_count: 0}}
+    }));
   }
 }

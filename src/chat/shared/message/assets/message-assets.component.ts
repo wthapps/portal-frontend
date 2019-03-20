@@ -20,6 +20,9 @@ import { ChatConversationService } from '@chat/shared/services/chat-conversation
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
 import { User } from '@shared/shared/models';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
+import * as ConversationActions from '@chat/store/conversation/conversation.actions';
+import { AppState } from '@chat/store';
+import { MemberService } from '@chat/shared/services';
 
 
 @Component({
@@ -103,7 +106,9 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private chatMessageService: ChatMessageService,
     private store: Store<any>,
     private router: Router,
-    private contactSelectionService: ContactSelectionService
+    private contactSelectionService: ContactSelectionService,
+    private store$: Store<AppState>,
+    private memberService: MemberService,
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
     this.currentUser = userService.getSyncProfile();
@@ -147,8 +152,8 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       filter((event: any) => event.eventName === 'ADD_MEMBER'),
       map((event: any) => event.payload.data),
       takeUntil(this.destroy$)
-    ).subscribe((data: any) => {
-      console.log('ADD MEMBER', data);
+    ).subscribe(payload => {
+      this.addMembers(payload);
     });
   }
 
@@ -211,18 +216,22 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     this.messageAssetsService.close();
   }
 
-  onSelect(user: any) {
-    this.chatContactService.addContact([user.id]).then(res => {
-      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
-        this.chatConversationService.moveToFirst(res2.data);
-      });
-      this.chatConversationService.navigateToConversation(res.data.group_id);
+  createChat(user: any) {
+    this.store$.dispatch(new ConversationActions.Create({users: [user]}));
+  }
+
+  addMembers(users: any) {
+    this.memberService.add(this.conversation.uuid, {users: users}).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(response => {
+      this.users.push(...response.data);
     });
   }
 
-  onRemoveMember(user: any) {
-    this.chatConversationService.removeFromConversation(this.conversation, user.id).then((response: any) => {
-      console.log(response);
+  removeMember(user: any) {
+    this.memberService.remove(this.conversation.uuid, {user: user}).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(response => {
       this.users = this.users.filter(u => u.id !== user.id);
     });
   }

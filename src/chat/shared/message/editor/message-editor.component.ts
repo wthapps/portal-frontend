@@ -323,7 +323,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     }
 
     messages.forEach(message => {
-      console.log('SEND MESSAGE:::', this.message);
       this.sendMessage(message);
     });
 

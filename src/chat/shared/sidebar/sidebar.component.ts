@@ -136,6 +136,11 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       const conversation = response.data.attributes;
       this.createConversationCallback(conversation);
     });
+
+    this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPSERTED, (response: any) => {
+      const conversation = response.data.attributes;
+      this.upsertConversationCallback(conversation);
+    });
   }
 
   /*
@@ -227,6 +232,13 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       this.router.navigate(['/conversations', conversation.uuid]).then();
     }
   }
+
+  upsertConversationCallback(conversation: any) {
+    console.log('UPSERTED CONVERSATION:::', conversation);
+    // if currentUser is a member then add to conversation list
+    this.store$.dispatch(new ConversationActions.UpsertSuccess({conversation: conversation}));
+  }
+
 
   openContactSelectionModal() {
     this.contactSelectionService.open({

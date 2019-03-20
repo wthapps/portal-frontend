@@ -106,7 +106,7 @@ export class MessageListComponent implements OnInit, OnDestroy {
   scrollToBottom(scrollable: any) {
     if (scrollable && this.listEl) {
       setTimeout(() => {
-        this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
+        this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight + 99999;
         this.store$.dispatch(new MessageActions.UpdateState({scrollable: false}));
       }, 200);
     }
