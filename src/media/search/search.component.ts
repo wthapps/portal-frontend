@@ -1,6 +1,7 @@
 import {
   Component, ComponentFactoryResolver, OnInit, ViewChild,
-  ViewContainerRef } from '@angular/core';
+  ViewContainerRef
+} from '@angular/core';
 import * as appStore from '../shared/store';
 import {
   Favorite,
@@ -17,18 +18,15 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { ApiBaseService, DateService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/config/constants';
 import { Location } from '@angular/common';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaBasicListMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
 
 @Component({
   moduleId: module.id,
@@ -97,7 +95,7 @@ export class ZMediaSearchComponent implements
     public router: Router,
     public route: ActivatedRoute,
     public location: Location
-    ) { }
+  ) { }
 
   onAddedToPlaylist: (data: any) => void;
 
@@ -135,9 +133,9 @@ export class ZMediaSearchComponent implements
     switch (e.action) {
       case 'uploaded':
         this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: { id: this.object.id }, videos: [e.payload] })
-        .subscribe(res => {
-          this.loadObjects(this.object.uuid);
-        });
+          .subscribe(res => {
+            this.loadObjects(this.object.uuid);
+          });
         break;
       case 'changeView':
         this.changeViewMode(e.payload);
@@ -165,7 +163,7 @@ export class ZMediaSearchComponent implements
 
   async loadObjects(input: any) {
     const { queryParams } = this.route.snapshot;
-    const new_input = { ...input, ...queryParams, sort_name: input.sort_name || 'Date', sort: input.sort || 'desc'};
+    const new_input = { ...input, ...queryParams, sort_name: input.sort_name || 'Date', sort: input.sort || 'desc' };
     if (input.searchFrom || input.searchTo) {
       new_input.searchFrom = new Date(input.searchFrom);
       new_input.searchTo = new Date(input.searchTo);
@@ -302,8 +300,10 @@ export class ZMediaSearchComponent implements
   }
 
   removeFromParent() {
-    this.apiBaseService.post(`media/playlists/remove_from_playlist`, { playlist: { id: this.object.id },
-     videos: this.selectedObjects.map(ob => ({ id: ob.id, model: ob.model })) }).subscribe(res => {
+    this.apiBaseService.post(`media/playlists/remove_from_playlist`, {
+      playlist: { id: this.object.id },
+      videos: this.selectedObjects.map(ob => ({ id: ob.id, model: ob.model }))
+    }).subscribe(res => {
       this.toastsService.success('You removed videos successfully!');
       this.loadObjects(this.object.uuid);
       this.selectedObjects = [];

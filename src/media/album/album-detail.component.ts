@@ -17,31 +17,25 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { SharingCreateParams, SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
-import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { Location } from '@angular/common';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { mediaConstants } from '@media/shared/config/constants';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
-import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { WUploader } from '@shared/services/w-uploader';
 import { takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
-import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
-import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaRenameModalComponent } from '@shared/modules/photo/components/modal/media/media-rename-modal.component';
+import { SharingModalResult, SharingCreateParams } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import { MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, AlbumAddMixin, MediaModalMixin, MediaParentMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
 
 declare var _: any;
 @Mixins([

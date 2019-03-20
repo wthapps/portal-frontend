@@ -14,17 +14,14 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
 import { mediaConstants } from '@media/shared/config/constants';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { MediaBasicListMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin } from '@shared/modules/photo/mixins';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
 
 declare var _: any;
 

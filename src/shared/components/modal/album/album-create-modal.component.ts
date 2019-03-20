@@ -6,9 +6,9 @@ import { Observable, Subject } from 'rxjs';
 import { map, tap, takeUntil } from 'rxjs/operators';
 
 import { ApiBaseService } from '@wth/shared/services';
-import { TaggingElComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-el.component';
-import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
 import { ModalService } from '@shared/components/modal/modal-service';
+import { TaggingElComponent } from '@shared/modules/photo/components/modal/tagging/tagging-el.component';
+import { ZMediaTaggingService } from '@shared/modules/photo/components/modal/tagging/tagging.service';
 
 
 declare var $: any;
@@ -42,10 +42,10 @@ export class AlbumCreateModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
 
   constructor(private api: ApiBaseService,
-              private fb: FormBuilder,
-              private router: Router,
-              private tagService: ZMediaTaggingService,
-              private modalService: ModalService) {
+    private fb: FormBuilder,
+    private router: Router,
+    private tagService: ZMediaTaggingService,
+    private modalService: ModalService) {
     // super('form-create-album-modal');
   }
 
@@ -70,7 +70,7 @@ export class AlbumCreateModalComponent implements OnInit, OnDestroy {
 
   open(options?: any) {
     // Get selected photo object list
-    this.selectedPhotos = _.filter(options.selectedObjects, { 'object_type': 'Media::Photo'});
+    this.selectedPhotos = _.filter(options.selectedObjects, { 'object_type': 'Media::Photo' });
     this.modal.open().then();
     this.modal.element.nativeElement.style.display = 'inline';
 
@@ -97,33 +97,33 @@ export class AlbumCreateModalComponent implements OnInit, OnDestroy {
         tagsName.push(this.tag.addedTags[i]);
       }
     }
-    const album = {name: albumName, description: albumDes, photos: selectedPhotosId, tags_name: tagsName};
+    const album = { name: albumName, description: albumDes, photos: selectedPhotosId, tags_name: tagsName };
     // Only subscribe to this observable once
     this.close(null);
     this.api.post(`media/albums`, album)
       .toPromise().then((res: any) => {
         this.album = res.data;
         this.doneFormModal.emit(this.album);
-        this.event.emit({action: 'addAlbumSuccessful', payload: res });
+        this.event.emit({ action: 'addAlbumSuccessful', payload: res });
         this.viewAlbumDetail(this.album.uuid);
         this.close();
       });
   }
 
   viewAlbumDetail(albumId: number): Promise<any> {
-    return this.router.navigate(['albums', albumId], {queryParams: {returnUrl: this.router.url}});
+    return this.router.navigate(['albums', albumId], { queryParams: { returnUrl: this.router.url } });
   }
 
   onAction(action: string, data: any) {
-    const options = {action: action, data: data};
+    const options = { action: action, data: data };
     this.event.emit(options);
   }
 
   autoCompleteTags = (text: string): Observable<any> => {
     return this.tagService.getTags(text)
       .pipe(
-        map(data => data.json(),
-        map((item: any) => item.name)),
+        map((data: any) => data.json(),
+          map((item: any) => item.name)),
         tap(console.log)
       );
   }

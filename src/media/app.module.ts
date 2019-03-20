@@ -26,12 +26,7 @@ import { appStore, appEffects } from './shared/store';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ServiceModule } from '@media/shared/service/service.module';
-import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
-import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
 // import { ZMediaVideoModule } from '@media/video/video.module';
 import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
@@ -45,6 +40,11 @@ import { WMediaPreviewModule } from '@shared/components/w-media-preview/media-pr
 import { ZMediaTrashModule } from '@media/trash/trash.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { LocalStorageModule } from 'angular-2-local-storage';
+import { MediaRenameModalComponent } from '@shared/modules/photo/components/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@shared/modules/photo/components/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@shared/modules/photo/components/modal/tagging/tagging-modal.component';
+import { AddToAlbumModalComponent } from '@shared/modules/photo/components/modal/photo/add-to-album-modal.component';
+import { PhotoEditModalComponent } from '@shared/modules/photo/components/modal/photo/photo-edit-modal.component';
 
 @NgModule({
   imports: [
@@ -104,4 +104,4 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     SharingDetailInfoComponent
   ]
 })
-export class AppModule {}
+export class AppModule { }

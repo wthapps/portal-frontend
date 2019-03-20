@@ -1,0 +1,13 @@
+@import "../../../assets/styles/global";
+
+.w-list {
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  w-list-item:nth-child(1) {
+    margin-right: 16px;
+  }
+  w-list-item:nth-child(2) {
+    flex: 1;
+  }
+}

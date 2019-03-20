@@ -3,14 +3,13 @@ import { Constants } from '@shared/constant/config/constants';
 import { WUploader } from '@shared/services/w-uploader';
 import { CommonEventService, ApiBaseService, CommonEventHandler } from '@shared/services';
 import { filter, take } from 'rxjs/operators';
-import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
-import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Router } from '@angular/router';
 import { Subscription, Subject } from 'rxjs';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { AlbumAddMixin, AlbumCreateMixin } from '@shared/modules/photo/mixins';
 
 @Mixins([AlbumAddMixin, AlbumCreateMixin])
 @Component({
@@ -19,8 +18,8 @@ import { MediaCreateModalService } from '@shared/shared/components/photo/modal/m
   styleUrls: ['left-menu.component.scss']
 })
 export class ZMediaSharedLeftMenuComponent extends CommonEventHandler implements OnInit, OnDestroy,
-AlbumAddMixin,
-AlbumCreateMixin {
+  AlbumAddMixin,
+  AlbumCreateMixin {
   mediaMenu = Constants.pictureMenuItems;
 
   subAddAlbum: Subscription;
@@ -61,7 +60,7 @@ AlbumCreateMixin {
     });
     this.uploader.event$.pipe(filter(e => e.action === 'complete'), take(1)).subscribe(res => {
       this.commonEventService.broadcast(
-        { channel: 'ZMediaPhotoListComponent', action: 'loadObjects'}
+        { channel: 'ZMediaPhotoListComponent', action: 'loadObjects' }
       );
     });
   }
@@ -69,7 +68,7 @@ AlbumCreateMixin {
   /* AlbumCreateMixin This is album create methods, to
 custom method please overwirte any method*/
   openCreateAlbumModal: (selectedObjects: any) => void;
-  onDoneAlbum:(e: any) => void;
+  onDoneAlbum: (e: any) => void;
   /* ================================== */
 
   /* AlbumAddMixin This is album add methods, to

@@ -17,21 +17,17 @@ import {
   AddSuccess,
   DeleteMany
 } from '../shared/store/media/media.actions';
-import { MediaActionHandler } from '@media/shared/media';
-import { DeleteManySuccess } from '@media/shared/store/media';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { ApiBaseService, CommonEventService } from '@shared/services';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { mediaConstants } from '@media/shared/config/constants';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { takeUntil } from 'rxjs/operators';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import { MediaBasicListMixin, MediaAdditionalListMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaAdditionalListMixin, MediaDownloadMixin])
 @Component({

@@ -13,19 +13,17 @@ import {
 } from '@angular/core';
 import { Constants } from '@wth/shared/constant';
 import { ApiBaseService, CommonEventService } from '@shared/services';
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { Router } from '@angular/router';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
 import { WUploader } from '@shared/services/w-uploader';
-import { MediaViewMixin } from '@shared/mixin/media-view.mixin';
-import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
-import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
-import { PlaylistCreateMixin } from '@shared/mixin/playlist/playlist-create.mixin';
 import { Subject } from 'rxjs';
 import { takeUntil, take, filter } from 'rxjs/operators';
+import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { MediaViewMixin, AlbumAddMixin, AlbumCreateMixin } from '@shared/modules/photo/mixins';
+import { PlaylistCreateMixin } from '@shared/modules/photo/mixins/playlist/playlist-create.mixin';
 
 @Mixins([MediaViewMixin, AlbumAddMixin, AlbumCreateMixin, PlaylistCreateMixin])
 @Component({
@@ -36,8 +34,8 @@ import { takeUntil, take, filter } from 'rxjs/operators';
   encapsulation: ViewEncapsulation.None
 })
 export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin,
-AlbumAddMixin,
-AlbumCreateMixin {
+  AlbumAddMixin,
+  AlbumCreateMixin {
   @Input() leftActionsTemplate: TemplateRef<any>;
   @Input() leftAddActionsTemplate: TemplateRef<any>;
   @Input() objectActionsTemplate: TemplateRef<any>;
@@ -76,9 +74,9 @@ AlbumCreateMixin {
     public mediaUploaderDataService: MediaUploaderDataService,
     public commonEventService: CommonEventService,
     private uploader: WUploader
-    ) {
+  ) {
 
-    }
+  }
 
   ngOnInit() {
     this.subUploader = this.mediaUploaderDataService.action$.subscribe(e => {
@@ -108,7 +106,7 @@ AlbumCreateMixin {
     });
     this.uploader.event$.pipe(filter(e => e.action === 'complete'), take(1)).subscribe(res => {
       this.commonEventService.broadcast(
-        { channel: 'ZMediaPhotoListComponent', action: 'loadObjects'}
+        { channel: 'ZMediaPhotoListComponent', action: 'loadObjects' }
       );
     });
   }
@@ -146,13 +144,13 @@ AlbumCreateMixin {
   }
 
   changeViewMode(mode: any) {
-    this.event.emit({action: 'changeView', payload: mode});
+    this.event.emit({ action: 'changeView', payload: mode });
   }
 
   /* AlbumCreateMixin This is album create methods, to
 custom method please overwirte any method*/
   openCreateAlbumModal: (selectedObjects: any) => void;
-  onDoneAlbum:(e: any) => void;
+  onDoneAlbum: (e: any) => void;
   /* ================================== */
 
   /* AlbumAddMixin This is album add methods, to

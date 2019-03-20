@@ -20,4 +20,4 @@ import { WToolbarModule } from '@wth/shared/components/toolbar';
   exports: [ZMediaSharedWithMeComponent],
   providers: [ZMediaSharedWithMeService]
 })
-export class ZMediaSharedWithMeModule {}
+export class ZMediaSharedWithMeModule { }

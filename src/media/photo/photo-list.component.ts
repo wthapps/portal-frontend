@@ -9,24 +9,20 @@ import {
 } from '../shared/store/media/media.actions';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ApiBaseService, CommonEventService, CommonEventHandler } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
-import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { WUploader } from '@shared/services/w-uploader';
 import { mediaConstants } from '@media/shared/config/constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin } from '@shared/modules/photo/mixins';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
 
 
 declare var _: any;

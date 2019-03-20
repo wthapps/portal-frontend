@@ -9,8 +9,8 @@ import { AlbumCreateModalComponent } from './album-create-modal.component';
 import { AlbumEditModalComponent } from './album-edit-modal.component';
 
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
-import { PartialsPhotoTaggingModule } from '@shared/shared/components/photo/modal/tagging/tagging.module';
 import { CheckboxModule, CalendarModule } from 'primeng/primeng';
+import { PartialsPhotoTaggingModule } from '@shared/modules/photo/components/modal/tagging/tagging.module';
 
 
 @NgModule({

@@ -14,22 +14,17 @@ import {
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@shared/constant';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/config/constants';
 import { DoublyLinkedLists } from '@shared/data-structures/link-list/doubly-linked-lists';
-import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
-import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
-import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
-import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 import { Subject } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { MediaAdditionalListMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin, MediaListDetailMixin } from '@shared/modules/photo/mixins';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
 
 @Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin,
   MediaListDetailMixin])

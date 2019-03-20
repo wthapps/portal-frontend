@@ -24,8 +24,6 @@ import { AlbumDetailInfoComponent } from '../album/album-detail-info.component';
 // import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
 import { MediaObjectService } from './container/media-object.service';
 import { SharingItemComponent } from './media/sharing-item.component';
-import { ZMediaTaggingService } from '@wth/shared/shared/components/photo/modal/tagging/tagging.service';
-import { SharingService } from '@wth/shared/shared/components/photo/modal/sharing/sharing.service';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
 import { MediaModalListComponent } from './media-modal-list/media-modal-list.component';
@@ -46,9 +44,11 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
 import { WObjectListModule } from '@shared/components/w-object-list/w-object-list.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { PlaylistModalModule } from '@shared/shared/components/photo/modal/playlist/playlist-modal.module';
-import { MediaModalModule } from '@shared/shared/components/photo/modal/media/media-modal.module';
-import { PartialsPhotoSharingModule } from '@shared/shared/components/photo/modal/sharing/sharing.module';
+import { MediaModalModule } from '@shared/modules/photo/components/modal/media/media-modal.module';
+import { PartialsPhotoSharingModule } from '@shared/modules/photo/components/modal/sharing/sharing.module';
+import { PlaylistModalModule } from '@shared/modules/photo/components/modal/playlist/playlist-modal.module';
+import { ZMediaTaggingService } from '@shared/modules/photo/components/modal/tagging/tagging.service';
+import { SharingService } from '@shared/modules/photo/components/modal/sharing/sharing.service';
 
 TagInputModule.withDefaults({
   tagInput: {
