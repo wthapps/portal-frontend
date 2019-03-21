@@ -21,17 +21,7 @@
               </w-list-item>
             </ng-template>
           </p-autoComplete>
-          <!-- <w-list class="user-row">
-            <w-list-item>
-              <div class="avatar">
-                avartar
-              </div>
-              <div class="name">
-                <p class="mb0">aaaaaaaaaaaaaaa</p>
-                <span class="text-color-light text-small"> not in WTHContacts</span>
-              </div>
-            </w-list-item>
-          </w-list> -->
+
 
           <div class="input-group-btn" style="vertical-align: top;">
             <!-- Single button -->
@@ -54,62 +44,44 @@
             </div>
           </div>
         </div>
-
         <div *ngIf="updating" class="text-left changing padding8 rounded border bg-warning border-1">
           <i class="fa fa-exclamation-triangle text-warning"></i>
           Your sharing list has changes that you need to be saved.
         </div>
-
       </div>
     </div>
-    <!--<div class="modal-fixed-height">-->
-
-    <ng-container>
-
-      <!--<div class="modal-body-collapse" *ngIf="sharedUsers?.length">-->
-      <!--<div class="collapse in pre-scrollable" id="collapseContact">-->
-      <div class="w-list-scroll">
-        <!-- <div class="media-list-item" *ngFor="let recipient of sharedUsers">
-          <div class="media" [ngClass]="recipient._destroy ? 'remove': ''">
-            <div class="media-left">
-              <figure>
-                <img class="img-circle" [src]="recipient.user.profile_image" alt="">
-              </figure>
-            </div>
-            <div class="media-body pl0">
-              <span>
-                {{ recipient.user.name }}
-              </span>
-              <div class="pull-right">
-                <div class="btn-group" *ngIf="!recipient._destroy">
-                  <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false" [title]="recipient.role.display_name" aria-haspopup="true">
-                    <i class="fa" [ngClass]="recipient.role.name == 'view'? 'fa-eye' :
-                                                                                   recipient.role.name == 'download'? 'fa-download' :
-                                                                                   recipient.role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
-                    </i>
-                    <span class="caret ml5"></span>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-right">
-                    <li *ngFor="let r of roles" (click)="changeRole(r, recipient)">
-                      <a href="javascript:void(0);"> {{ r.display_name }}
-                        <i class="pull-right" [ngClass]="{'fa fa-check': (recipient.role_id == r.id)}"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-
-                <button *ngIf="recipient._destroy" class="btn btn-sm btn-default"> Removed </button>
-
-                <a class="btn btn-default" (click)="toggleRemoving(recipient)" [title]="recipient._destroy ? 'Undo removing':'Remove'"
-                  href="javascript:void(0)">
-                  <i *ngIf="!recipient._destroy" class="fa fa-times" title="remove"></i>
-                  <i *ngIf="recipient._destroy" class="fa fa-undo" title="Undo removing"></i>
-                </a>
-              </div>
-            </div>
+    <section>
+      <hr class="mt10 mb10">
+      <small class="text-fade">My Contacts</small>
+      <w-list class="media-user-list p0">
+        <w-list-item class="user-row p0">
+          <div class="avatar">
+            <img class="img-circle" src="https://via.placeholder.com/150" alt="">
           </div>
-        </div> -->
+          <div class="name flex-1">
+            <p class="mb0">aaaaaaaaaaaaaaa</p>
+            <span class="text-color-light text-small"> not in WTHContacts</span>
+          </div>
+          <div>
+            <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+          </div>
+        </w-list-item>
+        <w-list-item class="user-row p0">
+          <div class="avatar">
+            <img class="img-circle" src="https://via.placeholder.com/150" alt="">
+          </div>
+          <div class="name flex-1">
+            <p class="mb0">aaaaaaaaaaaaaaa</p>
+            <span class="text-color-light text-small"> not in WTHContacts</span>
+          </div>
+          <div>
+            <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+          </div>
+        </w-list-item>
+      </w-list>
+    </section>
+    <ng-container>
+      <div class="w-list-scroll">
         <div *ngFor="let recipient of sharedUsers" class="d-flex align-content-center p5">
           <div class="avatar-xs">
             <figure>
@@ -148,12 +120,6 @@
       </div>
 
     </ng-container>
-
-    <!--<ng-template #loadingBlock>-->
-    <!--<box-loading></box-loading>-->
-    <!--</ng-template>-->
-
-    <!--</div>-->
   </bs-modal-body>
   <bs-modal-footer>
 

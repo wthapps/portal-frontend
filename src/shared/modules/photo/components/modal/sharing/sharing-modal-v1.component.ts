@@ -30,6 +30,7 @@ export class SharingModalV1Component implements OnInit, OnDestroy {
   textUsers = [];
   loading = false;
   sub: any;
+  selectedValues: string[] = ['val1', 'val2'];
 
   @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
 
