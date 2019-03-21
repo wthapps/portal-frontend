@@ -158,6 +158,10 @@ $i_content-grid: 4;
     visibility: hidden;
   }
   .content-item {
+    .form-checkbox {
+      border-color: #fff;
+      border-width: 2px;
+    }
     &:hover {
       .form-checkbox {
         visibility: visible;
