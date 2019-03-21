@@ -65,7 +65,7 @@ export class ZChatSidebarComponent implements OnInit {
 
   doFilter(param) {
     if (param === 'unread') {
-      this.chatConversationService.apiGetConversations({ 'filter[where][gt][notification_count]': 0})
+      this.chatConversationService.apiGetConversations({ 'filter[where][gt][notification_count]': 0 })
         .then((res: any) => {
           this.filter = 'Unread';
         });
@@ -104,8 +104,8 @@ export class ZChatSidebarComponent implements OnInit {
       this.chatConversationService.apiUpdateGroupUser(contact.group_id, { notification_count: 0 }).then(res => {
         this.commonEventService.broadcast({
           channel: 'ChatNotificationComponent',
-          action: 'addNotification',
-          payload: { notification_count: 0, last_notification_count: last}
+          action: 'addNotificationEvent',
+          payload: { notification_count: 0, last_notification_count: last }
         });
         this.chatConversationService.navigateToConversation(contact.group_id);
       })
@@ -118,9 +118,9 @@ export class ZChatSidebarComponent implements OnInit {
 
   onAddContact() {
     this.commonEventService.broadcast({
-        channel: 'ZChatShareAddContactComponent',
-        action: 'open',
-        payload: {option: 'addChat'}
+      channel: 'ZChatShareAddContactComponent',
+      action: 'open',
+      payload: { option: 'addChat' }
     });
   }
 
@@ -156,11 +156,11 @@ export class ZChatSidebarComponent implements OnInit {
     });
   }
 
-  markAllAsRead(){
+  markAllAsRead() {
     this.conversations$.pipe(take(1)).subscribe(res => {
       this.commonEventService.broadcast({
         channel: 'ChatNotificationComponent',
-        action: 'markAllAsRead',
+        action: 'markAllAsReadEvent',
         payload: res
       })
     })

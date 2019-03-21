@@ -106,7 +106,7 @@ export class WToolbarComponent implements OnInit, OnDestroy, MediaViewMixin,
     });
     this.uploader.event$.pipe(filter(e => e.action === 'complete'), take(1)).subscribe(res => {
       this.commonEventService.broadcast(
-        { channel: 'ZMediaPhotoListComponent', action: 'loadObjects' }
+        { channel: 'ZMediaPhotoListComponent', action: 'reLoadObjects' }
       );
     });
   }

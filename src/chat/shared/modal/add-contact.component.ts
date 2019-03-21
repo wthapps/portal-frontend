@@ -7,7 +7,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { Constants } from '@shared/constant';
-import { ApiBaseService, ChatCommonService, CommonEventHandler, CommonEventService } from '@shared/services';
+import { ApiBaseService, ChatCommonService, CommonEventHandler, CommonEventService, CommonEvent } from '@shared/services';
 import { ChatService } from '../services/chat.service';
 import { ConversationService } from '@chat/conversation/conversation.service';
 import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
@@ -60,9 +60,9 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
       distinctUntilChanged(),
       switchMap((searchEvent: any) => this.apiBaseService.get(`account/search?q=${searchEvent.query}`)))
       .subscribe((res: any) => {
-          const selectedIds = this.selectedUsers.map(user => user.id);
-          this.suggestedUsers = res.data.filter(user => !selectedIds.includes(user.id));
-        },
+        const selectedIds = this.selectedUsers.map(user => user.id);
+        this.suggestedUsers = res.data.filter(user => !selectedIds.includes(user.id));
+      },
         (error: any) => {
           console.log('error', error);
         }
@@ -81,7 +81,7 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
     }
   }
 
-  open(data: any) {
+  open(event: CommonEvent) {
     const options: any = {
       addMember: {
         title: 'Add Members'
@@ -94,7 +94,7 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
       },
     }
     Object.keys(options).forEach(key => {
-      if(key == data.option) {
+      if (key == event.payload.option) {
         this.title = options[key].title;
         this.type = key;
       }
@@ -104,8 +104,8 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
     this.modal.open().then();
 
     let link = "";
-    if(data.option == 'addMember') {
-      link = `zone/chat/group/${data.conversationSelected.group_id}/contacts_not_in_group`;
+    if (event.payload.option == 'addMember') {
+      link = `zone/chat/group/${event.payload.conversationSelected.group_id}/contacts_not_in_group`;
     } else {
       link = `account/get_my_contacts_accounts?size=1000`
     }
@@ -161,7 +161,7 @@ export class ZChatShareAddContactComponent extends CommonEventHandler implements
       }
     });
     if (!this.selectedUsers.includes(user)) {
-      this.selectedUsers.push({...user, selected: true});
+      this.selectedUsers.push({ ...user, selected: true });
     }
     this.contacts.forEach(u => {
       if (u.id === user.id) {

@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { ChatService } from '../services/chat.service';
 import { Constants, CHAT_ACTIONS, ChatConstant, CONVERSATION_SELECT } from '@wth/shared/constant';
 import { CommonEvent, CommonEventService, WMessageService, StorageService } from '@wth/shared/services';
-import { ConversationDetailComponent } from '@chat/conversation/conversation-detail.component';
 
 declare var _: any;
 
@@ -153,7 +152,7 @@ export class MessageItemComponent implements OnInit, OnChanges {
     }
   }
 
-  cancelContactRequest(contact: any) {}
+  cancelContactRequest(contact: any) { }
 
   hasShowOwner(): boolean {
     if (this.prevMessage == null) {

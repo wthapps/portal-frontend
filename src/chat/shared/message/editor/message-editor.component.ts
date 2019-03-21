@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input, OnChanges, AfterViewInit, AfterContentInit, DoCheck, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Subject, Subscription,  Observable, from, merge } from 'rxjs';
+import { Subject, Subscription, Observable, from, merge } from 'rxjs';
 import { filter, take, takeUntil, mergeMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
 import { Constants, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
-import { ApiBaseService, WMessageService, StorageService, PhotoUploadService, CommonEventService, CommonEventHandler } from '@wth/shared/services';
+import { ApiBaseService, WMessageService, StorageService, PhotoUploadService, CommonEventService, CommonEventHandler, CommonEvent } from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
@@ -56,8 +56,8 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   private close$: Observable<any>;
   private currentFileId: string;
-  private uploadingMessages: {[id: string]: Message} = {};
-  private uploadedFiles: {[id: string]: any} = {};
+  private uploadingMessages: { [id: string]: Message } = {};
+  private uploadedFiles: { [id: string]: any } = {};
   private stripHtml: StripHtmlPipe;
   private sub: Subscription;
 
@@ -68,7 +68,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     private store: Store<any>,
     private storage: StorageService,
     private fb: FormBuilder,
-    private addContactService:  ZChatShareAddContactService,
+    private addContactService: ZChatShareAddContactService,
     private messageService: WMessageService,
     private chatMessageService: ChatMessageService,
     public commonEventService: CommonEventService,
@@ -195,28 +195,28 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     if (!this.messageService.notEmptyHtml(this.message.message)) {
       return;
     }
-    if (this.stripHtml.transform(this.message.message).length > this.maxLengthAllow ) {
-        // console.error('Chat messages exceed maximum length of ', this.maxLengthAllow);
-        this.longMessageModal.open();
-        return;
+    if (this.stripHtml.transform(this.message.message).length > this.maxLengthAllow) {
+      // console.error('Chat messages exceed maximum length of ', this.maxLengthAllow);
+      this.longMessageModal.open();
+      return;
     }
     this.send();
   }
 
   handleImagePaste(file) {
-    const { type} = file;
-      const message = new Message({
-        message: 'Sending file.....',
-        message_type: 'file',
-        content_type: type,
-        meta_data: {}
-      });
+    const { type } = file;
+    const message = new Message({
+      message: 'Sending file.....',
+      message_type: 'file',
+      content_type: type,
+      meta_data: {}
+    });
 
     const fakeMessage = this.chatMessageService.create(this.contactSelect.group_id, message);
     const uploadedMessage = this.uploadService.uploadPhotos([file]).toPromise();
     Promise.all([fakeMessage, uploadedMessage]).then(([fake, uploaded]) => {
-    const updateMessage = {...fake.data, file: uploaded['data'], content_type: type};
-    this.messageService.update(updateMessage).toPromise();
+      const updateMessage = { ...fake.data, file: uploaded['data'], content_type: type };
+      this.messageService.update(updateMessage).toPromise();
     });
   }
 
@@ -224,7 +224,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     this.commonEventService.broadcast({
       channel: 'ZChatShareAddContactComponent',
       action: 'open',
-      payload: {option: 'shareContacts'}
+      payload: { option: 'shareContacts' }
     });
   }
 
@@ -233,7 +233,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       allowedFileTypes: null,
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
       afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
-      payload: {group_id: this.contactSelect.group_id},
+      payload: { group_id: this.contactSelect.group_id },
       module: 'chat'
     });
   }
@@ -258,7 +258,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
       afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
       payload: { group_id: this.contactSelect.group_id },
-  });
+    });
 
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.close$), filter((items: any[]) => items.length > 0))
@@ -271,10 +271,10 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     // Create multiple chat messages in batches of CONCURRENT_UPLOAD (default value is 2)
     from(allMedia).pipe(
       mergeMap(media => this.chatMessageService.createMediaMessage(media),
-      (valueFromSource, valueFromInner) => {
-        return valueFromInner;
-      },
-      CONCURRENT_UPLOAD
+        (valueFromSource, valueFromInner) => {
+          return valueFromInner;
+        },
+        CONCURRENT_UPLOAD
       )
     ).subscribe((val) => {
       // send message channel will do it
@@ -331,7 +331,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     if (!this.uploadingMessages[fileId] || !this.uploadedFiles[fileId]) {
       return;
     }
-    const uploadingMessage = {...this.uploadingMessages[fileId], file: this.uploadedFiles[fileId]};
+    const uploadingMessage = { ...this.uploadingMessages[fileId], file: this.uploadedFiles[fileId] };
     this.messageService.update(uploadingMessage).toPromise().then(response => {
       delete this.uploadingMessages[fileId];
       delete this.uploadedFiles[fileId];

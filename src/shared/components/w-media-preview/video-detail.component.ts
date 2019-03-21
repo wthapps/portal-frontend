@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { combineLatest } from 'rxjs/operators/combineLatest';
 
 import {
-  ApiBaseService, WthConfirmService, UrlService,
+  ApiBaseService, WthConfirmService, UrlService, CommonEventService,
 } from '@wth/shared/services';
 import { Constants } from '@shared/constant';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
@@ -83,6 +83,7 @@ export class ZVideoDetailComponent implements OnInit, OnDestroy,
     public confirmService: WthConfirmService,
     public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
+    public commonEventService: CommonEventService,
     public location: Location) { }
   ngOnInit() {
     this.menuActions = this.getMenuActions();

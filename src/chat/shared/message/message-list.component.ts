@@ -18,7 +18,7 @@ import { takeUntil, take } from 'rxjs/operators';
 
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
-import { WMessageService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
+import { WMessageService, CommonEventHandler, CommonEventService, CommonEvent } from '@wth/shared/services';
 import { Router } from '@angular/router';
 import { User } from '@wth/shared/shared/models';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
@@ -46,7 +46,7 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
   @Input() currentUser: User;
   @Input() selectedConversation;
   @Input() channel = 'MessageListComponent';
-  emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
+  emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
   prevMessage: any;
   readonly scrollDistance: number = 1000;
   // currentMessages: any[] = [];
@@ -90,8 +90,8 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
     // }, 200);
   }
 
-  scrollToBottom(res: any) {
-    if (res && this.listEl) {
+  scrollToBottom(event: CommonEvent) {
+    if (event && this.listEl) {
       this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
     }
   }
@@ -110,7 +110,7 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
 
   onAddContact(contact: any) {
     this.requestModal.contact = contact;
-    this.chatContactService.addContact([contact.id], '', ).then(res => {
+    this.chatContactService.addContact([contact.id], '').then(res => {
       this.chatConversationService.updateStoreConversation(res.data);
       this.chatConversationService.navigateToConversation(res.data.group_id);
     });

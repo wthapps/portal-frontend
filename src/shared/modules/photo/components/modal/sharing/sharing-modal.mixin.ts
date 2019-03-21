@@ -1,4 +1,4 @@
-import { ApiBaseService } from "@shared/services";
+import { ApiBaseService, CommonEventService } from "@shared/services";
 import { ToastsService } from "@shared/shared/components/toast/toast-message.service";
 import { SharingModalService } from "./sharing-modal.service";
 import { SharingModalResult, SharingEditParams } from "./sharing-modal";
@@ -8,12 +8,16 @@ custom method to overwirte any method in child class */
 export class SharingModalMixin {
   selectedObjects: any;
 
-  constructor(public sharingModalService: SharingModalService, public apiBaseService: ApiBaseService, public toastsService: ToastsService) { }
+  constructor(public sharingModalService: SharingModalService, public apiBaseService: ApiBaseService, public toastsService: ToastsService, public commonEventService: CommonEventService) { }
 
   // openModalShare:(input: any) => void;
   openModalShare(array?: any) {
-    if (this.sharingModalService.subShareSave) this.sharingModalService.subShareSave.unsubscribe();
-    this.sharingModalService.open.next();
+    // this.sharingModalService.open.next();
+
+    this.commonEventService.broadcast({
+      channel: 'SharingModalComponent',
+      action: 'open'
+    })
     let data: any = this.selectedObjects;
     if (array) {
       data = array;
@@ -26,14 +30,19 @@ export class SharingModalMixin {
         id = data[0].id;
       }
       this.apiBaseService.get(`media/sharings/${id}/recipients`).subscribe(res => {
-        this.sharingModalService.open.next({ sharingRecipients: res.data });
+        // this.sharingModalService.open.next({ sharingRecipients: res.data });
+        this.commonEventService.broadcast({
+          channel: 'SharingModalComponent',
+          action: 'update',
+
+        })
       });
       this.sharingModalService.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
-        this.onEditShare(e, id);
+        // this.onEditShare(e, id);
       });
     } else {
       this.sharingModalService.subShareSave = this.sharingModalService.onSave$.subscribe(e => {
-        this.onSaveShare(e);
+        // this.onSaveShare(e);
       });
     }
   }
@@ -47,7 +56,7 @@ export class SharingModalMixin {
       role_id: e.role.id
     };
     this.apiBaseService.post('media/sharings', data).subscribe(res => {
-      this.sharingModalService.update.next(res.data);
+      // this.sharingModalService.update.next(res.data);
     });
   }
 
@@ -59,7 +68,7 @@ export class SharingModalMixin {
       id: id
     };
     this.apiBaseService.post('media/sharings/edit_recipients', data).subscribe(res => {
-      this.sharingModalService.update.next(res.data);
+      // this.sharingModalService.update.next(res.data);
     });
   }
 }

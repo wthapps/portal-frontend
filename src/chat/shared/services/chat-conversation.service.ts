@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiBaseService, ChatCommonService, StorageService, UserService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
+import { ApiBaseService, ChatCommonService, StorageService, UserService, CommonEventHandler, CommonEventService, CommonEvent } from '@wth/shared/services';
 import { CONVERSATION_SELECT, STORE_CONVERSATIONS, STORE_CONTEXT, STORE_SELECTED_CONVERSATION, STORE_MESSAGES } from '@shared/constant';
 import { takeUntil, filter, map, withLatestFrom, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -28,24 +28,24 @@ export class ChatConversationService extends CommonEventHandler {
     super(commonEventService);
   }
 
-  navigateToConversation(groupId: any){
+  navigateToConversation(groupId: any) {
     this.router.navigate(['/conversations', groupId]);
   }
   // alias navigateToConversation
-  goToConversation(groupId: any){
+  goToConversation(groupId: any) {
     this.navigateToConversation(groupId)
   }
 
-  apiAddMembers(members: any){
-    const body = { add_members: true, user_ids: members.map(user => user.id) };
+  apiAddMembers(event: CommonEvent) {
+    const body = { add_members: true, user_ids: event.payload.map(user => user.id) };
     of(body).pipe(withLatestFrom(this.getStoreSelectedConversation()), map(([data, sc]) => {
       this.apiBaseService
         .put(`zone/chat/group/${sc.group_id}`, data)
-      .subscribe((res: any) => {
-        // Update another conversations to update their status
-        this.chatCommonService.updateConversationBroadcast(sc.group_id).then((response: any) => {
+        .subscribe((res: any) => {
+          // Update another conversations to update their status
+          this.chatCommonService.updateConversationBroadcast(sc.group_id).then((response: any) => {
+          });
         });
-      });
     })).toPromise().then(res => {
 
     });
@@ -72,44 +72,52 @@ export class ChatConversationService extends CommonEventHandler {
     return this.store.select(STORE_CONVERSATIONS);
   }
 
-  getStoreSelectedConversation(){
+  getStoreSelectedConversation() {
     return this.store.select(STORE_SELECTED_CONVERSATION).pipe(
       // filter selectedConversation empty
       filter(cx => {
-      return cx.selectedConversation && cx.selectedConversation.group_id;}),
+        return cx.selectedConversation && cx.selectedConversation.group_id;
+      }),
       // map to selected Convervarion
       map(cx => cx.selectedConversation));
   }
 
-  getStoreSelectedConversationFull(){
+  getStoreSelectedConversationFull() {
     return this.store.select(STORE_SELECTED_CONVERSATION);
   }
 
-  addNotification(data: any){
-    // of(data).pipe(withLatestFrom(this.getStoreSelectedConversation()), map(([data, sc]) => {
-    //   if(sc.group_id != data.group_id) this.store.dispatch({ type: CHAT_CONVERSATIONS_ADD_NOTIFICATION, payload: data});
-    // })).toPromise().then(res => {
-
-    // });
-    this.store.dispatch({ type: CHAT_CONVERSATIONS_ADD_NOTIFICATION, payload: data});
+  addNotificationEvent(event: CommonEvent) {
+    this.addNotification(event.payload);
   }
 
-  addRemoveMember(data: any){
-    this.updateStoreConversation(data.group_user);
+  addNotification(data: any) {
+    this.store.dispatch({ type: CHAT_CONVERSATIONS_ADD_NOTIFICATION, payload: data });
   }
 
-  updateStoreConversation(conversation: any){
-    this.store.dispatch({ type: CHAT_CONVERSATIONS_UPDATE, payload: conversation})
+  addRemoveMember(event: CommonEvent) {
+    this.updateStoreConversation(event.payload.group_user);
   }
 
-  updateStoreConversations(conversations: any){
-    this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: conversations})
+  updateStoreConversationEvent(event: CommonEvent) {
+    this.updateStoreConversation(event.payload)
+  }
+
+  updateStoreConversation(conversation: any) {
+    this.store.dispatch({ type: CHAT_CONVERSATIONS_UPDATE, payload: conversation })
+  }
+
+  updateStoreConversationsEvent(event: CommonEvent) {
+    this.updateStoreConversations(event.payload);
+  }
+
+  updateStoreConversations(conversations: any) {
+    this.store.dispatch({ type: CHAT_CONVERSATIONS_SET, payload: conversations })
   }
 
   apiDeleteConversation(contact: any) {
     of(contact).pipe(withLatestFrom(this.store.select(STORE_MESSAGES)), map(([contact, messages]) => {
       let id = messages.data[messages.data.length - 1] ? messages.data[messages.data.length - 1].id + 1 : 0;
-      this.apiUpdateGroupUser(contact.group_id, { deleted: true, notification_count: 0, message_from: id})
+      this.apiUpdateGroupUser(contact.group_id, { deleted: true, notification_count: 0, message_from: id })
         .then(res => this.apiGetConversations())
         .then(r2 => this.router.navigate(['/conversations']));
     })).toPromise().then(res => {
@@ -131,14 +139,14 @@ export class ChatConversationService extends CommonEventHandler {
       });
   }
 
-  markAsRead(contact: any){
+  markAsRead(contact: any) {
     this.apiBaseService
       .post('zone/chat/notification/mark_as_read', { id: contact.group_id })
       .toPromise().then((res: any) => {
         this.commonEventService.broadcast({
           channel: 'ChatNotificationComponent',
-          action: 'addNotification',
-          payload: { notification_count: 0, last_notification_count: res.data.last_notification_count}
+          action: 'addNotificationEvent',
+          payload: { notification_count: 0, last_notification_count: res.data.last_notification_count }
         });
         this.store.dispatch({ type: CHAT_CONVERSATIONS_MARK_AS_READ, payload: res.data });
       });
@@ -168,7 +176,7 @@ export class ChatConversationService extends CommonEventHandler {
   declineRequest(contact: any) {
     this.apiUpdateGroupUser(
       contact.group_id,
-      { status: 'decline'})
+      { status: 'decline' })
       // .then(res => this.apiGetConversations())
       .then(r2 => this.router.navigate(['/conversations']));
   }

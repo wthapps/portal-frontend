@@ -20,7 +20,7 @@ export class ChatActions {
       ['ChatConversationService', 'ChatNotificationComponent'].forEach(component => {
         this.serviceManager.getCommonEventService().broadcast({
           channel: component,
-          action: 'addNotification',
+          action: 'addNotificationEvent',
           payload: response.data
         })
       })
@@ -37,14 +37,14 @@ export class ChatActions {
     if (response.action === 'chat_notification' && response.data.type == 'update_display') {
       this.serviceManager.getCommonEventService().broadcast({
         channel: 'ChatConversationService',
-        action: 'updateStoreConversation',
+        action: 'updateStoreConversationEvent',
         payload: response.data.group_user
       });
     }
     if (response.action === 'chat_notification' && response.data.type == 'update_conversation_list') {
       this.serviceManager.getCommonEventService().broadcast({
         channel: 'ChatConversationService',
-        action: 'updateStoreConversations',
+        action: 'updateStoreConversationsEvent',
         payload: response.data.group_users
       });
     }

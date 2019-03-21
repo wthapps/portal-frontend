@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Constants } from '@shared/constant/config/constants';
 import { WUploader } from '@shared/services/w-uploader';
-import { CommonEventService, ApiBaseService, CommonEventHandler } from '@shared/services';
+import { CommonEventService, ApiBaseService, CommonEventHandler, CommonEvent } from '@shared/services';
 import { filter, take } from 'rxjs/operators';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Router } from '@angular/router';
@@ -49,8 +49,8 @@ export class ZMediaSharedLeftMenuComponent extends CommonEventHandler implements
 
   }
 
-  updateSelectedObjects(objects: any) {
-    this.selectedObjects = objects;
+  updateSelectedObjects(event: CommonEvent) {
+    this.selectedObjects = event.payload;
   }
 
   upload(content_types: any = []) {
@@ -60,7 +60,7 @@ export class ZMediaSharedLeftMenuComponent extends CommonEventHandler implements
     });
     this.uploader.event$.pipe(filter(e => e.action === 'complete'), take(1)).subscribe(res => {
       this.commonEventService.broadcast(
-        { channel: 'ZMediaPhotoListComponent', action: 'loadObjects' }
+        { channel: 'ZMediaPhotoListComponent', action: 'reLoadObjects' }
       );
     });
   }

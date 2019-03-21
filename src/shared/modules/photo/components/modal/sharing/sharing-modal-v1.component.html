@@ -44,46 +44,70 @@
             </div>
           </div>
         </div>
-        <div *ngIf="updating" class="text-left changing padding8 rounded border bg-warning border-1">
+        <div *ngIf="updating" class="text-left changing p5 rounded border bg-warning border-1">
           <i class="fa fa-exclamation-triangle text-warning"></i>
           Your sharing list has changes that you need to be saved.
         </div>
       </div>
     </div>
-    <section>
-      <hr class="mt10 mb10">
+    <hr class="mt10 mb10">
+    <section *ngIf="contacts && contacts.length > 0">
       <small class="text-fade">My Contacts</small>
       <w-list class="media-user-list p0">
-        <w-list-item class="user-row p0">
+        <w-list-item *ngFor="let contact of contacts" class="user-row pl0">
           <div class="avatar">
-            <img class="img-circle" src="https://via.placeholder.com/150" alt="">
+            <img class="img-circle" [src]="contact.profile_image" alt="">
           </div>
           <div class="name flex-1">
-            <p class="mb0">aaaaaaaaaaaaaaa</p>
-            <span class="text-color-light text-small"> not in WTHContacts</span>
+            <p class="mb0">{{contact.name}}</p>
+            <small class="text-fade"> {{contact.email}} </small>
           </div>
           <div>
-            <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
-          </div>
-        </w-list-item>
-        <w-list-item class="user-row p0">
-          <div class="avatar">
-            <img class="img-circle" src="https://via.placeholder.com/150" alt="">
-          </div>
-          <div class="name flex-1">
-            <p class="mb0">aaaaaaaaaaaaaaa</p>
-            <span class="text-color-light text-small"> not in WTHContacts</span>
-          </div>
-          <div>
-            <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+            <i class="form-checkbox active"></i>
           </div>
         </w-list-item>
       </w-list>
     </section>
-    <ng-container>
+    <ng-container *ngIf="sharedUsers && sharedUsers.length > 0">
+      <small class="text-fade">Shared</small>
       <div class="w-list-scroll">
         <div *ngFor="let recipient of sharedUsers" class="d-flex align-content-center p5">
-          <div class="avatar-xs">
+          <w-list-item class="user-row p0">
+            <div class="avatar">
+              <img class="img-circle" [src]="recipient.user.profile_image" alt="">
+            </div>
+            <div class="name flex-1">
+              <p class="mb0">{{ recipient.user.name }}</p>
+              <small class="text-fade"> {{recipient.user.email}} </small>
+            </div>
+            <div>
+              <div class="btn-group" *ngIf="!recipient._destroy">
+                <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" [title]="recipient.role.display_name" aria-haspopup="true">
+                  <i class="fa"
+                    [ngClass]="recipient.role.name == 'view'? 'fa-eye' :
+                                                                                                           recipient.role.name == 'download'? 'fa-download' :
+                                                                                                           recipient.role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
+                  </i>
+                  <span class="caret ml5"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li *ngFor="let r of roles" (click)="changeRole(r, recipient)">
+                    <a href="javascript:void(0);"> {{ r.display_name }}
+                      <i class="pull-right" [ngClass]="{'fa fa-check': (recipient.role_id == r.id)}"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <button *ngIf="recipient._destroy" class="btn btn-sm btn-default"> Removed </button>
+              <a class="btn btn-default" (click)="toggleRemoving(recipient)"
+                [title]="recipient._destroy ? 'Undo removing':'Remove'" href="javascript:void(0)">
+                <i *ngIf="!recipient._destroy" class="fa fa-times" title="remove"></i>
+                <i *ngIf="recipient._destroy" class="fa fa-undo" title="Undo removing"></i>
+              </a>
+            </div>
+          </w-list-item>
+          <!-- <div class="avatar-xs">
             <figure>
               <img class="img-circle" [src]="recipient.user.profile_image" alt="">
             </figure>
@@ -115,7 +139,7 @@
             [title]="recipient._destroy ? 'Undo removing':'Remove'" href="javascript:void(0)">
             <i *ngIf="!recipient._destroy" class="fa fa-times" title="remove"></i>
             <i *ngIf="recipient._destroy" class="fa fa-undo" title="Undo removing"></i>
-          </a>
+          </a> -->
         </div>
       </div>
 

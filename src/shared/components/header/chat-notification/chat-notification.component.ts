@@ -12,7 +12,7 @@ import { Conversation } from '@chat/shared/models/conversation.model';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { Observable } from 'rxjs/Observable';
-import { AuthService, ChatCommonService, CommonEventHandler, CommonEventService } from '@shared/services';
+import { AuthService, ChatCommonService, CommonEventHandler, CommonEventService, CommonEvent } from '@shared/services';
 import { Subject } from 'rxjs';
 import { takeUntil, map, switchMap } from 'rxjs/operators';
 import { Conversations } from '@shared/shared/models/chat/conversations.model';
@@ -55,16 +55,20 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     //
   }
 
-  updateNotificationCount(data: any){
-    this.notificationCount = data;
+  updateNotificationCount(event: CommonEvent) {
+    this.notificationCount = event.payload;
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  addNotification(res: any){
+  addNotificationEvent(event: CommonEvent) {
+    this.addNotification(event.payload)
+  }
+
+  addNotification(res: any) {
     this.notificationCount = this.notificationCount + (res.notification_count - res.last_notification_count);
   }
 
@@ -79,6 +83,10 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     })
   }
 
+  markAllAsReadEvent(event: CommonEvent) {
+    this.markAllAsRead(event.payload)
+  }
+
   markAllAsRead(conversations?: Conversations) {
     this.apiBaseService.post('zone/chat/notification/mark_all_as_read')
       .subscribe(res => {
@@ -91,10 +99,14 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
       });
   }
 
+  markAsReadEvent(event: CommonEvent) {
+    this.markAsRead(event.payload)
+  }
+
   markAsRead(c: Conversation) {
     const group_id = c.group_id;
     this.apiBaseService
-      .post('zone/chat/notification/mark_as_read', {id: group_id})
+      .post('zone/chat/notification/mark_as_read', { id: group_id })
       .subscribe((res: any) => {
         this.conversations.markAsRead(group_id);
         this.notificationCount = this.notificationCount + res.data.notification_count - res.data.last_notification_count;
@@ -120,7 +132,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   updateChatStore(): void {
     this.commonEventService.broadcast({
       channel: 'ChatConversationService',
-      action: 'updateStoreConversations',
+      action: 'updateStoreConversationsEvent',
       payload: this.conversations
     })
   }
@@ -151,7 +163,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
       .hide();
   }
 
-  parentHide(event: any){
+  parentHide(event: any) {
 
   }
 

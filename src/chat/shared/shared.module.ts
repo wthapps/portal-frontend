@@ -95,7 +95,6 @@ import { CardUserModule } from '@shared/components/card-user/card-user.module';
     ZChatSidebarComponent,
     ZChatToolbarComponent,
     // ZChatShareEditConversationComponent,
-    // ZChatShareAddContactComponent,
     // ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
@@ -142,9 +141,6 @@ import { CardUserModule } from '@shared/components/card-user/card-user.module';
 
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    // ZChatShareEditConversationComponent,
-    // ZChatShareAddContactComponent,
-    // ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
     ContactListModalComponent

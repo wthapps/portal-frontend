@@ -42,6 +42,7 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
   private hiddenSubscription: Subscription;
 
   @HostListener('document:click', ['$event'])
+
   clickedOutside($event: any) {
     // here you can hide your menu
     this.showSearchMobile = false;
@@ -113,12 +114,12 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
 
     // connection / update notitications count
     this.countCommonNotification()
-    .then(() => {
-      // get disconnected connection notifications data
-      this.notificationService.getDisconnectedNotifications();
-      // get disconnected update notifications data
-      this.connectionService.getDisconnectedNotifications();
-    });
+      .then(() => {
+        // get disconnected connection notifications data
+        this.notificationService.getDisconnectedNotifications();
+        // get disconnected update notifications data
+        this.connectionService.getDisconnectedNotifications();
+      });
 
     this.countChatNotification();
   }

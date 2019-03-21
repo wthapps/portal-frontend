@@ -7,7 +7,6 @@ import { ZChatContactOnlineComponent } from './contact-online.component';
 import { ZChatContactBlackListComponent } from './contact-black-list.component';
 import { ZChatContactMenuComponent } from './components/navigation.component';
 import { ZChatContactReceiveComponent } from './contact-receive.component';
-import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 
 @NgModule({
   imports: [
@@ -31,4 +30,4 @@ import { ContactListModalComponent } from '@chat/contact/contact-list-modal.comp
   ],
   providers: []
 })
-export class ZChatContactModule {}
+export class ZChatContactModule { }

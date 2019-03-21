@@ -15,8 +15,10 @@ import {
   CommonEventService,
   PhotoService, UserService, ChatCommonService, StorageService, WMessageService, ApiBaseService
 } from '@wth/shared/services';
-import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, NETWORK_ONLINE,
-   STORE_CONVERSATIONS, STORE_CONTEXT } from '@wth/shared/constant';
+import {
+  CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, NETWORK_ONLINE,
+  STORE_CONVERSATIONS, STORE_CONTEXT
+} from '@wth/shared/constant';
 import { User } from '@wth/shared/shared/models';
 import { WUploader } from '@shared/services/w-uploader';
 import { Message } from '@chat/shared/models/message.model';
@@ -47,7 +49,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   currentUser$: Observable<User>;
   networkOnline$: Observable<boolean>;
   tokens: any;
-  sub: any;
   destroy$ = new Subject<any>();
 
   constructor(
@@ -70,11 +71,11 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.networkOnline$ = this.storage.getAsync(NETWORK_ONLINE);
   }
 
-  updateMessageHandler(data: any) {
+  updateMessageHandler(event: CommonEvent) {
     // this.updateMessage(data.group_id, data);
-    this.chatMessageService.addCurrentMessages(data);
+    this.chatMessageService.addCurrentMessages(event.payload);
     // // Scroll to bottom when user's own messages are arrived
-    if (data.message.user_id === this.userService.getSyncProfile().id) {
+    if (event.payload.message.user_id === this.userService.getSyncProfile().id) {
       this.commonEventService.broadcast(
         {
           channel: 'MessageListComponent',
@@ -111,42 +112,42 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   ngOnDestroy() {
-    if (this.commonEventSub) { this.commonEventSub.unsubscribe(); }
-    if (this.sub) { this.sub.unsubscribe(); }
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  deleteMessage(message: any) {
+  deleteMessage(event: CommonEvent) {
     this.chatMessageService
-          .deleteMessage(message.group_id, message.id)
-          .toPromise()
-          .then((res: any) => {
-            // this.updateCurrentMessage();
-          });
+      .deleteMessage(event.payload.group_id, event.payload.id)
+      .toPromise()
+      .then((res: any) => {
+        // this.updateCurrentMessage();
+      });
   }
-  copyMessage(message: any) {
+  copyMessage(event: CommonEvent) {
     this.messageEditor.updateAttributes({
-          message: message,
-          mode: FORM_MODE.CREATE
-        });
-        this.messageEditor.focus();
-        // Real copy
-        const temp = $('<input>');
-        $('body').append(temp);
-        temp.val(message.message).select();
-        document.execCommand('copy');
-        temp.remove();
+      message: event.payload,
+      mode: FORM_MODE.CREATE
+    });
+    this.messageEditor.focus();
+    // Real copy
+    const temp = $('<input>');
+    $('body').append(temp);
+    temp.val(event.payload).select();
+    document.execCommand('copy');
+    temp.remove();
   }
-  editMessage(message: any) {
+
+  editMessage(event: CommonEvent) {
     this.messageEditor.updateAttributes({
-          message: message,
-          mode: FORM_MODE.EDIT
-        });
-        this.messageEditor.focus();
+      message: event.payload,
+      mode: FORM_MODE.EDIT
+    });
+    this.messageEditor.focus();
   }
-  cancelMessage(message: any) {
-    const { message_type, meta_data, file, group_id, id } = message;
+
+  cancelMessage(event: CommonEvent) {
+    const { message_type, meta_data, file, group_id, id } = event.payload;
     if (message_type === 'file' && file && meta_data.file) {
       this.uploader.cancel(meta_data.file);
     }

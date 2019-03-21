@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { CommonEventHandler, CommonEventService } from '@shared/services';
+import { CommonEventHandler, CommonEventService, CommonEvent } from '@shared/services';
 
 /**
  * This class represents the lazy loaded AboutComponent.
@@ -14,13 +14,13 @@ export class CardUserComponent extends CommonEventHandler {
   channel = 'CardUserComponent';
   @Input() user: any;
 
-  constructor(public commonEventService: CommonEventService ) {
+  constructor(public commonEventService: CommonEventService) {
     super(commonEventService);
   }
   @ViewChild('modal') modal: BsModalComponent;
-  open(payload: any) {
-    this.user = payload;
+  open(event: CommonEvent) {
+    this.user = event.payload;
     this.modal.open();
   }
-  sendMessage(){}
+  sendMessage() { }
 }

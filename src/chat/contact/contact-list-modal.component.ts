@@ -6,7 +6,7 @@ import { ModalService } from '@shared/components/modal/modal-service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Constants } from '@wth/shared/constant';
 
-import { ApiBaseService, AuthService, ChatCommonService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
+import { ApiBaseService, AuthService, ChatCommonService, CommonEventHandler, CommonEventService, CommonEvent } from '@wth/shared/services';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil, debounceTime, switchMap, distinctUntilChanged } from 'rxjs/operators';
@@ -102,14 +102,14 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
         this.loading = true;
         return this.apiBaseService.get(`chat/contacts/new/search?q=${key}`);
       })).subscribe(response => {
-            this.mapResponseToContacts(response);
-            this.loading = false;
+        this.mapResponseToContacts(response);
+        this.loading = false;
       });
   }
 
-  open(payload: any) {
-    this.modal.open(payload);
-    this.selectedTab = payload.selectedTab || 'all';
+  open(event: CommonEvent) {
+    this.modal.open(event.payload);
+    this.selectedTab = event.payload.selectedTab || 'all';
     this.showSearch = false;
     this.keyword = '';
     this.contacts = [];
@@ -124,9 +124,9 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
         this.selectedTab = tab.id;
         this.apiBaseService.get(`account/users?category=my_contacts&online=true`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
-          this.mapResponseToContacts(response);
-          this.loading = false;
-        });
+            this.mapResponseToContacts(response);
+            this.loading = false;
+          });
 
         break;
 
@@ -142,9 +142,9 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
         this.selectedTab = tab.id;
         this.apiBaseService.get(`account/users?category=blacklist`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
-          this.mapResponseToContacts(response);
-          this.loading = false;
-        });
+            this.mapResponseToContacts(response);
+            this.loading = false;
+          });
         break;
       case 'wthapps':
         this.displaySearch();
@@ -153,9 +153,9 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
       default:
         this.apiBaseService.get(`account/users?category=my_contacts`)
           .pipe(takeUntil(this.destroy$)).subscribe(response => {
-          this.mapResponseToContacts(response);
-          this.loading = false;
-        });
+            this.mapResponseToContacts(response);
+            this.loading = false;
+          });
         break;
     }
   }
@@ -200,23 +200,23 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
     const path = `common/users/${this.authService.user.uuid}/blacklists/${contact.uuid}/${contact.blacklist ? 'remove' : 'add'}`;
     this.apiBaseService.get(path)
       .pipe(takeUntil(this.destroy$)).subscribe(response => {
-      const newContact = response.data.attributes;
-      // update current contact list
-      this.contacts.forEach((con: any, index: any) => {
-        if (con.id === newContact.id) {
-          this.contacts[index] = newContact;
-          const message = newContact.blacklist ? `A contact has been blacklisted` :
-                                                 `A contact has been removed from blacklist`;
-          this.toastsService.success(message);
-          return;
-        }
+        const newContact = response.data.attributes;
+        // update current contact list
+        this.contacts.forEach((con: any, index: any) => {
+          if (con.id === newContact.id) {
+            this.contacts[index] = newContact;
+            const message = newContact.blacklist ? `A contact has been blacklisted` :
+              `A contact has been removed from blacklist`;
+            this.toastsService.success(message);
+            return;
+          }
+        });
+        this.chatConversationService.apiGetConversations();
       });
-      this.chatConversationService.apiGetConversations();
-    });
   }
 
   report(contact: any) {
-    this.modalService.open({modalName: 'zoneReportModal'});
+    this.modalService.open({ modalName: 'zoneReportModal' });
   }
 
   remove(contact: any) {
@@ -229,7 +229,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
           }
         });
         this.toastsService.success(`You removed Contact ${contact.name} successful!`);
-    });
+      });
   }
 
   close() {

@@ -1,10 +1,11 @@
 import { Component, ViewChild, Input, Output, OnDestroy, EventEmitter, OnInit } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { ApiBaseService } from '@wth/shared/services';
+import { ApiBaseService, CommonEventHandler, CommonEventService, CommonEvent } from '@wth/shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingModalService } from './sharing-modal.service';
 import { SharingModalOptions, SharingModalResult } from './sharing-modal';
 import { ViewEncapsulation } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 declare var $: any;
 declare var _: any;
@@ -15,7 +16,7 @@ declare var _: any;
   styleUrls: ['sharing-modal-v1.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SharingModalV1Component implements OnInit, OnDestroy {
+export class SharingModalV1Component extends CommonEventHandler implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   users: any = [];
   // newUsers: Array<any> [];
@@ -30,34 +31,33 @@ export class SharingModalV1Component implements OnInit, OnDestroy {
   textUsers = [];
   loading = false;
   sub: any;
-  selectedValues: string[] = ['val1', 'val2'];
+  contacts: any = [];
+  channel: any = 'SharingModalComponent';
 
   @Output() onSave: EventEmitter<any> = new EventEmitter<any>();
 
 
   constructor(
+    public sharingModalService: SharingModalService,
+    public commonEventService: CommonEventService,
     private apiBaseService: ApiBaseService,
-    private sharingModalService: SharingModalService,
     private toastsService: ToastsService
   ) {
+    super(commonEventService);
   }
 
   ngOnInit() {
-    this.sharingModalService.onOpen$.subscribe(e => {
-      this.open(e);
-    });
+    // this.sharingModalService.onOpen$.subscribe(e => {
+    //   this.open(e);
+    // });
 
-    this.sub = this.sharingModalService.update$.subscribe((recipients: Array<any>) => {
-      this.update(recipients);
-    });
+    // this.sharingModalService.update$.pipe(takeUntil(this.destroy$)).subscribe((recipients: Array<any>) => {
+    //   this.update(recipients);
+    // });
   }
 
   get updating(): boolean {
     return (this.updatedUsers.length + this.deletedUsers.length) > 0 ? true : false;
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 
   close() {
@@ -97,27 +97,26 @@ export class SharingModalV1Component implements OnInit, OnDestroy {
 
   }
 
-  open(options: SharingModalOptions = { sharingRecipients: [] }) {
+  open(options: any) {
     this.getRoles();
-    if (options && options.sharingRecipients) {
-      this.sharedUsers = options.sharingRecipients;
-    } else {
-      this.sharedUsers = [];
-    }
-    // reset textContacts, selectedContacts
     this.textUsers = [];
     this.resetUserLists();
     this.modal.open().then();
   }
 
 
-  update(recipients: Array<any> = []) {
+  update(event: CommonEvent) {
     if (this.newUsers.length > 0 && this.sharedUsers.length === 0) {
       this.modal.close().then();
       this.toastsService.success(`You created a share for ${this.newUsers.length} user(s) successful!`);
     } else {
-      this.sharedUsers = recipients || [];
+      this.sharedUsers = event.payload || [];
       this.toastsService.success(`You updated sharing user(s) successful!`);
+    }
+    if (!this.sharedUsers || this.sharedUsers.length == 0) {
+      this.apiBaseService.get("account/get_my_contacts_accounts?size=1000").subscribe(res => {
+        this.contacts = res.data;
+      })
     }
     this.resetUserLists();
     this.hasChanged = false;

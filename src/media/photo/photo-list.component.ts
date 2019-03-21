@@ -10,7 +10,7 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { ApiBaseService, CommonEventService, CommonEventHandler } from '@shared/services';
+import { ApiBaseService, CommonEventService, CommonEventHandler, CommonEvent } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { WUploader } from '@shared/services/w-uploader';
 import { mediaConstants } from '@media/shared/config/constants';
@@ -108,6 +108,10 @@ export class ZMediaPhotoListComponent extends CommonEventHandler implements OnIn
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  reLoadObjects(event: CommonEvent) {
+    this.loadObjects();
   }
 
   loadObjects(opts: any = {}) {

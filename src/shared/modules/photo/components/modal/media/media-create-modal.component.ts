@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiBaseService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
+import { ApiBaseService, CommonEventHandler, CommonEventService, CommonEvent } from '@wth/shared/services';
 import { MediaCreateModalService } from './media-create-modal.service';
 
 
@@ -48,10 +48,10 @@ export class MediaCreateModalComponent extends CommonEventHandler implements OnI
     this.description = this.form.controls['description'];
   }
 
-  open(options: any = {}) {
+  open(event: CommonEvent) {
     this.modal.open().then();
-    if (options) {
-      ({ title: this.title, namePlaceholder: this.namePlaceholder, selectedObjects: this.arrayItems, done: this.done } = options);
+    if (event.payload) {
+      ({ title: this.title, namePlaceholder: this.namePlaceholder, selectedObjects: this.arrayItems, done: this.done } = event.payload);
     }
     this.form.setControl('edit', this.name);
     this.name.setValue('');
