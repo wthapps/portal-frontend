@@ -1,4 +1,4 @@
-<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" class="sharing-modal">
   <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title">Sharing</h4>
   </bs-modal-header>
@@ -6,30 +6,38 @@
     <div class="row pl20 pr20">
       <div class="form-group">
         <div *ngIf="!updating" class="input-group">
-          <p-autoComplete placeholder="Enter name or email" [(ngModel)]="textUsers" [suggestions]="users" [multiple]="true" [minLength]="1"
-            field="name" (onSelect)="selectUser($event)" (onUnselect)="unSelectUser($event)" (completeMethod)="complete($event)">
+          <p-autoComplete placeholder="Enter name or email" [(ngModel)]="textUsers" [suggestions]="users"
+            [multiple]="true" [minLength]="1" field="name" (onSelect)="selectUser($event)"
+            (onUnselect)="unSelectUser($event)" (completeMethod)="complete($event)">
             <ng-template let-user pTemplate="item">
-              <div class="ui-help-clearfix user-row">
+              <w-list-item class="user-row">
                 <div class="avatar">
-                  <a href="javascript:void(0)">
-                    <img class="img-circle small" [alt]="user.name" [src]="user.profile_image">
-                  </a>
+                  <img class="img-circle small" [alt]="user.name" [src]="user.profile_image">
                 </div>
-                <div class="name">
-                  <a class="text-link" href="javascript:void(0)">
-                    <p class="mb0">{{ user.name }}</p>
-                  </a>
+                <div class="flex-1 name">
+                  <p class="mb0">{{ user.name }}</p>
                   <span *ngIf="user.new" class="text-color-light text-small"> not in WTHContacts</span>
                 </div>
-              </div>
+              </w-list-item>
             </ng-template>
           </p-autoComplete>
+          <!-- <w-list class="user-row">
+            <w-list-item>
+              <div class="avatar">
+                avartar
+              </div>
+              <div class="name">
+                <p class="mb0">aaaaaaaaaaaaaaa</p>
+                <span class="text-color-light text-small"> not in WTHContacts</span>
+              </div>
+            </w-list-item>
+          </w-list> -->
 
           <div class="input-group-btn" style="vertical-align: top;">
             <!-- Single button -->
             <div class="btn-group">
-              <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                [title]="'role.display_name'">
+              <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" [title]="'role.display_name'">
                 <i class="fa" [ngClass]="role.name == 'view'? 'fa-eye' :
                               role.name == 'download'? 'fa-download' :
                               role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
@@ -112,9 +120,10 @@
             {{ recipient.user.name }}
           </div>
           <div class="btn-group" *ngIf="!recipient._destroy">
-            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false" [title]="recipient.role.display_name" aria-haspopup="true">
-              <i class="fa" [ngClass]="recipient.role.name == 'view'? 'fa-eye' :
+            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false" [title]="recipient.role.display_name" aria-haspopup="true">
+              <i class="fa"
+                [ngClass]="recipient.role.name == 'view'? 'fa-eye' :
                                                                                              recipient.role.name == 'download'? 'fa-download' :
                                                                                              recipient.role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
               </i>
@@ -130,8 +139,8 @@
           </div>
           <button *ngIf="recipient._destroy" class="btn btn-sm btn-default"> Removed </button>
 
-          <a class="btn btn-default" (click)="toggleRemoving(recipient)" [title]="recipient._destroy ? 'Undo removing':'Remove'"
-            href="javascript:void(0)">
+          <a class="btn btn-default" (click)="toggleRemoving(recipient)"
+            [title]="recipient._destroy ? 'Undo removing':'Remove'" href="javascript:void(0)">
             <i *ngIf="!recipient._destroy" class="fa fa-times" title="remove"></i>
             <i *ngIf="recipient._destroy" class="fa fa-undo" title="Undo removing"></i>
           </a>
@@ -150,8 +159,9 @@
 
     <button *ngIf="hasChanged" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
     <button *ngIf="!hasChanged" type="button" (click)="close()" class="btn btn-outline-primary btn-min">Done </button>
-    <button *ngIf="hasChanged && updating" type="button" (click)="save()" class="btn btn-outline-primary btn-min">Save Changes</button>
-    <button *ngIf="hasChanged && !updating" type="button" class="btn btn-outline-primary btn-min" [ngClass]="{'text-disable': !hasChanged}"
-      [disabled]="!hasChanged" (click)="save()">Share</button>
+    <button *ngIf="hasChanged && updating" type="button" (click)="save()" class="btn btn-outline-primary btn-min">Save
+      Changes</button>
+    <button *ngIf="hasChanged && !updating" type="button" class="btn btn-outline-primary btn-min"
+      [ngClass]="{'text-disable': !hasChanged}" [disabled]="!hasChanged" (click)="save()">Share</button>
   </bs-modal-footer>
 </bs-modal>

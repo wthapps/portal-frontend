@@ -2,12 +2,13 @@
 
 .w-list {
   padding: 8px;
-  display: flex;
-  flex-direction: row;
-  w-list-item:nth-child(1) {
-    margin-right: 16px;
-  }
-  w-list-item:nth-child(2) {
-    flex: 1;
+  @include flexbox;
+  @include flex-direction(column);
+  @include align-items(center);
+  w-list-item {
+    padding: 10px;
+    @include flexbox;
+    @include flex-direction(row);
+    @include align-items(center);
   }
 }

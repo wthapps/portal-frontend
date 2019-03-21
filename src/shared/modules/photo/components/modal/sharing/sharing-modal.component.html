@@ -1,12 +1,13 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
   <bs-modal-header [showDismiss]="true">
-    <h4 class="modal-title">Sharing</h4>
+    <!-- <h4 class="modal-title">Sharing</h4> -->
   </bs-modal-header>
   <bs-modal-body>
     <div class="row pl20 pr20">
       <div class="input-group">
-        <p-autoComplete *ngIf="!deleting" placeholder="Search contacts" [(ngModel)]="textContacts" [suggestions]="filteredContacts"
-          [multiple]="true" [minLength]="1" field="name" (onSelect)="selectContact($event)" (onUnselect)="unSelectContact($event)"
+        <p-autoComplete *ngIf="!deleting" placeholder="Search contacts" [(ngModel)]="textContacts"
+          [suggestions]="filteredContacts" [multiple]="true" [minLength]="1" field="name"
+          (onSelect)="selectContact($event)" (onUnselect)="unSelectContact($event)"
           (completeMethod)="contactTerm$.next($event)">
           <ng-template let-user pTemplate="item">
             <div class="ui-help-clearfix user-row">
@@ -37,8 +38,8 @@
         <div class="input-group-btn">
           <!-- Single button -->
           <div class="btn-group">
-            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-              [title]="role.display_name">
+            <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false" [title]="role.display_name">
               <i class="fa" [ngClass]="role.name == 'view'? 'fa-eye' :
                             role.name == 'download'? 'fa-download' :
                             role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
@@ -60,7 +61,8 @@
     <div class="modal-fixed-height">
 
       <div class="modal-body-collapse" *ngIf="sharedContacts?.length">
-        <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false" aria-controls="collapseExample">
+        <a role="button" data-toggle="collapse" href="#collapseContact" aria-expanded="false"
+          aria-controls="collapseExample">
           Shared with {{ sharedContacts?.length }} Contacts
         </a>
         <div class="collapse in pre-scrollable" id="collapseContact">
@@ -77,8 +79,8 @@
                 </div>
 
                 <div class="media-right">
-                  <a class="btn btn-default" (click)="toggleRemoving($event, contact.id)" [title]="isDeletedItem(contact.id) ? 'Undo removing':'Remove'"
-                    href="javascript:void(0)">
+                  <a class="btn btn-default" (click)="toggleRemoving($event, contact.id)"
+                    [title]="isDeletedItem(contact.id) ? 'Undo removing':'Remove'" href="javascript:void(0)">
                     <i *ngIf="!isDeletedItem(contact.id)" class="fa fa-times" title="remove"></i>
                     <i *ngIf="isDeletedItem(contact.id)" class="fa fa-undo" title="Undo removing"></i>
                   </a>

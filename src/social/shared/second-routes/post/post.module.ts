@@ -21,9 +21,9 @@ import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { ReadMoreModule } from '@shared/shared/components/read-more/read-more.module';
 import { DisplayLinkModule } from '@shared/shared/components/link/display-link.module';
 import { EntitySelectModule } from '@shared/shared/components/entity-select/entity-select.module';
-import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.module';
 import { ZSocialSharedModule } from './../../shared.module';
 import { WMediaPreviewV1Module } from '@shared/components/w-media-preview/media-preview-v1.module';
+import { PartialsPhotoModule } from '@shared/modules/photo/components/photo.module';
 
 @NgModule({
   imports: [

@@ -1,5 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewContainerRef, ViewChild,
-   ComponentFactoryResolver, ContentChild, Output, EventEmitter } from '@angular/core';
+import {
+  Component, OnDestroy, OnInit, ViewContainerRef, ViewChild,
+  ComponentFactoryResolver, ContentChild, Output, EventEmitter
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -11,20 +13,17 @@ import {
   ApiBaseService, WthConfirmService,
 } from '@wth/shared/services';
 import { Constants } from '@shared/constant';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
-import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/config/constants';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
-import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
-import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
-import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
 import { DoublyLinkedListsV2 } from '@shared/data-structures/link-list/doubly-linked-lists-v2';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { MediaDownloadMixin, MediaModalMixin, MediaAdditionalListMixin, MediaPreviewMixin } from '@shared/modules/photo/mixins';
+import { PlaylistAddMixin } from '@shared/modules/photo/mixins/playlist/playlist-add.mixin';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
 
 
 const MODEL_MAP = {
@@ -132,11 +131,11 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
               .then(res2 => {
                 if (res2.data) {
                   if (res2.data.length === 0) {
-                  return;
+                    return;
                   }
-                  this.listIds = new DoublyLinkedListsV2(res2.data.map(d => ({uuid: d.uuid, model: d.model, parent: d.parent})));
-                  const {uuid, model} = this.object;
-                  this.listIds.setCurrent({uuid, model});
+                  this.listIds = new DoublyLinkedListsV2(res2.data.map(d => ({ uuid: d.uuid, model: d.model, parent: d.parent })));
+                  const { uuid, model } = this.object;
+                  this.listIds.setCurrent({ uuid, model });
                   this.parentLoad.emit(this.listIds.current.data.parent);
                 }
               });
@@ -173,7 +172,7 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
       switch (e.action) {
         case 'editInfo':
           if (this.route.snapshot.queryParamMap.get('object') !== 'video') {
-          return;
+            return;
           }
           this.apiBaseService.put(`media/videos/${this.object.id}`,
             {
@@ -346,7 +345,7 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
   onNext() {
     this.listIds.next();
     // const params = { ...this.route.snapshot.params, id: this.listIds.current.data.uuid };
-    const {id, ...restParams} = this.route.snapshot.params;
+    const { id, ...restParams } = this.route.snapshot.params;
     this.router.navigate(['../', this.listIds.current.data.uuid, restParams], { relativeTo: this.route, queryParamsHandling: 'merge' });
   }
 
@@ -357,7 +356,7 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
     } else {
       const outlet = this.route.snapshot.outlet;
       if (outlet !== 'primary') {
-        this.router.navigate([{ outlets: { [outlet]: null}}]);
+        this.router.navigate([{ outlets: { [outlet]: null } }]);
       } else {
         this.location.back();
       }

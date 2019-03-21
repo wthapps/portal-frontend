@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { PhotoService } from '@shared/services/photo.service';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
-import { BasePhotoDetailComponent } from '@shared/shared/components/photo/detail/base-photo-detail.component';
 import { CommonEvent } from '@shared/services/common-event/common-event';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { UserService } from '@wth/shared/services';
+import { BasePhotoDetailComponent } from '@shared/modules/photo/components/detail/base-photo-detail.component';
 
 declare let _: any;
 declare let $: any;

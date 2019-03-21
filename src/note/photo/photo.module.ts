@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NotePhotoDetailComponent } from './photo-detail.component';
 import { ZNotePhotoRoutingModule } from './photo-routing.module';
-import { PhotoDetailPartialModule } from '@shared/shared/components/photo/detail/photo-detail-partial.module';
+import { PhotoDetailPartialModule } from '@shared/modules/photo/components/detail/photo-detail-partial.module';
 
 @NgModule({
   imports: [
@@ -14,4 +14,4 @@ import { PhotoDetailPartialModule } from '@shared/shared/components/photo/detail
   exports: [NotePhotoDetailComponent],
   providers: []
 })
-export class ZNotePhotoModule {}
+export class ZNotePhotoModule { }

@@ -4,6 +4,7 @@ import { ApiBaseService } from '@wth/shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { SharingModalService } from './sharing-modal.service';
 import { SharingModalOptions, SharingModalResult } from './sharing-modal';
+import { ViewEncapsulation } from '@angular/core';
 
 declare var $: any;
 declare var _: any;
@@ -11,7 +12,8 @@ declare var _: any;
 @Component({
   selector: 'sharing-modal-v1',
   templateUrl: 'sharing-modal-v1.component.html',
-  styleUrls: ['sharing-modal-v1.component.scss']
+  styleUrls: ['sharing-modal-v1.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SharingModalV1Component implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
