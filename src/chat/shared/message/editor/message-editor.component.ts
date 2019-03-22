@@ -173,15 +173,17 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   handleKeyUp(e: any) {
-    if (e.keyCode === 13) {
-      this.onCreate.emit({...this.message, group_id: this.conversation.id});
-    }
     // if (e.keyCode === 13) {
-    //   this.validateAndSend();
-    // } else if (e.keyCode === 27) {
-    //   this.cancelEditingMessage();
-    //   return;
+    //   this.onCreate.emit({...this.message, group_id: this.conversation.id});
     // }
+    if (e.keyCode === 13) {
+      if (this.validateMessage()) {
+        this.send();
+      }
+    } else if (e.keyCode === 27) {
+      this.cancelEditingMessage();
+      return;
+    }
   }
 
   create(message: any) {
