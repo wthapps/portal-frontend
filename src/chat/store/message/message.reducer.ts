@@ -56,8 +56,10 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
 
     // Get all actions
     case ActionTypes.GET_ITEMS: {
-      console.log('GET ALL cursor value:::', state.currentCursor, action.payload);
-      action.payload.queryParams['cursor'] = state.currentCursor;
+      console.log('GET ITEMS:::', state.cursor, state.currentCursor, action.payload);
+      if (action.payload.queryParams.cursor === 0) {
+        action.payload.queryParams.cursor = state.cursor;
+      }
       return {
         ...state,
         loading: true,
@@ -66,17 +68,30 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
     }
     case ActionTypes.GET_ITEMS_SUCCESS: {
       const links = Object.assign({}, {...state.links}, action.payload.links);
-console.log('links:::', links);
       // If response has items
       if (action.payload.messages.length > 0) {
         const currentCursor = action.payload.messages[action.payload.messages.length - 1].cursor;
-        return messageAdapter.addAll(action.payload.messages.reverse(), {
-          ...state,
-          currentCursor: currentCursor,
-          loading: false,
-          error: null,
-          links: links
-        });
+        console.log('CURSOR MESSAGE:::', currentCursor);
+        // if it is first load
+        if (!links.prev) {
+          return messageAdapter.addAll(action.payload.messages.reverse(), {
+            ...state,
+            currentCursor: currentCursor,
+            loading: false,
+            error: null,
+            links: links
+          });
+        } else {
+          return messageAdapter.addMany(action.payload.messages.reverse(), {
+            ...state,
+            currentCursor: currentCursor,
+            loading: false,
+            error: null,
+            links: links
+          });
+        }
+
+
 
       // If response has no item
       } else {
@@ -245,7 +260,8 @@ console.log('links:::', links);
       };
     }
 
-    case ActionTypes.UPDATE_STATE: {
+    case ActionTypes.SET_STATE: {
+      console.log('UPDATE STATE:::', action.payload);
       return {
         ...state,
         ...action.payload,

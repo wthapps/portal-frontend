@@ -48,7 +48,7 @@ export enum ActionTypes  {
   DECLINE_INVITATION          = 'CONVERSATION_DECLINE_INVITATION',
   DECLINE_INVITATION_SUCCESS  = 'CONVERSATION_DECLINE_INVITATION_SUCCESS',
   DECLINE_INVITATION_ERROR    = 'CONVERSATION_DECLINE_INVITATION_ERROR',
-
+  SET_STATE             = 'CONVERSATION_SET_STATE'
 }
 /**
  * Get Items Actions
@@ -196,6 +196,13 @@ export class UpdateDisplayError implements Action {
   constructor(public payload: any = null) { }
 }
 
+// Update state
+export class SetState implements Action {
+  readonly type = ActionTypes.SET_STATE;
+
+  constructor(public payload: any = null) { }
+}
+
 // Hide actions
 export class Hide implements Action {
   readonly type = ActionTypes.HIDE;
@@ -317,7 +324,6 @@ export class RemoveMemberError implements Action {
   constructor(public payload: any = null) { }
 }
 
-
 // Accept Invitation actions
 export class AcceptInvitation implements Action {
   readonly type = ActionTypes.ACCEPT_INVITATION;
@@ -404,4 +410,5 @@ export type Actions =
   AcceptInvitationError |
   DeclineInvitation |
   DeclineInvitationSuccess |
-  DeclineInvitationError;
+  DeclineInvitationError |
+  SetState;

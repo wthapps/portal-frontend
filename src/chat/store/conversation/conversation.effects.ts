@@ -114,7 +114,11 @@ export class ConversationEffects {
         map(response => {
           const conversation = response.data.attributes;
 
-          return new ConversationActions.UpdateDisplaySuccess({conversation: conversation});
+          if (conversation.status === 'decline') {
+            return new ConversationActions.DeleteSuccess({conversation: conversation});
+          } else {
+            return new ConversationActions.UpdateDisplaySuccess({conversation: conversation});
+          }
         }),
         catchError(error =>
           of(new ConversationActions.UpdateDisplayError({ error }))

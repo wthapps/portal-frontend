@@ -157,7 +157,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       return {
         ...state,
         joinedConversation: conversation,
-        joinedConversationId: conversation.id,
+        // joinedConversationId: conversation.id,
         isLoading: false,
         error: null
       };
@@ -277,6 +277,8 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.UPDATE_DISPLAY_SUCCESS: {
       const conversation = action.payload.conversation;
+
+      console.log('UPDATE_DISPLAY_SUCCESS:::', conversation);
       const joinedConversation = state.joinedConversationId === conversation.id ? conversation : state.joinedConversation;
 
       return conversationAdapter.updateOne({
@@ -294,6 +296,41 @@ export function reducer(state = initialConversationState, action: Actions): Conv
         ...state,
         isLoading: false,
         error: action.payload.error
+      };
+    }
+
+    // Delete actions
+    case ActionTypes.DELETE: {
+      return {
+        ...state,
+        isLoading: false,
+        error: null
+      };
+    }
+
+    case ActionTypes.DELETE_SUCCESS: {
+      const conversation = action.payload.conversation;
+      console.log('DELETE SUCCESS:::', conversation);
+
+      return conversationAdapter.removeOne(conversation.id, {
+        ...state,
+        joinedConversation: null,
+        joinedConversationId: null,
+      });
+    }
+
+    case ActionTypes.DELETE_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error
+      };
+    }
+
+    case ActionTypes.SET_STATE: {
+      return {
+        ...state,
+        ...action.payload
       };
     }
 

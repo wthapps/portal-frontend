@@ -31,7 +31,6 @@ import { Channel, Presence } from 'phoenix';
 import { filter, map, skip, take, takeUntil } from 'rxjs/operators';
 import { ChannelEvents } from '@shared/channels';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
-import { UpdateState } from '@chat/store/message/message.actions';
 
 declare var $: any;
 
@@ -81,10 +80,12 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       select(ConversationSelectors.selectJoinedConversation),
       filter(conversation => (conversation != null)),
       map((conversation: any) => {
-        console.log('JOINED CONVERSATION', conversation.favorite);
+
         const cursor = conversation.latest_message.cursor + 1;
+        console.log('JOINED CONVERSATION', conversation.latest_message.cursor, cursor);
       //   // update message cursor for joined conversation
-        this.store$.dispatch(new MessageActions.UpdateCursorSuccess({ cursor: cursor}));
+        this.store$.dispatch(new MessageActions.SetState({ cursor: cursor}));
+        this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversation.id}));
       //
       //   // Load messages for joined conversation
       //   this.store$.dispatch(new MessageActions.GetItems({
@@ -104,14 +105,15 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       filter(conversationId => (conversationId != null)),
       takeUntil(this.destroy$),
     ).subscribe(conversationId => {
+      console.log('LOAD MESSAGE STATE', conversationId);
       // Load messages for joined conversation
       this.store$.dispatch(new MessageActions.GetItems({
-        path: `chat/conversations/${this.conversationId}/messages`, queryParams: {}
+        path: `chat/conversations/${this.conversationId}/messages`, queryParams: {cursor: 0}
       }));
 
       setTimeout(() => {
         // scroll to bottom
-        this.store$.dispatch(new MessageActions.UpdateState({scrollable: true}));
+        this.store$.dispatch(new MessageActions.SetState({scrollable: true}));
       }, 200);
       this.resetConversationNotifications();
 
@@ -240,7 +242,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
   createMessageCallback(message: any) {
     this.store$.dispatch(new MessageActions.CreateSuccess({message: message}));
-    this.store$.dispatch(new MessageActions.UpdateState({scrollable: true}));
+    this.store$.dispatch(new MessageActions.SetState({scrollable: true}));
     this.resetConversationNotifications();
   }
 
@@ -315,19 +317,16 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
    */
 
   acceptInvitation(conversation: any) {
-    console.log('ACCTEPTED');
-    this.store$.dispatch(new ConversationActions.AcceptInvitation(conversation));
+    this.store$.dispatch(new ConversationActions.UpdateDisplay({id: conversation.uuid, body: {
+      conversation: {status: 'accepted'}
+    }}));
   }
 
   declineInvitation(conversation: any) {
-    // this.store$.dispatch(new ConversationActions.DeclineInvitation(conversation));
     this.store$.dispatch(new ConversationActions.UpdateDisplay({id: conversation.uuid, body: {
       conversation: {status: 'decline'}
     }}));
-
-    // update status = 'decline'
-    console.log('DECLINED');
-
+    this.router.navigate(['conversations']).then();
   }
 
   // Conversation action handle end
