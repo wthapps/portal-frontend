@@ -169,14 +169,15 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
           .then(ct => this.router.navigate(['contacts']));
         break;
 
-      case 'edit_contact':
+      case 'edit_contact': {
+      const id = this.contact.id || this.route.snapshot.paramMap.get('id');
         this.router
-          .navigate(['contacts/', this.contact.id, 'edit'])
+          .navigate(['contacts/', id, 'edit'])
           .then();
         this.hasBack = false;
         this.mode = 'edit';
         break;
-
+      }
       case 'tag':
         this.modal.open({
           mode: 'edit',

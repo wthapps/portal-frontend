@@ -8,18 +8,21 @@
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
         </li>
-        <li *ngIf="card && card.is_owner && card.card_type === BUSINESS">
-          <button (click)="onShare()" type="button" class="btn btn-default btn-default-no-border">
-            <i class="fa fa-share-alt" aria-hidden="true"></i>
-          </button>
-        </li>
         <li class="dropdown open">
           <button class="btn btn-default btn-default-no-border" type="button" data-toggle="dropdown">
             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
+            <li *ngIf="card && card.is_owner && card.card_type === BUSINESS">
+              <a href="javascript:;" (click)="onShare()">
+                <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+              </a>
+            </li>
             <li>
               <a href="javascript:void(0);" (click)="onExport()"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
+            </li>
+            <li>
+              <a href="javascript:void(0);" (click)="onExportVcard()"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
             </li>
             <li *ngIf="card && card.is_owner && card.card_type === BUSINESS">
               <a href="javascript:void(0);" (click)="onDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
@@ -41,7 +44,7 @@
         <div class="media-avatar-img-wrap">
           <ng-container *ngIf="card && card.is_owner && card.card_type ==='business' else readonlyCard">
             <div class="media-avatar-img avatar-sm" (click)="onEdit(true)">
-              <img [src]="card?.profile_image" [alt]="card?.name">
+              <img [src]="card?.profile_image" [alt]="card?.first_name + ' ' + card?.last_name">
               <span class="w-user-avatar-cover">
                 <i class="fa fa-camera"></i>
               </span>
@@ -49,13 +52,16 @@
           </ng-container>
           <ng-template #readonlyCard>
             <div class="media-avatar-img avatar-sm">
-              <img *ngIf="card" [src]="card?.profile_image" [alt]="card?.name">
+              <img *ngIf="card" [src]="card?.profile_image" [alt]="card?.first_name + ' ' + card?.last_name">
             </div>
           </ng-template>
         </div>
         <div class="media-avatar-body">
-          <h4 class="m0"> {{ card?.name }} </h4>
-          <span> {{ card?.occupation }} {{ card?.company }}</span>
+          <h4 class="m0"> {{ card?.first_name + ' ' + card?.last_name }} </h4>
+          <span *ngIf="card?.companey">{{ card?.company + ', ' }} </span> <span> {{ card?.occupation }} </span>
+          <div>
+            {{ card?.headline}}
+          </div>
         </div>
       </div>
     </div>
@@ -63,9 +69,6 @@
       <ng-container *ngIf="card && card.sex">
         <dl class="pcard-info">
           <dt>
-            <button class="btn btn-default icon">
-              <i class="fa fa-transgender"></i>
-            </button>
             <label>Gender</label>
           </dt>
           <dd>
@@ -76,9 +79,6 @@
       <ng-container *ngIf="card && card.birthday">
         <dl class="pcard-info">
           <dt>
-            <button class="btn btn-default icon">
-              <i class="fa fa-birthday-cake"></i>
-            </button>
             <label>Birthday</label>
           </dt>
           <dd>
@@ -89,9 +89,6 @@
       <ng-container *ngIf="card && card.nationality">
         <dl class="pcard-info">
           <dt>
-            <button class="btn btn-default icon">
-              <i class="fa fa-flag"></i>
-            </button>
             <label>Nationality</label>
           </dt>
           <dd>
@@ -99,12 +96,9 @@
           </dd>
         </dl>
       </ng-container>
-      <ng-container *ngIf="card && card.about">
+      <ng-container *ngIf="card?.about">
         <dl class="pcard-info">
           <dt>
-            <button class="btn btn-default icon">
-              <i class="fa fa-sticky-note-o"></i>
-            </button>
             <label>About</label>
           </dt>
           <dd>
@@ -117,13 +111,10 @@
         <ng-template ngFor let-item [ngForOf]="card.emails" let-i="index" [ngForTrackBy]="trackByFn">
           <dl class="pcard-info">
             <dt>
-              <button *ngIf="i===0" class="btn btn-default icon">
-                <i class="fa fa-envelope-o"></i>
-              </button>
               <label *ngIf="i===0"> Email </label>
 
             </dt>
-            <dd><a [href]="'mailto:' + item.value">{{ item.value }}</a></dd>
+            <dd><a [href]="'mailto:' + item.value">{{ item.value }}</a><span class="text-fade"><i class="fa fa-circle" aria-hidden="true"></i> {{ item.category }} </span></dd>
           </dl>
         </ng-template>
       </ng-container>
@@ -132,24 +123,19 @@
         <ng-template ngFor let-item [ngForOf]="card.phones" let-i="index" [ngForTrackBy]="trackByFn">
           <dl class="pcard-info">
             <dt>
-              <button *ngIf="i===0" class="btn btn-default icon">
-                <i class="fa fa-phone"></i>
-              </button>
               <label *ngIf="i===0"> Phone </label>
 
             </dt>
-            <dd> {{ item.country_alpha_code|phoneDialCode }} {{ item.value }} </dd>
+            <dd> {{ item.country_alpha_code|phoneDialCode }} {{ item.value }} <span class="text-fade"><i class="fa fa-circle" aria-hidden="true"></i> {{ item.category }} </span> </dd>
           </dl>
         </ng-template>
+
       </ng-container>
 
       <ng-container *ngIf="card && card.addresses && card.addresses.length > 0">
         <ng-template ngFor let-item [ngForOf]="card.addresses" let-i="index" [ngForTrackBy]="trackByFn">
           <dl class="pcard-info">
             <dt>
-              <button *ngIf="i===0" class="btn btn-default icon">
-                <i class="fa fa-map-marker"></i>
-              </button>
               <label *ngIf="i===0"> Address </label>
             </dt>
             <dd>
@@ -159,6 +145,7 @@
               <div *ngIf="item.province"> {{ item?.province }} </div>
               <div *ngIf="item.postcode"> {{ item?.postcode }} </div>
               <div *ngIf="item.country">{{ item.country }}</div>
+              <span class="text-fade"><i class="fa fa-circle" aria-hidden="true"></i> {{ item.category }} </span>
             </dd>
           </dl>
         </ng-template>
@@ -168,16 +155,26 @@
         <ng-template ngFor let-item [ngForOf]="card.media" let-i="index" [ngForTrackBy]="trackByFn">
           <dl class="pcard-info">
             <dt>
-              <button *ngIf="i===0" class="btn btn-default icon">
-                <i class="fa fa-link"></i>
-              </button>
               <label *ngIf="i===0"> Link </label>
 
             </dt>
-            <dd><a [href]="item.value">{{ item.value }}</a></dd>
+            <dd><a [href]="item.value">{{ item.value }}</a> <span class="text-fade"><i class="fa fa-circle" aria-hidden="true"></i> {{ item.category }} </span></dd>
           </dl>
         </ng-template>
       </ng-container>
+
+      <!-- TODO: Add custom fields -->
+      <ng-container *ngIf="card?.custom_fields.length > 0">
+          <ng-template ngFor let-item [ngForOf]="card.custom_fields" let-i="index" >
+            <dl class="pcard-info">
+              <dt>
+                <label> {{ item?.label }} </label>
+  
+              </dt>
+              <dd> {{ item?.value }} </dd>
+            </dl>
+          </ng-template>
+        </ng-container>
 
     </div>
   </bs-modal-body>

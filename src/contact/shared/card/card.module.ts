@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { BsModalModule } from 'ng2-bs3-modal';
 import { CheckboxModule, TooltipModule } from 'primeng/primeng';
@@ -17,12 +17,11 @@ import { CardRoutingModule } from './card-routing';
 import { CardService } from './card.service';
 import { AutofocusModule } from '@shared/directives/autofocus';
 
-
-
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     CardRoutingModule,
     BsModalModule,
     CheckboxModule,
@@ -34,17 +33,17 @@ import { AutofocusModule } from '@shared/directives/autofocus';
     CardItemComponent,
     CardDetailModalComponent,
     CardEditModalComponent,
-    CardListComponent,
+    CardListComponent
   ],
   exports: [
+    FormsModule,
+    ReactiveFormsModule,
+
     CardItemComponent,
     CardDetailModalComponent,
     CardEditModalComponent,
-    CardListComponent,
+    CardListComponent
   ],
-  providers: [
-    CardService
-  ]
+  providers: [CardService]
 })
-export class CardModule {
-}
+export class CardModule {}

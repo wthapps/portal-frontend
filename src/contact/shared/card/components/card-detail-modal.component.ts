@@ -52,6 +52,12 @@ export class CardDetailModalComponent {
     this.export.emit(this.card);
   }
 
+  // TODO
+  onExportVcard() {
+    console.log('on export V-card');
+
+  }
+
   getCountry(code: string): Observable<any> {
     return this.countryService.getCountry(code);
   }

@@ -15,6 +15,7 @@ import { Constants } from '../../../../shared/constant';
 import { PUBLIC, BUSINESS, UNTITILED, NONE } from '../card.constant';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { AbstractControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 
 @Component({
@@ -27,19 +28,29 @@ export class CardEditModalComponent {
   @ViewChild('modal') nameEl: ElementRef;
 
   @Input() profile: any;
-
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
-  selectedFields: string[] = [];
-  cardName = UNTITILED;
+  // selectedFields: string[] = [];
+  // cardName = UNTITILED;
 
-  card: any;
-  cardType: string = PUBLIC || BUSINESS;
-  phoneType = Constants.phoneType;
-  emailType = Constants.emailType;
-  addressType = Constants.addressType;
-  mediaType = Constants.mediaType;
+  form: FormGroup;
+  first_name: AbstractControl;
+  last_name: AbstractControl;
+  company: AbstractControl;
+  // groups: AbstractControl;
+  occupation: AbstractControl;
+  headline: AbstractControl;
+  about: AbstractControl;
+  card_name: AbstractControl;
+  public_fields: AbstractControl;
+  custom_fields: AbstractControl;
+
   focus = false;
+  readonly cardType: string = PUBLIC || BUSINESS;
+  readonly phoneType = Constants.phoneType;
+  readonly emailType = Constants.emailType;
+  readonly addressType = Constants.addressType;
+  readonly mediaType = Constants.mediaType;
   readonly PUBLIC = PUBLIC;
   readonly BUSINESS = BUSINESS;
   readonly NONE = NONE;
@@ -51,17 +62,83 @@ export class CardEditModalComponent {
     public_fields: ['name', 'profile_image'],
   };
   private mode: string = 'create' || 'edit';
+  // private card: any;
 
-  constructor(private countryService: CountryService) {}
+  constructor(private countryService: CountryService,
+      private fb: FormBuilder
+    ) {
+    this.createForm();
+  }
 
 
   open(options: any): void {
     this.mode = options.mode;
-    this.card = options.card || this.DEFAULT_CARD;
-    this.selectedFields = this.card.public_fields;
-    this.cardName = this.card.card_name;
+    const card = options.card || this.DEFAULT_CARD;
+    // this.updateForm({card_name: this.card.card_name, public_fields: this.card.public_fields});
+    this.updateForm(card);
+
+
     this.modal.open();
     this.focus = true;
+  }
+
+  updateForm(value) {
+    this.form.patchValue(value);
+  }
+
+  createForm() {
+    this.form = this.fb.group({
+      'id': [''],
+      'uuid': [''],
+      'card_name': [''],
+      'first_name': [''],
+      'last_name': [''],
+      'company': [''],
+      'occupation': [''],
+      'headline': [''],
+      'about': [''],
+      'public_fields': [[]],
+      'emails': [''],
+      'phones': [''],
+      'addresses': [''],
+      'media': [''],
+      'custom_fields': this.fb.array([
+        this.fb.group({
+          'label': [''],
+          'value': ['']
+          })
+      ])
+    });
+
+    this.card_name = this.form.controls['card_name'];
+    this.first_name = this.form.controls['first_name'];
+    this.last_name = this.form.controls['last_name'];
+    this.company = this.form.controls['company'];
+    this.occupation = this.form.controls['occupation'];
+    this.headline = this.form.controls['headline'];
+    this.about = this.form.controls['about'];
+    this.public_fields = this.form.controls['public_fields'];
+    this.custom_fields = this.form.controls['custom_fields'];
+  }
+
+  // Add items to custom labels array
+  addItem(item?) {
+    const control = <FormArray> this.form.controls['custom_fields'];
+    control.push(this.initItem(item));
+  }
+
+  // Init custom label
+  initItem(item?): FormGroup {
+    if (item ) {
+      const { label, value} = item;
+      return this.fb.group({
+        label, value
+      });
+    } else
+    return this.fb.group({
+      label: '',
+      value: ''
+    });
   }
 
   close(): void {
@@ -70,31 +147,24 @@ export class CardEditModalComponent {
   }
 
   onSave() {
+    let card = {};
     if (this.mode === 'create') {
-      this.card = {
+      card = {
         card_type: 'business',
-        card_name: '',
-        public_fields: this.selectedFields,
+        card_name: this.card_name.value || UNTITILED,
+        public_fields: this.public_fields.value,
       };
     }
-    this.card.public_fields = this.selectedFields;
-    this.card.card_name = this.cardName.toString().trim() === '' ? UNTITILED : this.cardName.toString().trim();
-    this.save.emit({mode: this.mode, card: this.card});
+    this.save.emit({mode: this.mode, card: {...card, ...this.form.value}});
+
   }
 
   onCancel() {
-    this.cancel.emit(this.card);
+    this.cancel.emit(this.form.value);
     this.close();
   }
 
   getCountry(code: string): Observable<any> {
     return this.countryService.getCountry(code);
-  }
-
-  hasChange(card): Observable<boolean> {
-    if (!card) {
-      return of(true);
-    }
-    return of((this.selectedFields.toString() !== card.public_fields.toString()) || (this.cardName !== card.card_name));
   }
 }
