@@ -1,7 +1,20 @@
 @import "../../../../assets/styles/global";
 
 .pcard-cover {
+  @media (min-width: $screen-sm) {
+    .media-avatar-body {
+      border-bottom: 1px solid $light-grey;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+    }
+  }
+  
+
   @media (max-width: $screen-xs-max) {
+    border-bottom: 1px solid $light-grey;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+
     .media-avatar {
       @include flex-direction(column);
       text-align: center;
@@ -19,54 +32,25 @@
     margin-right: -$modal-inner-padding;
     margin-bottom: $modal-inner-padding;
     padding: $modal-inner-padding;
-  }
-}
 
-.pcard-info-list {
-  dl {
-    margin-bottom: 0;
-    &:not(:last-child) {
-      //margin-bottom: 5px;
-      padding-bottom: 10px;
-      //border-bottom: 1px solid $line;
-    }
-  }
-  dd:not(:last-child) {
-    //padding-top: 15px;
-    //margin-bottom: 10px;
   }
 }
 
 .pcard-info {
   @media (min-width: $screen-sm) {
-    dt {
-      float: left;
-      width: 145px;
-      clear: both;
-    }
-    dd {
-      padding-top: 6px;
-      margin-left: 150px;
+    margin-left: 110px;
+
+    &.dl-horizontal {
+      dt {
+        width: 80px;
+      }
+      
+      dd {
+        margin-left: 100px;
+      }
     }
   }
 }
-
-.pcard-info-form {
-  padding-left: 25px;
-  dt {
-    clear: both;
-    position: relative;
-    .ui-chkbox {
-      position: absolute;
-      left: -25px;
-      top: 2px;
-    }
-    & + dt {
-      margin-top: 10px;
-    }
-  }
-}
-
 
 
 .w-user-avatar-cover {

@@ -24,8 +24,9 @@ export class CardDetailModalComponent {
   readonly BUSINESS = BUSINESS;
   readonly NONE = NONE;
   readonly SEX = Constants.sex;
+  readonly EXPORT_TYPE = { csv: 'csv', vcard: 'vcard' };
 
-  constructor(private countryService: CountryService) {}
+  constructor(public countryService: CountryService) {}
 
   open(options: any): void {
     this.modal.open();
@@ -48,17 +49,11 @@ export class CardDetailModalComponent {
     this.delete.emit(this.card);
   }
 
-  onExport() {
-    this.export.emit(this.card);
+  onExport(type = 'csv') {
+    this.export.emit({card: this.card, type});
   }
 
-  // TODO
-  onExportVcard() {
-    console.log('on export V-card');
-
-  }
-
-  getCountry(code: string): Observable<any> {
-    return this.countryService.getCountry(code);
-  }
+  // getCountry(code: string): Observable<any> {
+  //   return this.countryService.getCountry(code);
+  // }
 }

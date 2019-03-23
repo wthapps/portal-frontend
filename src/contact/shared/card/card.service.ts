@@ -125,8 +125,8 @@ export class CardService extends BaseEntityService<any> {
     });
   }
 
-  exportCard(card: any) {
-    console.log('your are exporting card:::', card);
+  exportCard({card, type}) {
+    console.log('your are exporting card:::', card, type);
   }
 
   deleteCard(card: any) {

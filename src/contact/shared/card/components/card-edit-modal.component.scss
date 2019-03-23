@@ -28,58 +28,76 @@
   }
 }
 
-.pcard-info-list {
-  // dl {
-  //   margin-bottom: 0;
-  //   &:not(:last-child) {
-  //     padding-bottom: 10px;
-  //   }
-  // }
-  // dd:not(:last-child) {
-  //   padding-top: 6px;
-  //   //margin-bottom: 10px;
-  // }
+
+
+.pcard-info {
+  .select-content {
+    display: flex;
+
+    .select-content-checkbox {
+      padding-right: 10px;
+    }
+
+    .select-content-value {
+      width: 100%;
+    }
+  }
+
 
   .ui-chkbox-label {
     font-weight: normal !important;
   }
+
+  &.dl-horizontal {
+    dt, dd {
+      padding: 5px 0;
+    }
+  }
+
+  @media (min-width: $screen-sm) {
+    margin-left: 0;
+
+    &.dl-horizontal {
+      dt {
+        width: 90px;
+      }
+      
+      dd {
+        margin-left: 110px;
+      }
+    }
+
+  }
 }
 
-// .pcard-info {
-//   @media (min-width: $screen-sm) {
-//     dt {
-//       float: left;
-//       width: 145px;
-//       clear: both;
-//       .icon {
-//         width: 40px;
-//       }
-//       button {
-//         min-height: 34px;
-//       }
-//     }
-//     dd {
-//       margin-left: 150px;
-//       padding-top: 6px;
-//       &.not-first-item {
-//         padding-top: 14px;
-//       }
-//     }
-//   }
-// }
+.pcard-custom-label {
+  &.dl-horizontal {
+    dt {
+      width: 130px;
+    }
+    
+    dd {
+      margin-left: 140px;
+    }
+  } 
+}
 
-// .pcard-info-form {
-//   padding-left: 25px;
-//   dt {
-//     clear: both;
-//     position: relative;
-//     .ui-chkbox {
-//       position: absolute;
-//       left: -25px;
-//       top: 2px;
-//     }
-//     & + dt {
-//       margin-top: 10px;
-//     }
-//   }
-// }
+.pcard-info-form {
+  padding-left: 25px;
+  dt {
+    clear: both;
+    position: relative;
+    .ui-chkbox {
+      position: absolute;
+      left: -25px;
+      top: 2px;
+    }
+    & + dt {
+      margin-top: 10px;
+    }
+  }
+}
+
+.dib {
+  display: inline-block;
+}

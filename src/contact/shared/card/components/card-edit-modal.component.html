@@ -3,12 +3,12 @@
     <bs-modal-header [showDismiss]="false">
       <div class="modal-header-nav">
         <h4 class="modal-title text-capitalize">
-          <ng-container *ngIf="card && card.card_type === BUSINESS" >
-            <input [autofocus]="focus" *ngIf="card && card.card_type === BUSINESS" type="text" placeholder="Untitled Card"                  
+          <ng-container *ngIf="form.controls.card_type.value === BUSINESS" >
+            <input [autofocus]="focus" *ngIf="form.controls.card_type.value === BUSINESS" type="text" placeholder="Untitled Card"                  
                   formControlName="card_name" #nameEl >
           </ng-container>
 
-          <label *ngIf="card && card.card_type === PUBLIC"> {{ card_name.value }}</label>
+          <label *ngIf="form.controls.card_type.value === PUBLIC"> {{ card_name.value }}</label>
         </h4>
         <ul class="modal-header-navbar">
           <li>
@@ -25,7 +25,7 @@
           <div class="media content-overflow-visible">
             <div class="media-left">
               <div class="avatar-md" >
-                <img class="no-user-selected ng-star-inserted"  [src]="card?.profile_image || profile?.profile_image">
+                <img class="no-user-selected ng-star-inserted"  [src]="form?.controls.profile_image?.value || profile?.profile_image">
                 <span class="cover-info-profile">
                   <i class="fa fa-camera"></i>
                 </span>
@@ -35,12 +35,12 @@
               <div class="row row-10">
                 <div class="col-sm-6 mb10">
                   <div class="form-group no-label mb0">
-                    <input autofocus [formControl]="first_name" type="text" class="form-control" placeholder="First name">
+                    <input autofocus [formControl]="first_name" type="text" class="form-control" [attr.disabled]="form.controls.card_type.value === PUBLIC ? 'disabled': null" placeholder="First name">
                   </div>
                 </div>
                 <div class="col-sm-6 mb10">
                   <div class="form-group no-label mb0">
-                    <input [formControl]="last_name" type="text" class="form-control" placeholder="Last name">
+                    <input [formControl]="last_name" type="text" class="form-control" [attr.disabled]="form.controls.card_type.value === PUBLIC ? 'disabled': null" placeholder="Last name">
                   </div>
                 </div>
                 <div class="col-sm-6 mb10">
@@ -58,163 +58,133 @@
         </div>
       </div>
 
-      <div class="pcard-info-list">
 
-          <div class="field-group-content">
-            <div class="row">  
-              <div class="col-sm-3">
-                <strong>Gender</strong>
-              </div>
-              <div class="col-sm-9">
-                <div class="form-group no-label">
-                    <p-checkbox name="basicInfo" value="sex" [label]=" SEX[profile?.sex] || NONE" [formControl]="form.controls['public_fields']"></p-checkbox>
-                </div>
-              </div>
-            </div>
-          </div>
-        <div class="field-group-content">
-            <div class="row">  
-              <div class="col-sm-3">
-                <strong>Birthday</strong>
-              </div>
-              <div class="col-sm-9">
-                <div class="form-group no-label">
-                    <p-checkbox name="basicInfo" value="birthday" [label]=" (profile?.birthday | timeFormat) || NONE"  [formControl]="form.controls['public_fields']" ></p-checkbox>
-                </div>
-              </div>
-            </div>
-          </div>
-        <div class="field-group-content">
-            <div class="row">  
-              <div class="col-sm-3">
-                <strong>Nationality</strong>
-              </div>
-              <div class="col-sm-9">
-                <div class="form-group no-label">
-                    <p-checkbox name="basicInfo" value="nationality" [label]="(getCountry(profile?.nationality) | async)?.name || NONE "  [formControl]="form.controls['public_fields']"></p-checkbox>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        <div class="field-group-content">
-            <div class="row">  
-              <div class="col-sm-3">
-                <strong>About</strong>
-              </div>
-              <div class="col-sm-9">
-                <div class="form-group no-label">
-                    <textarea [formControl]="about" type="text" class="form-control" placeholder="About me" rows=3></textarea>  
-                </div>
-              </div>
-            </div>
-          </div>
-        <dl class="pcard-info">
-            <ng-container *ngIf="profile && profile.emails && profile.emails.length > 0">
-              <!-- <ng-template ngFor let-item [ngForOf]="profile.emails" let-i="index" [ngForTrackBy]="trackByFn">
-                <dt>
-                  <button class="btn btn-default icon">
-                    <i *ngIf="i === 0" class="fa fa-envelope"></i>
-                  </button>
-                  <p-checkbox name="emails" [value]="'email:' + item.category"
-                              [label]="item.category | keyToValue: emailType:'category':'name'"  [formControl]="form.controls['public_fields']"></p-checkbox>
-                </dt>
-                <dd [ngClass]="{'not-first-item' : i > 0 }">
-                  <div><a style="text-transform: lowercase;" href="mailto:{{ item.value }}">{{ item.value }}</a></div>
-                </dd>                
-              </ng-template> -->
-
-
-              <div class="field-group-content">
-                <div class="row">  
-                  <div class="col-sm-3">
-                    <strong>Emails</strong>
-                  </div>
-                  <div class="col-sm-9">
-                      <ng-template ngFor let-item [ngForOf]="profile.emails" let-i="index" [ngForTrackBy]="trackByFn">
-                          <div class="form-group no-label">
-                              <p-checkbox name="emails" [value]="'email:' + item.id"
-                                [formControl]="form.controls['public_fields']"></p-checkbox>
-                               <span> {{ item.value }} </span> <i class="fa fa-circle" aria-hidden="true"></i> <span class="text-fade"> {{ item.category | keyToValue: emailType:'category':'name'}}</span>
-                            </div>
-                        </ng-template>                
-                  </div>
-                </div>
-              </div>
-              
+      <dl class="dl-horizontal pcard-info">
+          <ng-container *ngIf="profile?.emails?.length > 0">
+              <dt>Emails</dt>
+              <dd *ngFor="let item of profile.emails">
+                  <div class="select-content">
+                      <div class="select-content-checkbox">
+                          <p-checkbox name="emails" [value]="'email:' + item.category" [formControl]="form.controls['public_fields']"></p-checkbox>
+                      </div>
+                      <div class="select-content-value">
+                        <span>{{item.value}}</span> <span class="text-fade">  &nbsp; &bull;  {{ item.category | keyToValue: emailType:'category':'name' }}</span> 
+                      </div> 
+                    </div>
+              </dd>
             </ng-container>
-          </dl>
-          <dl class="pcard-info">
-            <ng-container *ngIf="profile && profile.phones && profile.phones.length > 0">
-              <!-- <ng-template ngFor let-item [ngForOf]="profile.phones" let-i="index" [ngForTrackBy]="trackByFn">
-                <dt>
-                  <button class="btn btn-default icon">
-                    <i *ngIf="i === 0" class="fa fa-phone"></i>
-                  </button>
-                  <p-checkbox name="phones" [value]="'phone:' + item.category" 
-                              [label]="item.category | keyToValue:phoneType:'category':'name'"  [formControl]="form.controls['public_fields']"></p-checkbox>
-                </dt>
-                <dd [ngClass]="{'not-first-item' : i > 0 }">
-                  <div> {{ item.country_alpha_code | phoneDialCode }} {{ item.value }} </div>
-                </dd>                
-              </ng-template> -->
 
-              <div class="field-group-content">
-                  <div class="row">  
-                    <div class="col-sm-3">
-                      <strong>Phones</strong>
+          <ng-container *ngIf="profile?.phones?.length > 0">
+              <dt>Phones</dt>
+              <dd *ngFor="let item of profile.phones">
+                  <div class="select-content">
+                      <div class="select-content-checkbox">
+                          <p-checkbox name="phones" [value]="'phone:' + item.id" [formControl]="form.controls['public_fields']"></p-checkbox>
+                      </div>
+                      <div class="select-content-value">
+                        <span>{{item.value}}</span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: phoneType:'category':'name' }}  </span>
+                      </div> 
                     </div>
-                    <div class="col-sm-9">
-                        <ng-template ngFor let-item [ngForOf]="profile.phones" let-i="index">
-                            <div class="form-group no-label">
-                                <p-checkbox name="phones" [value]="'phone:' + item.id"  [formControl]="form.controls['public_fields']"></p-checkbox>
-                                 <span> {{ item.value }} </span> <i class="fa fa-circle" aria-hidden="true"></i> <span class="text-fade"> {{ item.category | keyToValue:phoneType:'category':'name' }}</span>
-                              </div>
-                          </ng-template>                
-                    </div>
-                  </div>
-                </div>
-            </ng-container>        
-          </dl>
-          <!-- <dl class="pcard-info">
-            <ng-container *ngIf="profile && profile.addresses && profile.addresses.length > 0">
-                <ng-template ngFor let-item [ngForOf]="profile.addresses" let-i="index" [ngForTrackBy]="trackByFn">
-                  <dt>
-                    <button class="btn btn-default icon">
-                      <i *ngIf="i === 0" class="fa fa-map-marker"></i>
-                    </button>
-                    <p-checkbox name="addresses" [value]="'address:' + item.category" 
-                                [label]="item.category | keyToValue: addressType:'category':'name'"  [formControl]="form.controls['public_fields']"></p-checkbox>
-                  </dt>
-                  <dd>
-                    <div *ngIf="item.address_line1">{{ item.address_line1 }}</div>
-                    <div *ngIf="item.address_line2">{{ item.address_line2 }}</div>
-                    <div *ngIf="item.city"> {{ item?.city }}</div>
-                    <div *ngIf="item.province"> {{ item?.province }} </div>
-                    <div *ngIf="item.postcode"> {{ item?.postcode }} </div>
-                    <div *ngIf="item.country">{{ item.country }}</div>        
-                  </dd>                
-                </ng-template>
-              </ng-container>        
-          </dl>
-          <dl class="pcard-info">
-            <ng-container *ngIf="profile && profile.media">
-              <ng-template ngFor let-item [ngForOf]="profile.media" let-i="index" [ngForTrackBy]="trackByFn">
-                  <dt>
-                    <button class="btn btn-default icon">
-                      <i *ngIf="i === 0" class="fa fa-link"></i>
-                    </button>
-                    <p-checkbox name="media" [value]="'media:' + item.category" [label]="item.category | keyToValue:mediaType:'category':'name'"  [formControl]="form.controls['public_fields']">
-                        
-                    </p-checkbox>
-                  </dt>
-                  <dd [ngClass]="{'not-first-item' : i > 0 }">
-                    <div><a href="{{ item.value }}" target="_blank" rel="noopener" style="text-transform: lowercase">{{ item.value }}</a></div>
+              </dd>
+            </ng-container>
+
+
+            <ng-container *ngIf="profile?.addresses?.length > 0">
+                <dt>Addresses</dt>
+                <dd *ngFor="let item of profile.addresses">
+                   <div class="select-content">
+                     <div class="select-content-checkbox"><p-checkbox name="addresses" [value]="'address:' + item.id" [formControl]="form.controls['public_fields']"></p-checkbox> </div>
+                     <div class="select-content-value" > <span [innerHTML]="item | contactAddressPipe"></span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: addressType:'category':'name' }}  </span></div> 
+                   </div>
+                </dd>
+              </ng-container>
+  
+              <ng-container *ngIf="profile?.media?.length > 0">
+                  <dt>URLS</dt>
+                  <dd *ngFor="let item of profile.media">
+                      <div class="select-content">
+                          <div class="select-content-checkbox">
+                              <p-checkbox name="media" [value]="'media:' + item.id"  [formControl]="form.controls['public_fields']">
+                                </p-checkbox>
+                          </div>
+                          <div class="select-content-value" > 
+                            <span>{{item.value}}</span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: mediaType:'category':'name' }}  </span>   
+                          </div> 
+                        </div>
                   </dd>
-              </ng-template>  
-            </ng-container>      
-          </dl> -->
-          <ng-container>
+                </ng-container>
+
+                <dt>Gender</dt>
+                <dd>
+                    <div class="select-content">
+                        <div class="select-content-checkbox">
+                            <p-checkbox name="basicInfo" value="sex" [formControl]="form.controls['public_fields']"></p-checkbox>
+                        </div>
+                        <div class="select-content-value">
+                          <span>
+                            {{ SEX[profile?.sex] || NONE }}
+                          </span>
+                        </div> 
+                      </div>
+                </dd>
+      
+                <dt>Nationality</dt>
+                <dd>
+                    <div class="select-content">
+                        <div class="select-content-checkbox">
+                            <p-checkbox name="basicInfo" value="nationality"  [formControl]="form.controls['public_fields']"></p-checkbox>
+                        </div>
+                        <div class="select-content-value">
+                          <span>
+                            <!-- {{ (getCountry(profile?.nationality) | async)?.name || NONE }} -->
+                            {{ profile?.nationality | countryCode2Value: (countryService.countriesCode$ | async)}}
+                          </span>
+                        </div> 
+                      </div>
+                </dd>
+      
+                <dt>Birthday</dt>
+                <dd>
+                    <div class="select-content">
+                        <div class="select-content-checkbox">
+                            <p-checkbox name="basicInfo" value="birthday" [formControl]="form.controls['public_fields']" ></p-checkbox>
+                        </div>
+                        <div class="select-content-value">
+                          <span>{{ (profile?.birthday | timeFormat) || NONE}}</span>
+                        </div> 
+                      </div>
+                </dd>
+                
+                <dt>About</dt>
+                <dd>
+                    <div class="select-content">
+                        <div class="select-content-checkbox">
+                            <p-checkbox name="about" value="about" [formControl]="form.controls['public_fields']"></p-checkbox>
+                        </div>
+                        <div class="select-content-value">
+                            <textarea [formControl]="about" type="text" class="form-control" placeholder="About me" rows=3></textarea> 
+                        </div> 
+                      </div>
+                </dd>
+        </dl>
+
+        <ng-container *ngIf="form.controls.card_type.value === BUSINESS">
+            <dl class="dl-horizontal pcard-custom-label" formArrayName="custom_fields" *ngIf="custom_fields.length > 0">
+              <ng-template ngFor let-item [ngForOf]="form.controls['custom_fields'].controls" let-i="index" >
+                  <dt [formGroupName]="i"><input class="form-control" type="text" placeholder="Custom label" formControlName="label"></dt>
+                  <dd [formGroupName]="i"><input class="form-control" type="text" placeholder="Enter custom content" formControlName="value"></dd>
+              </ng-template>    
+            </dl>
+            <div>
+                <a href="javascript:;" class="btn btn-outline-default" (click)="addItem()"><i class="fa fa-plus"></i> Add more</a>
+            </div>
+
+        </ng-container>    
+        
+
+      <!-- <div class="pcard-info-list">
+          
+          <ng-container *ngIf="form.controls.card_type.value === BUSINESS">
               <div class="field-group-content" formArrayName="custom_fields" *ngIf="custom_fields.length > 0">
                 <ng-template ngFor let-item [ngForOf]="form.controls['custom_fields'].controls" let-i="index" >
                   <div class="row" [formGroupName]="i">  
@@ -235,7 +205,7 @@
                 </div>
               </div>
           </ng-container>    
-        </div>
+        </div> -->
 
   </bs-modal-body>
   <bs-modal-footer>

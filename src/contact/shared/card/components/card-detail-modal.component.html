@@ -1,14 +1,14 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <bs-modal-header [showDismiss]="false">
-    <div class="modal-header-nav">
-      <h4 *ngIf="card" class="modal-title">{{ card?.card_type === BUSINESS ? card?.card_name : PUBLIC_PROFILE }} </h4>
+    <div class="modal-header-nav"  *ngIf="card">
+      <h4 class="modal-title">{{ card?.card_type === BUSINESS ? card?.card_name : PUBLIC_PROFILE }} </h4>
       <ul class="modal-header-navbar">
         <li *ngIf="card && card.is_owner">
           <button (click)="onEdit()" type="button" class="btn btn-default btn-default-no-border">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
         </li>
-        <li class="dropdown open">
+        <li class="dropdown">
           <button class="btn btn-default btn-default-no-border" type="button" data-toggle="dropdown">
             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
           </button>
@@ -19,10 +19,10 @@
               </a>
             </li>
             <li>
-              <a href="javascript:void(0);" (click)="onExport()"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
+              <a href="javascript:void(0);" (click)="onExport(EXPORT_TYPE.csv)"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
             </li>
             <li>
-              <a href="javascript:void(0);" (click)="onExportVcard()"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
+              <a href="javascript:void(0);" (click)="onExport(EXPORT_TYPE.vcard)"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to v-card</a>
             </li>
             <li *ngIf="card && card.is_owner && card.card_type === BUSINESS">
               <a href="javascript:void(0);" (click)="onDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
@@ -39,11 +39,11 @@
   </bs-modal-header>
 
   <bs-modal-body>
-    <div class="pcard-cover bg-gray-light">
+    <div class="pcard-cover" *ngIf="card">
       <div class="media-avatar align-items-center">
         <div class="media-avatar-img-wrap">
           <ng-container *ngIf="card && card.is_owner && card.card_type ==='business' else readonlyCard">
-            <div class="media-avatar-img avatar-sm" (click)="onEdit(true)">
+            <div class="media-avatar-img avatar-md" (click)="onEdit(true)">
               <img [src]="card?.profile_image" [alt]="card?.first_name + ' ' + card?.last_name">
               <span class="w-user-avatar-cover">
                 <i class="fa fa-camera"></i>
@@ -51,132 +51,98 @@
             </div>
           </ng-container>
           <ng-template #readonlyCard>
-            <div class="media-avatar-img avatar-sm">
+            <div class="media-avatar-img avatar-md">
               <img *ngIf="card" [src]="card?.profile_image" [alt]="card?.first_name + ' ' + card?.last_name">
             </div>
           </ng-template>
         </div>
         <div class="media-avatar-body">
           <h4 class="m0"> {{ card?.first_name + ' ' + card?.last_name }} </h4>
-          <span *ngIf="card?.companey">{{ card?.company + ', ' }} </span> <span> {{ card?.occupation }} </span>
+          <span *ngIf="card?.company">{{ card?.company + ', ' }} </span> <span> {{ card?.occupation }} </span>
           <div>
             {{ card?.headline}}
           </div>
         </div>
       </div>
     </div>
-    <div class="pcard-info-list">
-      <ng-container *ngIf="card && card.sex">
-        <dl class="pcard-info">
-          <dt>
-            <label>Gender</label>
-          </dt>
-          <dd>
-            <div> {{ SEX[card?.sex] || NONE }} </div>
-          </dd>
-        </dl>
-      </ng-container>
-      <ng-container *ngIf="card && card.birthday">
-        <dl class="pcard-info">
-          <dt>
-            <label>Birthday</label>
-          </dt>
-          <dd>
-            <div> {{ (card?.birthday | timeFormat) || NONE }} </div>
-          </dd>
-        </dl>
-      </ng-container>
-      <ng-container *ngIf="card && card.nationality">
-        <dl class="pcard-info">
-          <dt>
-            <label>Nationality</label>
-          </dt>
-          <dd>
-            <div> {{ (getCountry(card?.nationality) | async).name || NONE }} </div>
-          </dd>
-        </dl>
-      </ng-container>
-      <ng-container *ngIf="card?.about">
-        <dl class="pcard-info">
-          <dt>
-            <label>About</label>
-          </dt>
-          <dd>
-            <div> {{ card?.about || NONE }} </div>
-          </dd>
-        </dl>
-      </ng-container>
 
-      <ng-container *ngIf="card && card.emails && card.emails.length > 0">
-        <ng-template ngFor let-item [ngForOf]="card.emails" let-i="index" [ngForTrackBy]="trackByFn">
-          <dl class="pcard-info">
-            <dt>
-              <label *ngIf="i===0"> Email </label>
 
-            </dt>
-            <dd><a [href]="'mailto:' + item.value">{{ item.value }}</a><span class="text-fade"><i class="fa fa-circle" aria-hidden="true"></i> {{ item.category }} </span></dd>
-          </dl>
-        </ng-template>
-      </ng-container>
-
-      <ng-container *ngIf="card && card.phones && card.phones.length > 0">
-        <ng-template ngFor let-item [ngForOf]="card.phones" let-i="index" [ngForTrackBy]="trackByFn">
-          <dl class="pcard-info">
-            <dt>
-              <label *ngIf="i===0"> Phone </label>
-
-            </dt>
-            <dd> {{ item.country_alpha_code|phoneDialCode }} {{ item.value }} <span class="text-fade"><i class="fa fa-circle" aria-hidden="true"></i> {{ item.category }} </span> </dd>
-          </dl>
-        </ng-template>
-
-      </ng-container>
-
-      <ng-container *ngIf="card && card.addresses && card.addresses.length > 0">
-        <ng-template ngFor let-item [ngForOf]="card.addresses" let-i="index" [ngForTrackBy]="trackByFn">
-          <dl class="pcard-info">
-            <dt>
-              <label *ngIf="i===0"> Address </label>
-            </dt>
-            <dd>
-              <div *ngIf="item.address_line1">{{ item.address_line1 }}</div>
-              <div *ngIf="item.address_line2">{{ item.address_line2 }}</div>
-              <div *ngIf="item.city"> {{ item?.city }}</div>
-              <div *ngIf="item.province"> {{ item?.province }} </div>
-              <div *ngIf="item.postcode"> {{ item?.postcode }} </div>
-              <div *ngIf="item.country">{{ item.country }}</div>
-              <span class="text-fade"><i class="fa fa-circle" aria-hidden="true"></i> {{ item.category }} </span>
-            </dd>
-          </dl>
-        </ng-template>
-      </ng-container>
-
-      <ng-container *ngIf="card && card.media && card.media.length > 0">
-        <ng-template ngFor let-item [ngForOf]="card.media" let-i="index" [ngForTrackBy]="trackByFn">
-          <dl class="pcard-info">
-            <dt>
-              <label *ngIf="i===0"> Link </label>
-
-            </dt>
-            <dd><a [href]="item.value">{{ item.value }}</a> <span class="text-fade"><i class="fa fa-circle" aria-hidden="true"></i> {{ item.category }} </span></dd>
-          </dl>
-        </ng-template>
-      </ng-container>
-
-      <!-- TODO: Add custom fields -->
-      <ng-container *ngIf="card?.custom_fields.length > 0">
-          <ng-template ngFor let-item [ngForOf]="card.custom_fields" let-i="index" >
-            <dl class="pcard-info">
-              <dt>
-                <label> {{ item?.label }} </label>
-  
-              </dt>
-              <dd> {{ item?.value }} </dd>
-            </dl>
-          </ng-template>
+    <dl class="dl-horizontal pcard-info">
+        <ng-container *ngIf="card && card.sex">
+          <dt>Gender</dt>   
+          <dd>{{ SEX[card?.sex] || NONE }}</dd>
         </ng-container>
 
-    </div>
+        <ng-container *ngIf="card && card.birthday">
+          <dt>Birthday</dt>   
+          <dd>{{ (card?.birthday | timeFormat) || NONE }}</dd>
+        </ng-container>
+
+          <ng-container *ngIf="card && card.nationality">
+              <dt>
+                Nationality
+              </dt>
+              <dd>
+                <!-- {{ (countryService.getCountry(card?.nationality) | async).name || NONE }} -->
+                {{ card?.nationality | countryCode2Value: (countryService.countriesCode$ | async)}}
+              </dd>
+          </ng-container>
+          <ng-container *ngIf="card?.about">
+              <dt>
+                About
+              </dt>
+              <dd>
+                  {{ card?.about || NONE }}
+              </dd>
+          </ng-container>
+
+          <ng-container *ngIf="card && card.emails && card.emails.length > 0">
+            <dt>Email</dt>
+            <ng-container *ngFor="let item of card.emails; trackBy:trackByFn">
+                <dd>
+                    <a [href]="'mailto:' + item.value">{{ item.value }}</a><span class="text-fade">&nbsp; &bull; {{ item.category }} </span>
+                </dd>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="card && card.phones && card.phones.length > 0">
+            <dt>
+                Phone      
+            </dt>
+            <ng-template ngFor let-item [ngForOf]="card.phones" let-i="index" [ngForTrackBy]="trackByFn">
+                <dd> {{ item.country_alpha_code|phoneDialCode }} {{ item.value }} <span class="text-fade">&nbsp; &bull; {{ item.category }} </span> </dd>
+            </ng-template>
+      
+            </ng-container>
+
+        <ng-container *ngIf="card && card.addresses && card.addresses.length > 0">
+            <dt>Address</dt>  
+          <ng-container *ngFor="let item of card.addresses; trackBy:trackByFn">
+              <dd>
+                  <span [innerHTML]="item | contactAddressPipe"></span> <span class="text-fade">&nbsp; &bull; {{ item.category }} </span>
+              </dd>
+            </ng-container>    
+        </ng-container>
+
+
+      <ng-container *ngIf="card && card.media && card.media.length > 0">
+          <dt>
+              URLs  
+          </dt>
+        <ng-template ngFor let-item [ngForOf]="card.media" let-i="index" [ngForTrackBy]="trackByFn">
+              <dd><a [href]="item.value">{{ item.value }}</a> <span class="text-fade">&nbsp; &bull; {{ item.category }} </span></dd>
+          </ng-template>
+        </ng-container>
+  
+        <ng-container *ngIf="card?.custom_fields?.length > 0">
+            <ng-template ngFor let-item [ngForOf]="card.custom_fields" let-i="index" >
+              <dt>
+                  {{ item?.label }}
+                </dt>
+                <dd> {{ item?.value }} </dd>
+            </ng-template>
+          </ng-container>
+    </dl>
   </bs-modal-body>
 </bs-modal>
 

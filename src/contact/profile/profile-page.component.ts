@@ -54,7 +54,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
     this.handleSelectCropEvent();
   }
-  
+
   ngOnInit(): void {
     this.cardService.getCards();
     this.profileService.getMyProfile();
@@ -130,8 +130,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.shareEditor.close();
   }
 
-  exportCard(card: any) {
-    this.cardService.exportCard(card);
+  exportCard( {card, type}) {
+    this.cardService.exportCard({card, type});
     this.cardDetailModal.close();
   }
 

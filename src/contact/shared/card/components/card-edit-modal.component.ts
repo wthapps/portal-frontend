@@ -64,7 +64,7 @@ export class CardEditModalComponent {
   private mode: string = 'create' || 'edit';
   // private card: any;
 
-  constructor(private countryService: CountryService,
+  constructor(public countryService: CountryService,
       private fb: FormBuilder
     ) {
     this.createForm();
@@ -90,14 +90,15 @@ export class CardEditModalComponent {
     this.form = this.fb.group({
       'id': [''],
       'uuid': [''],
-      'card_name': [''],
+      'card_name': [this.DEFAULT_CARD.card_name],
+      'card_type': [this.DEFAULT_CARD.card_type],
       'first_name': [''],
       'last_name': [''],
       'company': [''],
       'occupation': [''],
       'headline': [''],
       'about': [''],
-      'public_fields': [[]],
+      'public_fields': [this.DEFAULT_CARD.public_fields],
       'emails': [''],
       'phones': [''],
       'addresses': [''],

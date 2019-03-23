@@ -16,6 +16,7 @@ import {
 import { CardRoutingModule } from './card-routing';
 import { CardService } from './card.service';
 import { AutofocusModule } from '@shared/directives/autofocus';
+import { ZContactPipeModule } from '../pipe/pipe.module';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { AutofocusModule } from '@shared/directives/autofocus';
     CheckboxModule,
     TooltipModule,
     PipeModule,
+    ZContactPipeModule,
     AutofocusModule
   ],
   declarations: [

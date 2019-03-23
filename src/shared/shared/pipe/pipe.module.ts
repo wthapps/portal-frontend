@@ -33,11 +33,13 @@ import { StripHtmlPipe } from '@shared/shared/pipe/strip-html.pipe';
 import { MaxCountPipe } from '@wth/shared/shared/pipe/max-count.pipe';
 import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.pipe';
 import { UsernamePipe } from './username.pipe';
+import { CountryCode2ValuePipe } from './country-code-2-value.pipe';
 
 @NgModule({
   imports: [CommonModule],
   declarations: [
     AddFirstCharacterPipe,
+    CountryCode2ValuePipe,
     GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,
@@ -70,6 +72,7 @@ import { UsernamePipe } from './username.pipe';
   ],
   exports: [
     AddFirstCharacterPipe,
+    CountryCode2ValuePipe
     GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,
