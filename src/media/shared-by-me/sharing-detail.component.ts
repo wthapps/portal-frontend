@@ -31,6 +31,7 @@ import { MediaRenameModalComponent } from '@shared/modules/photo/components/moda
 import { SharingModalResult, SharingCreateParams } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
 import { MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, MediaParentMixin, MediaModalMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
 import { PlaylistAddMixin } from '@shared/modules/photo/mixins/playlist/playlist-add.mixin';
+import Sharing from '@shared/modules/photo/models/sharing.model';
 
 @Mixins([
   MediaBasicListMixin,
@@ -413,20 +414,21 @@ export class ZMediaSharingDetailComponent
   }
 
   openModalShare: (input: any) => void;
+  onSaveShare: (sharing: Sharing) => void;
 
-  onSaveShare(e: SharingModalResult) {
-    const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
-    const data: SharingCreateParams = {
-      objects: objects.map(s => { return { id: s.id, model: s.model } }),
-      // recipients: e.recipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id }}),
-      recipients: e.users,
-      role_id: e.role.id
-    };
-    this.apiBaseService.post('media/sharings', data).subscribe(res => {
-      // this.toastsService.success('You have just create sharing successful');
-      this.sharingModalService.update.next(res.data);
-    });
-  }
+  // onSaveShare(e: SharingModalResult) {
+  //   const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
+  //   const data: SharingCreateParams = {
+  //     objects: objects.map(s => { return { id: s.id, model: s.model } }),
+  //     // recipients: e.recipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id }}),
+  //     recipients: e.users,
+  //     role_id: e.role.id
+  //   };
+  //   this.apiBaseService.post('media/sharings', data).subscribe(res => {
+  //     // this.toastsService.success('You have just create sharing successful');
+  //     this.sharingModalService.update.next(res.data);
+  //   });
+  // }
   onEditShare: (e: SharingModalResult, sharing: any) => void;
 
   openModalAddToPlaylistCustom() {

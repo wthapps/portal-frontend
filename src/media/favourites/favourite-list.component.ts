@@ -28,6 +28,7 @@ import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharin
 import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
 import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
 import { MediaBasicListMixin, MediaAdditionalListMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
+import Sharing from '@shared/modules/photo/models/sharing.model';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaAdditionalListMixin, MediaDownloadMixin])
 @Component({
@@ -111,7 +112,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
 
   openModalShare: () => void;
   loadingEnd: () => void;
-  onSaveShare: (e: SharingModalResult) => void;
+  onSaveShare: (sharing: Sharing) => void;
   onEditShare: (e: SharingModalResult, sharing: any) => void;
   deSelect: () => void;
 

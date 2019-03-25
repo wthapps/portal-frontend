@@ -1,3 +1,5 @@
+import Sharing from "@shared/modules/photo/models/sharing.model";
+
 // Ex: {"role_id"=>1, "objects"=>[{"id"=>527, "object_type"=>"Media::Photo"}], "recipients"=>[7]}
 export interface CreateCommonSharing {
   // role id mean you share with permission
@@ -28,7 +30,7 @@ export interface SharingEditParams {
   id: number;
 }
 export interface SharingModalResult {
-  recipients: Array<SharingRecipient>;
+  data: Sharing;
   users: Array<SharingRecipient>;
   role: any;
 }

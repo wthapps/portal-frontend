@@ -21,7 +21,10 @@ import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharin
 import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
 import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
 import { MediaBasicListMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin } from '@shared/modules/photo/mixins';
-import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import { SharingModalResult, SharingEditParams } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import Album from '@shared/modules/photo/models/album.model';
+import MediaList from '@shared/modules/photo/models/list-functions/media-list.model';
+import Sharing from '@shared/modules/photo/models/sharing.model';
 
 declare var _: any;
 
@@ -37,13 +40,13 @@ export class AlbumListComponent implements OnInit,
   AlbumCreateMixin,
   MediaModalMixin {
   // display objects on screen
-  objects: any;
+  objects: Array<Album> = [];
   // tooltip to introduction
   readonly tooltip: any = Constants.tooltip;
 
   // check has selected objects
   hasSelectedObjects = false;
-  selectedObjects: any = [];
+  selectedObjects: Array<Album> = [];
   favoriteAll = false;
   links: any;
   subOpenShare: any;
@@ -65,10 +68,9 @@ export class AlbumListComponent implements OnInit,
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   openCreateAlbumModal: (selectedObjects: any) => void;
-  openModalShare: (input?: any) => void;
-  onSaveShare: (e: any) => void;
-  onEditShare: (e: SharingModalResult, sharing: any) => void;
-  selectedObjectsChanged: (objectsChanged?: any) => void;
+  // openModalShare: (input?: any) => void;
+  // onSaveShare: (e: any) => void;
+  // selectedObjectsChanged: (objectsChanged?: any) => void;
 
   toggleFavorite: (items?: any) => void;
 
@@ -85,6 +87,8 @@ export class AlbumListComponent implements OnInit,
 
   onDoneAlbum: (e: any) => void;
 
+  downloadMedia: (media: any) => void;
+
   constructor(
     public apiBaseService: ApiBaseService,
     public router: Router,
@@ -99,7 +103,6 @@ export class AlbumListComponent implements OnInit,
   ) {
   }
 
-  downloadMedia: (media: any) => void;
 
   ngOnInit() {
     this.loadObjects();
@@ -136,13 +139,36 @@ export class AlbumListComponent implements OnInit,
   }
 
   shareSelectedObject() {
-    this.openModalShare([this.selectedObjects[0].sharing_object]);
-    const sub = this.sharingModalService.update$.subscribe(res => {
-      if (!this.selectedObjects[0].sharing_object) {
-        this.selectedObjects[0].sharing_object = res.sharing_object;
-      }
-      sub.unsubscribe();
-    })
+    this.openModalShare(this.selectedObjects);
+  }
+
+  selectedObjectsChanged(objectsChanged: any = this.objects) {
+    if (this.objects) {
+      this.selectedObjects = MediaList.map(this.objects.filter(v => v.selected == true));
+      this.hasSelectedObjects = this.selectedObjects.length > 0;
+      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+      this.commonEventService.broadcast({
+        channel: 'ZMediaSharedLeftMenuComponent',
+        action: 'updateSelectedObjects',
+        payload: this.selectedObjects
+      })
+      this.onListChanges({ action: 'selectedObjectsChanged', payload: objectsChanged });
+    }
+  }
+
+  openModalShare: (data) => void;
+
+  onSaveShare(sharing: Sharing) {
+    if (MediaList.isSingleAlbum(this.selectedObjects)) {
+      this.selectedObjects[0].sharing_id = sharing.id;
+      this.objects = this.objects.map(e => {
+        if (e.id == this.selectedObjects[0].id) {
+          e.sharing_id = this.selectedObjects[0].sharing_id;
+        }
+        return e;
+      });
+    }
+    this.toastsService.success("success");
   }
 
   getMenuActions() {
@@ -317,7 +343,7 @@ export class AlbumListComponent implements OnInit,
     this.loading = true;
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
     this.apiBaseService.get(`media/albums`, opts).subscribe(res => {
-      this.objects = res.data;
+      this.objects = MediaList.map(res.data);
       this.links = res.meta.links;
       this.loading = false;
       this.loadingEnd();

@@ -9,7 +9,7 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import * as DragSelect from 'dragselect/dist/DragSelect.js';
 
 import { WObjectListService } from './w-object-list.service';
-import { Media } from '@shared/shared/models/media.model';
+import Media from '@shared/modules/photo/models/media.model';
 
 declare let _: any;
 
@@ -258,7 +258,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   isActive(item: any) {
-    return (_.find(this.selectedObjects, {'id': item.id}) || item.selected);
+    return (_.find(this.selectedObjects, { 'id': item.id }) || item.selected);
   }
 
   isSelected(item: any) {

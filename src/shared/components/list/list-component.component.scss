@@ -6,6 +6,7 @@
   @include flex-direction(column);
   @include align-items(center);
   w-list-item {
+    flex-wrap: wrap;
     padding: 10px;
     @include flexbox;
     @include flex-direction(row);

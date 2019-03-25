@@ -24,6 +24,7 @@ import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharin
 import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
 import { SharingService } from '@shared/modules/photo/components/modal/sharing/sharing.service';
 import { MediaBasicListMixin, MediaModalMixin, MediaDownloadMixin, MediaAdditionalListMixin } from '@shared/modules/photo/mixins';
+import MediaList from '@shared/modules/photo/models/list-functions/media-list.model';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, MediaAdditionalListMixin])
 @Component({
@@ -85,7 +86,7 @@ export class ZMediaSharedWithMeComponent implements OnInit, MediaBasicListMixin,
     this.loading = true;
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
     this.apiBaseService.get('media/sharings/shared_with_me', opts).subscribe(res => {
-      this.objects = res.data;
+      this.objects = MediaList.map(res.data);
       this.links = res.meta.links;
       this.loading = false;
       this.loadingEnd();

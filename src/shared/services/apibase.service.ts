@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { throwError,  Observable } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { take, catchError, switchMap } from 'rxjs/operators';
 
 
@@ -35,11 +35,15 @@ export class ApiBaseService {
     ACCEPT: 'application/json'
   });
 
+  static instance: ApiBaseService;
+
   constructor(
     public http: HttpClient,
     public router: Router,
     public cookieService: CookieService
-  ) {}
+  ) {
+    ApiBaseService.instance = this;
+  }
 
   /**
    * Performs a request with `get` http method.
@@ -100,8 +104,8 @@ export class ApiBaseService {
         this.baseUrl + path + UrlConverterUtil.objectToUrl(body),
         this.options
       ).pipe(
-          take(1),
-          catchError(this.handleError)
+        take(1),
+        catchError(this.handleError)
       );
     } else {
       return this.http[method](
@@ -139,7 +143,7 @@ export class ApiBaseService {
       if (window.location.href.indexOf('login') < 0) {
         window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${
           window.location['href']
-        }`;
+          }`;
       }
     }
 

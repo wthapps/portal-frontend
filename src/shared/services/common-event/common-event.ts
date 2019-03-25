@@ -3,7 +3,9 @@ export interface CommonEvent {
   action?: string; // Method call
   payload?: any; // Input data
   options?: any; // Input options
-  done?: any; // Return call back output
-  error?: any; // Return callback error
   from?: string; // From what compoent support debugs
+  // methods
+  onStart?: any; // Return call back on start
+  onDone?: any; // Return call back output
+  onError?: any; // Return callback error
 }

@@ -1,7 +1,7 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { Media } from '@shared/shared/models/media.model';
 import { Observable } from 'rxjs';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
+import Media from '@shared/modules/photo/models/media.model';
 
 @Component({
   selector: 'w-object-toolbar-view',
@@ -83,11 +83,13 @@ export class WObjectToolbarViewComponent {
     }
 
     if (this.field === 'Date' || this.field === 'Month' || this.field === 'Year') {
-      this.event.emit({action: 'sort', payload: {sort_direction: this.direction, sort_name: 'created_at'}});
+      this.event.emit({ action: 'sort', payload: { sort_direction: this.direction, sort_name: 'created_at' } });
       return;
     } else {
-      this.event.emit({action: 'sort',
-        payload: {sort_direction: this.direction, sort_name: this.field}});
+      this.event.emit({
+        action: 'sort',
+        payload: { sort_direction: this.direction, sort_name: this.field }
+      });
     }
   }
 }

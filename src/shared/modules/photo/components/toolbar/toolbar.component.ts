@@ -64,7 +64,6 @@ export class ZMediaToolbarComponent implements OnInit {
         break;
       case 'share':
         this.zoneSharing.modal.open();
-        this.zoneSharing.getShared();
         break;
 
       case 'tag':

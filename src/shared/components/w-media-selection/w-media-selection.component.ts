@@ -7,13 +7,13 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { Media } from '@shared/shared/models/media.model';
 
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { WUploader } from '@shared/services/w-uploader';
+import Media from '@shared/modules/photo/models/media.model';
 
 @Component({
   selector: 'w-media-selection',
@@ -164,7 +164,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  open(options: any = {return: false}) {
+  open(options: any = { return: false }) {
     console.log('open media select modal:::', options);
     this.currentTab = options.selectedTab; // 'upload', 'photos';
     this.tabsFilter = this.tabs.filter((t: any) => {
@@ -202,7 +202,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     this.modal.open().then();
   }
 
-  close(options: any = {return: false}) {
+  close(options: any = { return: false }) {
     this.mediaSelectionService.close();
     this.modal.close().then();
   }
@@ -212,7 +212,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   async onSubFilter(subFilter: 'photo' | 'album') {
-    await this.tabAction({link: this.currentTab}, subFilter);
+    await this.tabAction({ link: this.currentTab }, subFilter);
   }
 
   async getObjects(override?: boolean) {
@@ -236,7 +236,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  async tabAction(event: any = {link: this.currentTab}, subFilter: 'photo' | 'album' | undefined = 'photo') {
+  async tabAction(event: any = { link: this.currentTab }, subFilter: 'photo' | 'album' | undefined = 'photo') {
     this.mediaSelectionService.clear();
     this.currentTab = event.link;
     this.initLoading = true;
@@ -400,8 +400,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     const { action, payload } = event;
     switch (action) {
       case 'sort': {
-        const {sort_name, sort_direction} = payload;
-        this.onCompleteSort({sortOrder: sort_direction, sortBy: sort_name});
+        const { sort_name, sort_direction } = payload;
+        this.onCompleteSort({ sortOrder: sort_direction, sortBy: sort_name });
         break;
       }
     }
@@ -429,7 +429,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         break;
       case 'albums_detail':
         urlAPI = this.filter === 'all' ? `media/albums/${this.mediaParent.uuid}/objects?model=Media::Album` :
-         `media/photos?active=1&album=${this.mediaParent.id}`;
+          `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'favourites':
         if (this.filter === 'all') {
@@ -473,11 +473,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       case 'shared_with_me':
         if (this.filter === 'all') { urlAPI = `media/sharings/shared_with_me?active=1&disallowReshare=true`; }
         if (this.filter === 'photo') {
-        urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Album
+          urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Album
         &disallowReshare=true`;
         }
         if (this.filter === 'video') {
-        urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist
+          urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist
         &disallowReshare=true`;
         }
         break;

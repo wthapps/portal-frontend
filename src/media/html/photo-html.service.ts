@@ -5,10 +5,10 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { tap } from 'rxjs/operators/tap';
 
-import { Media } from '@shared/shared/models/media.model';
 import { ApiBaseService } from '@shared/services';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
+import Media from '@shared/modules/photo/models/media.model';
 
 declare let _: any;
 
@@ -33,8 +33,8 @@ export class PhotoHtmlService {
   private multipleSelectionSubject: Subject<boolean> = new Subject<boolean>();
 
   constructor(private apiBaseService: ApiBaseService,
-              private objectListService: WObjectListService,
-              private datePipe: DatePipe) {
+    private objectListService: WObjectListService,
+    private datePipe: DatePipe) {
     this.medias$ = this.mediasSubject.asObservable();
     this.uploadingMedias$ = this.uploadingMediaSubject.asObservable();
     this.selectedMedias$ = this.selectedMediasSubject.asObservable();
@@ -48,7 +48,7 @@ export class PhotoHtmlService {
    * @param {string} currentTab
    */
   open(currentTab: string = 'upload') {
-    this.openSubject.next({currentTab: currentTab});
+    this.openSubject.next({ currentTab: currentTab });
   }
 
   close() {

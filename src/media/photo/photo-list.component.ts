@@ -23,6 +23,8 @@ import { MediaAddModalService } from '@shared/modules/photo/components/modal/med
 import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
 import { MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin } from '@shared/modules/photo/mixins';
 import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import MediaList from '@shared/modules/photo/models/list-functions/media-list.model';
+import Media from '@shared/modules/photo/models/media.model';
 
 
 declare var _: any;
@@ -44,9 +46,9 @@ export class ZMediaPhotoListComponent extends CommonEventHandler implements OnIn
   tooltip: any = Constants.tooltip;
   type = 'photo';
   path = 'media/media';
-  objects: any;
+  objects: Array<Media>;
   links: any;
-  selectedObjects: any = [];
+  selectedObjects: Array<Media> = [];
   favoriteAll: any;
   hasSelectedObjects: boolean;
   loading: boolean;
@@ -73,8 +75,6 @@ export class ZMediaPhotoListComponent extends CommonEventHandler implements OnIn
   subTitleNoData: any = 'Drop photos or videos or use "New" button to upload photos and videos.';
   iconNoData: any = 'fa fa-photo';
 
-  private sub: any;
-
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   constructor(
@@ -97,7 +97,7 @@ export class ZMediaPhotoListComponent extends CommonEventHandler implements OnIn
 
   ngOnInit() {
     this.loadObjects();
-    this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').pipe(
+    this.commonEventService.filter(e => e.channel === 'WUploaderStatus').pipe(
       takeUntil(this.destroy$)).subscribe((event: any) => {
         this.doListEvent(event);
       });
@@ -119,7 +119,7 @@ export class ZMediaPhotoListComponent extends CommonEventHandler implements OnIn
     opts = { ...opts, model: 'Media::Photo' };
     this.sorting = { sort_name: opts.sort_name || 'created_at', sort: opts.sort || 'desc' };
     this.apiBaseService.get('media/media/index_combine', opts).subscribe(res => {
-      this.objects = res.data;
+      this.objects = MediaList.map(res.data);
       this.links = res.meta.links;
       this.loading = false;
       this.loadingEnd();

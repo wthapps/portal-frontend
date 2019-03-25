@@ -2,15 +2,6 @@ import { Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild, View
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
-import * as appStore from '../shared/store';
-import {
-  GetAll,
-  Favorite,
-  Update,
-  AddSuccess,
-  DeleteMany,
-  Download
-} from '../shared/store/media/media.actions';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService, CommonEventService } from '@shared/services';
@@ -22,6 +13,8 @@ import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharin
 import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
 import { SharingService } from '@shared/modules/photo/components/modal/sharing/sharing.service';
 import { MediaBasicListMixin, MediaModalMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
+import Sharing from '@shared/modules/photo/models/sharing.model';
+import MediaList from '@shared/modules/photo/models/list-functions/media-list.model';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
 @Component({
@@ -29,7 +22,7 @@ import { MediaBasicListMixin, MediaModalMixin, MediaDownloadMixin } from '@share
   templateUrl: '../shared/list/list.component.html'
 })
 export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin {
-  objects: any;
+  objects: Array<Sharing>;
   links: any;
   hasSelectedObjects: boolean;
   selectedObjects: any = [];
@@ -76,7 +69,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
     this.loading = true;
     this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
     this.apiBaseService.get('media/sharings', opts).subscribe(res => {
-      this.objects = res.data;
+      this.objects = MediaList.map(res.data);
       this.links = res.meta.links;
       this.loading = false;
       this.loadingEnd();

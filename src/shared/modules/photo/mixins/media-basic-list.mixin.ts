@@ -1,6 +1,7 @@
 import { ApiBaseService, WthConfirmService, CommonEventService } from "@shared/services";
 import { Constants } from "@shared/constant";
 import { LocalStorageService } from "angular-2-local-storage";
+import MediaList from "../models/list-functions/media-list.model";
 /* MediaListMixin This is media list methods, to
 custom method please overwirte any method*/
 export class MediaBasicListMixin {
@@ -20,7 +21,7 @@ export class MediaBasicListMixin {
   constructor(public apiBaseService: ApiBaseService,
     public confirmService: WthConfirmService,
     public commonEventService: CommonEventService,
-    public localStorageService: LocalStorageService) {}
+    public localStorageService: LocalStorageService) { }
 
   loadObjects(input?: any) {
     /* this method is load objects to display on init */
@@ -28,7 +29,7 @@ export class MediaBasicListMixin {
   }
 
   loadMoreObjects(input?: any) {
-    if(this.links && this.links.next) {
+    if (this.links && this.links.next) {
       this.apiBaseService.get(this.links.next).subscribe(res => {
         this.objects = [...this.objects, ...res.data];
         this.links = res.meta.links;
@@ -50,7 +51,7 @@ export class MediaBasicListMixin {
     }
   }
 
-  deSelect(){
+  deSelect() {
     this.objects = this.objects.map(ob => {
       ob.selected = false;
       return ob;
@@ -60,7 +61,7 @@ export class MediaBasicListMixin {
 
   selectedObjectsChanged(objectsChanged: any = this.objects) {
     if (this.objects) {
-      this.selectedObjects = this.objects.filter(v => v.selected == true);
+      this.selectedObjects = MediaList.map(this.objects.filter(v => v.selected == true));
       this.hasSelectedObjects = this.selectedObjects.length > 0;
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
       this.commonEventService.broadcast({
@@ -68,7 +69,7 @@ export class MediaBasicListMixin {
         action: 'updateSelectedObjects',
         payload: this.selectedObjects
       })
-      this.onListChanges({ action: 'selectedObjectsChanged', payload: objectsChanged});
+      this.onListChanges({ action: 'selectedObjectsChanged', payload: objectsChanged });
     }
   }
 
@@ -87,7 +88,7 @@ export class MediaBasicListMixin {
         return ob;
       })
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
-      this.onListChanges({action: 'favorite', payload: res.data});
+      this.onListChanges({ action: 'favorite', payload: res.data });
     });
   }
 
@@ -97,7 +98,7 @@ export class MediaBasicListMixin {
   }
 
   deleteObjects(term: any = 'items') {
-    let isIgnoreConfirmFile = this.selectedObjects.some(ob => { return ob.model == 'Media::Photo' || ob.model == 'Media::Video' || ob.model == 'Media::Album'});
+    let isIgnoreConfirmFile = this.selectedObjects.some(ob => { return ob.model == 'Media::Photo' || ob.model == 'Media::Video' || ob.model == 'Media::Album' });
     if (isIgnoreConfirmFile) {
       this.loading = true;
       this.objects = this.objects.filter(ob => {

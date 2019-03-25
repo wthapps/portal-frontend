@@ -36,6 +36,7 @@ import { SharingModalService } from '@shared/modules/photo/components/modal/shar
 import { MediaRenameModalComponent } from '@shared/modules/photo/components/modal/media/media-rename-modal.component';
 import { SharingModalResult, SharingCreateParams } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
 import { MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, AlbumAddMixin, MediaModalMixin, MediaParentMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
+import Sharing from '@shared/modules/photo/models/sharing.model';
 
 declare var _: any;
 @Mixins([
@@ -476,19 +477,8 @@ export class ZMediaAlbumDetailComponent
   }
 
   openModalShare: (input: any) => void;
+  onSaveShare: (sharing: Sharing) => void;
 
-  onSaveShare(e: SharingModalResult) {
-    const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
-    const data: SharingCreateParams = {
-      objects: objects.map(s => ({ id: s.id, model: s.model })),
-      recipients: e.users,
-      role_id: e.role.id
-    };
-    this.apiBaseService.post('media/sharings', data).subscribe(res => {
-      // this.toastsService.success('You have just create sharing successful');
-      this.sharingModalService.update.next(res.data);
-    });
-  }
   onEditShare: (e: SharingModalResult, sharing: any) => void;
 
   downloadMediaCustom() {
