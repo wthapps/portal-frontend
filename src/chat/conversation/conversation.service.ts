@@ -77,6 +77,7 @@ export class ConversationService extends BaseEntityService<any> {
     return this.api.post(`${this.url}/${id}/delete_member`, payload);
   }
 
+
   cancelUpload(conversationId: number, id: number): Observable<any> {
     return this.api.post(
       `zone/chat/conversations/${conversationId}/cancel_messages/${id}`
@@ -85,5 +86,11 @@ export class ConversationService extends BaseEntityService<any> {
 
   open() {
 
+  }
+
+  markAllAsRead(): Observable<any> {
+    return this.apiBaseService.post(
+      `chat/notifications/mark_all_as_read`
+    );
   }
 }

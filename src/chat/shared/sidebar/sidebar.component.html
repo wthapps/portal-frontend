@@ -78,15 +78,13 @@
         </div>
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="((conversations$ | async) | chatGroupRecent)?.length > 0">
+    <ng-container *ngIf="((conversations$ | async) | chatGroupRecent)?.length > 0; else templateNoMessage">
       <div class="text-bold conversation-label">
         <p>Chats</p>
       </div>
-      <ng-container *ngIf="((conversations$ | async) | chatGroupRecent)?.length > 0; else templateNoMessage">
         <div *ngFor="let conversation of ((conversations$ | async) | chatGroupRecent)" class="menu-left-item">
           <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
         </div>
-      </ng-container>
     </ng-container>
   </ng-container>
   <ng-container *ngIf="searching && searched">
@@ -141,6 +139,8 @@
   <div class="conversation-no-data">
     <box-no-data *ngIf="filter === 'All'"
                  [icon]="'fa fa-comments-o'" [subTitle]="'No conversations'"></box-no-data>
+    <box-no-data *ngIf="filter === 'Unread'"
+                 [icon]="'fa fa-comments-o'" [subTitle]="'No unread conversations'"></box-no-data>
     <box-no-data *ngIf="filter === 'Pending Request'"
                  [icon]="'fa fa-comments-o'" [subTitle]="'No pending request'"></box-no-data>
     <box-no-data *ngIf="filter === 'Sent Request'"

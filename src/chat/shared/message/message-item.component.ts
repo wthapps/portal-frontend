@@ -2,8 +2,10 @@ import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy
 import { Router } from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
-import { Constants, CHAT_ACTIONS, ChatConstant, CONVERSATION_SELECT } from '@wth/shared/constant';
-import { CommonEvent, CommonEventService, WMessageService, StorageService } from '@wth/shared/services';
+import { Constants, CHAT_ACTIONS, ChatConstant } from '@wth/shared/constant';
+import { CommonEvent, CommonEventService, StorageService } from '@wth/shared/services';
+import { MessageEventService } from '@chat/shared/message/message-event.service';
+import { MESSAGE_DELETE } from '@chat/shared/message/message-event.constant';
 
 declare var _: any;
 
@@ -43,13 +45,13 @@ export class MessageItemComponent implements OnInit {
     private chatService: ChatService,
     private storageService: StorageService,
     private pubSubEventService: CommonEventService,
+    private messageEventService: MessageEventService,
   ) {
     // this.profileUrl = this.chatService.constant.profileUrl;
   }
 
   ngOnInit() {
     // console.log(this.message);
-
   }
 
   onPreviewPhoto(message: any) {
@@ -77,35 +79,24 @@ export class MessageItemComponent implements OnInit {
   }
 
   copy() {
-    this.doAction({
-      channel: 'ConversationDetailComponent',
-      action: CHAT_ACTIONS.CHAT_MESSAGE_COPY,
-      payload: this.message
-    });
+    this.messageEventService.copy({data: {
+      group_id: this.message.group_id,
+      message: this.message.message,
+      message_type: this.message.message_type,
+      content_type: this.message.content_type,
+    }});
   }
 
   quote() {
-    this.doAction({
-      channel: 'ConversationDetailComponent',
-      action: CHAT_ACTIONS.CHAT_MESSAGE_QUOTE,
-      payload: this.message
-    });
+    this.messageEventService.quote({data: this.message});
   }
 
   edit() {
-    this.doAction({
-      channel: 'ConversationDetailComponent',
-      action: CHAT_ACTIONS.CHAT_MESSAGE_EDIT,
-      payload: this.message
-    });
+    this.messageEventService.edit({data: this.message});
   }
 
   delete() {
-    this.doAction({
-      channel: 'ConversationDetailComponent',
-      action: CHAT_ACTIONS.CHAT_MESSAGE_DELETE,
-      payload: this.message
-    });
+    this.messageEventService.delete({data: this.message});
   }
 
   download() {

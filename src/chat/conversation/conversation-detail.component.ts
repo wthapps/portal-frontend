@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input, AfterViewInit } from '@angular/core';
 import { NavigationEnd, Router, ActivatedRoute, Params } from '@angular/router';
 
 import { select, Store } from '@ngrx/store';
@@ -31,6 +31,7 @@ import { Channel, Presence } from 'phoenix';
 import { filter, map, skip, take, takeUntil } from 'rxjs/operators';
 import { ChannelEvents } from '@shared/channels';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
+import { MESSAGE_DELETE, MessageEventService } from '@chat/shared/message';
 
 declare var $: any;
 
@@ -69,7 +70,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     private conversationService: ConversationService,
     private uploader: WUploader,
     private websocketService: WebsocketService,
-    private contactSelectionService: ContactSelectionService
+    private contactSelectionService: ContactSelectionService,
+    private messageEventService: MessageEventService,
   ) {
     super(commonEventService);
     this.currentUser$ = userService.profile$;
@@ -122,20 +124,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.messages$ = this.store$.pipe(select(MessageSelectors.selectAllMessages));
 
   }
-  updateMessageHandler(event: CommonEvent) {
-    // this.updateMessage(data.group_id, data);
-    this.chatMessageService.addCurrentMessages(event.payload);
-    // // Scroll to bottom when user's own messages are arrived
-    if (event.payload.message.user_id === this.userService.getSyncProfile().id) {
-      this.commonEventService.broadcast(
-        {
-          channel: 'MessageListComponent',
-          action: 'scrollToBottom',
-          payload: true
-        }
-      );
-    }
-  }
 
   ngOnInit() {
     // Get conversation details such as conversation information and message list
@@ -177,14 +165,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       this.updateMessageCallback(message);
     });
 
-    // handle adding members
-    // this.contactSelectionService.onSelect$.pipe(
-    //   filter((event: any) => event.eventName === 'ADD_MEMBER'),
-    //   takeUntil(this.destroy$)
-    // ).subscribe((contacts: any) => {
-    //   console.log('ADD MEMBER', contacts);
-    // });
-
     // SELECTED CONVERSATION
     // this.chatConversationService.getStoreConversations().pipe(
     //   combineLatest(this.route.params)
@@ -206,7 +186,10 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     //   });
     // });
 
+    this.handleMessageEvents();
+
   }
+
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -247,41 +230,23 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   updateMessage(message: any) {
-
+    this.store$.dispatch(new MessageActions.Update({message: message}));
   }
 
   updateMessageCallback(message: any) {
     this.store$.dispatch(new MessageActions.UpdateSuccess({message: message}));
   }
 
-  deleteMessage(event: CommonEvent) {
-    this.chatMessageService
-      .deleteMessage(event.payload.group_id, event.payload.id)
-      .toPromise()
-      .then((res: any) => {
-        // this.updateCurrentMessage();
-      });
-  }
-  copyMessage(event: CommonEvent) {
-    this.messageEditor.updateAttributes({
-      message: event.payload,
-      mode: FORM_MODE.CREATE
+  handleMessageEvents() {
+    // Update message
+    this.messageEventService.update$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+      this.store$.dispatch(new MessageActions.Update({ conversationId: this.conversationId, message: payload.data }));
     });
-    this.messageEditor.focus();
-    // Real copy
-    const temp = $('<input>');
-    $('body').append(temp);
-    temp.val(event.payload).select();
-    document.execCommand('copy');
-    temp.remove();
-  }
 
-  editMessage(event: CommonEvent) {
-    this.messageEditor.updateAttributes({
-      message: event.payload,
-      mode: FORM_MODE.EDIT
+    // Delete message
+    this.messageEventService.delete$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+      this.store$.dispatch(new MessageActions.Delete({ conversationId: this.conversationId, message: payload.data }));
     });
-    this.messageEditor.focus();
   }
 
   cancelMessage(event: CommonEvent) {
@@ -308,9 +273,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
 
-  showEditorError(error: any) {
-
-  }
 
   /*
    * Conversation actions

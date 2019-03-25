@@ -341,6 +341,21 @@ export function reducer(state = initialConversationState, action: Actions): Conv
         // selectedConversation: action.payload
       };
     }
+
+    // Select action
+    case ActionTypes.MARK_ALL_AS_READ_SUCCESS: {
+      const updates = action.payload.conversation.map(conversation => {
+        return {
+          id: conversation.id,
+          changes: {
+            notification_count: 0
+          }
+        };
+      });
+      return conversationAdapter.updateMany(updates, state);
+    }
+
+
     default: {
       return state;
     }

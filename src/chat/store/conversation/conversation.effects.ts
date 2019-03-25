@@ -127,4 +127,21 @@ export class ConversationEffects {
     )
   );
 
+  @Effect()
+  markAllAsRead: Observable<Action> = this.actions$.pipe(
+    ofType<ConversationActions.MarkAllAsRead>(ConversationActions.ActionTypes.MARK_ALL_AS_READ),
+    switchMap(action =>
+      this.conversationService.markAllAsRead().pipe(
+        map(response => {
+          return new ConversationActions.MarkAllAsReadSuccess({
+            conversations: response.data.map(conversation => conversation.attributes)
+          });
+        }),
+        catchError(error =>
+          of(new ConversationActions.MarkAllAsReadError({ error }))
+        )
+      )
+    )
+  );
+
 }

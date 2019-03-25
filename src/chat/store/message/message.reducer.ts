@@ -268,6 +268,27 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       };
     }
 
+    // Create actions
+    case ActionTypes.DELETE: {
+      return {
+        ...state,
+        error: null
+      };
+    }
+
+    case ActionTypes.DELETE_SUCCESS: {
+      const message = action.payload.message;
+
+      return messageAdapter.removeOne(message.id, state);
+    }
+
+    case ActionTypes.DELETE_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
+      };
+    }
+
     default: {
       return state;
     }

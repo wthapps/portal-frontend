@@ -33,6 +33,7 @@ import { LongMessageModalComponent } from '@shared/components/modal/long-message
 import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
 import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
+import { MessageEventService } from '@chat/shared/message';
 
 
 declare var $: any;
@@ -93,6 +94,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     private uploader: WUploader,
     private emojiService: WTHEmojiService,
     private contactSelectionService: ContactSelectionService,
+    private messageEventService: MessageEventService,
   ) {
     super(commonEventService);
     this.createForm();
@@ -135,6 +137,51 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   ngAfterViewInit() {
     this.focus();
+
+    // Edit message
+    this.messageEventService.edit$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+      this.editMessage(payload.data);
+    });
+
+    // Copy message
+    this.messageEventService.copy$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+      this.copyMessage(payload.data);
+    });
+
+    // Quote message
+    this.messageEventService.copy$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+      this.quoteMessage(payload.data);
+    });
+  }
+
+  editMessage(message: any) {
+    this.updateAttributes({
+      message: message,
+      mode: FORM_MODE.EDIT
+    });
+    this.focus();
+  }
+
+  copyMessage(message: any) {
+    this.updateAttributes({
+      message: message,
+      mode: FORM_MODE.CREATE
+    });
+    this.focus();
+    // Real copy
+    const temp = $('<input>');
+    $('body').append(temp);
+    temp.val(message).select();
+    document.execCommand('copy');
+    temp.remove();
+  }
+
+  quoteMessage(message: any) {
+    this.updateAttributes({
+      message: message,
+      mode: FORM_MODE.CREATE
+    });
+    this.focus();
   }
 
   openNotesSelection() {
@@ -173,9 +220,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   handleKeyUp(e: any) {
-    // if (e.keyCode === 13) {
-    //   this.onCreate.emit({...this.message, group_id: this.conversation.id});
-    // }
     if (e.keyCode === 13) {
       if (this.validateMessage()) {
         this.send();
@@ -416,18 +460,11 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   private send() {
     if (this.mode === FORM_MODE.EDIT) {
-      this.chatService
-        .updateMessage(this.message.group_id, this.message)
-        .subscribe((response: any) => {
-          this.mode = FORM_MODE.CREATE;
-          this.resetEditor();
-        });
+      this.messageEventService.update({data: this.message});
+      this.mode = FORM_MODE.CREATE;
+      this.resetEditor();
     } else {
-      // this.messageService.scrollToBottom();
-      // this.chatMessageService.createTextMessage(this.message.message);
-
       this.sendMessage(this.message);
-
       this.resetEditor();
     }
   }

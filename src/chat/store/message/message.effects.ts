@@ -91,10 +91,7 @@ export class MessageEffects {
   update$: Observable<Action> = this.actions$.pipe(
     ofType<MessageActions.Create>(MessageActions.ActionTypes.UPDATE),
     switchMap(action =>
-      this.messageService.update(
-        action.payload.message,
-        false,
-        `${action.payload.group_id}/messages/${action.payload.message.uuid}`).pipe(
+      this.messageService.update(action.payload.conversationId, action.payload.message).pipe(
         map(response => {
           const message = response.data.attributes;
 
@@ -106,5 +103,22 @@ export class MessageEffects {
       )
     )
   );
+
+  @Effect()
+  delete$: Observable<Action> = this.actions$.pipe(
+    ofType<MessageActions.Create>(MessageActions.ActionTypes.DELETE),
+    switchMap(action =>
+      this.messageService.delete(action.payload.conversationId, action.payload.message.uuid).pipe(
+        map(response => {
+          const message = response.data.attributes;
+          return new MessageActions.DeleteSuccess({message: message});
+        }),
+        catchError(error =>
+          of(new MessageActions.UpdateError({ error }))
+        )
+      )
+    )
+  );
+
 
 }

@@ -280,13 +280,7 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   markAllAsRead() {
-    this.conversations$.pipe(take(1)).subscribe(res => {
-      this.commonEventService.broadcast({
-        channel: 'ChatNotificationComponent',
-        action: 'markAllAsReadEvent',
-        payload: res
-      })
-    })
+    this.store$.dispatch(new ConversationActions.MarkAllAsRead({}));
   }
 
   clearSearch(event: any) {
