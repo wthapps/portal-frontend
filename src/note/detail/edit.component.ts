@@ -1267,14 +1267,14 @@ export class ZNoteDetailEditComponent
   print() {
     const editor: any = document.querySelector('div.ql-editor');
 
-    if (!document.querySelector('.printable')) {
+    if (!document.querySelector('.visible-print-block')) {
       $('body').after(
-        '<div class="printable ql-container ql-snow"><div class="ql-editor"></div><div/>'
+        '<div class="visible-print-block ql-container ql-snow"><div class="ql-editor"></div><div/>'
       );
     }
-    document.querySelector('.printable > .ql-editor').innerHTML =
+    document.querySelector('.visible-print-block > .ql-editor').innerHTML =
       editor.innerHTML;
-    const printable: any = document.querySelector('.printable > .ql-editor');
+    const printable: any = document.querySelector('.visible-print-block > .ql-editor');
     printable.innerHTML = editor.innerHTML;
     window.print();
   }

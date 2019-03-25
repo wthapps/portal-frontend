@@ -72,7 +72,7 @@ import { CountryCode2ValuePipe } from './country-code-2-value.pipe';
   ],
   exports: [
     AddFirstCharacterPipe,
-    CountryCode2ValuePipe
+    CountryCode2ValuePipe,
     GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,

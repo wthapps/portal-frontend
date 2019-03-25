@@ -1,38 +1,28 @@
 @import "../../../../assets/styles/global";
 
+:host /deep/ {
+  .pcard-edit-modal {
+    .modal-footer {
+      border-top-width: 1px !important;
+    }
+  } 
+}
+
+.card-edit-modal-body.show-more {
+  max-height: 420px;
+  overflow: hidden;
+}
+
 /* override model title */
 .modal-title, .modal-title input {
   display: block;
   width: 100%;
   padding-left: 5px;
 }
-.pcard-cover {
-  @media (max-width: $screen-xs-max) {
-    .media-avatar {
-      @include flex-direction(column);
-      text-align: center;
-      .media-avatar-img-wrap {
-        margin-bottom: 10px;
-        margin-right: 0;
-      }
-    }
-  }
-}
 
-.modal-body {
-  .pcard-cover {
-    margin-left: -$modal-inner-padding;
-    margin-right: -$modal-inner-padding;
-    margin-bottom: $modal-inner-padding;
-    padding: $modal-inner-padding;
-  }
-}
-
-
-
-.pcard-info {
+.pcard-info-edit {
   .select-content {
-    display: flex;
+    @include flexbox;
 
     .select-content-checkbox {
       padding-right: 10px;
@@ -70,34 +60,26 @@
   }
 }
 
-.pcard-custom-label {
-  &.dl-horizontal {
-    dt {
-      width: 130px;
-    }
-    
-    dd {
-      margin-left: 140px;
-    }
-  } 
-}
+.custom-group {
+  @include flexbox;
+  padding-bottom: 10px;
 
-.pcard-info-form {
-  padding-left: 25px;
-  dt {
-    clear: both;
-    position: relative;
-    .ui-chkbox {
-      position: absolute;
-      left: -25px;
-      top: 2px;
+  @media (min-width: $screen-sm) {
+    .custom-label {
+      max-width: 130px;
     }
-    & + dt {
-      margin-top: 10px;
+  
+    .custom-value {
+      @include flex(1);
+      padding-left: 10px;
     }
   }
-}
 
-.dib {
-  display: inline-block;
+  @media (max-width: $screen-xs-max) {
+    @include flex-direction(column);
+
+    .custom-label {
+      padding-bottom: 10px;
+    }
+  }
 }

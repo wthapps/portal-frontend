@@ -1,5 +1,5 @@
 <form [formGroup]="form" novalidate>
-  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" cssClass="pcard-edit-modal">
     <bs-modal-header [showDismiss]="false">
       <div class="modal-header-nav">
         <h4 class="modal-title text-capitalize">
@@ -20,197 +20,175 @@
       </div>
   </bs-modal-header>
   <bs-modal-body>
-      <div class="field-group">
-        <div class="field-group-content">
-          <div class="media content-overflow-visible">
-            <div class="media-left">
-              <div class="avatar-md" >
-                <img class="no-user-selected ng-star-inserted"  [src]="form?.controls.profile_image?.value || profile?.profile_image">
-                <span class="cover-info-profile">
-                  <i class="fa fa-camera"></i>
-                </span>
-              </div>
-            </div>
-            <div class="media-body content-overflow-visible">
-              <div class="row row-10">
-                <div class="col-sm-6 mb10">
-                  <div class="form-group no-label mb0">
-                    <input autofocus [formControl]="first_name" type="text" class="form-control" [attr.disabled]="form.controls.card_type.value === PUBLIC ? 'disabled': null" placeholder="First name">
+    <div class="card-edit-modal-body" [ngClass]="{'show-more': showMore}">
+        <div class="field-group">
+            <div class="field-group-content">
+              <div class="media content-overflow-visible">
+                <div class="media-left">
+                  <div class="avatar-md" >
+                    <img class="no-user-selected ng-star-inserted"  [src]="form?.controls.profile_image?.value || profile?.profile_image">
+                    <span class="cover-info-profile">
+                      <i class="fa fa-camera"></i>
+                    </span>
                   </div>
                 </div>
-                <div class="col-sm-6 mb10">
-                  <div class="form-group no-label mb0">
-                    <input [formControl]="last_name" type="text" class="form-control" [attr.disabled]="form.controls.card_type.value === PUBLIC ? 'disabled': null" placeholder="Last name">
+                <div class="media-body content-overflow-visible">
+                  <div class="row row-10">
+                    <div class="col-sm-6 mb10">
+                      <div class="form-group no-label mb0">
+                        <input autofocus [formControl]="first_name" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'disabled': null" placeholder="First name">
+                      </div>
+                    </div>
+                    <div class="col-sm-6 mb10">
+                      <div class="form-group no-label mb0">
+                        <input [formControl]="last_name" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'disabled': null" placeholder="Last name">
+                      </div>
+                    </div>
+                    <div class="col-sm-6 mb10">
+                      <input [formControl]="company" type="text" class="form-control" placeholder="Company or organization">
+                    </div>
+                    <div class="col-sm-6 mb10">
+                      <input [formControl]="occupation" type="text" class="form-control" placeholder="Job title">
+                    </div>
+                    <div class="col-sm-12 mb10">
+                      <input [formControl]="headline" type="text" class="form-control" placeholder="Headline">
+                    </div>
                   </div>
-                </div>
-                <div class="col-sm-6 mb10">
-                  <input [formControl]="company" type="text" class="form-control" placeholder="Company or organization">
-                </div>
-                <div class="col-sm-6 mb10">
-                  <input [formControl]="occupation" type="text" class="form-control" placeholder="Job title">
-                </div>
-                <div class="col-sm-12 mb10">
-                  <input [formControl]="headline" type="text" class="form-control" placeholder="Headline">
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-
-      <dl class="dl-horizontal pcard-info">
-          <ng-container *ngIf="profile?.emails?.length > 0">
-              <dt>Emails</dt>
-              <dd *ngFor="let item of profile.emails">
-                  <div class="select-content">
-                      <div class="select-content-checkbox">
-                          <p-checkbox name="emails" [value]="'email:' + item.category" [formControl]="form.controls['public_fields']"></p-checkbox>
-                      </div>
-                      <div class="select-content-value">
-                        <span>{{item.value}}</span> <span class="text-fade">  &nbsp; &bull;  {{ item.category | keyToValue: emailType:'category':'name' }}</span> 
-                      </div> 
-                    </div>
-              </dd>
-            </ng-container>
-
-          <ng-container *ngIf="profile?.phones?.length > 0">
-              <dt>Phones</dt>
-              <dd *ngFor="let item of profile.phones">
-                  <div class="select-content">
-                      <div class="select-content-checkbox">
-                          <p-checkbox name="phones" [value]="'phone:' + item.id" [formControl]="form.controls['public_fields']"></p-checkbox>
-                      </div>
-                      <div class="select-content-value">
-                        <span>{{item.value}}</span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: phoneType:'category':'name' }}  </span>
-                      </div> 
-                    </div>
-              </dd>
-            </ng-container>
-
-
-            <ng-container *ngIf="profile?.addresses?.length > 0">
-                <dt>Addresses</dt>
-                <dd *ngFor="let item of profile.addresses">
-                   <div class="select-content">
-                     <div class="select-content-checkbox"><p-checkbox name="addresses" [value]="'address:' + item.id" [formControl]="form.controls['public_fields']"></p-checkbox> </div>
-                     <div class="select-content-value" > <span [innerHTML]="item | contactAddressPipe"></span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: addressType:'category':'name' }}  </span></div> 
-                   </div>
-                </dd>
-              </ng-container>
-  
-              <ng-container *ngIf="profile?.media?.length > 0">
-                  <dt>URLS</dt>
-                  <dd *ngFor="let item of profile.media">
+    
+    
+          <dl class="dl-horizontal pcard-info-edit">
+              <ng-container *ngIf="profile?.emails?.length > 0">
+                  <dt>Emails</dt>
+                  <dd *ngFor="let item of profile.emails">
                       <div class="select-content">
                           <div class="select-content-checkbox">
-                              <p-checkbox name="media" [value]="'media:' + item.id"  [formControl]="form.controls['public_fields']">
-                                </p-checkbox>
+                              <p-checkbox name="emails" [value]="'email:' + item.category" [formControl]="form.controls['public_fields']"></p-checkbox>
                           </div>
-                          <div class="select-content-value" > 
-                            <span>{{item.value}}</span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: mediaType:'category':'name' }}  </span>   
+                          <div class="select-content-value">
+                            <span>{{item.value}}</span> <span class="text-fade">  &nbsp; &bull;  {{ item.category | keyToValue: emailType:'category':'name' }}</span> 
                           </div> 
                         </div>
                   </dd>
                 </ng-container>
-
-                <dt>Gender</dt>
-                <dd>
-                    <div class="select-content">
-                        <div class="select-content-checkbox">
-                            <p-checkbox name="basicInfo" value="sex" [formControl]="form.controls['public_fields']"></p-checkbox>
+    
+              <ng-container *ngIf="profile?.phones?.length > 0">
+                  <dt>Phones</dt>
+                  <dd *ngFor="let item of profile.phones">
+                      <div class="select-content">
+                          <div class="select-content-checkbox">
+                              <p-checkbox name="phones" [value]="'phone:' + item.id" [formControl]="form.controls['public_fields']"></p-checkbox>
+                          </div>
+                          <div class="select-content-value">
+                            <span>{{item.value}}</span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: phoneType:'category':'name' }}  </span>
+                          </div> 
                         </div>
-                        <div class="select-content-value">
-                          <span>
-                            {{ SEX[profile?.sex] || NONE }}
-                          </span>
-                        </div> 
-                      </div>
-                </dd>
+                  </dd>
+                </ng-container>
+    
+    
+                <ng-container *ngIf="profile?.addresses?.length > 0">
+                    <dt>Addresses</dt>
+                    <dd *ngFor="let item of profile.addresses">
+                       <div class="select-content">
+                         <div class="select-content-checkbox"><p-checkbox name="addresses" [value]="'address:' + item.id" [formControl]="form.controls['public_fields']"></p-checkbox> </div>
+                         <div class="select-content-value" > <span [innerHTML]="item | contactAddressPipe"></span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: addressType:'category':'name' }}  </span></div> 
+                       </div>
+                    </dd>
+                  </ng-container>
       
-                <dt>Nationality</dt>
-                <dd>
-                    <div class="select-content">
-                        <div class="select-content-checkbox">
-                            <p-checkbox name="basicInfo" value="nationality"  [formControl]="form.controls['public_fields']"></p-checkbox>
-                        </div>
-                        <div class="select-content-value">
-                          <span>
-                            <!-- {{ (getCountry(profile?.nationality) | async)?.name || NONE }} -->
-                            {{ profile?.nationality | countryCode2Value: (countryService.countriesCode$ | async)}}
-                          </span>
-                        </div> 
-                      </div>
-                </dd>
-      
-                <dt>Birthday</dt>
-                <dd>
-                    <div class="select-content">
-                        <div class="select-content-checkbox">
-                            <p-checkbox name="basicInfo" value="birthday" [formControl]="form.controls['public_fields']" ></p-checkbox>
-                        </div>
-                        <div class="select-content-value">
-                          <span>{{ (profile?.birthday | timeFormat) || NONE}}</span>
-                        </div> 
-                      </div>
-                </dd>
-                
-                <dt>About</dt>
-                <dd>
-                    <div class="select-content">
-                        <div class="select-content-checkbox">
-                            <p-checkbox name="about" value="about" [formControl]="form.controls['public_fields']"></p-checkbox>
-                        </div>
-                        <div class="select-content-value">
-                            <textarea [formControl]="about" type="text" class="form-control" placeholder="About me" rows=3></textarea> 
-                        </div> 
-                      </div>
-                </dd>
-        </dl>
-
-        <ng-container *ngIf="form.controls.card_type.value === BUSINESS">
-            <dl class="dl-horizontal pcard-custom-label" formArrayName="custom_fields" *ngIf="custom_fields.length > 0">
-              <ng-template ngFor let-item [ngForOf]="form.controls['custom_fields'].controls" let-i="index" >
-                  <dt [formGroupName]="i"><input class="form-control" type="text" placeholder="Custom label" formControlName="label"></dt>
-                  <dd [formGroupName]="i"><input class="form-control" type="text" placeholder="Enter custom content" formControlName="value"></dd>
-              </ng-template>    
-            </dl>
-            <div>
-                <a href="javascript:;" class="btn btn-outline-default" (click)="addItem()"><i class="fa fa-plus"></i> Add more</a>
-            </div>
-
-        </ng-container>    
-        
-
-      <!-- <div class="pcard-info-list">
+                  <ng-container *ngIf="profile?.media?.length > 0">
+                      <dt>URLS</dt>
+                      <dd *ngFor="let item of profile.media">
+                          <div class="select-content">
+                              <div class="select-content-checkbox">
+                                  <p-checkbox name="media" [value]="'media:' + item.id"  [formControl]="form.controls['public_fields']">
+                                    </p-checkbox>
+                              </div>
+                              <div class="select-content-value" > 
+                                <span>{{item.value}}</span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: mediaType:'category':'name' }}  </span>   
+                              </div> 
+                            </div>
+                      </dd>
+                    </ng-container>
+    
+                    <dt>Gender</dt>
+                    <dd>
+                        <div class="select-content">
+                            <div class="select-content-checkbox">
+                                <p-checkbox name="basicInfo" value="sex" [formControl]="form.controls['public_fields']"></p-checkbox>
+                            </div>
+                            <div class="select-content-value">
+                              <span>
+                                {{ SEX[profile?.sex] || NONE }}
+                              </span>
+                            </div> 
+                          </div>
+                    </dd>
           
-          <ng-container *ngIf="form.controls.card_type.value === BUSINESS">
-              <div class="field-group-content" formArrayName="custom_fields" *ngIf="custom_fields.length > 0">
-                <ng-template ngFor let-item [ngForOf]="form.controls['custom_fields'].controls" let-i="index" >
-                  <div class="row" [formGroupName]="i">  
-                    <div class="col-sm-3">
-                      <div class="form-group no-label">
-                        <input type="text" placeholder="Custom label" class="form-control" formControlName="label">                        
-                      </div>
-                    </div>
-                    <div class="col-sm-9">
-                      <div class="form-group no-label">
-                        <input type="text" placeholder="Enter custom content" class="form-control" formControlName="value">
-                      </div>
-                    </div>
-                  </div>
-                </ng-template>    
-                <div>
-                    <a href="javascript:;" class="btn btn-outline-default" (click)="addItem()"><i class="fa fa-plus"></i> Add more</a>
+                    <dt>Nationality</dt>
+                    <dd>
+                        <div class="select-content">
+                            <div class="select-content-checkbox">
+                                <p-checkbox name="basicInfo" value="nationality"  [formControl]="form.controls['public_fields']"></p-checkbox>
+                            </div>
+                            <div class="select-content-value">
+                              <span>
+                                <!-- {{ (getCountry(profile?.nationality) | async)?.name || NONE }} -->
+                                {{ profile?.nationality | countryCode2Value: (countryService.countriesCode$ | async)}}
+                              </span>
+                            </div> 
+                          </div>
+                    </dd>
+          
+                    <dt>Birthday</dt>
+                    <dd>
+                        <div class="select-content">
+                            <div class="select-content-checkbox">
+                                <p-checkbox name="basicInfo" value="birthday" [formControl]="form.controls['public_fields']" ></p-checkbox>
+                            </div>
+                            <div class="select-content-value">
+                              <span>{{ (profile?.birthday | timeFormat) || NONE}}</span>
+                            </div> 
+                          </div>
+                    </dd>
+                    
+                    <dt>About</dt>
+                    <dd>
+                        <div class="select-content">
+                            <div class="select-content-checkbox">
+                                <p-checkbox name="about" value="about" [formControl]="form.controls['public_fields']"></p-checkbox>
+                            </div>
+                            <div class="select-content-value">
+                                <textarea [formControl]="about" type="text" class="form-control" placeholder="About me" rows=3></textarea> 
+                            </div> 
+                          </div>
+                    </dd>
+            </dl>
+    
+            <ng-container *ngIf="form.controls.card_type.value === BUSINESS && !showMore">
+                <div formArrayName="custom_fields" *ngIf="custom_fields.length > 0">
+                    <ng-template ngFor let-item [ngForOf]="form.controls['custom_fields'].controls" let-i="index" >
+                        <div class="custom-group" [formGroupName]="i">
+                            <div class="custom-label"><input class="form-control" type="text" placeholder="Custom label" formControlName="label"></div>
+                            <div class="custom-value"><input class="form-control" type="text" placeholder="Enter custom content" formControlName="value"></div>
+                        </div>
+                      </ng-template>  
                 </div>
-              </div>
-          </ng-container>    
-        </div> -->
-
+                <!-- <div>
+                    <a href="javascript:;" class="btn btn-outline-default" (click)="addItem()"><i class="fa fa-plus"></i> Add more</a>
+                </div> -->
+    
+            </ng-container>    
+    </div>
   </bs-modal-body>
   <bs-modal-footer>
-    <button type="button" class="btn btn-default" (click)="onCancel()">Cancel</button>
-    <button type="button" class="btn btn-primary" [disabled]="form.invalid || form.pristine" (click)="onSave()">Done</button>
+    <button type="button" class="btn btn-link pull-left" (click)="onToggleShowMore(showMore)"> Show {{ showMore ? 'more' : 'less'}}</button>
+    <button type="button" class="btn btn-min btn-outline-default" (click)="onCancel()">Cancel</button>
+    <button type="button" class="btn btn-min btn-outline-primary" [disabled]="form.invalid || form.pristine" (click)="onSave()">Save</button>
   </bs-modal-footer>
 </bs-modal>
 

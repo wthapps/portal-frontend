@@ -1,5 +1,5 @@
 <form [formGroup]="form" novalidate class="note-editor-wrap">
-  <div class="note-editor-header">
+  <div class="note-editor-header hidden-print">
     <div class="note-editor-header-actions">
       <a href="#" class="icon-zone-md-note"></a>
     </div>
@@ -61,8 +61,8 @@
       </div>
     </div>
   </div>
-  <div class="note-editor-content" [ngClass]="{'show-aside': !!visibleTab}">
-    <div class="note-editor-toolbar">
+  <div class="note-editor-content hidden-print" [ngClass]="{'show-aside': !!visibleTab}">
+    <div class="note-editor-toolbar ">
       <ng-container *ngIf="note.permission === 'view';else templateQuillToolbar">
         <div class="ql-toolbar ql-snow">
           <div class="ql-container">
@@ -341,7 +341,7 @@
       <div id="quill-editor" class="ql-font-{{setting?.font}}" [attr.data-size]="setting?.font_size" ></div>
     </div>
 
-    <div class="note-editor-aside">
+    <div class="note-editor-aside ">
       <ng-container *ngIf="visibleTab === 'attachment'">
         <div class="note-editor-aside-header">
           <h4>

@@ -354,13 +354,6 @@ $note-editor-aside-w: 400px;
   }
 }
 
-@media screen {
-  .printable {
-    /*visibility: hidden;*/
-    display: none;
-  }
-}
-
 @media print {
   body {
     //visibility: hidden;
@@ -368,10 +361,6 @@ $note-editor-aside-w: 400px;
   }
   .ql-container.ql-snow {
     border-style: none;
-  }
-  .printable {
-    //visibility: visible;
-    display: block;
   }
 }
 

@@ -1,15 +1,12 @@
 import {
   Component,
-  OnInit,
-  ViewEncapsulation,
   Input,
   Output,
   EventEmitter,
   ViewChild,
-  ElementRef, AfterViewInit
+  ElementRef
 } from '@angular/core';
 
-import { Observable, from, of, interval } from 'rxjs';
 
 import { Constants } from '../../../../shared/constant';
 import { PUBLIC, BUSINESS, UNTITILED, NONE } from '../card.constant';
@@ -17,7 +14,9 @@ import { CountryService } from '@shared/shared/components/countries/countries.se
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { AbstractControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
+declare var $: any;
 
+const BODY_MAX_HEIGHT = 430; // in px
 @Component({
   selector: 'w-card-edit-modal',
   templateUrl: 'card-edit-modal.component.html',
@@ -44,6 +43,7 @@ export class CardEditModalComponent {
   card_name: AbstractControl;
   public_fields: AbstractControl;
   custom_fields: AbstractControl;
+  showMore = true;
 
   focus = false;
   readonly cardType: string = PUBLIC || BUSINESS;
@@ -70,13 +70,15 @@ export class CardEditModalComponent {
     this.createForm();
   }
 
-
   open(options: any): void {
     this.mode = options.mode;
     const card = options.card || this.DEFAULT_CARD;
     // this.updateForm({card_name: this.card.card_name, public_fields: this.card.public_fields});
     this.updateForm(card);
 
+    // this.enableShowMore();
+    setTimeout(() =>
+    this.enableShowMore(), 400);
 
     this.modal.open();
     this.focus = true;
@@ -147,6 +149,15 @@ export class CardEditModalComponent {
     this.modal.close();
   }
 
+  enableShowMore() {
+    this.showMore = true;
+    // this.showMore = $('.card-edit-modal-body').height() > BODY_MAX_HEIGHT;
+  }
+
+  onToggleShowMore(showMore) {
+    this.showMore = !showMore;
+  }
+
   onSave() {
     let card = {};
     if (this.mode === 'create') {
@@ -161,11 +172,12 @@ export class CardEditModalComponent {
   }
 
   onCancel() {
-    this.cancel.emit(this.form.value);
+    // this.cancel.emit(this.form.value);
+    this.form.reset();
     this.close();
   }
 
-  getCountry(code: string): Observable<any> {
-    return this.countryService.getCountry(code);
-  }
+  // getCountry(code: string): Observable<any> {
+  //   return this.countryService.getCountry(code);
+  // }
 }
