@@ -10,7 +10,7 @@ import { WMediaSelectionService } from '@shared/components/w-media-selection/w-m
 import { Subject } from 'rxjs';
 import { takeUntil, filter, take } from 'rxjs/operators';
 import { ApiBaseService, CommonEventService } from '@shared/services';
-import { ChatConversationService } from '../services/chat-conversation.service';
+import { ConversationService } from '@chat/conversation/conversation.service';
 
 @Component({
   selector: 'z-chat-share-edit-conversation',
@@ -29,7 +29,7 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
 
   constructor(private chatService: ChatService,
     private mediaSelectionService: WMediaSelectionService,
-    private chatConversationService: ChatConversationService,
+    private conversationService: ConversationService,
     private apiBaseService: ApiBaseService,
     private commonEventService: CommonEventService,
     private fb: FormBuilder)  {
@@ -46,14 +46,23 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.chatConversationService.updateDisplay(this.conversation, { edited_name: this.name, allow_add: this.allow_add, image: this.imageUpdated, upload: true});
+    const conversation = {
+      edited_name: this.name,
+      allow_add: this.allow_add,
+      image: this.imageUpdated
+    };
+
+    this.conversationService.update(this.conversation.uuid, {conversation: conversation}).pipe(
+      takeUntil(this.destroy$)).subscribe(response => {
+        console.log('udpate success', response);
+      });
     this.modal.close();
   }
 
   open() {
     this.modal.open().then(e => {
-      this.allow_add = (this.conversation.allow_add || this.conversation.allow_add == 'true');
-      this.name = this.conversation.edited_name;
+      this.allow_add = this.conversation.allow_add;
+      this.name = this.conversation.name;
     });
   }
 
@@ -67,32 +76,32 @@ export class ZChatShareEditConversationComponent implements OnInit, OnDestroy {
     });
     this.mediaSelectionService.setMultipleSelection(false);
     this.mediaSelectionService.selectedMedias$.pipe(
-      filter(photos => photos.length > 0)
-    ).pipe(takeUntil(this.destroy$)).subscribe(photos => {
+      filter(photos => photos.length > 0),
+      takeUntil(this.destroy$)).subscribe(photos => {
       this.imageUpdated = photos[0].url;
-      this.conversation.avatar = this.imageUpdated;
+      this.conversation.profile_image = this.imageUpdated;
       // detect to update
       this.conversation = {...this.conversation};
     });
   }
 
-  startCrop(photo: any){
+  startCrop(photo: any) {
     this.commonEventService.broadcast({
       channel: 'SELECT_CROP_EVENT', action: 'SELECT_CROP:OPEN',
       payload: { currentImage: photo }
     });
     this.modal.close();
-    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT')
-      .pipe(take(1))
-      .subscribe((event: any) => {
-        if (event.action == "SELECT_CROP:DONE") {
-          // re-open
-          this.modal.open();
-          this.imageUpdated = event.payload;
-          this.conversation.avatar = this.imageUpdated;
-          // detect to update
-          this.conversation = { ...this.conversation };
-        }
-      });
+    this.commonEventService.filter((event: any) => event.channel === 'SELECT_CROP_EVENT').pipe(
+      take(1),
+      takeUntil(this.destroy$)).subscribe((event: any) => {
+      if (event.action === 'SELECT_CROP:DONE') {
+        // re-open
+        this.modal.open();
+        this.imageUpdated = event.payload;
+        this.conversation.profile_image = this.imageUpdated;
+        // detect to update
+        this.conversation = { ...this.conversation };
+      }
+    });
   }
 }

@@ -128,6 +128,22 @@ export class ConversationEffects {
   );
 
   @Effect()
+  acceptInvitation$: Observable<Action> = this.actions$.pipe(
+    ofType<ConversationActions.AcceptInvitation>(ConversationActions.ActionTypes.ACCEPT_INVITATION),
+    switchMap(action =>
+      this.conversationService.acceptInvitation(action.payload.id).pipe(
+        map(response => {
+          const conversation = response.data.attributes;
+          return new ConversationActions.UpdateDisplaySuccess({conversation: conversation});
+        }),
+        catchError(error =>
+          of(new ConversationActions.UpdateDisplayError({ error }))
+        )
+      )
+    )
+  );
+
+  @Effect()
   markAllAsRead: Observable<Action> = this.actions$.pipe(
     ofType<ConversationActions.MarkAllAsRead>(ConversationActions.ActionTypes.MARK_ALL_AS_READ),
     switchMap(action =>

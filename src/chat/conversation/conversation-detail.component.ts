@@ -279,22 +279,18 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
    */
 
   acceptInvitation(conversation: any) {
-    this.store$.dispatch(new ConversationActions.UpdateDisplay({id: conversation.uuid, body: {
-      conversation: {status: 'accepted'}
-    }}));
+    this.store$.dispatch(new ConversationActions.AcceptInvitation({ id: conversation.uuid }));
   }
 
   declineInvitation(conversation: any) {
-    this.store$.dispatch(new ConversationActions.UpdateDisplay({id: conversation.uuid, body: {
+    this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {
       conversation: {status: 'decline'}
     }}));
     this.router.navigate(['conversations']).then();
   }
 
-  // Conversation action handle end
-
   updateDisplay(conversation: any) {
-    this.store$.dispatch(new ConversationActions.UpdateDisplay({id: conversation.uuid, body: {conversation: conversation}}));
+    this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {conversation: conversation}}));
   }
 
 

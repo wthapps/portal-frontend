@@ -7,18 +7,14 @@ import {
   MESSAGE_QUOTE,
   MESSAGE_UPDATE
 } from '@chat/shared/message/message-event.constant';
-
-interface BroadcastEvent {
-  key: any;
-  payload?: any;
-}
+import { EventData } from '@core/base-event';
 
 @Injectable()
 export class MessageEventService {
-  private eventSubject: Subject<any>;
+  private eventSubject: Subject<EventData>;
 
   constructor() {
-    this.eventSubject = new Subject<BroadcastEvent>();
+    this.eventSubject = new Subject<EventData>();
   }
 
   edit(payload?: any) {

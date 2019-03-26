@@ -102,7 +102,7 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       this.links = links;
     });
 
-    this.loadConversations({per_page: 7});
+    this.loadConversations();
 
 
     // handle adding members
@@ -141,6 +141,11 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       const conversation = response.data.attributes;
       this.upsertConversationCallback(conversation);
     });
+
+    this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPDATED, (response: any) => {
+      const conversation = response.data.attributes;
+      this.updateConversationCallback(conversation);
+    });
   }
 
   /*
@@ -154,7 +159,6 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     if (links && links.next) {
       this.store$.dispatch(new ConversationActions.GetItems({path: links.next}));
     }
-
   }
 
   doFilter(param) {
@@ -237,6 +241,11 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     console.log('UPSERTED CONVERSATION:::', conversation);
     // if currentUser is a member then add to conversation list
     this.store$.dispatch(new ConversationActions.UpsertSuccess({conversation: conversation}));
+  }
+
+  updateConversationCallback(conversation: any) {
+    console.log('UPDATED CONVERSATION:::', conversation);
+    this.store$.dispatch(new ConversationActions.UpdateSuccess({conversation: conversation}));
   }
 
 

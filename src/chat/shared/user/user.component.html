@@ -8,9 +8,11 @@
     </span>
   </div>
   <div class="media-avatar-body">
-    <div class="text-bold text-1-line">
-      <p>{{ data.name }}</p>
-    </div>
+    <ng-container *ngIf="displayUserName">
+      <div class="text-bold text-1-line">
+        <p>{{ data.name }}</p>
+      </div>
+    </ng-container>
     <ng-container *ngIf="!displayAvatar">
 
       <ng-container *ngIf="data.group_type == 'couple'">

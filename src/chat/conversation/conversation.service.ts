@@ -52,6 +52,10 @@ export class ConversationService extends BaseEntityService<any> {
     return this.apiBaseService.patch(`${this.url}/${id}/display`, payload);
   }
 
+  acceptInvitation(id: any): Observable<any> {
+    return this.apiBaseService.patch(`${this.url}/${id}/accept`);
+  }
+
   delete(id: any): Observable<any> {
     return this.api.delete(`${this.url}/${id}`);
   }

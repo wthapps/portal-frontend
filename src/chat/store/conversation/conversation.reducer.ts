@@ -250,12 +250,6 @@ export function reducer(state = initialConversationState, action: Actions): Conv
         isLoading: false,
         error: null,
       });
-      // return conversationAdapter.up({
-      //   id: conversation.id,
-      //   changes: conversation
-      // }, {
-      //   ...state,
-      // });
     }
 
     case ActionTypes.UPSERT_ERROR: {
