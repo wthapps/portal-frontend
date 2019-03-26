@@ -26,6 +26,14 @@
   }
 }
 
+.modal-header-nav {
+  .card-title {
+    &, .modal-title {
+      @include text-overflow();
+    }
+  }
+}
+
 .modal-body {
   .pcard-cover {
     margin-left: -$modal-inner-padding;

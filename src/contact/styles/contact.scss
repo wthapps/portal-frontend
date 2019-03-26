@@ -7,10 +7,8 @@
 
 .user-card-content .user-card-content-email,  .user-card-content span {
   justify-content: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   margin-right: -20px;
+  @include text-overflow();
 }
 
 .user-card-avatar {

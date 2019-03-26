@@ -71,10 +71,8 @@ $message-assets-width: 400px;
         border-radius: 5px;
         border: 1px solid $line;
         .media-body a {
+          @include text-overflow();
           width: 317px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
 
           &.note-title {
             display: block;
@@ -187,16 +185,18 @@ $message-assets-width: 400px;
         width: 317px;
         text-decoration: none;
         color: $text-color;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        @include text-overflow();
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // overflow: hidden;
       }
 
       .wobject-box-title-note {
         display: block;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        @include text-overflow();
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // overflow: hidden;
       }
 
       .wobject-box-content-note {
@@ -249,9 +249,10 @@ $message-assets-width: 400px;
       }
 
       .photo-box-name {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        @include text-overflow();
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // overflow: hidden;
         margin-top: 5px;
       }
     }

@@ -1,7 +1,9 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <bs-modal-header [showDismiss]="false">
     <div class="modal-header-nav"  *ngIf="card">
-      <h4 class="modal-title">{{ card?.card_type === BUSINESS ? card?.card_name : PUBLIC_PROFILE }} </h4>
+      <div class="card-title">
+          <h4 class="modal-title">{{ card?.card_type === BUSINESS ? card?.card_name : PUBLIC_PROFILE }} </h4>
+      </div>      
       <ul class="modal-header-navbar">
         <li *ngIf="card && card.is_owner">
           <button (click)="onEdit()" type="button" class="btn btn-default btn-default-no-border">

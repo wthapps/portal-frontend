@@ -55,6 +55,7 @@ export class CardEditModalComponent {
   readonly BUSINESS = BUSINESS;
   readonly NONE = NONE;
   readonly SEX = Constants.sex;
+  readonly READONLY_FIELDS = ['first_name', 'last_name', 'about'];
 
   readonly DEFAULT_CARD = {
     card_type: BUSINESS,
@@ -68,24 +69,23 @@ export class CardEditModalComponent {
       private fb: FormBuilder
     ) {
     this.createForm();
+    this.enableShowMore();
   }
 
   open(options: any): void {
     this.mode = options.mode;
     const card = options.card || this.DEFAULT_CARD;
-    // this.updateForm({card_name: this.card.card_name, public_fields: this.card.public_fields});
     this.updateForm(card);
 
-    // this.enableShowMore();
-    setTimeout(() =>
-    this.enableShowMore(), 400);
 
     this.modal.open();
     this.focus = true;
   }
 
   updateForm(value) {
-    this.form.patchValue(value);
+    // about is a special field: it can be edited in business card, but not in public card
+    const formValue = value.card_type === this.PUBLIC ? {...value, about: this.profile.about} : value;
+    this.form.patchValue(formValue);
   }
 
   createForm() {
@@ -167,17 +167,14 @@ export class CardEditModalComponent {
         public_fields: this.public_fields.value,
       };
     }
-    this.save.emit({mode: this.mode, card: {...card, ...this.form.value}});
+    Object.assign(card, this.form.value);
+    this.READONLY_FIELDS.forEach(f => delete card[f]);
+    this.save.emit({mode: this.mode, card});
 
   }
 
   onCancel() {
-    // this.cancel.emit(this.form.value);
     this.form.reset();
     this.close();
   }
-
-  // getCountry(code: string): Observable<any> {
-  //   return this.countryService.getCountry(code);
-  // }
 }

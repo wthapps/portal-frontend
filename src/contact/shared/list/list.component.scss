@@ -41,10 +41,7 @@
         left: 0;
         right: 0;
         display: block;
-        overflow: hidden;
-        -ms-text-overflow: ellipsis;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        @include text-overflow();
       }
     }
 

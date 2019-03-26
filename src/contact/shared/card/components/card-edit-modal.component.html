@@ -36,12 +36,12 @@
                   <div class="row row-10">
                     <div class="col-sm-6 mb10">
                       <div class="form-group no-label mb0">
-                        <input autofocus [formControl]="first_name" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'disabled': null" placeholder="First name">
+                        <input autofocus [formControl]="first_name" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null" placeholder="First name">
                       </div>
                     </div>
                     <div class="col-sm-6 mb10">
                       <div class="form-group no-label mb0">
-                        <input [formControl]="last_name" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'disabled': null" placeholder="Last name">
+                        <input [formControl]="last_name" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null" placeholder="Last name">
                       </div>
                     </div>
                     <div class="col-sm-6 mb10">
@@ -66,7 +66,7 @@
                   <dd *ngFor="let item of profile.emails">
                       <div class="select-content">
                           <div class="select-content-checkbox">
-                              <p-checkbox name="emails" [value]="'email:' + item.category" [formControl]="form.controls['public_fields']"></p-checkbox>
+                              <p-checkbox name="emails" [value]="'email:' + item.id" [formControl]="form.controls['public_fields']"></p-checkbox>
                           </div>
                           <div class="select-content-value">
                             <span>{{item.value}}</span> <span class="text-fade">  &nbsp; &bull;  {{ item.category | keyToValue: emailType:'category':'name' }}</span> 
@@ -163,7 +163,7 @@
                                 <p-checkbox name="about" value="about" [formControl]="form.controls['public_fields']"></p-checkbox>
                             </div>
                             <div class="select-content-value">
-                                <textarea [formControl]="about" type="text" class="form-control" placeholder="About me" rows=3></textarea> 
+                                <textarea [formControl]="about" type="text" class="form-control" placeholder="About me" rows=3 [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null"></textarea> 
                             </div> 
                           </div>
                     </dd>

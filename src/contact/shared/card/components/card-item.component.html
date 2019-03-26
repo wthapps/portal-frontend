@@ -8,11 +8,11 @@
       </div>
       <div class="media-avatar-body">
         <ng-container *ngIf="(card && card.card_type === 'business') else profileCard">
-          <p class="m0 text-bold text-fade"> {{ card?.card_name }} </p>
+          <p class="m0 text-bold text-fade card-name"> {{ card?.card_name }} </p>
           <span> {{ card?.name }} </span>
         </ng-container>
         <ng-template #profileCard>
-          <p class="m0 text-bold text-fade">{{ card?.name}}</p>
+          <p class="m0 text-bold text-fade" card-name>{{ card?.name}}</p>
           <span>&nbsp;</span>
         </ng-template>
 
