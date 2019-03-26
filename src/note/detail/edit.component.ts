@@ -1001,9 +1001,9 @@ export class ZNoteDetailEditComponent
         this.copiedFormat = {};
         this.isCopied = false;
       } else {
-        const curFormat = this.customEditor.getFormat();
-        if (!curFormat.font) { this.customEditor.format('font', this.setting.font); }
-        if (!curFormat.size) { this.customEditor.format('size', this.setting.font_size); }
+        // const curFormat = this.customEditor.getFormat();
+        // if (!curFormat.font) { this.customEditor.format('font', this.setting.font); }
+        // if (!curFormat.size) { this.customEditor.format('size', this.setting.font_size); }
       }
     });
   }

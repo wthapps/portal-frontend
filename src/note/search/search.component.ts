@@ -31,8 +31,9 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
   selectedObjects$: Observable<any[]>;
   selectAll$: Observable<boolean>;
   currentFolderPath$: Observable<any[]>;
-  viewMode$: Observable<any>;
+  // viewMode$: Observable<any>;
   loading$: Observable<boolean>;
+  context$: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +46,8 @@ export class ZNoteSearchComponent implements OnInit, OnDestroy {
     this.noteItems$ = this.store.select(listReducer.getNotes);
     this.folderItems$ = this.store.select(listReducer.getFolders);
     this.sortOption$ = this.store.select(fromRoot.getSortOption);
-    this.viewMode$ = this.store.select(fromRoot.getViewMode);
+    // this.viewMode$ = this.store.select(fromRoot.getViewMode);
+    this.context$ = this.store.select(context.getContext);
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.currentFolderPath$ = this.store.select(fromRoot.getCurrentFolderPath);
     this.selectAll$ = this.store.select(fromRoot.getSelectAll);

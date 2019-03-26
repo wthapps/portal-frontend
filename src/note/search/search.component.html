@@ -1,4 +1,4 @@
-<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)">
+<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [viewMode]="(context$ | async)?.viewMode">
   <ng-container *ngIf="(selectedObjects$ | async) as selectedObjects">
   <div class="btn-group" [ngClass]="{'hidden-xs': selectedObjects.length>0}">
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -11,16 +11,16 @@
     </ul>
   </div>
 
-  <span [ngClass]="{'hidden-xs': selectedObjects.length>0}" class="btn-text no-wrap ml10">Search Result</span>
-  <span class="btn btn-text text-fade hidden" [ngClass]="{'visible-xs-block': selectedObjects.length>0}">
-    {{ selectedObjects.length }} Selected
+  <span [ngClass]="{'hidden-xs': selectedObjects?.length>0}" class="btn-text no-wrap ml10">Search Result</span>
+  <span class="btn btn-text text-fade hidden" [ngClass]="{'visible-xs-block': selectedObjects?.length>0}">
+    {{ selectedObjects?.length }} Selected
   </span>
   </ng-container>
 </z-note-shared-toolbar>
 <div class="page-body-content has-page-body-control gray-light">
   <note-list [noteItems]="noteItems$ | async"
              [folderItems]="folderItems$ | async"
-             [viewOption]="(viewMode$ | async)"
+             [viewOption]="(context$ | async)?.viewMode"
              [sortOption]="sortOption$ | async"
              [isSelectAll]="(selectAll$ | async)">
   </note-list>

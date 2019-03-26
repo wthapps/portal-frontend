@@ -277,6 +277,10 @@ export class ZContactService extends BaseEntityService<any> {
     return this.router.navigate(['contacts', contact.id, 'view', {wth: isWthContact}]);
   }
 
+  editContact(contactId): Promise<any> {
+    return this.router.navigate(['contacts', contactId, 'edit']);
+  }
+
   updateMultiple(body: any): Observable<any> {
     return this.apiBaseService
       .post(`${this.url}/update_multiple`, body)

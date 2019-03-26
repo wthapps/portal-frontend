@@ -9,13 +9,6 @@
   z-index: 1000;
   border-bottom: 1px solid $line;
 
-  .header-nav-mobile {
-    display: none;
-    @media (max-width: $screen-xs-max) {
-      display: inline-block;
-    }
-  }
-
   .header-nav {
     padding: 0 $grid-gutter-width/2;
     background-color: #ffffff;
@@ -79,17 +72,6 @@
 
     @media (max-width: $screen-xs-max) {
       display: none;
-      /*margin-right: 0;
-      @include flexbox;
-      @include align-items(center);
-      img {
-        display: none;
-        //height: 24px;
-      }
-      &:before {
-        content: url('/assets/images_new/logo-sm.png');
-        height: 32px;
-      }*/
     }
   }
 

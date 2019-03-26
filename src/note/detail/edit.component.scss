@@ -41,9 +41,10 @@ $note-editor-aside-w: 400px;
       .body {
         @include flex(1);
         max-width: 100%;
-        overflow: hidden;
-        -ms-text-overflow: ellipsis;
-        text-overflow: ellipsis;
+        @include text-overflow();
+        // overflow: hidden;
+        // -ms-text-overflow: ellipsis;
+        // text-overflow: ellipsis;
       }
       .form-control {
         font-size: 18px;
@@ -56,9 +57,10 @@ $note-editor-aside-w: 400px;
         font-size: 18px;
         margin: 0;
         line-height: 34px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        @include text-overflow();
+        // white-space: nowrap;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
       }
     }
   }
@@ -355,10 +357,6 @@ $note-editor-aside-w: 400px;
 }
 
 @media print {
-  body {
-    //visibility: hidden;
-    display: none;
-  }
   .ql-container.ql-snow {
     border-style: none;
   }

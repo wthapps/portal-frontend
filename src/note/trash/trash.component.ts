@@ -17,8 +17,6 @@ import { noteConstants } from '@notes/shared/config/constants';
   templateUrl: 'trash.component.html'
 })
 export class ZNoteTrashComponent implements OnInit {
-  viewOption: string = 'list';
-
   noteItems$: Observable<Note[]>;
   folderItems$: Observable<any>;
   sortOption$: Observable<any>;
@@ -33,8 +31,6 @@ export class ZNoteTrashComponent implements OnInit {
   readonly PAGE_TYPE: any = noteConstants.PAGE_TRASH;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
     private store: Store<fromRoot.State>,
     private noteService: ZNoteService
   ) {}

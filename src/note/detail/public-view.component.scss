@@ -158,44 +158,10 @@ $note-editor-aside-w: 400px;
       font-size: 200px;
     }
   }
-
-  //@media screen {
-  //  .printable {
-  //    /*visibility: hidden;*/
-  //    display: none;
-  //  }
-  //}
-  //
-  //@media print {
-  //  body {
-  //    //visibility: hidden;
-  //    display: none;
-  //  }
-  //  .printable {
-  //    //visibility: visible;
-  //    //display: block;
-  //  }
-  //
-  //}
-}
-
-@media screen {
-  .printable {
-    /*visibility: hidden;*/
-    display: none;
-  }
 }
 
 @media print {
-  body {
-    //visibility: hidden;
-    display: none;
-  }
   .ql-container.ql-snow {
     border-style: none;
-  }
-  .printable {
-    //visibility: visible;
-    display: block;
   }
 }

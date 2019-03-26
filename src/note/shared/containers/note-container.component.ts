@@ -23,7 +23,6 @@ declare var _: any;
 export class ZNoteContainerComponent implements OnInit {
   @Input() breadcrumbs: any;
 
-  viewOption = 'grid';
   noteItems$: Observable<Note[]>;
   folderItems$: Observable<Folder[]>;
   allItems$: Observable<any[]>;

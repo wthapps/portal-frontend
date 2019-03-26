@@ -16,8 +16,7 @@ import { ZNoteService } from './shared/services/note.service';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-// import { NoteEditModalComponent } from './shared/modal/note/note-edit-modal.component';
-import { ZNoteSharedModalNoteViewComponent } from './shared/modal/note/view.component';
+// import { ZNoteSharedModalNoteViewComponent } from './shared/modal/note/view.component';
 import { ZNoteSharedModalFolderEditComponent } from './shared/modal/folder/edit.component';
 import { ZNoteSharedModalFolderMoveComponent } from './shared/modal/folder/move.component';
 import { ZNoteSharedModalSharingComponent } from './shared/modal/sharing/sharing.component';
@@ -51,7 +50,7 @@ declare var _: any;
   encapsulation: ViewEncapsulation.None,
   entryComponents: [
     // NoteEditModalComponent,
-    ZNoteSharedModalNoteViewComponent,
+    // ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalSharingComponent,
     ZNoteSharedModalFolderMoveComponent

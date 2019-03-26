@@ -171,9 +171,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
 
       case 'edit_contact': {
       const id = this.contact.id || this.route.snapshot.paramMap.get('id');
-        this.router
-          .navigate(['contacts/', id, 'edit'])
-          .then();
+        this.contactService.editContact(id);
         this.hasBack = false;
         this.mode = 'edit';
         break;

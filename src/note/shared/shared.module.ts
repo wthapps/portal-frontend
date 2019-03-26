@@ -53,31 +53,26 @@ import { ModalModule } from '@shared/components/modal/modal.module';
 
 @NgModule({
   imports: [
-    // Ng2HdModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    ZNoteSharedSettingModule,
     WthCommonModule,
 
     // custom component
     ModalDockModule,
     ModalModule,
-    // FileModule,
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
-    // ZSharedMenuModule,
     BoxNoDataModule,
     WNavTabModule,
+    ZNoteSharedSettingModule,
 
     // third party libs
-    // TagInputModule,
     InputSwitchModule,
     CheckboxModule,
     RadioButtonModule,
     AutoCompleteModule,
-    // CalendarModule,
     PanelMenuModule,
     TooltipModule
   ],
@@ -89,7 +84,7 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     FolderItemComponent,
     ZNoteContainerComponent,
 
-    ZNoteSharedModalNoteViewComponent,
+    // ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
     ZNoteSharedTrashActionBarComponent,
@@ -102,12 +97,10 @@ import { ModalModule } from '@shared/components/modal/modal.module';
   ],
   exports: [
     WthCommonModule,
-    ModalModule,
 
     // custom component
     ModalDockModule,
     ModalModule,
-    // FileModule,
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
@@ -116,15 +109,12 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     ZNoteSharedSettingModule,
 
     // third party libs
-    // TagInputModule,
     InputSwitchModule,
     CheckboxModule,
     RadioButtonModule,
     AutoCompleteModule,
-    // CalendarModule,
     PanelMenuModule,
     TooltipModule,
-    // WCountriesModule,
 
     ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
@@ -134,7 +124,7 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     ZNoteSharedHeaderComponent,
     ZNoteContainerComponent,
 
-    ZNoteSharedModalNoteViewComponent,
+    // ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
     ZNoteSharedTrashActionBarComponent,

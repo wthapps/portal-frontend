@@ -115,9 +115,10 @@ $note-action: 170px;
       .component-listbox-name {
         margin-bottom: 0;
         span {
-          white-space: nowrap;
-          -ms-text-overflow: ellipsis;
-          text-overflow: ellipsis;
+          @include text-overflow();
+          // white-space: nowrap;
+          // -ms-text-overflow: ellipsis;
+          // text-overflow: ellipsis;
         }
       }
       .component-listbox-action, .component-listbox-description {
@@ -159,6 +160,20 @@ $note-action: 170px;
   display: none;
 }
 
+.component-listbox-list {
+  .component-listbox-name {
+    position: relative;
+    span {
+      display: block;
+      @include text-overflow();
+      position: absolute;
+      @include center(false, true);
+      left: 0;
+      right: 0;
+    }
+  }
+}
+
 @media (max-width: $screen-xs-max) {
   .component-listbox-input {
     position: relative;
@@ -187,20 +202,19 @@ $note-action: 170px;
       .component-listbox-input {
         width: 40px;
       }
-      .component-listbox-name {
-        position: relative;
-        span {
-          display: block;
-          white-space: nowrap;
-          overflow: hidden;
-          -ms-text-overflow: ellipsis;
-          text-overflow: ellipsis;
-          position: absolute;
-          @include center(false, true);
-          left: 0;
-          right: 0;
-        }
-      }
+      // .component-listbox-name {
+      //   position: relative;
+      //   span {
+      //     display: block;
+      //     @include text-overflow();
+      //     position: absolute;
+      //     @include center(false, true);
+      //     left: 0;
+      //     right: 0;
+      //   }
+      // }
     }
   }
 }
+
+

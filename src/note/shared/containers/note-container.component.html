@@ -1,4 +1,4 @@
-<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="'MY_NOTE'">
+<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="'MY_NOTE'" [viewMode]="(context$ | async)?.viewMode">
   <!-- <pre>
     {{userService.getSyncProfile() | json}}
   </pre> -->

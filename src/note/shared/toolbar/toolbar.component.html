@@ -1,11 +1,10 @@
 <div class="page-body-control-nav page-body-control-nav-right">
   <z-note-shared-actions-bar [page]="page" [selectedObjects]="selectedObjects" [toolbarPosition]="'top'" *ngIf="page !== PAGE_TYPE.TRASH" ></z-note-shared-actions-bar>
   <z-note-shared-trash-actions-bar [selectedObjects]="selectedObjects" [toolbarOnly]="true" *ngIf="page === PAGE_TYPE.TRASH"></z-note-shared-trash-actions-bar>
-  <ul class="page-body-control-menu">
-    <li class="dropdown action">
-      <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+  <div class="btn-group">
+    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
               pTooltip="{{ tooltip.changeView }}" tooltipPosition="bottom">
-        <i class="fa" [ngClass]="{'fa-th-list': (viewMode$ | async) == 'list', 'fa-th-large': (viewMode$ | async) == 'grid'}"></i>
+        <i class="fa" [ngClass]="{'fa-th-list': viewMode === 'list', 'fa-th-large': viewMode === 'grid', 'fa-align-left': viewMode === 'time'}"></i>
       </button>
       <ul class="dropdown-menu dropdown-menu-right text-right">
         <li>
@@ -27,8 +26,7 @@
           </a>
         </li>
       </ul>
-    </li>
-  </ul>
+  </div>
 </div>
 
 <div class="page-body-control-nav">
