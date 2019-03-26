@@ -240,7 +240,7 @@ $note-editor-aside-w: 400px;
     }
 
     #quill-toolbar .ql-font span[data-value="lato"]::before, .ql-font-lato {
-      font-family: "Lato";
+      font-family: 'Lato', sans-serif;
     }
 
     #quill-toolbar .ql-font span[data-value="couriernew"]::before, .ql-font-couriernew {
