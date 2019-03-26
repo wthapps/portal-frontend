@@ -7,7 +7,8 @@ import {
   ContentChild,
   TemplateRef,
   ViewChild,
-  HostBinding
+  HostBinding,
+  OnChanges, SimpleChanges
 } from '@angular/core';
 import { SelectContainerComponent } from 'ngx-drag-to-select';
 
@@ -17,7 +18,7 @@ import { SelectContainerComponent } from 'ngx-drag-to-select';
   styleUrls: ['w-dataView.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class WDataViewComponent {
+export class WDataViewComponent implements OnChanges {
   @HostBinding('class') class = 'objects-main-content';
   @Input() data: any;
   @Input() scrollWindow: false;
@@ -34,6 +35,10 @@ export class WDataViewComponent {
   constructor() {
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
+
   onSelect(e: any) {
     this.selectCompleted.emit(e);
   }
@@ -44,6 +49,7 @@ export class WDataViewComponent {
   }
 
   updateSelect() {
+    console.log('this.container.update()');
     this.container.update();
   }
 }

@@ -114,9 +114,9 @@ $i_content-grid: 4;
       z-index: 2;
       @include center();
       text-align: center;
-      font-size: 48px;
-      width: 50px;
-      height: 50px;
+      font-size: 54px;
+      width: 54px;
+      height: 54px;
       &:before {
         @include center();
       }

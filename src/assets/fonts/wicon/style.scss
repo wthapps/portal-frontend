@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?46n49x');
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?46n49x#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?46n49x') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?46n49x') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?46n49x##{$icomoon-font-family}') format('svg');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?x6lxy');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?x6lxy#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?x6lxy') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?x6lxy') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?x6lxy##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -26,10 +26,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.wicon-folder-shared {
+  &:before {
+    content: $wicon-folder-shared; 
+  }
+}
 .wicon-merge {
   &:before {
-    content: $wicon-merge;     
-    color: #4a4a4a;
+    content: $wicon-merge; 
   }
 }
 .wicon-move-to-folder {

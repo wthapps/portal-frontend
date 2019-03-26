@@ -82,8 +82,10 @@ export class NNoteListComponent implements OnInit {
   }
 
   onViewComplete(event: any) {
-    this.dataView.viewMode = event
-    this.dataView.updateSelect()
+    this.dataView.viewMode = event;
+    // this.dataView.container.ngOnDestroy();
+    this.dataView.container.update();
+    this.dataView.updateSelect();
   }
 
   onSelectCompleted() {

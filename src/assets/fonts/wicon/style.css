@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'wicon';
-  src:  url('fonts/wicon.eot?46n49x');
-  src:  url('fonts/wicon.eot?46n49x#iefix') format('embedded-opentype'),
-    url('fonts/wicon.ttf?46n49x') format('truetype'),
-    url('fonts/wicon.woff?46n49x') format('woff'),
-    url('fonts/wicon.svg?46n49x#wicon') format('svg');
+  src:  url('fonts/wicon.eot?x6lxy');
+  src:  url('fonts/wicon.eot?x6lxy#iefix') format('embedded-opentype'),
+    url('fonts/wicon.ttf?x6lxy') format('truetype'),
+    url('fonts/wicon.woff?x6lxy') format('woff'),
+    url('fonts/wicon.svg?x6lxy#wicon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,9 +24,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.wicon-folder-shared:before {
+  content: "\e902";
+}
 .wicon-merge:before {
   content: "\e900";
-  color: #4a4a4a;
 }
 .wicon-move-to-folder:before {
   content: "\e901";
