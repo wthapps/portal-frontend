@@ -32,6 +32,8 @@ import { filter, map, skip, take, takeUntil } from 'rxjs/operators';
 import { ChannelEvents } from '@shared/channels';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 import { MESSAGE_DELETE, MessageEventService } from '@chat/shared/message';
+import { CardDetailModalComponent } from '@shared/user/card';
+import { ProfileService } from '@shared/user/services';
 
 declare var $: any;
 
@@ -42,6 +44,7 @@ declare var $: any;
 export class ConversationDetailComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
+  @ViewChild('cardDetailModal') cardDetailModal: CardDetailModalComponent;
   // @Input() channel = 'ConversationDetailComponent';
   events: any;
   joinedConversation$: Observable<any>;
@@ -55,6 +58,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   cursor: number;
   conversationChannel: any;
   conversationId: string;
+  profile$: Observable<any>;
 
   constructor(
     private chatService: ChatService,
@@ -72,7 +76,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     private websocketService: WebsocketService,
     private contactSelectionService: ContactSelectionService,
     private messageEventService: MessageEventService,
-  ) {
+    private profileService: ProfileService,
+) {
     super(commonEventService);
     this.currentUser$ = userService.profile$;
     this.networkOnline$ = this.storage.getAsync(NETWORK_ONLINE);
@@ -293,6 +298,11 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {conversation: conversation}}));
   }
 
+  viewProfile(user: any) {
+    this.profile$ = this.profileService.profile$;
+    this.profileService.getProfileNew(user.uuid);
+    this.cardDetailModal.open({});
+  }
 
   /*
    * Conversation actions ending

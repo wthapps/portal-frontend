@@ -7,44 +7,32 @@ import { CheckboxModule, TooltipModule } from 'primeng/primeng';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 
 import {
-  CardItemComponent,
-  CardListComponent,
-  CardEditModalComponent
-} from './components';
+  CardDetailModalComponent
+} from './card-detail-modal.component';
 
-import { CardRoutingModule } from './card-routing';
-import { CardService } from './card.service';
 import { AutofocusModule } from '@shared/directives/autofocus';
-import { ZContactPipeModule } from '../pipe/pipe.module';
-import { UserCardModule } from '@shared/user/card';
+import { UserPipeModule } from '@shared/user/pipe/user-pipe.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    CardRoutingModule,
     BsModalModule,
     CheckboxModule,
     TooltipModule,
     PipeModule,
-    ZContactPipeModule,
-    AutofocusModule,
-    UserCardModule,
+    UserPipeModule,
+    AutofocusModule
   ],
   declarations: [
-    CardItemComponent,
-    CardEditModalComponent,
-    CardListComponent
+    CardDetailModalComponent,
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
-
-    CardItemComponent,
-    CardEditModalComponent,
-    CardListComponent
+    CardDetailModalComponent,
   ],
-  providers: [CardService]
+  providers: []
 })
-export class CardModule {}
+export class UserCardModule {}

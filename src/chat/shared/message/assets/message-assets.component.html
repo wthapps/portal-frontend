@@ -16,12 +16,11 @@
                 <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
+                <li>
+                  <a href="javascript:void(0);" (click)="viewProfile(user)">View Profile</a>
+                </li>
                 <li *ngIf="authService.user.id !== user.id">
                   <a href="javascript:void(0);" (click)="createChat(user)">Send Message</a>
-                </li>
-                <li>
-                  <!-- <a [routerLink]="[profileUrl, user.uuid]">View Profile</a> -->
-                  <a (click)="viewProfile()">View Profile</a>
                 </li>
                 <li *ngIf="showBlacklist">
                   <a href="javascript:void(0);" (click)="onAddToBlackList(user)">Blacklist</a>

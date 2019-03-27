@@ -10,6 +10,7 @@ import { SharedCardPageComponent } from './shared-card-page.component';
 import { SharedCardPageRoutingModule } from './shared-card-page-routing';
 import { CardModule, CardService } from '@contacts/shared/card';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
+import { UserCardModule } from '@shared/user/card';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-da
 
     BoxNoDataModule,
     CardModule,
+    UserCardModule,
     SharedCardPageRoutingModule,
   ],
   declarations: [

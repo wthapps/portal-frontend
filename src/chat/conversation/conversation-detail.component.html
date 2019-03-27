@@ -2,6 +2,7 @@
   <z-chat-share-toolbar [conversation]="conversation" class="page-body-control"
                         (onUpdateDisplay)="updateDisplay($event)"
                         (onAddMember)="openContactSelection($event)"
+                        (onViewDetail)="viewProfile($event)"
   >
   </z-chat-share-toolbar>
   <div class="page-body-content page-body-content-chat has-page-body-control"
@@ -27,7 +28,14 @@
                     (onCreate)="createMessage($event)"
                     (onError)="showEditorError($event)">
     </message-editor>
-    <message-assets class="message-assets" [conversation]="conversation"></message-assets>
+    <message-assets class="message-assets"
+                    [conversation]="conversation"
+                    (onViewProfile)="viewProfile($event)"
+    >
+
+    </message-assets>
   </div>
 </ng-container>
+<w-card-detail-modal #cardDetailModal [card]="profile$|async">
 
+</w-card-detail-modal>

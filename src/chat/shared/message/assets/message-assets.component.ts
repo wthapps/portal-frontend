@@ -1,5 +1,5 @@
 import { ChatMessageService } from './../../services/chat-message.service';
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
@@ -33,7 +33,9 @@ import { MemberService } from '@chat/shared/services';
 })
 export class MessageAssetsComponent implements OnInit, OnDestroy {
   @Input() conversation: any;
+  @Output() onViewProfile: EventEmitter<any> = new EventEmitter<any>();
   tooltip: any = Constants.tooltip;
+
 
   tabMember: WTab = {
     name: 'Members',
@@ -208,8 +210,8 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     });
   }
 
-  viewProfile() {
-    console.log('View profile ...');
+  viewProfile(user: any) {
+    this.onViewProfile.emit(user);
   }
 
   onClose() {

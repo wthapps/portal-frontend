@@ -93,7 +93,7 @@
             <dt>Address</dt>  
           <ng-container *ngFor="let item of card.addresses; trackBy:trackByFn">
               <dd>
-                  <span [innerHTML]="item | contactAddressPipe"></span> <span class="text-fade">&nbsp; &bull; {{ item.category }} </span>
+                  <span [innerHTML]="item | userAddress"></span> <span class="text-fade">&nbsp; &bull; {{ item.category }} </span>
               </dd>
             </ng-container>    
         </ng-container>

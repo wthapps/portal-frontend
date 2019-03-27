@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Address } from '@contacts/contact/address.model';
+import { Address } from '../../../contact/contact/address.model';
 
-@Pipe({ name: 'contactAddressPipe' })
-export class ContactAddressPipe implements PipeTransform {
+@Pipe({ name: 'userAddress' })
+export class UserAddressPipe implements PipeTransform {
   transform(item: Address) {
     const {
       address_line1,

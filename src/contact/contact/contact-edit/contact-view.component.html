@@ -69,7 +69,7 @@
         <ng-template ngFor let-item [ngForOf]="contact.addresses">
           <dt>{{ item.category | keyToValue:addressCategories:'value':'text' }}</dt>
           <dd>
-            <p [innerHTML]="item | contactAddressPipe">
+            <p [innerHTML]="item | userAddress">
               <!-- {{ item.address_line1 }}
               <br> {{ item.address_line2 }}
               <br> {{ item.city }} {{ item.province }} {{ item.postcode }}

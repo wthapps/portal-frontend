@@ -9,6 +9,7 @@ import { AccountService } from '@shared/services';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { ShareEditorModule } from '@shared/components/editors/share';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
+import { UserCardModule } from '@shared/user/card';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
     BoxNoDataModule,
     BoxLoadingModule,
     CardModule,
+    UserCardModule,
     ShareEditorModule
   ],
   declarations: [ProfilePageComponent],

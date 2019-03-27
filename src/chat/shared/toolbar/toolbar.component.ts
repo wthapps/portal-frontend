@@ -29,7 +29,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   @Input() inContactBook = true;
   @Output() onAddMember: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdateDisplay: EventEmitter<any> = new EventEmitter<any>();
-
+  @Output() onViewDetail: EventEmitter<any> = new EventEmitter<any>();
 
   showMemberBar = false;
   usersOnlineItem$: Observable<any>;
@@ -107,6 +107,10 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
 
   }
 
+  viewProfile() {
+    this.onViewDetail.emit(this.conversation.partner);
+  }
+
   leaveConversation() {
     this.onUpdateDisplay.emit({...this.conversation, left: true});
   }
@@ -133,13 +137,6 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  viewProfile() {
-    this.commonEventService.broadcast({
-      channel: 'CardUserComponent',
-      action: 'open',
-      payload: this.conversation.partner
-    })
-  }
 
   onSelect(user: any) {
     this.chatService.selectContactByPartnerId(user.id);

@@ -1,8 +1,8 @@
 import { Component, ViewEncapsulation, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
-import { PUBLIC, BUSINESS, NONE } from '../card.constant';
-import { Constants } from '@shared/constant';
-import { CountryService } from '@shared/shared/components/countries/countries.service';
+import { PUBLIC, BUSINESS, NONE } from '../../../contact/shared/card/card.constant';
+import { Constants } from '../../constant';
+import { CountryService } from '../../shared/components/countries/countries.service';
 import { Observable } from 'rxjs';
 
 @Component({

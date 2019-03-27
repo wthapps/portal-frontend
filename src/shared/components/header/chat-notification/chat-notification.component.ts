@@ -10,7 +10,7 @@ import { Conversation } from '@chat/shared/models/conversation.model';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { Observable } from 'rxjs/Observable';
-import { AuthService, ChatCommonService, CommonEventHandler, CommonEventService, CommonEvent } from '@shared/services';
+import { AuthService, CommonEventHandler, CommonEventService, CommonEvent } from '@shared/services';
 import { Subject } from 'rxjs';
 import { takeUntil, map, switchMap } from 'rxjs/operators';
 import { ConversationService } from '@chat/conversation/conversation.service';
@@ -20,7 +20,8 @@ declare var $: any;
 @Component({
   selector: 'chat-notification',
   templateUrl: './chat-notification.component.html',
-  styleUrls: ['./chat-notification.component.scss']
+  styleUrls: ['./chat-notification.component.scss'],
+  providers: [ConversationService]
 })
 export class ChatNotificationComponent extends CommonEventHandler implements OnInit, OnDestroy {
   readonly tooltip: any = Constants.tooltip;
