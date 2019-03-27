@@ -45,13 +45,13 @@
                       </div>
                     </div>
                     <div class="col-sm-6 mb10">
-                      <input [formControl]="company" type="text" class="form-control" placeholder="Company or organization">
+                      <input [formControl]="company" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null" placeholder="Company/organization">
                     </div>
                     <div class="col-sm-6 mb10">
-                      <input [formControl]="occupation" type="text" class="form-control" placeholder="Job title">
+                      <input [formControl]="occupation" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null" placeholder="Title/job">
                     </div>
                     <div class="col-sm-12 mb10">
-                      <input [formControl]="headline" type="text" class="form-control" placeholder="Headline">
+                      <input [formControl]="headline" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null" placeholder="Headline">
                     </div>
                   </div>
                 </div>

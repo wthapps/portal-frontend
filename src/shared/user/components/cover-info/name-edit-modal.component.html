@@ -10,41 +10,68 @@
       <div>
         <div class="row">
           <div class="col-md-6">
-            <div class="form-group" [ngClass]="{'has-error': (f.first_name.errors && f.first_name.touched)}">
+            <div class="form-group" [ngClass]="{'has-error': (first_name.errors && first_name.touched)}">
               <label for="first_name">First name</label>
-              <input type="text" class="form-control" id="first_name" placeholder="First name"
+              <input type="text" class="form-control" id="first_name" placeholder="Enter first name"
                      formControlName="first_name">
-              <div *ngIf="f.first_name.errors && f.first_name.touched">
-                <span *ngIf="f.first_name.errors.required" class="help-block">First name is required</span>
-                <span *ngIf="f.first_name.errors.blanked" class="help-block">Firs name is blanked</span>
-                <span *ngIf="f.first_name.errors.maxlength" class="help-block">First name max length is 50 characters</span>
+              <div *ngIf="first_name.errors && first_name.touched">
+                <span *ngIf="first_name.errors.required" class="help-block">First name is required</span>
+                <span *ngIf="first_name.errors.blanked" class="help-block">Firs name is blanked</span>
+                <span *ngIf="first_name.errors.maxlength" class="help-block">First name max length is 50 characters</span>
               </div>
             </div>
           </div>
 
           <div class="col-md-6">
-            <div class="form-group" [ngClass]="{'has-error': (f.last_name.errors && f.last_name.touched)}">
+            <div class="form-group" [ngClass]="{'has-error': (last_name.errors && last_name.touched)}">
               <label for="last_name">Last name</label>
-              <input type="text" class="form-control" id="last_name" placeholder="Last name"
+              <input type="text" class="form-control" id="last_name" placeholder="Enter last name"
                      formControlName="last_name">
-              <div *ngIf="f.last_name.errors && f.last_name.touched">
-                <span *ngIf="f.last_name.errors.required" class="help-block">Last name is required</span>
-                <span *ngIf="f.last_name.errors.blanked" class="help-block">Last name is blanked</span>
-                <span *ngIf="f.last_name.errors.maxlength" class="help-block">Last name max length is 50 characters</span>
+              <div *ngIf="last_name.errors && last_name.touched">
+                <span *ngIf="last_name.errors.required" class="help-block">Last name is required</span>
+                <span *ngIf="last_name.errors.blanked" class="help-block">Last name is blanked</span>
+                <span *ngIf="last_name.errors.maxlength" class="help-block">Last name max length is 50 characters</span>
               </div>
             </div>
           </div>
         </div>
         <div class="row" *ngIf="!nameOnly">
           <div class="col-md-12">
-            <div class="form-group" [ngClass]="{'has-error': (f.nickname.errors && f.nickname.touched)}">
+            <div class="form-group" [ngClass]="{'has-error': (nickname.errors && nickname.touched)}">
             <label for="nickname">Nick name</label>
-            <input type="text" class="form-control" id="nickname" placeholder="Nick name"
+            <input type="text" class="form-control" id="nickname" placeholder="Enter nickname"
                    formControlName="nickname">
-              <div *ngIf="f.nickname.errors && f.nickname.touched">
-                <span *ngIf="f.nickname.errors.blanked" class="help-block">Nick name is blanked</span>
-                <span *ngIf="f.nickname.errors.maxlength" class="help-block">Nick name max length is 250 characters</span>
+              <div *ngIf="nickname.errors && nickname.touched">
+                <span *ngIf="nickname.errors.blanked" class="help-block">Nick name is blanked</span>
+                <span *ngIf="nickname.errors.maxlength" class="help-block">Nick name max length is 250 characters</span>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!nameOnly">
+          <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': (company.errors && company.touched)}">
+            <label for="company">Company</label>
+            <input type="text" class="form-control" id="company" placeholder="Company/organization"
+                   formControlName="company">
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group" [ngClass]="{'has-error': (occupation.errors && occupation.touched)}">
+            <label for="occupation">Title</label>
+            <input type="text" class="form-control" id="occupation" placeholder="Title/job/department"
+                   formControlName="occupation">
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="!nameOnly">
+          <div class="col-md-12">
+            <div class="form-group" [ngClass]="{'has-error': (headline.errors && headline.touched)}">
+            <label for="headline">Headline</label>
+            <input type="text" class="form-control" id="headline" placeholder="Enter your headline"
+                   formControlName="headline">
             </div>
           </div>
         </div>

@@ -68,16 +68,13 @@
         z-index: 3;
         //color: #ffffff
         color: $text-color;
-        .z-name, .z-shared-info ul li {
+        .z-name {
           //color: #ffffff;
           color: $text-color;
           white-space: nowrap;
           text-overflow: ellipsis;
           width: 100%;
           overflow: hidden;          
-        }
-        .z-shared-info ul li {
-          font-size: inherit;
         }
         .w-user-name {
           position: absolute;

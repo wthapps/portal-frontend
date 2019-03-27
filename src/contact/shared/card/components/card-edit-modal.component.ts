@@ -15,8 +15,7 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { AbstractControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 declare var $: any;
-
-const BODY_MAX_HEIGHT = 430; // in px
+declare var _: any;
 @Component({
   selector: 'w-card-edit-modal',
   templateUrl: 'card-edit-modal.component.html',
@@ -29,14 +28,11 @@ export class CardEditModalComponent {
   @Input() profile: any;
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<any>();
-  // selectedFields: string[] = [];
-  // cardName = UNTITILED;
 
   form: FormGroup;
   first_name: AbstractControl;
   last_name: AbstractControl;
   company: AbstractControl;
-  // groups: AbstractControl;
   occupation: AbstractControl;
   headline: AbstractControl;
   about: AbstractControl;
@@ -55,7 +51,7 @@ export class CardEditModalComponent {
   readonly BUSINESS = BUSINESS;
   readonly NONE = NONE;
   readonly SEX = Constants.sex;
-  readonly READONLY_FIELDS = ['first_name', 'last_name', 'about'];
+  readonly READONLY_FIELDS = ['first_name', 'last_name', 'company', 'occupation', 'headline', 'about'];
 
   readonly DEFAULT_CARD = {
     card_type: BUSINESS,
@@ -63,7 +59,6 @@ export class CardEditModalComponent {
     public_fields: ['name', 'profile_image'],
   };
   private mode: string = 'create' || 'edit';
-  // private card: any;
 
   constructor(public countryService: CountryService,
       private fb: FormBuilder
@@ -75,7 +70,10 @@ export class CardEditModalComponent {
   open(options: any): void {
     this.mode = options.mode;
     const card = options.card || this.DEFAULT_CARD;
-    this.updateForm(card);
+    if (this.mode === 'create') {
+      this.resetForm();
+    }
+    this.updateForm({...this.profile, ...card});
 
 
     this.modal.open();
@@ -88,18 +86,21 @@ export class CardEditModalComponent {
     this.form.patchValue(formValue);
   }
 
+  resetForm() {
+    this.form.reset();
+  }
+
   createForm() {
     this.form = this.fb.group({
-      'id': [''],
       'uuid': [''],
       'card_name': [this.DEFAULT_CARD.card_name],
       'card_type': [this.DEFAULT_CARD.card_type],
-      'first_name': [''],
-      'last_name': [''],
-      'company': [''],
-      'occupation': [''],
-      'headline': [''],
-      'about': [''],
+      'first_name': [_.get(this.profile, 'first_name', '')],
+      'last_name': [_.get(this.profile, 'last_name', '')],
+      'company': [_.get(this.profile, 'company', '')],
+      'occupation': [_.get(this.profile, 'occupation', '')],
+      'headline': [_.get(this.profile, 'headline', '')],
+      'about': [_.get(this.profile, 'about', '')],
       'public_fields': [this.DEFAULT_CARD.public_fields],
       'emails': [''],
       'phones': [''],
@@ -151,7 +152,6 @@ export class CardEditModalComponent {
 
   enableShowMore() {
     this.showMore = true;
-    // this.showMore = $('.card-edit-modal-body').height() > BODY_MAX_HEIGHT;
   }
 
   onToggleShowMore(showMore) {
@@ -162,13 +162,15 @@ export class CardEditModalComponent {
     let card = {};
     if (this.mode === 'create') {
       card = {
-        card_type: 'business',
+        card_type: BUSINESS,
         card_name: this.card_name.value || UNTITILED,
         public_fields: this.public_fields.value,
       };
     }
     Object.assign(card, this.form.value);
-    this.READONLY_FIELDS.forEach(f => delete card[f]);
+    if (card['card_type'] === PUBLIC) {
+      this.READONLY_FIELDS.forEach(f => delete card[f]);
+    }
     this.save.emit({mode: this.mode, card});
 
   }

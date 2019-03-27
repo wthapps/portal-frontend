@@ -81,7 +81,7 @@ export class CardService extends BaseEntityService<any> {
   }
 
   createCard(card: any) {
-    this.create({card: card}).subscribe(response => {
+    this.create(card).subscribe(response => {
       const newCard = response.data.attributes;
       this.setCard(newCard);
       this.setCards([newCard, ...this.itemsSubject.getValue()]);
@@ -90,15 +90,9 @@ export class CardService extends BaseEntityService<any> {
 
   updateCard(card: any) {
     this.apiBaseService.patch(`${this.url}/${card.uuid}`, card).subscribe(response => {
-      this.setCard(response.data.attributes);
-      const items = this.itemsSubject.getValue();
-      items.forEach(item => {
-        if (item.uuid === response.data.attributes.uuid) {
-          item.card_name = response.data.attributes.card_name;
-          item.profile_image = response.data.attributes.profile_image;
-          return;
-        }
-      });
+      const updatedCard = response.data.attributes;
+      this.setCard(updatedCard);
+      const items = this.itemsSubject.getValue().map(item => item.uuid === updatedCard.uuid ? updatedCard : item);
       this.setCards(items);
       this.toastService.success('You updated card successfully!');
     });
