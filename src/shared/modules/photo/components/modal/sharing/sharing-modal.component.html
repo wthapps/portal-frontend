@@ -20,7 +20,7 @@
       </p-autoComplete> -->
       <p-chips [(ngModel)]="newUsers" class="flex-1 sharing-chips"
         [ngClass]="cMode == 'add' || cMode == 'loading' ? 'flex-1 sharing-chips' : 'hidden'"
-        (onKeydown)="onKeydown($event)" [inputId]="'p-chips-sharing'" placeholder="Enter name or email">
+        [inputId]="'p-chips-sharing'" placeholder="Enter name or email">
         <ng-template let-item pTemplate="item">
           <span class="pr15">{{ item.name }}</span>
         </ng-template>
@@ -168,9 +168,10 @@
 
     <button *ngIf="changed" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
     <button *ngIf="!changed" type="button" (click)="clickDone()" class="btn btn-outline-primary btn-min">Done </button>
-    <button *ngIf="changed && updating" type="button" (click)="save()" class="btn btn-outline-primary btn-min">Save
+    <button *ngIf="changed && cMode == modes.updating" type="button" (click)="save()"
+      class="btn btn-outline-primary btn-min">Save
       Changes</button>
-    <button *ngIf="changed && !updating" type="button" class="btn btn-outline-primary btn-min"
+    <button *ngIf="changed && cMode != modes.updating" type="button" class="btn btn-outline-primary btn-min"
       [ngClass]="{'text-disable': !changed}" [disabled]="!changed" (click)="save()">Share</button>
   </bs-modal-footer>
 </bs-modal>
