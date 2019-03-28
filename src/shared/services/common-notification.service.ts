@@ -206,15 +206,17 @@ export class CommonNotificationInterface {
       });
   }
 
-  getLatestNotifications(): Promise<any> {
+  getLatestNotifications(): void {
+    if (this.initLoad) {
+      return;
+    }
+    // Only load once at first time
     if (
-      this.initLoad &&
-      this.loadingDone &&
       !(this.authService.loggedIn && this.authService.user)
     ) {
-      return Promise.reject(new Error('user does not log in yet'));
-    } // Only load once at first time
-    return this.api
+      throw new Error('user does not log in yet');
+    }
+    this.api
       .get(`${this.url}/get_latest`, { sort_name: 'created_at' })
       .toPromise()
       .then(

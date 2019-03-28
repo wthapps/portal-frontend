@@ -59,45 +59,17 @@
           </ng-template>
         </div>
         <div class="media-avatar-body">
-          <h4 class="m0"> {{ card?.first_name + ' ' + card?.last_name }} </h4>
-          <span *ngIf="card?.company">{{ card?.company + ', ' }} </span> <span> {{ card?.occupation }} </span>
-          <div>
+          <p class="card-owner-name m0"> {{ card?.first_name + ' ' + card?.last_name }} </p>
+          <p class="card-company m0"><span *ngIf="card?.company">{{ card?.company + ', ' }} </span> <span> {{ card?.occupation }} </span></p>
+          <p class="card-company">
             {{ card?.headline}}
-          </div>
+          </p>
         </div>
       </div>
     </div>
 
 
     <dl class="dl-horizontal pcard-info">
-        <ng-container *ngIf="card && card.sex">
-          <dt>Gender</dt>   
-          <dd>{{ SEX[card?.sex] || NONE }}</dd>
-        </ng-container>
-
-        <ng-container *ngIf="card && card.birthday">
-          <dt>Birthday</dt>   
-          <dd>{{ (card?.birthday | timeFormat) || NONE }}</dd>
-        </ng-container>
-
-          <ng-container *ngIf="card && card.nationality">
-              <dt>
-                Nationality
-              </dt>
-              <dd>
-                <!-- {{ (countryService.getCountry(card?.nationality) | async).name || NONE }} -->
-                {{ card?.nationality | countryCode2Value: (countryService.countriesCode$ | async)}}
-              </dd>
-          </ng-container>
-          <ng-container *ngIf="card?.about">
-              <dt>
-                About
-              </dt>
-              <dd>
-                  {{ card?.about || NONE }}
-              </dd>
-          </ng-container>
-
           <ng-container *ngIf="card && card.emails && card.emails.length > 0">
             <dt>Email</dt>
             <ng-container *ngFor="let item of card.emails; trackBy:trackByFn">
@@ -135,6 +107,34 @@
               <dd><a [href]="item.value">{{ item.value }}</a> <span class="text-fade">&nbsp; &bull; {{ item.category }} </span></dd>
           </ng-template>
         </ng-container>
+
+        <ng-container *ngIf="card && card.sex">
+            <dt>Gender</dt>   
+            <dd>{{ SEX[card?.sex] || NONE }}</dd>
+          </ng-container>
+  
+          <ng-container *ngIf="card && card.birthday">
+            <dt>Birthday</dt>   
+            <dd>{{ (card?.birthday | timeFormat) || NONE }}</dd>
+          </ng-container>
+  
+            <ng-container *ngIf="card && card.nationality">
+                <dt>
+                  Nationality
+                </dt>
+                <dd>
+                  <!-- {{ (countryService.getCountry(card?.nationality) | async).name || NONE }} -->
+                  {{ card?.nationality | countryCode2Value: (countryService.countriesCode$ | async)}}
+                </dd>
+            </ng-container>
+            <ng-container *ngIf="card?.about">
+                <dt>
+                  About
+                </dt>
+                <dd>
+                    {{ card?.about || NONE }}
+                </dd>
+            </ng-container>
   
         <ng-container *ngIf="card?.custom_fields?.length > 0">
             <ng-template ngFor let-item [ngForOf]="card.custom_fields" let-i="index" >

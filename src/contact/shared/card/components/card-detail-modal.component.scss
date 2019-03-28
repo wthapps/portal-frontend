@@ -1,6 +1,16 @@
 @import "../../../../assets/styles/global";
 
 .pcard-cover {
+  .media-avatar-body {
+    .card-owner-name {
+      font-size: $font-size-h1;
+    }
+
+    .card-company {
+      font-size: $font-size-h4;
+    }
+  }
+
   @media (min-width: $screen-sm) {
     .media-avatar-body {
       border-bottom: 1px solid $light-grey;
