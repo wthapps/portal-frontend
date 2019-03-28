@@ -7,7 +7,7 @@ import {
   MESSAGE_QUOTE,
   MESSAGE_UPDATE
 } from '@chat/shared/message/message-event.constant';
-import { EventData } from '@core/base-event';
+import { EventData } from '@shared/base-event';
 
 @Injectable()
 export class MessageEventService {

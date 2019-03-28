@@ -28,14 +28,11 @@ import * as ConversationActions from '@chat/store/conversation/conversation.acti
 import { MessageActions, MessageSelectors } from '@chat/store/message';
 import { WebsocketService } from '@shared/channels/websocket.service';
 import { Channel, Presence } from 'phoenix';
-import { filter, map, skip, take, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { ChannelEvents } from '@shared/channels';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 import { MESSAGE_DELETE, MessageEventService } from '@chat/shared/message';
-import { CardDetailModalComponent } from '@shared/user/card';
-import { ProfileService } from '@shared/user/services';
-
-declare var $: any;
+import { UserEventService } from '@shared/user/event';
 
 @Component({
   selector: 'conversation-detail',
@@ -44,7 +41,7 @@ declare var $: any;
 export class ConversationDetailComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @ViewChild('messageList') messageList: MessageListComponent;
   @ViewChild('messageEditor') messageEditor: MessageEditorComponent;
-  @ViewChild('cardDetailModal') cardDetailModal: CardDetailModalComponent;
+
   // @Input() channel = 'ConversationDetailComponent';
   events: any;
   joinedConversation$: Observable<any>;
@@ -58,7 +55,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   cursor: number;
   conversationChannel: any;
   conversationId: string;
-  profile$: Observable<any>;
 
   constructor(
     private chatService: ChatService,
@@ -76,7 +72,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     private websocketService: WebsocketService,
     private contactSelectionService: ContactSelectionService,
     private messageEventService: MessageEventService,
-    private profileService: ProfileService,
+    private userEventService: UserEventService,
 ) {
     super(commonEventService);
     this.currentUser$ = userService.profile$;
@@ -298,16 +294,9 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {conversation: conversation}}));
   }
 
-  viewProfile(user: any) {
-    this.profile$ = this.profileService.profile$;
-    this.profileService.getProfileNew(user.uuid);
-    this.cardDetailModal.open({});
-  }
-
-  /*
+   /*
    * Conversation actions ending
    */
-
 
   openContactSelection(conversation: any) {
     this.contactSelectionService.open({
@@ -315,6 +304,10 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       title: 'Add Members',
       path: `chat/conversations/${conversation.uuid}/members/my_contacts`
     });
+  }
+
+  viewProfile(user: any) {
+    this.userEventService.viewProfile(user);
   }
 
   drop(e: any) {

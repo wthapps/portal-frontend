@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseEvent } from '@core/base-event/base-event';
+import { BaseEvent } from '@shared/base-event/base-event';
 import { CONVERSATION_DELETE, CONVERSATION_EDIT, CONVERSATION_UPDATE } from '@chat/shared/conversation';
 
 @Injectable()

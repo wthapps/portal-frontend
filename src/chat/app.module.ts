@@ -16,18 +16,17 @@ import { ZChatSharedModule } from './shared/shared.module';
 import { ZChatSettingModule } from './setting/setting.module';
 import { ZChatConversationModule } from './conversation/conversation.module';
 import { ZChatContactModule } from './contact/contact.module';
-import { ZChatContactSearchModule } from './search-new-contacts/contact-search.module';
-import { ZChatHistoryModule } from './history/history.module';
 import { ZChatPhotoModule } from './photo/photo.module';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 
 import { environment } from '@env/environment';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
-import { ZChatProfileModule } from '@chat/profile/profile.module';
 import { AppStoreModule } from '@chat/store';
 import { JwtIntercepter } from '@shared/services/auth/jwt-intercepter';
 import { ContactSelectionModule } from '@chat/shared/selections/contact';
+import { UserCardModule } from '@shared/user/card';
+import { UserEventModule } from '@shared/user/event';
 
 @NgModule({
   imports: [
@@ -41,14 +40,11 @@ import { ContactSelectionModule } from '@chat/shared/selections/contact';
     ZChatSettingModule,
     ZChatConversationModule,
     ZChatContactModule,
-    ZChatContactSearchModule,
-    ZChatHistoryModule,
-    ZChatProfileModule,
-    // ZChatSearchModule,
     ZChatPhotoModule,
-    // ZChatMyProfileModule,
     ChatNoteListModule,
     ContactSelectionModule,
+    UserCardModule,
+    UserEventModule,
 
     AppRoutingModule,
     ModalModule,

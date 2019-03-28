@@ -29,7 +29,6 @@ import { ChatService } from './services/chat.service';
 import { ChatContactService } from './services/chat-contact.service';
 import { ZChatSharedHeaderComponent } from './header/header.component';
 import { ChatCommonService } from '@wth/shared/services';
-import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 import { ChatMessageService } from './services/chat-message.service';
 import { ChatConversationService } from './services/chat-conversation.service';
 import { WthCommonModule } from '@shared/common/wth-common.module';
@@ -98,7 +97,6 @@ import { ChatNotificationService, MemberService } from '@chat/shared/services';
     // ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
-    ContactListModalComponent,
     MessageInvitationComponent,
     // ZChatShareRequestContactComponent,
   ],
@@ -143,7 +141,6 @@ import { ChatNotificationService, MemberService } from '@chat/shared/services';
     ZChatToolbarComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
-    ContactListModalComponent
   ]
 })
 export class ZChatSharedModule {

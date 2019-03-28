@@ -29,11 +29,13 @@
             <li>
               <a href="javascript:void(0);" (click)="onEditConversation()">Group settings</a>
             </li>
+            <li role="separator" class="divider"></li>
           </ng-container>
           <ng-container *ngIf="conversation.group_type === 'couple'">
             <li><a href="javascript:void(0)" (click)="viewProfile()">View Profile</a></li>
+            <li role="separator" class="divider"></li>
           </ng-container>
-          <li role="separator" class="divider"></li>
+
           <ng-container *ngIf="conversation.group_type === 'multiple'">
             <li>
               <a href="javascript:;" (click)="leaveConversation()">Leave chat</a>

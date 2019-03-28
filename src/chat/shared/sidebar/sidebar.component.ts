@@ -36,13 +36,15 @@ import {
 import { WebsocketService } from '@shared/channels/websocket.service';
 import { ChannelEvents } from '@shared/channels';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
+import { UserEventService } from '@shared/user/event';
 
 
 @Component({
   selector: 'z-chat-share-sidebar',
   templateUrl: 'sidebar.component.html',
   styleUrls: ['sidebar.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  providers: [UserEventService]
 })
 export class ZChatSidebarComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @HostBinding('class') cssClass = 'menuleft-chat';
@@ -85,7 +87,8 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     private apiBaseService: ApiBaseService,
     private authService: AuthService,
     private websocketService: WebsocketService,
-    private contactSelectionService: ContactSelectionService
+    private contactSelectionService: ContactSelectionService,
+    private userEventService: UserEventService
   ) {
     super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
@@ -146,6 +149,9 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       const conversation = response.data.attributes;
       this.updateConversationCallback(conversation);
     });
+
+    this.userEventService.viewProfile$.subscribe(response => console.log('testing;;;;', response));
+
   }
 
   /*
