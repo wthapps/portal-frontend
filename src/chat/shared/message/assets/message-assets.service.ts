@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Media } from '@shared/shared/models/media.model';
 import { map } from 'rxjs/operators/map';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { catchError } from 'rxjs/operators/catchError';
 import { ApiBaseService } from '@shared/services';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { DatePipe } from '@angular/common';
+import Media from '@shared/modules/photo/models/media.model';
 
 @Injectable()
 export class MessageAssetsService {
@@ -18,8 +18,8 @@ export class MessageAssetsService {
   private openSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private apiBaseService: ApiBaseService,
-              private objectListService: WObjectListService,
-              private datePipe: DatePipe) {
+    private objectListService: WObjectListService,
+    private datePipe: DatePipe) {
     this.medias$ = this.mediasSubject.asObservable().pipe(distinctUntilChanged());
     this.open$ = this.openSubject.asObservable().pipe(distinctUntilChanged());
     // this.openSubject.next(false);
@@ -76,7 +76,7 @@ export class MessageAssetsService {
     if (medias && medias.length > 0) {
       const withRemovedData = medias.filter(md => !inactiveIds.includes(md.id));
       const reverseList = messageList.reverse().filter(msg => !msg.deleted);
-      const totalData = [...reverseList , ...withRemovedData ];
+      const totalData = [...reverseList, ...withRemovedData];
       const updatedData = _.uniqBy(totalData, 'id');
       this.mediasSubject.next(updatedData);
     }

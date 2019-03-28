@@ -96,6 +96,7 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
         this.changeMode(this.modes.update);
         this.resetUserLists();
         this.filterContacts();
+        this.changed = false;
       });
     } else {
       const data: SharingEditParams = {
@@ -109,6 +110,7 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
         this.onSave.emit(res.data);
         this.changeMode(this.modes.update);
         this.filterContacts();
+        this.changed = false;
       });
     }
   }
