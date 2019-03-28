@@ -409,21 +409,12 @@ export class ZMediaSharingDetailComponent
   }
 
   openModalShare: (input: any) => void;
-  onSaveShare: (sharing: Sharing) => void;
+  // onSaveShare: (sharing: Sharing) => void;
+  onSaveShare(sharing: Sharing) {
+    this.object.recipients_count = sharing.recipients_count;
+    this.toastsService.success("success");
+  };
 
-  // onSaveShare(e: SharingModalResult) {
-  //   const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
-  //   const data: SharingCreateParams = {
-  //     objects: objects.map(s => { return { id: s.id, model: s.model } }),
-  //     // recipients: e.recipients.map(s => { return { role_id: s.role_id, recipient_id: s.user.id }}),
-  //     recipients: e.users,
-  //     role_id: e.role.id
-  //   };
-  //   this.apiBaseService.post('media/sharings', data).subscribe(res => {
-  //     // this.toastsService.success('You have just create sharing successful');
-  //     this.sharingModalService.update.next(res.data);
-  //   });
-  // }
   onEditShare: (e: SharingModalResult, sharing: any) => void;
 
   openModalAddToPlaylistCustom() {

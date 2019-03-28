@@ -15,6 +15,7 @@ import { SharingService } from '@shared/modules/photo/components/modal/sharing/s
 import { MediaBasicListMixin, MediaModalMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
 import Sharing from '@shared/modules/photo/models/sharing.model';
 import MediaList from '@shared/modules/photo/models/list-functions/media-list.model';
+import { MediaType } from '@shared/modules/photo/models/interfaces/media';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin])
 @Component({
@@ -22,7 +23,7 @@ import MediaList from '@shared/modules/photo/models/list-functions/media-list.mo
   templateUrl: '../shared/list/list.component.html'
 })
 export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin {
-  objects: Array<Sharing>;
+  objects: Array<any>;
   links: any;
   hasSelectedObjects: boolean;
   selectedObjects: any = [];
@@ -200,7 +201,23 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
 
   openModalShare: (array?: any) => void;
 
-  onSaveShare: (input: any) => void;
+  onSaveShare(sharing: Sharing) {
+    this.objects = this.objects.map(e => {
+      if (e.model === 'Media::Album') {
+        if (sharing.id == e.sharing_id) {
+          e.recipients_count = sharing.recipients_count;
+        }
+      }
+      if (e.model === 'Common::Sharing') {
+        if (sharing.id == e.id) {
+          e.recipients_count = sharing.recipients_count;
+        }
+      }
+      return e;
+    });
+    this.toastsService.success("success");
+  };
+
   onEditShare: (input: any, sharing: any) => void;
 
   viewDetails(payload: any) {
@@ -228,17 +245,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   };
 
   shareSelectedObject() {
-    if (this.selectedObjects[0].model == "Media::Album") {
-      this.openModalShare([this.selectedObjects[0].sharing_object]);
-      const sub = this.sharingModalService.update$.subscribe(res => {
-        if (!this.selectedObjects[0].sharing_object) {
-          this.selectedObjects[0].sharing_object = res.sharing_object;
-        }
-        sub.unsubscribe();
-      })
-    } else {
-      this.openModalShare();
-    }
+    this.openModalShare();
   }
 
   getMenuActions() {
