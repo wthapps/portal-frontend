@@ -190,6 +190,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       return messageAdapter.addOne(action.payload.message, {
         ...state,
         sending: false,
+        scrollable: true,
         error: null,
       });
       // return {

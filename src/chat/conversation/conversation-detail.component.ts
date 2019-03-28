@@ -287,11 +287,15 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {
       conversation: {status: 'decline'}
     }}));
-    this.router.navigate(['conversations']).then();
+    this.redirectToChatHome();
   }
 
   updateDisplay(conversation: any) {
     this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {conversation: conversation}}));
+
+    if (conversation.deleted) {
+      this.redirectToChatHome();
+    }
   }
 
    /*
@@ -308,6 +312,10 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
   viewProfile(user: any) {
     this.userEventService.viewProfile(user);
+  }
+
+  redirectToChatHome() {
+    this.router.navigate(['conversations']).then();
   }
 
   drop(e: any) {

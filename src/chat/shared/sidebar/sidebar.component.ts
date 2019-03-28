@@ -129,11 +129,11 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
         .receive('error', ({reason}) => console.log('failed join', reason) )
         .receive('timeout', () => console.log('Networking issue. Still waiting...'));
 
-    this.userChannel.on('create_conversation_success', (conversation: any) => {
-        conversation['id'] = +(new Date());
-        console.log('CONVERSATION CREATED SUCCESSFUL:::', conversation);
-        this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
-      });
+    // this.userChannel.on('create_conversation_success', (conversation: any) => {
+    //     conversation['id'] = +(new Date());
+    //     console.log('CONVERSATION CREATED SUCCESSFUL:::', conversation);
+    //     this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
+    //   });
 
     this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_CREATED, (response: any) => {
       const conversation = response.data.attributes;
@@ -149,9 +149,6 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       const conversation = response.data.attributes;
       this.updateConversationCallback(conversation);
     });
-
-    this.userEventService.viewProfile$.subscribe(response => console.log('testing;;;;', response));
-
   }
 
   /*
@@ -237,8 +234,10 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     // if currentUser is a member then add to conversation list
     this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
 
+    console.log('BEFORE CONVERSATION:::', this.authService.user);
     if (this.authService.user.id === conversation.creator_id) {
       // Redirect to created conversation
+      console.log('REDIRECT CONVERSATION:::', conversation);
       this.router.navigate(['/conversations', conversation.uuid]).then();
     }
   }

@@ -102,23 +102,29 @@
                               [isPending]="conversation.group_type == 'couple' && conversation?.status == 'sent_request'"
                               [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
       <div class="user-content">
-        <small class="media-chat-user-message" *ngIf="conversation.latest_message as latest_message">
-          <span class="emojione-sm" *ngIf="latest_message?.message_type == 'text'"
-                [innerHtml]="latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify  | safeHtml"></span>
-          <span *ngIf="latest_message?.message_type == 'request'"> Sent you a request </span>
-          <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
+        <small class="media-chat-user-message">
+          <span class="emojione-sm" *ngIf="conversation?.latest_message?.message_type == 'text'"
+                [innerHtml]="conversation?.latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify  | safeHtml">
+          </span>
+          <span *ngIf="conversation?.latest_message?.message_type == 'request' && conversation?.latest_message?.user_id === conversation.creator_id">
+            Pending request
+          </span>
+          <span *ngIf="conversation?.latest_message?.message_type == 'request' && conversation?.latest_message?.user_id !== conversation.creator_id">
+            Sent you a request
+          </span>
+          <span *ngIf="conversation?.latest_message?.message_type == 'file'"> Sent a file </span>
         </small>
         <!-- {{conversation.latest_message}} -->
         <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
-        <a class="media-chat-user-link"
-           (click)="selectConversation(conversation, $event); onCloseMenu()"
-           href="javascript:void(0);"></a>
+        <a class="media-chat-user-link" href="javascript:void(0);"
+           (click)="selectConversation(conversation, $event); onCloseMenu()"></a>
         <!--<a class="media-chat-user-link" [routerLink]="['/conversations', conversation.uuid]"></a>-->
       </div>
       <div class="user-action">
         <div class="user-action-col">
-          <span class="badge badge-wth badge-rounded" [ngClass]="{'invisible': conversation.notification_count == 0}">{{
-            conversation?.notification_count | maxCount: 10}}</span>
+          <span class="badge badge-wth badge-rounded" [ngClass]="{'invisible': conversation.notification_count == 0}">
+            {{ conversation?.notification_count | maxCount: 10 }}
+          </span>
           <i class="fw text-fade"
              [ngClass]="{'fw-megaphone-mute': !conversation.notification}"></i>
         </div>
