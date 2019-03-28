@@ -1,6 +1,6 @@
 import { BaseEntity } from '../../shared/shared/models/base-entity.model';
 
-import { Address } from './address.model';
+import { Address } from '../../shared/user/models/address.model';
 import { SocialMedium } from './social-medium.model';
 import { CustomField } from './custom-field.model';
 import { Email } from './email.model';

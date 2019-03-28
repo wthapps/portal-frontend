@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Address } from '../../../contact/contact/address.model';
+import { Address } from '../models/address.model';
 
 @Pipe({ name: 'userAddress' })
 export class UserAddressPipe implements PipeTransform {

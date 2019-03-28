@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../shared/shared/models/base-entity.model';
+import { BaseEntity } from '../../shared/models/base-entity.model';
 
 export class Address extends BaseEntity {
   category = 'work';
