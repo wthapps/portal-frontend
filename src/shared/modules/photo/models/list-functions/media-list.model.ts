@@ -18,6 +18,10 @@ export default class MediaList extends ItemsList {
     return (array.length === 1 && array[0].existRecipients());
   }
 
+  static existSharing(array: Array<MediaType>) {
+    return (array.length === 1 && array[0].existSharing());
+  }
+
   static isSingleAlbum(array: Array<any>) {
     return (array.length === 1 && (array[0].model === 'Media::Album' || array[0].object_type === 'Media::Album'));
   }

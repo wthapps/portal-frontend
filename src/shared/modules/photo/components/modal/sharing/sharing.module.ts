@@ -10,9 +10,10 @@ import { SharingModalService } from './sharing-modal.service';
 import { WListComponentModule } from '@shared/components/list/list-component.module';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ChipsModule } from 'primeng/chips';
+import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, BsModalModule, AutoCompleteModule, WListComponentModule, CheckboxModule, ChipsModule],
+  imports: [CommonModule, FormsModule, BsModalModule, AutoCompleteModule, WListComponentModule, CheckboxModule, ChipsModule, BoxLoadingModule],
   declarations: [SharingModalComponent],
   exports: [SharingModalComponent],
   providers: [SharingService, SharingModalService]

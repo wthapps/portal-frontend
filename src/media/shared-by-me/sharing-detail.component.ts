@@ -64,7 +64,7 @@ export class ZMediaSharingDetailComponent
   MediaDownloadMixin {
   returnUrls: any = ["/"];
   objects: any;
-  object: any;
+  object: Sharing;
   cloneObjects: any;
   recipients: any;
   hasSelectedObjects: boolean;
@@ -194,15 +194,10 @@ export class ZMediaSharingDetailComponent
 
   loadObject(input: any) {
     this.apiBaseService.get(`media/sharings/${input}`).subscribe(res => {
-      this.object = res.data;
+      this.object = new Sharing(res.data);
       this.parentMenuActions = this.getMenuActions();
       this.subMenuActions = this.getSubMenuActions();
       this.menuActions = this.parentMenuActions;
-      // if (this.object.favorite) {
-      //   this.menuActions.favorite.iconClass = 'fa fa-star';
-      // } else {
-      //   this.menuActions.favorite.iconClass = 'fa fa-star-o';
-      // }
       this.validateActions(this.subMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
       this.validateActions(this.parentMenuActions, this.object.recipient ? this.object.recipient.role_id : mediaConstants.SHARING_PERMISSIONS.OWNER);
       this.disableMoreAction = (Object.keys(this.menuActions)

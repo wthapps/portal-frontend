@@ -91,11 +91,12 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
       };
       this.apiBaseService.post('media/sharings', data).subscribe(res => {
         this.sharing = new Sharing(res.data);
-        if (this.onDone) this.onDone(res.data);
+        if (this.onDone) this.onDone(this.sharing);
         this.onSave.emit(res.data);
         this.changeMode(this.modes.update);
-        this.resetUserLists();
         this.filterContacts();
+        this.resetUserLists();
+        this.deSelectContact();
         this.changed = false;
       });
     } else {
@@ -106,10 +107,12 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
       };
       this.apiBaseService.post('media/sharings/edit_recipients', data).subscribe(res => {
         this.sharing = new Sharing(res.data);
-        if (this.onDone) this.onDone(res.data);
+        if (this.onDone) this.onDone(this.sharing);
         this.onSave.emit(res.data);
         this.changeMode(this.modes.update);
         this.filterContacts();
+        this.resetUserLists();
+        this.deSelectContact();
         this.changed = false;
       });
     }
@@ -118,7 +121,6 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
   open(event: CommonEvent) {
     this.modal.open().then();
     this.getRoles();
-    this.resetUserLists();
     this.sharing = new Sharing();
     this.objects = event.payload;
     this.cMode = this.modes.loading;
@@ -130,6 +132,12 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
         this.changeMode(this.modes.update);
       });
     } else {
+      if (MediaList.existSharing(this.objects)) {
+        this.objects[0].callGetSharing().then(res => {
+          this.sharing = new Sharing(res.data);
+          this.changeMode(this.modes.add);
+        });
+      }
       this.loadContacts().subscribe(res => {
         this.contacts = res.data;
         this.contactsFilter = [...this.contacts];
@@ -228,26 +236,18 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
     this.selectContact(contact);
     this.newUsers = this.contactsFilter.filter(c => c.selected === true);
     this.changed = true;
+    let chips: HTMLInputElement = <HTMLInputElement>document.getElementById('p-chips-sharing');
+    chips.value = '';
   }
 
   selectContact(user) {
-    console.log(user);
-
     this.contactsFilter = this.contactsFilter.map(c => {
       if (c.id === user.id) c.selected = !c.selected;
       return c;
     });
-    // this.contacts = this.contacts.map(c => {
-    //   if (c.id === user.id) c.selected = !c.selected;
-    //   return c;
-    // });
   }
 
   deSelectContact() {
-    // this.contacts = this.contacts.map(c => {
-    //   c.selected = false;
-    //   return c;
-    // });
     this.contactsFilter = this.contactsFilter.map(c => {
       c.selected = false;
     });
@@ -294,7 +294,6 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
     this.newUsers = [];
     this.updatedUsers = [];
     this.deletedUsers = [];
-    this.deSelectContact();
     this.changed = false;
   }
 }

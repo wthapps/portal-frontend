@@ -29,4 +29,7 @@ export default class Media extends ObjectDataModel implements MediaType {
   existRecipients() {
     return false;
   }
+  existSharing() {
+    return false;
+  }
 }

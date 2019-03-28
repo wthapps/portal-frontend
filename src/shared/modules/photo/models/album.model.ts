@@ -11,6 +11,8 @@ export default class Album extends ObjectDataModel implements MediaType {
   selected: boolean;
   model: string;
   object_type: string;
+  // who you share album with
+  recipient: any;
   apiBaseService = (): ApiBaseService => {
     return ApiBaseService.instance;
   };
@@ -28,6 +30,10 @@ export default class Album extends ObjectDataModel implements MediaType {
   }
 
   existRecipients(): boolean {
+    if (this.sharing_id && this.recipients_count > 0) return true;
+    return false;
+  }
+  existSharing(): boolean {
     if (this.sharing_id) return true;
     return false;
   }

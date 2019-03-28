@@ -18,7 +18,7 @@ export class SharingModalMixin {
     this.commonEventService.broadcast({
       channel: 'SharingModalComponent',
       action: 'open',
-      payload: this.selectedObjects,
+      payload: array,
       onDone: (sharing: Sharing) => {
         this.onSaveShare(sharing);
       }

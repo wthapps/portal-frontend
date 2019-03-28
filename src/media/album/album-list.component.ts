@@ -161,9 +161,11 @@ export class AlbumListComponent implements OnInit,
   onSaveShare(sharing: Sharing) {
     if (MediaList.isSingleAlbum(this.selectedObjects)) {
       this.selectedObjects[0].sharing_id = sharing.id;
+      this.selectedObjects[0].recipients_count = sharing.recipients_count;
       this.objects = this.objects.map(e => {
         if (e.id == this.selectedObjects[0].id) {
           e.sharing_id = this.selectedObjects[0].sharing_id;
+          e.recipients_count = this.selectedObjects[0].recipients_count;
         }
         return e;
       });

@@ -37,6 +37,9 @@ import { MediaRenameModalComponent } from '@shared/modules/photo/components/moda
 import { SharingModalResult, SharingCreateParams } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
 import { MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, AlbumAddMixin, MediaModalMixin, MediaParentMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
 import Sharing from '@shared/modules/photo/models/sharing.model';
+import MediaList from '@shared/modules/photo/models/list-functions/media-list.model';
+import Album from '@shared/modules/photo/models/album.model';
+import { MediaType } from '@shared/modules/photo/models/interfaces/media';
 
 declare var _: any;
 @Mixins([
@@ -66,9 +69,9 @@ export class ZMediaAlbumDetailComponent
   AlbumAddMixin,
   MediaParentMixin,
   MediaDownloadMixin {
-  objects: any;
+  objects: Array<MediaType>;
   cloneObjects: any;
-  object: any;
+  object: Album;
   recipients: any;
   sharingOwner: any;
   hasSelectedObjects: boolean;
@@ -279,7 +282,7 @@ export class ZMediaAlbumDetailComponent
     opts = { ...opts, model: 'Media::Album' };
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
     this.apiBaseService.get(`media/albums/${input}/objects`, opts).toPromise().then(res => {
-      this.objects = res.data;
+      this.objects = MediaList.map(res.data);
       this.cloneObjects = _.cloneDeep(this.objects);
       this.links = res.meta.links;
       this.loading = false;
@@ -294,7 +297,7 @@ export class ZMediaAlbumDetailComponent
 
   loadObject(input: any) {
     this.apiBaseService.get(`media/albums/${input}`).subscribe(res => {
-      this.object = res.data;
+      this.object = new Album(res.data);
       if (this.object.favorite) {
         this.menuActions.favorite.iconClass = 'fa fa-star';
       } else {
@@ -311,7 +314,7 @@ export class ZMediaAlbumDetailComponent
   loadMoreObjects(input?: any) {
     if (this.links && this.links.next) {
       this.apiBaseService.get(this.links.next).subscribe(res => {
-        this.objects = [...this.objects, ...res.data];
+        this.objects = [...this.objects, ...MediaList.map(res.data)];
         this.cloneObjects = _.cloneDeep(this.objects);
         this.links = res.meta.links;
         this.loadingEnd();
@@ -467,17 +470,18 @@ export class ZMediaAlbumDetailComponent
   }
 
   openModalShareParent() {
-    this.openModalShare([this.object.sharing_object]);
-    const sub = this.sharingModalService.update$.subscribe(res => {
-      if (!this.object.sharing_object) {
-        this.object.sharing_object = res.sharing_object;
-      }
-      sub.unsubscribe();
-    });
+    this.openModalShare([this.object]);
   }
 
   openModalShare: (input: any) => void;
-  onSaveShare: (sharing: Sharing) => void;
+
+  onSaveShare(sharing: Sharing) {
+    if (sharing.isSharingAlbum()) {
+      this.object.sharing_id = sharing.id;
+      this.object.recipients_count = sharing.recipients_count;
+    }
+    this.toastsService.success("success");
+  }
 
   onEditShare: (e: SharingModalResult, sharing: any) => void;
 
@@ -617,8 +621,8 @@ export class ZMediaAlbumDetailComponent
         inDropDown: false, // Outside dropdown list
         action: () => {
           this.toggleInfo();
-          if (this.object.sharing_object) {
-            this.getSharingParentInfo(this.object.sharing_object.sharing_id);
+          if (this.object.sharing_id) {
+            this.getSharingParentInfo(this.object.sharing_id);
           }
         },
         class: 'btn btn-default',

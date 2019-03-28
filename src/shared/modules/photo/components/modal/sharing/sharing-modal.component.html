@@ -3,21 +3,6 @@
     <h4 *ngIf="cMode == modes.add" class="modal-title">Sharing</h4>
     <h4 *ngIf="cMode != modes.add" class="modal-title">Manage Sharing</h4>
     <w-list-item class="pl0">
-      <!-- <p-autoComplete *ngIf="!updating" placeholder="Enter name or email" [(ngModel)]="newUsers" [suggestions]="users"
-        [multiple]="true" [minLength]="1" field="name" (onSelect)="selectUser($event)"
-        (onUnselect)="unSelectUser($event)" (completeMethod)="complete($event)" class="flex-1">
-        <ng-template let-user pTemplate="item">
-          <w-list-item class="user-row">
-            <div class="avatar">
-              <img class="img-circle small" [alt]="user.name" [src]="user.profile_image">
-            </div>
-            <div class="flex-1 name">
-              <p class="mb0">{{ user.name }}</p>
-              <span *ngIf="user.new" class="text-color-light text-small"> not in WTHContacts</span>
-            </div>
-          </w-list-item>
-        </ng-template>
-      </p-autoComplete> -->
       <p-chips [(ngModel)]="newUsers" class="flex-1 sharing-chips" (onRemove)="unSelectUser($event)"
         [ngClass]="cMode == 'add' || cMode == 'loading' ? 'flex-1 sharing-chips' : 'hidden'"
         [inputId]="'p-chips-sharing'" placeholder="Enter name or email">
@@ -50,36 +35,6 @@
         (click)="changeMode(modes.add)"><i class="fa fa-user-plus"></i>
         Share with others</button>
     </w-list-item>
-
-    <!-- <div class="row pl20 pr20">
-      <div class="form-group">
-        <div *ngIf="!updating" class="input-group">
-          <div class="input-group-btn" style="vertical-align: top;">
-            <div class="btn-group">
-              <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" [title]="'role.display_name'">
-                <i class="fa" [ngClass]="role.name == 'view'? 'fa-eye' :
-                                  role.name == 'download'? 'fa-download' :
-                                  role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
-                </i>
-                <span class="caret ml5"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li *ngFor="let r of roles" (click)="changeRole(r)">
-                  <a href="javascript:void(0);"> {{ r.display_name }}
-                    <i class="" [ngClass]="{'fa fa-check': (r.id === role.id)}"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="updating" class="text-left changing p5 rounded border bg-warning border-1">
-          <i class="fa fa-exclamation-triangle text-warning"></i>
-          Your sharing list has changes that you need to be saved.
-        </div>
-      </div>
-    </div> -->
   </bs-modal-header>
   <hr class="mt10 mb10">
 
@@ -142,11 +97,15 @@
                     <span class="caret ml5"></span>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right">
-                    <li *ngFor="let r of roles" (click)="changeRole(r, recipient)">
-                      <a href="javascript:void(0);"> {{ r.display_name }}
-                        <i class="pull-right" [ngClass]="{'fa fa-check': (recipient.role_id == r.id)}"></i>
-                      </a>
-                    </li>
+                    <ng-container *ngFor="let r of roles">
+                      <li (click)="changeRole(r, recipient)">
+                        <a [ngClass]="{'text-primary': (recipient.role?.id == r.id)}" href="javascript:void(0);">
+                          {{ r.display_name }}
+                          <i class="pull-right" [ngClass]="{'fa fa-check': (recipient.role?.id == r.id)}"></i>
+                        </a>
+                      </li>
+                    </ng-container>
+
                   </ul>
                 </div>
                 <p *ngIf="recipient._destroy" class="m0 text-fade pr10">Removed</p>
@@ -163,6 +122,7 @@
       </div>
 
     </ng-container>
+    <box-loading *ngIf="cMode === modes.loading"></box-loading>
   </bs-modal-body>
   <bs-modal-footer>
 
