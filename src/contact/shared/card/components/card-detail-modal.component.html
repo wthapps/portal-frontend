@@ -1,16 +1,16 @@
 <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <bs-modal-header [showDismiss]="false">
-    <div class="modal-header-nav"  *ngIf="card">
-      <div class="card-title">
+    <div class="modal-header-nav">
+      <div class="card-title" *ngIf="card">
           <h4 class="modal-title">{{ card?.card_type === BUSINESS ? card?.card_name : PUBLIC_PROFILE }} </h4>
       </div>      
-      <ul class="modal-header-navbar">
+      <ul class="modal-header-navbar" >
         <li *ngIf="card && card.is_owner">
           <button (click)="onEdit()" type="button" class="btn btn-default btn-default-no-border">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
         </li>
-        <li class="dropdown">
+        <li class="dropdown" *ngIf="card">
           <button class="btn btn-default btn-default-no-border" type="button" data-toggle="dropdown">
             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
           </button>

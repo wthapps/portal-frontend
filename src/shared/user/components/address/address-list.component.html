@@ -42,7 +42,7 @@
     </bs-modal-header>
     <bs-modal-body>
       <div formArrayName="addresses">
-        <div *ngFor="let add_address of getFormControls(); let i=index" class="media mt0">
+        <div *ngFor="let add_address of form.controls.addresses['controls']; let i=index" class="media mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-3">

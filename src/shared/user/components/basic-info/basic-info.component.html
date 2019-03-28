@@ -19,7 +19,7 @@
       <dd *ngIf="!data?.birthday">None</dd>
 
       <dt>Nationality</dt>
-      <dd>{{ getCountryName((countries$ | async), data?.nationality) || 'None' }}</dd>
+      <dd>{{ (data?.nationality | countryCode2Value: (countries$ | async)) || 'None' }}</dd>
     </dl>
   </div>
 </div>

@@ -78,18 +78,6 @@ export class BasicInfoComponent implements OnInit {
     this.modal.open();
   }
 
-  getCountryName(countries: Array<any>, code: any): any {
-    let result = null;
-    if (countries && countries.length > 0) {
-      countries.forEach(c => {
-        if (c.code === code) {
-          result = c;
-          return;
-        }
-      });
-    }
-    return result ? result.name : null;
-  }
 
   onSubmit(values: any): void {
 
