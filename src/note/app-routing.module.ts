@@ -8,10 +8,6 @@ import { RouterModule } from '@angular/router';
          (do not place feature module routes here, use an own -routing.module.ts in the feature instead)
        */
       {
-        path: 'my-profile',
-        loadChildren: './my-profile/my-profile.module#ZNoteMyProfileModule'
-      },
-      {
         path: 'notifications',
         loadChildren:
           './notifications/notifications.module#NoteNotificationModule'

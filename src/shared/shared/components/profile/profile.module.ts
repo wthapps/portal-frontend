@@ -24,7 +24,6 @@ import { PartialsProfileEducationComponent } from './work-edu/education.componen
 import { CoverProfileModule } from '../cover-profile/cover-profile.module';
 import { FileModule } from '../file/file.module';
 import { PartialsBasicInfoComponent } from './basic-info/basic-info.component';
-import { ZMyProfileComponent } from '@shared/shared/components/profile/my-profile/my-profile.component';
 
 @NgModule({
   imports: [
@@ -52,7 +51,6 @@ import { ZMyProfileComponent } from '@shared/shared/components/profile/my-profil
     PartialsProfileWorkComponent,
     PartialsProfileEducationComponent,
     PartialsProfileHobbyComponent,
-    ZMyProfileComponent,
 
     PartialsBasicInfoComponent
   ],
@@ -69,7 +67,6 @@ import { ZMyProfileComponent } from '@shared/shared/components/profile/my-profil
     PartialsProfileWorkComponent,
     PartialsProfileEducationComponent,
     PartialsProfileHobbyComponent,
-    ZMyProfileComponent,
 
     PartialsBasicInfoComponent
   ],

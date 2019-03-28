@@ -1,6 +1,6 @@
 <!-- Template message -->
 <ng-container *ngIf="['text', 'file', 'share_contact_message'].includes(message.message_type)">
-  <div class="message-item message-item-left" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
+  <div class="message-item" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
     <div class="message-item-date" *ngIf="message.showDate">
       <span>{{ message.created_at | timeFormat:'day' }}</span>
     </div>
