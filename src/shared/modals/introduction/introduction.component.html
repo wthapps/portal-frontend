@@ -5,7 +5,7 @@
     </bs-modal-header>
     <bs-modal-body *ngIf="data && data[index]">
       <div *ngIf="data[index].icon" class="text-center">
-        <i class="data[index].icon"></i>
+        <i class="{{data[index].icon}}"></i>
       </div>
       <p *ngIf="data[index].content">{{data[index].content}}</p>
       <p *ngIf="data[index].content2">{{data[index].content2}}</p>

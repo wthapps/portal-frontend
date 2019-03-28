@@ -54,9 +54,6 @@ $box-shadow: false;
 $i_content-grid: 4;
 
 .content-grid {
-  margin-left: -10px;
-  margin-right: -10px;
-
   @include flexbox;
   @include flex-flow(row wrap);
   .content-item {
