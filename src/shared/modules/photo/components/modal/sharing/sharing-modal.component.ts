@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import Sharing from '@shared/modules/photo/models/sharing.model';
 import MediaList from '@shared/modules/photo/models/list-functions/media-list.model';
 import { MediaType } from '@shared/modules/photo/models/interfaces/media';
+import ArrayFunc from '@shared/utils/array/array-func';
 
 declare var $: any;
 declare var _: any;
@@ -73,7 +74,7 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
       }
     });
     this.resetUserLists();
-    if (this.cMode == this.modes.updating) {
+    if (this.cMode === this.modes.updating) {
       this.changeMode(this.modes.update);
     } else {
       this.changeMode(this.modes.add);
@@ -94,6 +95,7 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
         this.onSave.emit(res.data);
         this.changeMode(this.modes.update);
         this.resetUserLists();
+        this.filterContacts();
       });
     } else {
       const data: SharingEditParams = {
@@ -106,6 +108,7 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
         if (this.onDone) this.onDone(res.data);
         this.onSave.emit(res.data);
         this.changeMode(this.modes.update);
+        this.filterContacts();
       });
     }
   }
@@ -133,7 +136,7 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
     }
     document.getElementById('p-chips-sharing').addEventListener('keyup', (event) => {
       let chips: HTMLInputElement = <HTMLInputElement>document.getElementById('p-chips-sharing');
-      this.contactsFilter = this.contacts.filter(c => {
+      this.contactsFilter = this.filterContacts().filter(c => {
         return c.name.toLowerCase().indexOf(chips.value) != -1;
       })
     });
@@ -159,10 +162,11 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
     chips.value = '';
   }
 
-  unSelectUser(user: any) {
-    _.remove(this.newUsers, (selectedUser: any) => {
-      return selectedUser.id === user.id;
-    });
+  unSelectUser(event: any) {
+    const user = event.value;
+    this.newUsers = this.newUsers.filter(u => {
+      return u.id !== user.id;
+    })
     this.selectContact(user);
     this.changed = this.newUsers.length > 0 ? true : false;
   }
@@ -220,38 +224,49 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
 
   clickContact(contact) {
     this.selectContact(contact);
-    this.newUsers = this.contacts.filter(c => c.selected == true);
+    this.newUsers = this.contactsFilter.filter(c => c.selected === true);
     this.changed = true;
   }
 
   selectContact(user) {
-    this.contacts = this.contacts.map(c => {
-      if (c.id == user.id) c.selected = !c.selected;
+    console.log(user);
+
+    this.contactsFilter = this.contactsFilter.map(c => {
+      if (c.id === user.id) c.selected = !c.selected;
       return c;
     });
+    // this.contacts = this.contacts.map(c => {
+    //   if (c.id === user.id) c.selected = !c.selected;
+    //   return c;
+    // });
   }
 
   deSelectContact() {
-    this.contacts = this.contacts.map(c => {
+    // this.contacts = this.contacts.map(c => {
+    //   c.selected = false;
+    //   return c;
+    // });
+    this.contactsFilter = this.contactsFilter.map(c => {
       c.selected = false;
-      return c;
     });
   }
 
   changeMode(mode: string) {
     this.cMode = mode;
-    if (this.cMode == this.modes.add) {
+    if (this.cMode === this.modes.add) {
       if (this.contacts.length == 0) {
         this.loadContacts().subscribe(res => {
           this.contacts = res.data;
-          this.contactsFilter = [...this.contacts];
+          this.filterContacts();
         });
+      } else {
+        this.filterContacts();
       }
     }
   }
 
   clickDone() {
-    if (this.cMode == this.modes.add && this.sharing.recipients.length > 0) {
+    if (this.cMode === this.modes.add && this.sharing.recipients.length > 0) {
       if (this.contacts.length > 0) {
         this.changeMode(this.modes.update);
       } else {
@@ -264,6 +279,13 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
 
   loadContacts() {
     return this.apiBaseService.get("account/get_my_contacts_accounts?size=1000");
+  }
+
+  filterContacts() {
+    this.contactsFilter = ArrayFunc.removeArray(this.contacts, this.sharing.recipients, (c, r) => {
+      return c.id === r.user.id;
+    });
+    return [...this.contactsFilter];
   }
 
   resetUserLists() {

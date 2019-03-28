@@ -18,7 +18,7 @@
           </w-list-item>
         </ng-template>
       </p-autoComplete> -->
-      <p-chips [(ngModel)]="newUsers" class="flex-1 sharing-chips"
+      <p-chips [(ngModel)]="newUsers" class="flex-1 sharing-chips" (onRemove)="unSelectUser($event)"
         [ngClass]="cMode == 'add' || cMode == 'loading' ? 'flex-1 sharing-chips' : 'hidden'"
         [inputId]="'p-chips-sharing'" placeholder="Enter name or email">
         <ng-template let-item pTemplate="item">
