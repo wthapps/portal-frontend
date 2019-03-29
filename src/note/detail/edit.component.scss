@@ -42,9 +42,6 @@ $note-editor-aside-w: 400px;
         @include flex(1);
         max-width: 100%;
         @include text-overflow();
-        // overflow: hidden;
-        // -ms-text-overflow: ellipsis;
-        // text-overflow: ellipsis;
       }
       .form-control {
         font-size: 18px;
@@ -58,9 +55,6 @@ $note-editor-aside-w: 400px;
         margin: 0;
         line-height: 34px;
         @include text-overflow();
-        // white-space: nowrap;
-        // overflow: hidden;
-        // text-overflow: ellipsis;
       }
     }
   }
@@ -78,6 +72,10 @@ $note-editor-aside-w: 400px;
         @include flex-direction(column);
         .ql-editor {
           @include flex(1);
+
+          hr {
+            border-color: $slate;
+          }
         }
 
         &[data-size="8pt"] .ql-blank::before {
