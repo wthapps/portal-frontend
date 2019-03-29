@@ -338,7 +338,7 @@
       </ng-template>
     </div>
     <div class="note-editor-body" id="scrolling-container">
-      <div id="quill-editor" class="ql-font-{{setting?.font}}" [attr.data-size]="setting?.font_size" ></div>
+      <div id="quill-editor" class="ql-font-{{setting?.font}}" [ngStyle]="{'font-size': setting?.font_size}" [attr.data-size]="setting?.font_size" ></div>
     </div>
 
     <div class="note-editor-aside ">
