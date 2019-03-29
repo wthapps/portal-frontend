@@ -7,16 +7,13 @@
       </span>
     </div>
     <div class="noti-item-content can-click" (click)="navigateTo(notification?.actions, notification?.id)">
-      <!-- <div class="bold noti-item-content-user" [routerLink]="['/profile', notification?.actor.uuid]">
-        {{ notification?.actor?.name }}
-      </div> -->
       <div class="noti-item-content-text">
-        <span><a class="bold user-name" [routerLink]="['/profile', notification?.actor.uuid]" routerLinkActive="router-link-active" > {{ notification?.actor?.name }} </a></span>
+        <span><a class="user-name" [routerLink]="['/profile', notification?.actor.uuid]" routerLinkActive="router-link-active" > <b>{{ notification?.actor?.name }}</b>&nbsp;</a></span>
         <span class="noti-item-content-inner" [innerHTML]="notification?.text"></span>
       </div>
-      <div class="bold" href="javascript:;" (click)="navigateToSocial(['/communities', notification?.community?.uuid])"
+      <div href="javascript:;" (click)="navigateToSocial(['/communities', notification?.community?.uuid])"
         *ngIf="notification?.community?.name">
-        {{ notification?.community?.name }}</div>
+        <b>{{ notification?.community?.name }}</b> &nbsp;</div>
       <div class="help-block text-fade">
         {{ notification?.created_at | timeFormat }}
       </div>

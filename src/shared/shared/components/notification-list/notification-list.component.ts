@@ -22,4 +22,8 @@ export class NotificationListComponent {
   constructor(public notificationService: NotificationService,
               public connectionService: ConnectionNotificationService) {
   }
+
+  trackByFn(index, notification) {
+    return notification ? notification.id : index;
+  }
 }

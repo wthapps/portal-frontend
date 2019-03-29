@@ -117,6 +117,8 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
       this.getMoreNotifications();
     }
     this.markAsSeen();
+
+    this.hideActionsMenu();
   }
 
   markAsSeen() {
@@ -133,6 +135,16 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
     } else {
       this.notificationService.markAllAsRead();
     }
+  }
+
+  hideActionsMenu(e?: any) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    $('#nav-notification-list')
+      .find('ul.dropdown-menu')
+      .hide();
   }
 
   onSelectedTab(tab: string) {

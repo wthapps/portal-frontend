@@ -207,10 +207,6 @@ export class CommonNotificationInterface {
   }
 
   getLatestNotifications(): void {
-    if (this.initLoad) {
-      return;
-    }
-    // Only load once at first time
     if (
       !(this.authService.loggedIn && this.authService.user)
     ) {

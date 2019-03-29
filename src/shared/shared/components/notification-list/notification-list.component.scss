@@ -29,7 +29,6 @@
 
     .noti-item-content {
       @include flex(1);
-      // @include flexbox();
       @include align-items(center);
       line-height: 1.2;
       padding: 10px 5px 5px 0;
@@ -42,11 +41,14 @@
         margin-top: 0;
         margin-bottom: 0;
       }
-      // br {
-      //   display: none;
-      // }
       p {
         margin: 0;
+      }
+
+      .noti-item-content-text {
+        .user-name {
+          color: #4a4a4a;
+        }
       }
     }
     .noti-item-content-inner {
@@ -93,12 +95,12 @@
   }
 }
 
-#notiItemMenuEl {
-  position: absolute;
-  z-index: 1100;
-  .dropdown-menu {
-    display: block;
-    left: auto;
-    right: 100%;
-  }
-}
+// #notiItemMenuEl {
+//   position: absolute;
+//   z-index: 1100;
+//   .dropdown-menu {
+//     display: block;
+//     left: auto;
+//     right: 100%;
+//   }
+// }

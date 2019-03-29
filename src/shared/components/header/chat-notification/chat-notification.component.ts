@@ -31,7 +31,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   conversations: Conversations = new Conversations();
   notificationCount = 0;
   links: any;
-  inChat: boolean = false;
+  inChat = false;
   channel: any = 'ChatNotificationComponent';
   destroy$ = new Subject();
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
@@ -65,7 +65,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   }
 
   addNotificationEvent(event: CommonEvent) {
-    this.addNotification(event.payload)
+    this.addNotification(event.payload);
   }
 
   addNotification(res: any) {
@@ -80,11 +80,11 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     this.apiBaseService.get('zone/chat/group').pipe(map(res => new Conversations(res))).subscribe((conversations: Conversations) => {
       this.conversations = conversations;
       this.links = conversations.meta.links;
-    })
+    });
   }
 
   markAllAsReadEvent(event: CommonEvent) {
-    this.markAllAsRead(event.payload)
+    this.markAllAsRead(event.payload);
   }
 
   markAllAsRead(conversations?: Conversations) {
@@ -100,7 +100,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   }
 
   markAsReadEvent(event: CommonEvent) {
-    this.markAsRead(event.payload)
+    this.markAsRead(event.payload);
   }
 
   markAsRead(c: Conversation) {
@@ -134,7 +134,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
       channel: 'ChatConversationService',
       action: 'updateStoreConversationsEvent',
       payload: this.conversations
-    })
+    });
   }
 
   getMore() {

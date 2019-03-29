@@ -61,7 +61,7 @@ export class WCountriesComponent implements OnInit, OnChanges, OnDestroy {
       if (res) {
         this.countriesCode = [...res];
       }
-      if (this.countryCode && res) {
+      if (this.countryCode && Array.isArray(res) && res.length > 0) {
         if (res.find(r => r.code === this.countryCode)) {
           this.selectedCountry = res.find(r => r.code === this.countryCode).value;
           this.selectedCountryObject = res.find(r => r.code === this.countryCode);
@@ -70,7 +70,7 @@ export class WCountriesComponent implements OnInit, OnChanges, OnDestroy {
           this.selectedCountryObject = res[0];
         }
       }
-      if (this.country && res) {
+      if (this.country && Array.isArray(res) && res.length > 0) {
         this.selectedCountryObject = res.find((r: any) => r.value === this.country);
       }
     });
