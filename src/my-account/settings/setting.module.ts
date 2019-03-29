@@ -16,6 +16,7 @@ import { MySettingRoutingModule } from './setting-routing.module';
 import { MySettingComponent } from './setting.component';
 import { ModalModule } from '@shared/modals';
 import { AutofocusModule } from '@shared/directives/autofocus';
+import { ProfileModule } from '@shared/user';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { AutofocusModule } from '@shared/directives/autofocus';
     MySettingRoutingModule,
     ModalModule,
     AutofocusModule,
-    MySharedModule
+    MySharedModule,
+    ProfileModule
   ],
   declarations: [
     MySettingComponent,

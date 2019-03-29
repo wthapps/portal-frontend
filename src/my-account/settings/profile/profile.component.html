@@ -89,7 +89,7 @@
           <label for="phone_number">Phone Number</label>
           <div class="row">
             <div class="col-xs-6">
-              <w-countries [countryCode]="userService.getSyncProfile().nationality.toLowerCase()"
+              <w-countries [countryCode]="(profile$|async)?.nationality?.toLowerCase()"
                            (completeChange)="onCompleteChange($event)"></w-countries>
               <input type="hidden" formControlName="phone_prefix">
             </div>
