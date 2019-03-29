@@ -49,7 +49,7 @@ proceed() {
 
 failed() {
   app=$1
-  echo "=== FAILED at $app - $date" >> $FAILED_LOG
+  echo "=== FAILED at $app: `date`" >> $FAILED_LOG
   return 1
 }
 
