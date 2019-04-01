@@ -30,6 +30,7 @@ export class NotificationItemComponent implements OnInit {
   // @ViewChild('notiItemMenuEl') notiItemMenuEl: ElementRef;
   @Input() notification: any;
   @Input() type = 'update';
+  @Input() inDropdown = false;
 
   @HostBinding('class') classes = 'notification-item';
   itemSettings: any = {};
@@ -38,10 +39,6 @@ export class NotificationItemComponent implements OnInit {
   readonly tooltip = Constants.tooltip;
   // Should be consistent with Constants.moduleMap
 
-
-  @HostListener('document:click', ['$event']) clickedOutside(event: Event) {
-    this.hideActionsMenu(event);
-  }
 
   constructor(public notificationService: NotificationService,
               public connectionService: ConnectionNotificationService,
@@ -55,21 +52,15 @@ export class NotificationItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  hideActionsMenu(e: any) {
-    // console.log('hide actions menu: ', e);
-
-    e.stopPropagation();
-    e.preventDefault();
-    $('.noti-item-action ul.dropdown-menu').hide();
-  }
-
   subToggle(e: any) {
+    console.log('inside sub toggle ...', e);
     e.stopPropagation();
     e.preventDefault();
+
     $(e.target)
       .next('ul')
       .toggle();
-    $('#chat-header-notification')
+    $('#nav-notification-list')
       .find('ul.dropdown-menu')
       .not($(e.target).next('ul'))
       .hide();

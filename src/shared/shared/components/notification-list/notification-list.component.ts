@@ -16,6 +16,7 @@ export class NotificationListComponent {
   @Input() type = 'update'; // update, connection
   @Input() size = 'sm'; // xs, sm, md, lg
   @Input() notifications: any[] = [];
+  @Input() inDropdown = false;
   @ViewChild('settingModal') settingModal: NotificationSettingModalComponent;
 
 

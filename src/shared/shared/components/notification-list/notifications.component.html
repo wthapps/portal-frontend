@@ -14,7 +14,7 @@
     </div>
   </div>
   <div id="common-notification-list">
-    <app-partials-notification-list #notifications [type]="type"></app-partials-notification-list>
+    <app-partials-notification-list #notifications [type]="type" [inDropdown]="false"></app-partials-notification-list>
   </div>
   <div class="text-center"
        *ngIf="!(type === 'connection' ? connectionService?.loadingDone : notificationService?.loadingDone)">
