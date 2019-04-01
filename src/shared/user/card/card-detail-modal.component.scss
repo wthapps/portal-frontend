@@ -1,0 +1,94 @@
+@import "../../../assets/styles/global";
+
+.pcard-cover {
+  .media-avatar-body {
+    .card-owner-name {
+      font-size: $font-size-h1;
+    }
+
+    .card-company {
+      font-size: $font-size-h4;
+    }
+  }
+
+  @media (min-width: $screen-sm) {
+    .media-avatar-body {
+      border-bottom: 1px solid $light-grey;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+    }
+  }
+  
+
+  @media (max-width: $screen-xs-max) {
+    border-bottom: 1px solid $light-grey;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+
+    .media-avatar {
+      @include flex-direction(column);
+      text-align: center;
+      .media-avatar-img-wrap {
+        margin-bottom: 10px;
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.modal-header-nav {
+  .card-title {
+    &, .modal-title {
+      @include text-overflow();
+    }
+  }
+}
+
+.modal-body {
+  .pcard-cover {
+    margin-left: -$modal-inner-padding;
+    margin-right: -$modal-inner-padding;
+    margin-bottom: $modal-inner-padding;
+    padding: $modal-inner-padding;
+
+  }
+}
+
+.pcard-info {
+  @media (min-width: $screen-sm) {
+    margin-left: 110px;
+
+    &.dl-horizontal {
+      dt {
+        width: 80px;
+      }
+      
+      dd {
+        margin-left: 100px;
+      }
+    }
+  }
+}
+
+
+.w-user-avatar-cover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(#ffffff, 0.5);
+  @include transition($transition-base);
+  @include opacity(0);
+  i {
+    font-size: 36px;
+    @include center();
+  }
+}
+.media-avatar-img-wrap {
+  &:hover, &:focus {
+    .w-user-avatar-cover {
+      @include opacity(1);
+    }
+  }
+}

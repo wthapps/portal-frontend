@@ -16,18 +16,17 @@
                 <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li *ngIf="authService.user.id !== user.id">
-                  <a href="javascript:void(0);" (click)="onSelect(user)">Send Message</a>
-                </li>
                 <li>
-                  <!-- <a [routerLink]="[profileUrl, user.uuid]">View Profile</a> -->
-                  <a (click)="viewProfile()">View Profile</a>
+                  <a href="javascript:void(0);" (click)="viewProfile(user)">View Profile</a>
+                </li>
+                <li *ngIf="authService.user.id !== user.id">
+                  <a href="javascript:void(0);" (click)="createChat(user)">Send Message</a>
                 </li>
                 <li *ngIf="showBlacklist">
                   <a href="javascript:void(0);" (click)="onAddToBlackList(user)">Blacklist</a>
                 </li>
                 <li *ngIf="authService.user.id === conversation.creator_id && conversation.creator_id !== user.id">
-                  <a href="javascript:void(0);" (click)="onRemoveMember(user)">Remove From Conversation</a>
+                  <a href="javascript:void(0);" (click)="removeMember(user)">Remove From Conversation</a>
                 </li>
                 <li *ngIf="authService.user.id === user.id">
                   <a href="javascript:void(0);" (click)="leaveConversation(user)">Leave Conversation</a>

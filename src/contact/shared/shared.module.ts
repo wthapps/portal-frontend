@@ -154,9 +154,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ZContactSharedHeaderComponent,
     ZContactSearchSharedToolbarComponent,
 
-    // // my profile
-    // ZMyProfileComponent,
-
     // modal here
     ContactAddGroupModalComponent,
     ZContactSharedSettingsComponent,

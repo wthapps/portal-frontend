@@ -1,10 +1,10 @@
 import { ChatMessageService } from './../../services/chat-message.service';
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil, distinctUntilChanged, tap } from 'rxjs/operators';
+import { filter, map, takeUntil, distinctUntilChanged, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
@@ -13,13 +13,16 @@ import { ChatService } from '@chat/shared/services/chat.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService, AuthService, ChatCommonService, UserService } from '@shared/services';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
 import { User } from '@shared/shared/models';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
+import * as ConversationActions from '@chat/store/conversation/conversation.actions';
+import { AppState } from '@chat/store';
+import { MemberService } from '@chat/shared/services';
 
 
 @Component({
@@ -29,8 +32,10 @@ import { User } from '@shared/shared/models';
   encapsulation: ViewEncapsulation.None
 })
 export class MessageAssetsComponent implements OnInit, OnDestroy {
-  conversation: any;
+  @Input() conversation: any;
+  @Output() onViewProfile: EventEmitter<any> = new EventEmitter<any>();
   tooltip: any = Constants.tooltip;
+
 
   tabMember: WTab = {
     name: 'Members',
@@ -94,7 +99,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public authService: AuthService,
     private wthConfirmService: WthConfirmService,
-    private addContactService: ZChatShareAddContactService,
     private messageAssetsService: MessageAssetsService,
     private objectListService: WObjectListService,
     private chatConversationService: ChatConversationService,
@@ -104,6 +108,9 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private chatMessageService: ChatMessageService,
     private store: Store<any>,
     private router: Router,
+    private contactSelectionService: ContactSelectionService,
+    private store$: Store<AppState>,
+    private memberService: MemberService,
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
     this.currentUser = userService.getSyncProfile();
@@ -127,21 +134,29 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.chatConversationService.getStoreSelectedConversation().pipe(
-      distinctUntilChanged((p, q) => p.id === q.id),
-      takeUntil(this.destroy$)
-    ).subscribe(sc => {
-      this.conversation = sc;
-      if (this.conversation && this.conversation.group_type === 'couple') {
-        this.tabs = this.tabsPhoto;
-      } else {
-        this.tabs = this.tabsMember;
-      }
-      this.tabAction(this.tabs[0]);
-    });
+    // this.chatConversationService.getStoreSelectedConversation().pipe(
+    //   distinctUntilChanged((p: any, q: any) => p.id === q.id),
+    //   takeUntil(this.destroy$)
+    // ).subscribe(sc => {
+    //   this.conversation = sc;
+    //   if (this.conversation && this.conversation.group_type === 'couple') {
+    //     this.tabs = this.tabsPhoto;
+    //   } else {
+    //     this.tabs = this.tabsMember;
+    //   }
+    //   this.tabAction(this.tabs[0]);
+    // });
   }
 
   ngOnInit() {
+
+    this.contactSelectionService.onSelect$.pipe(
+      filter((event: any) => event.eventName === 'ADD_MEMBER'),
+      map((event: any) => event.payload.data),
+      takeUntil(this.destroy$)
+    ).subscribe(payload => {
+      this.addMembers(payload);
+    });
   }
 
   ngOnDestroy() {
@@ -151,6 +166,14 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
   open() {
     this.objectListService.setMultipleSelection(false);
+
+
+    if (this.conversation && this.conversation.group_type === 'couple') {
+      this.tabs = this.tabsPhoto;
+    } else {
+      this.tabs = this.tabsMember;
+    }
+    this.tabAction(this.tabs[0]);
   }
 
   tabAction(event: WTab) {
@@ -166,7 +189,9 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     } else {
       this.isLoading = true;
       // this.conversations$ = this.store.select(STORE_CONVERSATIONS);
-      this.apiBaseService.get('zone/chat/group/' + this.conversation.group_id + '/users').subscribe(res => {
+      this.apiBaseService.get('chat/conversations/' + this.conversation.uuid + '/members').pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(res => {
         this.users = res.data;
       });
     }
@@ -185,26 +210,30 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     });
   }
 
-  viewProfile() {
-    console.log('View profile ...');
+  viewProfile(user: any) {
+    this.onViewProfile.emit(user);
   }
 
   onClose() {
     this.messageAssetsService.close();
   }
 
-  onSelect(user: any) {
-    this.chatContactService.addContact([user.id]).then(res => {
-      this.chatCommonService.updateConversationBroadcast(res.data.group_id).then(res2 => {
-        this.chatConversationService.moveToFirst(res2.data);
-      });
-      this.chatConversationService.navigateToConversation(res.data.group_id);
+  createChat(user: any) {
+    this.store$.dispatch(new ConversationActions.Create({users: [user]}));
+  }
+
+  addMembers(users: any) {
+    this.memberService.add(this.conversation.uuid, {users: users}).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(response => {
+      this.users.push(...response.data);
     });
   }
 
-  onRemoveMember(user: any) {
-    this.chatConversationService.removeFromConversation(this.conversation, user.id).then((response: any) => {
-      console.log(response);
+  removeMember(user: any) {
+    this.memberService.remove(this.conversation.uuid, {user: user}).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(response => {
       this.users = this.users.filter(u => u.id !== user.id);
     });
   }

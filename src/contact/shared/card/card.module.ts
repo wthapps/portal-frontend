@@ -9,7 +9,6 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import {
   CardItemComponent,
   CardListComponent,
-  CardDetailModalComponent,
   CardEditModalComponent
 } from './components';
 
@@ -17,6 +16,7 @@ import { CardRoutingModule } from './card-routing';
 import { CardService } from './card.service';
 import { AutofocusModule } from '@shared/directives/autofocus';
 import { ZContactPipeModule } from '../pipe/pipe.module';
+import { UserCardModule } from '@shared/user/card';
 
 @NgModule({
   imports: [
@@ -29,11 +29,11 @@ import { ZContactPipeModule } from '../pipe/pipe.module';
     TooltipModule,
     PipeModule,
     ZContactPipeModule,
-    AutofocusModule
+    AutofocusModule,
+    UserCardModule,
   ],
   declarations: [
     CardItemComponent,
-    CardDetailModalComponent,
     CardEditModalComponent,
     CardListComponent
   ],
@@ -42,7 +42,6 @@ import { ZContactPipeModule } from '../pipe/pipe.module';
     ReactiveFormsModule,
 
     CardItemComponent,
-    CardDetailModalComponent,
     CardEditModalComponent,
     CardListComponent
   ],

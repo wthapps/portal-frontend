@@ -1,23 +1,59 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiBaseService } from '@wth/shared/services';
+import { WHttpClientService } from '@shared/services/w-http-client.service';
+import { HttpClient } from '@angular/common/http';
+import { Conversation } from '@chat/store';
+import { map } from 'rxjs/operators';
+import { ApiBaseService, BaseEntityService } from '@shared/services';
 
 @Injectable()
-export class ConversationService {
-  constructor(private api: ApiBaseService) {}
+export class ConversationService extends BaseEntityService<any> {
+  // url = 'http://localhost:5000/v1/chat/conversations';
+  // url = 'http://localhost:4000/chat/conversations';
   url = 'chat/conversations';
+  path = 'chat/conversations';
+  pageSize = 30;
+  // url = 'chat/conversations';
+
+  constructor(private api: WHttpClientService, private httpClient: HttpClient, protected apiBaseService: ApiBaseService) {
+    super(apiBaseService);
+  }
+
+  // get(id: any): Observable<any> {
+  //   return this.get(`${this.url}/${id}`);
+  // }
+
+  // getAll(query: any): Observable<any> {
+  //   if (!query) {
+  //     // query = `?page[size]=${this.pageSize}`;
+  //     query = `?per_page=${this.pageSize}`;
+  //
+  //   } else {
+  //     query = `?${query}`;
+  //   }
+  //   // return this.api.get(this.url, query);
+  //   return this.httpClient.get<any>(`${this.url}${query}`, {headers: {Accept: 'application/json'}});
+  // }
 
   create(payload: any): Observable<any> {
     const conversation = {
       conversation: {
-        users: payload
+        users: payload.users
       }
     };
-    return this.api.post(this.url, conversation);
+    return this.apiBaseService.post(this.path, conversation);
   }
 
   update(id: any, payload: any): Observable<any> {
-    return this.api.put(`${this.url}/${id}`, payload);
+    return this.apiBaseService.patch(`${this.url}/${id}`, payload);
+  }
+
+  updateDisplay(id: any, payload: any): Observable<any> {
+    return this.apiBaseService.patch(`${this.url}/${id}/display`, payload);
+  }
+
+  acceptInvitation(id: any): Observable<any> {
+    return this.apiBaseService.patch(`${this.url}/${id}/accept`);
   }
 
   delete(id: any): Observable<any> {
@@ -45,6 +81,7 @@ export class ConversationService {
     return this.api.post(`${this.url}/${id}/delete_member`, payload);
   }
 
+
   cancelUpload(conversationId: number, id: number): Observable<any> {
     return this.api.post(
       `zone/chat/conversations/${conversationId}/cancel_messages/${id}`
@@ -54,15 +91,10 @@ export class ConversationService {
   open() {
 
   }
-  // getLatestConversation(groupId: number) {
-  //   return this.api
-  //     .get('zone/chat/messages/' + groupId)
-  //     .toPromise()
-  //     .then((response: any) => {
-  //       this.chatService.storage.save(
-  //         'chat_messages_group_' + groupId,
-  //         response
-  //       );
-  //     });
-  // }
+
+  markAllAsRead(): Observable<any> {
+    return this.apiBaseService.post(
+      `chat/notifications/mark_all_as_read`
+    );
+  }
 }

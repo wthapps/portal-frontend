@@ -22,6 +22,8 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
 import { DisplayLinkModule } from '@shared/shared/components/link/display-link.module';
 import { ZChatMessageAssetsModule } from './assets/message-assets.module';
 import { ZChatMessageEditorModule } from './editor/message-editor.module';
+import { MessageService } from '@chat/shared/message/message.service';
+import { MessageEventService } from '@chat/shared/message/message-event.service';
 
 @NgModule({
   imports: [
@@ -75,6 +77,9 @@ import { ZChatMessageEditorModule } from './editor/message-editor.module';
     MessageItemSimpleComponent,
     MessageItemComponent
   ],
-  providers: []
+  providers: [
+    MessageService,
+    MessageEventService
+  ]
 })
 export class ZChatMessageModule {}

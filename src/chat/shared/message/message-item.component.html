@@ -78,10 +78,10 @@
     </li>
     <!--comment out this menu because this function is not working now-->
     <li *ngIf="!message.file && byMe">
-      <a href="javascript:;" (click)="edit()">Edit</a>
+      <a href="javascript:void(0);" (click)="edit()">Edit</a>
     </li>
     <li *ngIf="!message.file && byMe">
-      <a href="javascript:;" (click)="delete()">Delete</a>
+      <a href="javascript:void(0);" (click)="delete()">Delete</a>
     </li>
   </ul>
 </ng-template>
@@ -123,7 +123,7 @@
       <h5>
         <i class="icon-zone-note"></i> {{message.file?.name ? message.file?.name : 'Untitled'}}
       </h5>
-      <div class="message-item-content-note-in" [innerHTML]="message.file?.content"></div>
+      <div class="message-item-content-note-in" [innerHTML]="message?.file?.content | safeHtml"></div>
     </a>
   </div>
 
@@ -181,7 +181,7 @@
       </a>
     </li>
     <li *ngIf="byMe">
-      <a href="javascript:;" (click)="delete()">Delete</a>
+      <a href="javascript:void(0);" (click)="delete()">Delete</a>
     </li>
   </ul>
   <!--sending message menu-->
@@ -199,10 +199,10 @@
   <div class="wapper message-item-content message-item-content-contact-sharing">
     <div class="message-item-content-contact-sharing-info" >
       <span class="avatar-xs">
-        <img [src]="message?.display?.share_contact?.profile_image" alt="">
+        <img [src]="message?.file?.profile_image" alt="">
       </span>
       <span class="message-item-content-contact-sharing">
-        {{message?.display?.share_contact?.name}}
+        {{ message?.file?.name }}
       </span>
     </div>
     <div class="message-padding can-click">

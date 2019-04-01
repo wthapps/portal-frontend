@@ -109,7 +109,7 @@
                     <dd *ngFor="let item of profile.addresses">
                        <div class="select-content">
                          <div class="select-content-checkbox"><p-checkbox name="addresses" [value]="'address:' + item.id" [formControl]="form.controls['public_fields']"></p-checkbox> </div>
-                         <div class="select-content-value" > <span [innerHTML]="item | contactAddressPipe"></span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: addressType:'category':'name' }}  </span></div> 
+                         <div class="select-content-value" > <span [innerHTML]="item | userAddress"></span> <span class="text-fade"> &nbsp; &bull; {{ item.category | keyToValue: addressType:'category':'name' }}  </span></div>
                        </div>
                     </dd>
                   </ng-container>

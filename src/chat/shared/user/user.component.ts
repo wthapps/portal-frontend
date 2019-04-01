@@ -8,7 +8,6 @@ import {
 @Component({
   selector: 'z-chat-share-user',
   templateUrl: 'user.component.html',
-  styleUrls: ['user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ZChatShareUserComponent implements OnInit {

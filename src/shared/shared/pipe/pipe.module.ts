@@ -70,7 +70,7 @@ import { TrimPipe } from './trim.pipe';
     PhoneCodeToDisplayCodePipe,
     TrimPipe,
     UsernamePipe,
-    KeysPipe
+    KeysPipe,
   ],
   exports: [
     AddFirstCharacterPipe,
@@ -104,7 +104,7 @@ import { TrimPipe } from './trim.pipe';
     PhoneCodeToDisplayCodePipe,
     TrimPipe,
     UsernamePipe,
-    KeysPipe
+    KeysPipe,
   ],
   providers: []
 })

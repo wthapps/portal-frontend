@@ -10,10 +10,11 @@ import { LoadingService } from '@wth/shared/shared/components/loading/loading.se
 import { CustomValidator } from '@wth/shared/shared/validator/custom.validator';
 import { MessageService } from 'primeng/api';
 
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
+import { ProfileService } from '@shared/user/services';
 
 @Component({
   selector: 'my-setting-profile',
@@ -59,7 +60,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   checkTakenUsername$ = new Subject<string>();
 
   checkCorrectPassword$ = new Subject<string>();
-
+  profile$: Observable<any>;
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -70,7 +71,9 @@ export class MyProfileComponent implements OnInit, OnDestroy {
               private apiBaseService: ApiBaseService,
               private urlService: UrlService,
               private commonEventService: CommonEventService,
-              private loadingService: LoadingService) {
+              private loadingService: LoadingService,
+              private profileService: ProfileService
+  ) {
     this.sex = this.userService.getSyncProfile().sex === null ? 0 : this.userService.getSyncProfile().sex;
 
     const d = new Date();
@@ -174,6 +177,8 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           console.log('error', error);
         }
       );
+    this.profile$ = this.profileService.profile$;
+    this.profileService.getProfileNew(this.userService.getSyncProfile().uuid);
   }
 
   ngOnDestroy() {

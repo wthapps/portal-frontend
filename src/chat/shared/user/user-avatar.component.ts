@@ -7,8 +7,7 @@ import {
 
 @Component({
   selector: 'z-chat-share-user-avatar',
-  templateUrl: 'user-avatar.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: 'user-avatar.component.html'
 })
 export class ZChatShareUserAvatarComponent implements OnInit {
   @Input() data: any;

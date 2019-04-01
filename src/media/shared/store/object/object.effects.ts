@@ -1,5 +1,5 @@
 import { Injectable }             from '@angular/core';
-import { Effect, Actions }        from '@ngrx/effects';
+import { Effect, Actions, ofType }        from '@ngrx/effects';
 import { Action }                 from '@ngrx/store';
 import { Store }                  from '@ngrx/store';
 
@@ -37,65 +37,61 @@ export class ObjectEffects {
    * Object
    */
   @Effect()
-  get$: Observable<Action> = this.actions$
-    .ofType(ObjectActions.GET)
-    .pipe(
-      map((action: ObjectActions.Get) => action.payload),
-      switchMap((state: any) => {
-      return this.mediaService.get(state.id, 'sharings')
+  get$: Observable<Action> = this.actions$.pipe(
+    ofType(ObjectActions.GET),
+    map((action: ObjectActions.Get) => action.payload),
+    switchMap((state: any) => {
+    return this.mediaService.get(state.id, 'sharings')
+      .pipe(
+        map(response => new ObjectActions.GetSuccess(response)),
+        catchError(error  => of(new ObjectActions.GetFail(error)))
+      );
+  }));
+
+  @Effect()
+  getAll$: Observable<Action> = this.actions$.pipe(
+    ofType(ObjectActions.GET_ALL),
+    map((action: ObjectActions.GetAll) => action.payload),
+    switchMap(state => {
+      return this.mediaService.getAll(state.url)
         .pipe(
-          map(response => new ObjectActions.GetSuccess(response)),
-          catchError(error  => of(new ObjectActions.GetFail(error)))
+          map(response => new ObjectActions.GetAllSuccess(...response)),
+          catchError(error  => of(new ObjectActions.GetAllFail()))
         );
-    }));
+    })
+  );
 
   @Effect()
-  getAll$: Observable<Action> = this.actions$
-    .ofType(ObjectActions.GET_ALL)
-    .pipe(
-      map((action: ObjectActions.GetAll) => action.payload),
-      switchMap(state => {
-        return this.mediaService.getAll(state.url)
+  update$: Observable<Action> = this.actions$.pipe(
+    ofType(ObjectActions.UPDATE),
+    map((action: ObjectActions.Update) => action.payload),
+    switchMap(state => {
+      return this.mediaService.update(state.selectedObject, false, 'sharings')
+        .pipe(
+          map(response => new ObjectActions.UpdateSuccess(...response)),
+          catchError(error  => of(new ObjectActions.UpdateFail))
+        );
+    })
+  );
+
+  @Effect()
+  delete$: Observable<Action> = this.actions$.pipe(
+    ofType(ObjectActions.DELETE),
+    map((action: ObjectActions.Delete) => action.payload),
+    switchMap(state => {
+      if (state.selectedObjects.length > 1) {
+        return this.mediaService.delete(0, state.selectedObjects)
           .pipe(
-            map(response => new ObjectActions.GetAllSuccess(...response)),
-            catchError(error  => of(new ObjectActions.GetAllFail()))
+            map(response => new ObjectActions.DeleteSuccess(...response)),
+            catchError(error  => of(new ObjectActions.DeleteFail))
           );
-      })
-    );
-
-  @Effect()
-  update$: Observable<Action> = this.actions$
-    .ofType(ObjectActions.UPDATE)
-    .pipe(
-      map((action: ObjectActions.Update) => action.payload),
-      switchMap(state => {
-        return this.mediaService.update(state.selectedObject, false, 'sharings')
+      } else {
+        return this.mediaService.delete(state.selectedObjects[0].id, null, 'sharings')
           .pipe(
-            map(response => new ObjectActions.UpdateSuccess(...response)),
-            catchError(error  => of(new ObjectActions.UpdateFail))
+            map(response => new ObjectActions.DeleteSuccess(...response)),
+            catchError(error  => of(new ObjectActions.DeleteFail))
           );
-      })
-    );
-
-  @Effect()
-  delete$: Observable<Action> = this.actions$
-    .ofType(ObjectActions.DELETE)
-    .pipe(
-      map((action: ObjectActions.Delete) => action.payload),
-      switchMap(state => {
-        if (state.selectedObjects.length > 1) {
-          return this.mediaService.delete(0, state.selectedObjects)
-            .pipe(
-              map(response => new ObjectActions.DeleteSuccess(...response)),
-              catchError(error  => of(new ObjectActions.DeleteFail))
-            );
-        } else {
-          return this.mediaService.delete(state.selectedObjects[0].id, null, 'sharings')
-            .pipe(
-              map(response => new ObjectActions.DeleteSuccess(...response)),
-              catchError(error  => of(new ObjectActions.DeleteFail))
-            );
-        }
-      })
-    );
+      }
+    })
+  );
 }

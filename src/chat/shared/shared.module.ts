@@ -18,7 +18,7 @@ import {
   TooltipModule
 } from 'primeng/primeng';
 
-import { ZChatShareItemRequestComponent } from './message/item-request.component';
+import { MessageInvitationComponent } from './message/message-invitation.component';
 import { PartialModule } from './../../shared/partials/partial.module';
 
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
@@ -29,8 +29,6 @@ import { ChatService } from './services/chat.service';
 import { ChatContactService } from './services/chat-contact.service';
 import { ZChatSharedHeaderComponent } from './header/header.component';
 import { ChatCommonService } from '@wth/shared/services';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
-import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 import { ChatMessageService } from './services/chat-message.service';
 import { ChatConversationService } from './services/chat-conversation.service';
 import { WthCommonModule } from '@shared/common/wth-common.module';
@@ -48,6 +46,7 @@ import { ZSharedReportModule } from '@shared/shared/components/zone/report/repor
 import { ZChatSharedModalModule } from './modal/chat-shared-modal.module';
 import { ZChatPipeModule } from './pipe/chat-pipe.module';
 import { CardUserModule } from '@shared/components/card-user/card-user.module';
+import { ChatNotificationService, MemberService } from '@chat/shared/services';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -98,8 +97,7 @@ import { CardUserModule } from '@shared/components/card-user/card-user.module';
     // ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
-    ContactListModalComponent,
-    ZChatShareItemRequestComponent
+    MessageInvitationComponent,
     // ZChatShareRequestContactComponent,
   ],
   exports: [
@@ -122,7 +120,7 @@ import { CardUserModule } from '@shared/components/card-user/card-user.module';
     // Chat scoped modules
     MessagesModule,
     MessageModule,
-    ZChatShareItemRequestComponent,
+    MessageInvitationComponent,
     // ZChatShareRequestContactComponent,
     ZChatSharedModalModule,
     ZChatShareUserModule,
@@ -143,7 +141,6 @@ import { CardUserModule } from '@shared/components/card-user/card-user.module';
     ZChatToolbarComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
-    ContactListModalComponent
   ]
 })
 export class ZChatSharedModule {
@@ -158,7 +155,8 @@ export class ZChatSharedModule {
         ChatConversationService,
         ChatCommonService,
         MessageService,
-        ZChatShareAddContactService
+        ChatNotificationService,
+        MemberService,
       ]
     };
   }

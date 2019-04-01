@@ -8,7 +8,7 @@ import { ZChatSettingComponent } from './setting.component';
   imports: [
     RouterModule.forChild([
       {
-        path: 'setting',
+        path: 'settings',
         component: ZChatSettingComponent,
         canActivate: [AuthGuard]
       }

@@ -32,7 +32,7 @@
   <bs-modal-body>
     <div style="display: flex;">
       <div class="avatar-md">
-        <img [src]="user?.profile_image" alt="">
+        <img *ngIf="user" [src]="user?.profile_image" alt="">
       </div>
       <div class="p20 w-100">
         <div class="user-info" style="height: 80px">

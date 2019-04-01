@@ -72,18 +72,13 @@ export class ChatConversationService extends CommonEventHandler {
     return this.store.select(STORE_CONVERSATIONS);
   }
 
-  getStoreSelectedConversation() {
+  getStoreSelectedConversation(): any {
     return this.store.select(STORE_SELECTED_CONVERSATION).pipe(
       // filter selectedConversation empty
       filter(cx => {
-        return cx.selectedConversation && cx.selectedConversation.group_id;
-      }),
+      return cx.selectedConversation && cx.selectedConversation.group_id;}),
       // map to selected Convervarion
       map(cx => cx.selectedConversation));
-  }
-
-  getStoreSelectedConversationFull() {
-    return this.store.select(STORE_SELECTED_CONVERSATION);
   }
 
   addNotificationEvent(event: CommonEvent) {
@@ -153,11 +148,11 @@ export class ChatConversationService extends CommonEventHandler {
   }
 
   apiFavoriteGroupUser(conversation: any) {
-    return this.apiUpdateGroupUser(conversation.group_id, { favorite: !conversation.favorite });
+    return this.apiUpdateGroupUser(conversation.id, { favorite: !conversation.favorite });
   }
 
   apiNotificationGroupUser(conversation: any) {
-    return this.apiUpdateGroupUser(conversation.group_id, { notification: !conversation.notification });
+    return this.apiUpdateGroupUser(conversation.id, { notification: !conversation.notification });
   }
 
   leaveConversation(contact: any): Promise<any> {

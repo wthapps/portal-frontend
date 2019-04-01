@@ -20,6 +20,7 @@ const fullDomain = `${subdomain}.${domain}`;
 export const ConfigByEnv: EnvConfig = {
   CDN: `${protocol}://cdn-apps-test.${domain}/assets`,
   API: `${protocol}://api-${fullDomain}`,
+  SOCKET_API: `wss://socket-${fullDomain}/socket`,
   ENV: 'TEST',
   DOMAIN: `${domain}`,
   SUB_DOMAIN: {

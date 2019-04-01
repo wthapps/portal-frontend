@@ -17,7 +17,6 @@ import { CoreModule } from '../core/core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ContactModule } from './contact/contact.module';
-// import { MyProfileModule } from './my-profile/my-profile.module';
 import { GroupModule } from './group/group.module';
 import { ContactSharedModule } from './shared/shared.module';
 // import { ProfileModule } from '@wth/shared/user';

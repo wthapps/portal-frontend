@@ -6,8 +6,8 @@ import {
   AfterViewInit, ViewEncapsulation
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import {Message} from 'primeng/components/common/api';
 import {MessageService} from 'primeng/components/common/messageservice';
@@ -20,8 +20,13 @@ import { AuthService, StorageService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
 import { ChatConversationService } from './shared/services/chat-conversation.service';
+import { Socket, Presence } from 'phoenix';
+import { CardDetailModalComponent } from '@shared/user/card';
+import { ProfileService } from '@shared/user/services';
+import { UserEventService } from '@shared/user/event';
 
 declare const _: any;
+
 /**
  * This class represents the main application component.
  */
@@ -29,15 +34,19 @@ declare const _: any;
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('introduction') introduction: IntroductionModalComponent;
-  msgs: Message[] = [];
+  @ViewChild('cardDetailModal') cardDetailModal: CardDetailModalComponent;
+
   routerSubscription: Subscription;
   hiddenSubscription: Subscription;
 
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
+  profile$: Observable<any>;
+  destroy$ = new Subject();
+
 
   constructor(
     public authService: AuthService,
@@ -47,12 +56,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private storageService: StorageService,
     private chatConversationService: ChatConversationService,
     private visibilityService: PageVisibilityService,
-    private wthConfirmService: WthConfirmService
+    private wthConfirmService: WthConfirmService,
+    private profileService: ProfileService,
+    private userEventService: UserEventService
   ) {
     this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
       this.confirmDialog = res;
     });
     this.storageService.save(NETWORK_ONLINE, true);
+
   }
 
   ngOnInit() {
@@ -69,6 +81,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         document.body.scrollTop = 0;
       });
 
+
+    this.profile$ = this.profileService.profile$;
+
     this.visibilityService.reloadIfProfileInvalid();
   }
 
@@ -78,6 +93,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     ) {
       this.introduction.open();
     }
+
+    this.userEventService.viewProfile$.subscribe(user => {
+      this.viewProfile(user);
+    });
+
+  }
+
+  viewProfile(user: any) {
+    console.log('VIEW PROFILE', user);
+
+    this.profileService.getProfileNew(user.uuid);
+    this.cardDetailModal.open({});
   }
 
   handleOnlineOffline() {
@@ -95,9 +122,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.messageService.clear();
   }
 
+  // Conversation handle
+  createConversation(payload: any) {
+
+  }
+
+  // Conversation handle end
+
   ngOnDestroy() {
     this.routerSubscription.unsubscribe();
     this.hiddenSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private handleBrowserState(isActive) {
@@ -118,7 +154,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private getOutOfDateData() {
-    this.chatConversationService.apiGetConversations();
+    // this.chatService.getConversationsAsync({forceFromApi: true}).subscribe();
+    // this.chatConversationService.apiGetConversations();
     this.chatService.getOutOfDateMessages();
   }
 

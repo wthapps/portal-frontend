@@ -12,7 +12,6 @@ import { ZMediaPhotoModule } from './photo/photo.module';
 import { ZMediaFavoriteModule } from './favourites/favourites.module';
 import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZMediaSearchModule } from './search/search.module';
-// import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
 import { ZMediaSharingModule } from './shared-by-me/sharing.module';
 import { CoreModule } from '@wth/core/core.module';
 import { HttpClientModule } from '@angular/common/http';
