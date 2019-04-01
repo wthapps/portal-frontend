@@ -10,14 +10,14 @@
         <ng-container *ngIf="(card && card.card_type === 'business') else profileCard">
           <p class="m0 text-bold text-fade card-name"> {{ card?.card_name }} </p>
           <p class="m0"> {{ card?.first_name}} {{ card?.last_name}} </p>
-          <p class="m0"> {{ card?.company }}, {{ card?.occupation }}</p>
+          <p class="m0"> <span  *ngIf="card?.company">{{ card?.company }}, </span>{{ card?.occupation }}</p>
         </ng-container>
         <ng-template #profileCard>
           <!-- <p class="m0 text-bold text-fade" card-name>{{ card?.first_name}} {{ card?.last_name}}</p>
           <span>&nbsp;</span> -->
           <p class="m0 text-bold text-fade card-name"> Public card </p>
           <p class="m0"> {{ card?.first_name}} {{ card?.last_name}} </p>
-          <p class="m0"> {{ card?.company }}, {{ card?.occupation }}</p>
+          <p class="m0"> <span  *ngIf="card?.company">{{ card?.company }}, </span>{{ card?.occupation }}</p>
         </ng-template>
 
 

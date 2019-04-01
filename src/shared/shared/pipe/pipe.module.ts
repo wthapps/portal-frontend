@@ -34,6 +34,7 @@ import { MaxCountPipe } from '@wth/shared/shared/pipe/max-count.pipe';
 import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.pipe';
 import { UsernamePipe } from './username.pipe';
 import { CountryCode2ValuePipe } from './country-code-2-value.pipe';
+import { TrimPipe } from './trim.pipe';
 
 @NgModule({
   imports: [CommonModule],
@@ -67,6 +68,7 @@ import { CountryCode2ValuePipe } from './country-code-2-value.pipe';
     MaxCountPipe,
     StripHtmlPipe,
     PhoneCodeToDisplayCodePipe,
+    TrimPipe,
     UsernamePipe,
     KeysPipe
   ],
@@ -100,6 +102,7 @@ import { CountryCode2ValuePipe } from './country-code-2-value.pipe';
     MapToIterablePipe,
     MaxCountPipe,
     PhoneCodeToDisplayCodePipe,
+    TrimPipe,
     UsernamePipe,
     KeysPipe
   ],

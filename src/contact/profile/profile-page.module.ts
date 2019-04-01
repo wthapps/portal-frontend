@@ -5,10 +5,10 @@ import { ProfileModule } from '@wth/shared/user';
 import { ProfilePageComponent } from './profile-page.component';
 import { ContactSharedModule } from '@contacts/shared/shared.module';
 import { CardModule } from '@contacts/shared/card';
-// import { WContactSelectionModule } from '@shared/components/w-contact-selection/w-contact-selection.module';
 import { AccountService } from '@shared/services';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { ShareEditorModule } from '@shared/components/editors/share';
+import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
 
 @NgModule({
   imports: [
@@ -18,18 +18,12 @@ import { ShareEditorModule } from '@shared/components/editors/share';
     ProfilePageRouting,
 
     BoxNoDataModule,
+    BoxLoadingModule,
     CardModule,
-    // WContactSelectionModule,
-    ShareEditorModule,
+    ShareEditorModule
   ],
-  declarations: [
-    ProfilePageComponent
-  ],
-  exports: [
-    ProfilePageComponent
-  ],
-  providers: [
-    AccountService
-  ]
+  declarations: [ProfilePageComponent],
+  exports: [ProfilePageComponent],
+  providers: [AccountService]
 })
 export class ProfilePageModule {}

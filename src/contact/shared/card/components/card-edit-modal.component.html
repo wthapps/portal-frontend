@@ -2,21 +2,25 @@
   <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" cssClass="pcard-edit-modal">
     <bs-modal-header [showDismiss]="false">
       <div class="modal-header-nav">
-        <h4 class="modal-title text-capitalize">
-          <ng-container *ngIf="form.controls.card_type.value === BUSINESS" >
-            <input [autofocus]="focus" *ngIf="form.controls.card_type.value === BUSINESS" type="text" placeholder="Untitled Card"                  
-                  formControlName="card_name" #nameEl >
-          </ng-container>
-
-          <label *ngIf="form.controls.card_type.value === PUBLIC"> {{ card_name.value }}</label>
-        </h4>
-        <ul class="modal-header-navbar">
+        <div class="flex-1 no-label" [ngClass]="{
+          'has-error': (card_name.invalid
+          && card_name.touched)}" *ngIf="form.controls.card_type.value === BUSINESS">
+          <input [autofocus]="focus" *ngIf="form.controls.card_type.value === BUSINESS" type="text" placeholder="Untitled Card"           
+                class="form-control" formControlName="card_name" #nameEl aria-describedby="helpBlock2">
+          <span id="helpBlock2" *ngIf="card_name.touched && card_name.invalid" class="help-block"> Card name should not be empty</span>
+        </div>
+        <h4 class="modal-title text-capitalize" *ngIf="form.controls.card_type.value === PUBLIC">{{ card_name.value }}</h4>
+        
+        <button type="button" (click)="close()" class="btn btn-default btn-default-no-border">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <!-- <ul class="modal-header-navbar">
           <li>
             <button type="button" (click)="close()" class="btn btn-default btn-default-no-border">
               <i class="fa fa-times" aria-hidden="true"></i>
             </button>
           </li>
-        </ul>
+        </ul> -->
       </div>
   </bs-modal-header>
   <bs-modal-body>
@@ -26,7 +30,7 @@
               <div class="media content-overflow-visible">
                 <div class="media-left">
                   <div class="avatar-md" >
-                    <img class="no-user-selected ng-star-inserted"  [src]="form?.controls.profile_image?.value || profile?.profile_image">
+                    <img class="no-user-selected ng-star-inserted"  [src]="form.controls.card_type.value === BUSINESS ? form?.controls.profile_image?.value : profile?.profile_image">
                     <span class="cover-info-profile">
                       <i class="fa fa-camera"></i>
                     </span>
@@ -35,21 +39,31 @@
                 <div class="media-body content-overflow-visible">
                   <div class="row row-10">
                     <div class="col-sm-6 mb10">
-                      <div class="form-group no-label mb0">
+                      <div class="form-group no-label mb0" [ngClass]="{
+                        'has-error': (first_name.invalid
+                        && first_name.touched)}">
                         <input autofocus [formControl]="first_name" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null" placeholder="First name">
+                        <span *ngIf="first_name.invalid" class="help-block"> First name should not be empty</span>
                       </div>
                     </div>
                     <div class="col-sm-6 mb10">
-                      <div class="form-group no-label mb0">
+                      <div class="form-group no-label mb0" [ngClass]="{
+                        'has-error': (last_name.invalid
+                        && last_name.touched)}">
                         <input [formControl]="last_name" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null" placeholder="Last name">
+                        <span *ngIf="last_name.invalid" class="help-block"> Last name should not be empty</span>
                       </div>
                     </div>
+                  </div>
+                  <div class="row row-10">
                     <div class="col-sm-6 mb10">
                       <input [formControl]="company" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null" placeholder="Company/organization">
                     </div>
                     <div class="col-sm-6 mb10">
                       <input [formControl]="occupation" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null" placeholder="Title/job">
                     </div>
+                  </div>
+                    <div class="row row-10">
                     <div class="col-sm-12 mb10">
                       <input [formControl]="headline" type="text" class="form-control" [attr.readonly]="form.controls.card_type.value === PUBLIC ? 'readonly': null" placeholder="Headline">
                     </div>

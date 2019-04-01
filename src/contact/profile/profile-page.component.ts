@@ -32,10 +32,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   cards$: Observable<Array<any>>;
   card$: Observable<any>;
-  profile$: Observable<any>;
   users$: Observable<Array<any>>;
+  profile;
+  profileLoading = true;
+  cardLoading = true;
   currentCard: any;
-  destroy$ = new Subject();
+  private destroy$ = new Subject();
 
   readonly BIZ_CARD = `Business Cards help you share private contact information with other users`;
   readonly PUBLIC_CARD = `All the information in your Public Profile card will be public`;
@@ -47,17 +49,29 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
               private confirmationService: WthConfirmService,
               private accountService: AccountService,
               private commonEventService: CommonEventService) {
-
     this.cards$ = this.cardService.items$;
     this.users$ = this.accountService.getItems();
-    this.profile$ = this.profileService.myProfile$;
-
+    this.profileService.myProfile$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(
+      res => this.profile = res
+    );
     this.handleSelectCropEvent();
   }
 
   ngOnInit(): void {
-    this.cardService.getCards();
-    this.profileService.getMyProfile();
+    this.initLoad();
+  }
+
+  async initLoad() {
+    try {
+      await Promise.all([this.cardService.getCards(), this.profileService.getMyProfile()]) ;
+      this.profileLoading  = false;
+      this.cardLoading  = false;
+    } catch {
+      this.profileLoading  = false;
+      this.cardLoading  = false;
+    }
   }
 
   closeCard(card: any) {
@@ -80,8 +94,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   }
 
   createCard() {
-    // this.profileService.get(this.authService.user.uuid);
-    // this.profileService.getMyProfile();
     this.cardEditModal.open({mode: 'create', card: null, cardType: 'business'});
   }
 
@@ -109,8 +121,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       });
       this.cardDetailModal.close();
     } else {
-      // this.profileService.get(this.authService.user.uuid);
-      // this.profileService.getMyProfile();
       this.cardEditModal.open({...payload, mode: 'edit'});
     }
   }
@@ -122,7 +132,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       title: 'Share card',
       object: payload.card
     });
-    // this.contactSelectionModal.open({title: 'Select Contact'});
   }
 
   shareCard(payload: any) {

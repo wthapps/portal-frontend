@@ -56,8 +56,8 @@ export class CardService extends BaseEntityService<any> {
   }
 
 
-  getCards() {
-    this.getAll().subscribe(response => {
+  getCards(): Promise<any> {
+    return this.getAll().toPromise().then(response => {
       const cards = response.data.map(c => c.attributes);
       this.setCards(cards);
     });

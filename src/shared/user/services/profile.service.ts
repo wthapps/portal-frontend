@@ -33,8 +33,9 @@ export class ProfileService {
     });
   }
 
-  getMyProfile() {
-    return this.apiBaseService.get(`${this.newUrl}/my_profile`).subscribe(response => {
+  getMyProfile(): Promise<any> {
+    return this.apiBaseService.get(`${this.newUrl}/my_profile`).toPromise()
+    .then(response => {
       this._myProfile.next(response.data.attributes);
     });
   }

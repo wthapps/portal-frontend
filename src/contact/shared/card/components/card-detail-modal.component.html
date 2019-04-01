@@ -60,7 +60,7 @@
         </div>
         <div class="media-avatar-body">
           <p class="card-owner-name m0"> {{ card?.first_name + ' ' + card?.last_name }} </p>
-          <p class="card-company m0"><span *ngIf="card?.company">{{ card?.company + ', ' }} </span> <span> {{ card?.occupation }} </span></p>
+          <p class="card-company m0"><span *ngIf="card?.company && (card?.company | trim).length > 0">{{ card?.company + ', ' }} </span> <span> {{ card?.occupation }} </span></p>
           <p class="card-company">
             {{ card?.headline}}
           </p>

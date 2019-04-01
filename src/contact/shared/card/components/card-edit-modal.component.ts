@@ -13,6 +13,7 @@ import { PUBLIC, BUSINESS, UNTITILED, NONE } from '../card.constant';
 import { CountryService } from '@shared/shared/components/countries/countries.service';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { AbstractControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { CustomValidator } from '@shared/shared/validator/custom.validator';
 
 declare var $: any;
 declare var _: any;
@@ -34,9 +35,12 @@ export class CardEditModalComponent {
   last_name: AbstractControl;
   company: AbstractControl;
   occupation: AbstractControl;
+  nationality: AbstractControl;
+  profile_image: AbstractControl;
   headline: AbstractControl;
   about: AbstractControl;
   card_name: AbstractControl;
+  card_type: AbstractControl;
   public_fields: AbstractControl;
   custom_fields: AbstractControl;
   showMore = true;
@@ -55,7 +59,7 @@ export class CardEditModalComponent {
 
   readonly DEFAULT_CARD = {
     card_type: BUSINESS,
-    card_name: UNTITILED,
+    card_name: '',
     public_fields: ['name', 'profile_image'],
   };
   private mode: string = 'create' || 'edit';
@@ -93,12 +97,17 @@ export class CardEditModalComponent {
   createForm() {
     this.form = this.fb.group({
       'uuid': [''],
-      'card_name': [this.DEFAULT_CARD.card_name],
+      'profile_image': [''],
+      'card_name': [this.DEFAULT_CARD.card_name, { validators: Validators.compose([Validators.required, CustomValidator.notEmpty]),
+        updateOn: 'blur' }],
       'card_type': [this.DEFAULT_CARD.card_type],
-      'first_name': [_.get(this.profile, 'first_name', '')],
-      'last_name': [_.get(this.profile, 'last_name', '')],
+      'first_name': ['', { validators: Validators.compose([Validators.required, CustomValidator.notEmpty]),
+        updateOn: 'blur' }],
+      'last_name': ['', { validators: Validators.compose([Validators.required, CustomValidator.notEmpty]),
+        updateOn: 'blur' }],
       'company': [_.get(this.profile, 'company', '')],
       'occupation': [_.get(this.profile, 'occupation', '')],
+      'nationality': [''],
       'headline': [_.get(this.profile, 'headline', '')],
       'about': [_.get(this.profile, 'about', '')],
       'public_fields': [this.DEFAULT_CARD.public_fields],
@@ -115,12 +124,15 @@ export class CardEditModalComponent {
     });
 
     this.card_name = this.form.controls['card_name'];
+    this.card_type = this.form.controls['card_type'];
     this.first_name = this.form.controls['first_name'];
     this.last_name = this.form.controls['last_name'];
     this.company = this.form.controls['company'];
     this.occupation = this.form.controls['occupation'];
+    this.profile_image = this.form.controls['profile_image'];
     this.headline = this.form.controls['headline'];
     this.about = this.form.controls['about'];
+    this.nationality = this.form.controls['nationality'];
     this.public_fields = this.form.controls['public_fields'];
     this.custom_fields = this.form.controls['custom_fields'];
   }
@@ -147,6 +159,7 @@ export class CardEditModalComponent {
 
   close(): void {
     this.focus = false;
+    this.resetForm();
     this.modal.close();
   }
 

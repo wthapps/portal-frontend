@@ -4,48 +4,55 @@
 </z-contact-shared-toolbar>
 <div class="page-body-content has-page-body-control">
   <div class="contact-edit-page page-body-content-in">
-    <w-user-profile class="contact-edit-content" [data]="profile$|async"
-                    (update)="updateProfile($event)"
-                    (changeAvatar)="changeAvatar($event)">
+      <ng-container *ngIf="!profileLoading; else loadingBlock;">
+        <w-user-profile class="contact-edit-content" [data]="profile"
+          (update)="updateProfile($event)"
+          (changeAvatar)="changeAvatar($event)">
+        </w-user-profile>
+      </ng-container>
+    
+    
+    <div class="contact-edit-aside" >
+      <ng-container *ngIf="!cardLoading; else loadingBlock;">
 
-    </w-user-profile>
-    <div class="contact-edit-aside">
-      <h4>Public Profile
-        <button class="btn btn-default" [pTooltip]="PUBLIC_CARD" tooltipPosition="bottom">
-          <i class="fa fa-info-circle text-fade"></i>
-        </button>
-      </h4>
-      <div class="card-list row">
-        <div class="col-sm-12 mb15" >
-          <card-item [card]="profile$|async" (view)="viewCard($event)"></card-item>
-        </div>
-      </div>
-      <h4>Business Cards
-        <button class="btn btn-default" [pTooltip]="BIZ_CARD"
-                tooltipPosition="bottom"><i class="fa fa-info-circle text-fade"></i></button>
-        <button class="btn btn-default pull-right create-card" (click)="createCard()"
-                [pTooltip]="'Create Business Card'"  tooltipPosition="bottom">
-          <i class="fa fa-plus text-fade"></i>
-        </button>
-      </h4>
-
-      <div class="card-list row">
-        <ng-container *ngIf="(cards$ | async).length > 0 else noData">
-          <ng-template ngFor let-c [ngForOf]="cards$ | async">
-            <!--<ng-container *ngIf="c.card_type === 'business'">-->
-              <div class="col-sm-12 mb15">
-                <card-item [card]="c" (view)="viewCard($event)"></card-item>
+          <h4>Public Profile
+              <button class="btn btn-default" [pTooltip]="PUBLIC_CARD" tooltipPosition="bottom">
+                <i class="fa fa-info-circle text-fade"></i>
+              </button>
+            </h4>
+            <div class="card-list row">
+              <div class="col-sm-12 mb15" >
+                <card-item [card]="profile" (view)="viewCard($event)"></card-item>
               </div>
-            <!--</ng-container>-->
-          </ng-template>
-        </ng-container>
-        <ng-template #noData>
-          <box-no-data [icon]="'fa fa-address-card xs'"
-                       [title]="'There are no Cards!'"
-                       [subTitle]="'All of your business cards'">
-          </box-no-data>
-        </ng-template>
-      </div>
+            </div>
+            <h4>Business Cards
+              <button class="btn btn-default" [pTooltip]="BIZ_CARD"
+                      tooltipPosition="bottom"><i class="fa fa-info-circle text-fade"></i></button>
+              <button class="btn btn-default pull-right create-card" (click)="createCard()"
+                      [pTooltip]="'Create Business Card'"  tooltipPosition="bottom">
+                <i class="fa fa-plus text-fade"></i>
+              </button>
+            </h4>
+      
+            <div class="card-list row">
+              <ng-container *ngIf="(cards$ | async).length > 0 else noData">
+                <ng-template ngFor let-c [ngForOf]="cards$ | async">
+                  <!--<ng-container *ngIf="c.card_type === 'business'">-->
+                    <div class="col-sm-12 mb15">
+                      <card-item [card]="c" (view)="viewCard($event)"></card-item>
+                    </div>
+                  <!--</ng-container>-->
+                </ng-template>
+              </ng-container>
+              <ng-template #noData>
+                <box-no-data [icon]="'fa fa-address-card xs'"
+                             [title]="'There are no Cards!'"
+                             [subTitle]="'All of your business cards'">
+                </box-no-data>
+              </ng-template>
+            </div>
+      </ng-container>
+      
     </div>
   </div>
 </div>
@@ -58,7 +65,8 @@
                      (closed)="closeCard($event)">
 
 </w-card-detail-modal>
-<w-card-edit-modal #cardEditModal [profile]="profile$ | async" (save)="saveCard($event)"></w-card-edit-modal>
-<!--<w-contact-selection #contactSelectionModal [contacts]="users$|async" (selected)="shareCard($event)"></w-contact-selection>-->
+<w-card-edit-modal #cardEditModal [profile]="profile" (save)="saveCard($event)"></w-card-edit-modal>
 <w-share-editor #shareEditor (save)="shareCard($event)"></w-share-editor>
-
+<ng-template #loadingBlock>
+  <box-loading></box-loading>
+</ng-template>
