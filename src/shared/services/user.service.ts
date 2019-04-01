@@ -172,13 +172,17 @@ export class UserService {
   }
 
   updateProfile(profile: any) {
-    this.cookieService.put(
-      Constants.cookieKeys.profile,
-      JSON.stringify(profile),
-      this.cookieOptionsArgs
-    );
-    this.windowService.setItem({ profile: profile });
-    this.setProfile(profile);
+    const updatedProfile = this.profile;
+
+    // just update current attributes that is storing in cookie
+    for (const prop in updatedProfile) {
+      if (profile.hasOwnProperty(prop)) {
+        updatedProfile[prop] = profile[prop];
+      }
+    }
+    this.cookieService.put(Constants.cookieKeys.profile, JSON.stringify(updatedProfile), this.cookieOptionsArgs);
+    this.windowService.setItem({ profile: updatedProfile });
+    this.setProfile(updatedProfile);
     // this.soUserProfile = {...this._soProfile.getValue(), profile_image: profile.profile_image};
   }
 
