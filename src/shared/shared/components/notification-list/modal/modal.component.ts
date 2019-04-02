@@ -15,8 +15,8 @@ declare var _: any;
 export class NotificationSettingModalComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
 
-  social: Boolean = false;
-  chat: Boolean = false;
+  // social: Boolean = false;
+  // chat: Boolean = false;
   note: Boolean = false;
   media: Boolean = false;
   contact = false;
@@ -29,8 +29,8 @@ export class NotificationSettingModalComponent implements OnInit, OnDestroy {
       takeUntil(this.destroySubject)
     ).subscribe((data: any) => {
       if (!_.isEmpty(data)) {
-        this.social = data.enable_social;
-        this.chat = data.enable_chat;
+        // this.social = data.enable_social;
+        // this.chat = data.enable_chat;
         this.note = data.enable_note;
         this.media = data.enable_media;
         this.contact = data.enable_contact;
@@ -54,9 +54,7 @@ export class NotificationSettingModalComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
-    console.log(this.social, this.chat, this.note);
-
-    this.userService.updateNotificationSetting({enable_social: this.social, enable_chat: this.chat,
+    this.userService.updateNotificationSetting({
       enable_note: this.note, enable_media: this.media, enable_contact: this.contact });
     this.modal.close();
   }
