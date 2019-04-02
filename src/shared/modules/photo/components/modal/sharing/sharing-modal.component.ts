@@ -233,23 +233,40 @@ export class SharingModalComponent extends CommonEventHandler implements OnInit,
   }
 
   clickContact(contact) {
-    this.selectContact(contact);
-    this.newUsers = this.contactsFilter.filter(c => c.selected === true);
-    this.changed = true;
     let chips: HTMLInputElement = <HTMLInputElement>document.getElementById('p-chips-sharing');
     chips.value = '';
+    this.selectContact(contact);
+    this.newUsers = this.contacts.filter(c => c.selected === true);
+    this.changed = true;
   }
 
   selectContact(user) {
     this.contactsFilter = this.contactsFilter.map(c => {
-      if (c.id === user.id) c.selected = !c.selected;
+      if (c.id == user.id) {
+        c = { ...c }
+        c.selected = !c.selected;
+      };
+      return c;
+    });
+    this.contacts = this.contacts.map(c => {
+      if (c.id == user.id) {
+        c = { ...c }
+        c.selected = !c.selected;
+      };
       return c;
     });
   }
 
   deSelectContact() {
     this.contactsFilter = this.contactsFilter.map(c => {
+      c = { ...c };
       c.selected = false;
+      return c;
+    });
+    this.contacts = this.contacts.map(c => {
+      c = { ...c };
+      c.selected = false;
+      return c;
     });
   }
 

@@ -31,7 +31,7 @@ export class MediaBasicListMixin {
   loadMoreObjects(input?: any) {
     if (this.links && this.links.next) {
       this.apiBaseService.get(this.links.next).subscribe(res => {
-        this.objects = [...this.objects, ...res.data];
+        this.objects = [...this.objects, ...MediaList.map(res.data)];
         this.links = res.meta.links;
         this.loadingEnd();
       })
