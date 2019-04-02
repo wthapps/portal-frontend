@@ -3,7 +3,6 @@ import { Observable, BehaviorSubject, from } from 'rxjs';
 import { tap, map, distinctUntilChanged, catchError } from 'rxjs/operators';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { DatePipe } from '@angular/common';
-import { Media } from '@shared/shared/models/media.model';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { ApiBaseService } from '@shared/services';
 
@@ -15,8 +14,8 @@ export class NoteService {
 
   apiUrl = 'note/mixed_entities';
 
-  data$: Observable<Media[]>;
-  private dataSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>(null);
+  data$: Observable<any[]>;
+  private dataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
 
   constructor(public localStorageService: LocalStorageService,
               private datePipe: DatePipe,

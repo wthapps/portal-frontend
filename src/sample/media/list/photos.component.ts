@@ -11,7 +11,6 @@ import { MMediaService } from '../shared/media.service';
 import { MPhotosService } from '../shared/services/photos.service';
 
 import { MAlbumsService } from '../shared/services/albums.service';
-import { Media } from '@shared/shared/models/media.model';
 import { WDataViewComponent } from '../../shared/components/w-dataView/w-dataView.component';
 import { WModalsAddToAlbumComponent } from '../../shared/components/modals/add-to-album/add-to-album.component';
 import { WModalsShareComponent } from '../../shared/components/modals/share/share.component';
@@ -153,7 +152,7 @@ export class MPhotosComponent implements OnInit {
     this.modalAddToAlbum.modal.open();
   }
 
-  async onModalAddCompleted(album: Media) {
+  async onModalAddCompleted(album: any) {
     await this.albumsService.addToAlbum(album.id, this.dataView.selectedDocuments).toPromise()
       .then(() => this.modalAddToAlbum.modal.close())
       .then(() => {
@@ -175,7 +174,7 @@ export class MPhotosComponent implements OnInit {
     this.modalPhotoEditInfo.open()
       .pipe(
         take(1),
-        switchMap((photo: Media) => this.dataService.update(photo))
+        switchMap((photo) => this.dataService.update(photo))
       )
       .subscribe();
   }

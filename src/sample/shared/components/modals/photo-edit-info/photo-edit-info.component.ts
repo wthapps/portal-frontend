@@ -3,14 +3,14 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Media } from '@shared/shared/models/media.model';
+// import { Media } from '@shared/shared/models/media.model';
 
 @Component({
   selector: 'shared-modals-photoEditInfo',
   templateUrl: './photo-edit-info.component.html'
 })
 export class WModalsPhotoEditInfoComponent implements OnChanges {
-  @Input() data: Media = null;
+  @Input() data: any = null;
   @ViewChild('modal') modal: BsModalComponent;
 
   form: FormGroup;
@@ -39,7 +39,7 @@ export class WModalsPhotoEditInfoComponent implements OnChanges {
     }
   }
 
-  open(): Observable<Media> {
+  open(): Observable<any> {
     this.modal.open();
     return from(this.modal.onClose).pipe(
       map(() => this.data)
