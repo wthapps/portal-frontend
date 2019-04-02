@@ -55,7 +55,7 @@ export class ZContactSharedSidebarComponent implements OnInit, OnDestroy {
         filter(event => event instanceof NavigationEnd),
         takeUntil(this.destroySubject))
       .subscribe((event: any) => {
-        this.currentGroup = this.extractLabel(event.url);
+        this.currentGroup = this.extractLabel(event.urlAfterRedirects);
       });
     // this.notificationService.getLatestNotifications();
   }

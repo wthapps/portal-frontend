@@ -19,7 +19,6 @@ import { Group } from './group/group.model';
 import { GroupService } from './group/group.service';
 import { GroupEditModalComponent } from './group/group-edit-modal.component';
 import { GoogleApiService } from './shared/services/google-api.service';
-import { Config } from '../shared/constant/config/env.config';
 
 import { ZContactSharedSettingsComponent } from './shared/modal/settings/settings.component';
 import {
@@ -28,14 +27,9 @@ import {
   CommonEventAction,
   CommonEventService
 } from '@wth/shared/services';
-import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { PromptUpdateService } from './../shared/services/service-worker/prompt-update.service';
-import { UserService } from './../shared/services/user.service';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
-import { User } from '@shared/shared/models';
 import { HeaderComponent } from '@shared/partials/header';
-import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
-import { LogUpdateService } from './../shared/services/service-worker/log-update.service';
 import { CardEditModalComponent } from './shared/card/components';
 import { SwPushService } from '@shared/services/service-worker/sw-push.service';
 import { ProfileService } from '@shared/user/services';

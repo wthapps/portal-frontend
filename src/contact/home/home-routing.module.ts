@@ -7,7 +7,7 @@ import { AuthGuard } from '@wth/shared/services';
     RouterModule.forChild([
       {
         path: '',
-        redirectTo: '/contacts',
+        redirectTo: '/contacts;group=all%20contacts',
         pathMatch: 'full',
         canActivate: [AuthGuard]
       }

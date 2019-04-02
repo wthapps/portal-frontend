@@ -8,18 +8,18 @@
   <div class="panel-body">
 
     <dl class="dl-horizontal">
-      <dt>About</dt>
-      <dd>
-        {{ data?.about || 'None'}}
-      </dd>
       <dt>Gender</dt>
       <dd>{{ constants.sex[data?.sex] || 'None' }}</dd>
+      <dt>Nationality</dt>
+      <dd>{{ (data?.nationality | countryCode2Value: (countries$ | async)) || 'None' }}</dd>
       <dt>Birthday</dt>
       <dd *ngIf="data?.birthday">{{ (data?.birthday | timeFormat) || 'None' }}</dd>
       <dd *ngIf="!data?.birthday">None</dd>
 
-      <dt>Nationality</dt>
-      <dd>{{ (data?.nationality | countryCode2Value: (countries$ | async)) || 'None' }}</dd>
+      <dt>About</dt>
+      <dd>
+        {{ data?.about || 'None'}}
+      </dd>
     </dl>
   </div>
 </div>
