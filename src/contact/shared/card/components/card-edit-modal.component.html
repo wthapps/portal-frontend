@@ -115,7 +115,7 @@
                   </ng-container>
       
                   <ng-container *ngIf="profile?.media?.length > 0">
-                      <dt>URLS</dt>
+                      <dt>URLs</dt>
                       <dd *ngFor="let item of profile.media">
                           <div class="select-content">
                               <div class="select-content-checkbox">
@@ -151,7 +151,6 @@
                             </div>
                             <div class="select-content-value">
                               <span>
-                                <!-- {{ (getCountry(profile?.nationality) | async)?.name || NONE }} -->
                                 {{ profile?.nationality | countryCode2Value: (countryService.countriesCode$ | async)}}
                               </span>
                             </div> 
@@ -192,9 +191,6 @@
                         </div>
                       </ng-template>  
                 </div>
-                <!-- <div>
-                    <a href="javascript:;" class="btn btn-outline-default" (click)="addItem()"><i class="fa fa-plus"></i> Add more</a>
-                </div> -->
     
             </ng-container>    
     </div>
