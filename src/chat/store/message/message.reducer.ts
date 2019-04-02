@@ -91,16 +91,14 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
           });
         }
 
-
-
       // If response has no item
       } else {
-        return {
+        return messageAdapter.addAll([], {
           ...state,
+          currentCursor: null,
           loading: false,
-          error: null,
-          links: links,
-        };
+          error: null
+        });
       }
     }
     case ActionTypes.GET_ITEMS_ERROR: {

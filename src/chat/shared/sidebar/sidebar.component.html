@@ -99,20 +99,20 @@
 <ng-template #conversationTemplate let-conversation="conversation">
   <div class="media-chat-user" [routerLink]="['/conversations', conversation.uuid]" [routerLinkActive]="['active']">
     <z-chat-share-user-avatar class="media-chat-user-row"
-                              [isPending]="conversation.group_type == 'couple' && conversation?.status == 'sent_request'"
+                              [isPending]="conversation.group_type == 'couple' && conversation?.status == 'pending'"
                               [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
       <div class="user-content">
         <small class="media-chat-user-message">
-          <span class="emojione-sm" *ngIf="conversation?.latest_message?.message_type == 'text'"
-                [innerHtml]="conversation?.latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify  | safeHtml">
+          <ng-container *ngIf="['sent_request', 'pending'].includes(conversation?.status)">
+            <span *ngIf="conversation?.status === 'sent_request'"> Pending request </span>
+            <span *ngIf="conversation?.status === 'pending'"> Sent you a request </span>
+          </ng-container>
+          <ng-container *ngIf="!['sent_request', 'pending'].includes(conversation?.status)">
+            <span class="emojione-sm" *ngIf="conversation?.latest_message?.message_type == 'text'"
+                  [innerHtml]="conversation?.latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify  | safeHtml">
           </span>
-          <span *ngIf="conversation?.latest_message?.message_type == 'request' && conversation?.latest_message?.user_id === conversation.creator_id">
-            Pending request
-          </span>
-          <span *ngIf="conversation?.latest_message?.message_type == 'request' && conversation?.latest_message?.user_id !== conversation.creator_id">
-            Sent you a request
-          </span>
-          <span *ngIf="conversation?.latest_message?.message_type == 'file'"> Sent a file </span>
+            <span *ngIf="conversation?.latest_message?.message_type == 'file'"> Sent a file </span>
+          </ng-container>
         </small>
         <!-- {{conversation.latest_message}} -->
         <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>

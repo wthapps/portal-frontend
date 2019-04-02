@@ -294,6 +294,19 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       };
     }
 
+    case ActionTypes.ACCEPT_INVITATION_SUCCESS: {
+      const conversation = action.payload.conversation;
+
+      // update conversation list
+      return conversationAdapter.updateOne({
+        id: conversation.id,
+        changes: conversation
+      }, {
+        ...state,
+        isLoading: false,
+      });
+    }
+
     // Delete actions
     case ActionTypes.DELETE: {
       return {

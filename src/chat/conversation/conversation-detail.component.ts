@@ -83,23 +83,15 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       select(ConversationSelectors.selectJoinedConversation),
       filter(conversation => (conversation != null)),
       map((conversation: any) => {
-
+        // Redirect to chat home if conversation is invalid
+        if (this.invalidConversation(conversation)) {
+          this.redirectToChatHome();
+        }
         const cursor = conversation.latest_message.cursor + 1;
         console.log('JOINED CONVERSATION', conversation.latest_message.cursor, cursor);
-      //   // update message cursor for joined conversation
+        // update message cursor for joined conversation
         this.store$.dispatch(new MessageActions.SetState({ cursor: cursor}));
         this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversation.id}));
-      //
-      //   // Load messages for joined conversation
-      //   this.store$.dispatch(new MessageActions.GetItems({
-      //     path: `chat/conversations/${this.conversationId}/messages`, queryParams: {}
-      //   }));
-      //
-      //   setTimeout(() => {
-      //     // scroll to bottom
-      //     this.store$.dispatch(new MessageActions.UpdateState({scrollable: true}));
-      //   }, 200);
-      //   this.resetConversationNotifications();
         return conversation;
       })
     );
@@ -108,7 +100,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       filter(conversationId => (conversationId != null)),
       takeUntil(this.destroy$),
     ).subscribe(conversationId => {
-      console.log('LOAD MESSAGE STATE', conversationId);
       // Load messages for joined conversation
       this.store$.dispatch(new MessageActions.GetItems({
         path: `chat/conversations/${this.conversationId}/messages`, queryParams: {cursor: 0}
@@ -166,29 +157,13 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       this.updateMessageCallback(message);
     });
 
-    // SELECTED CONVERSATION
-    // this.chatConversationService.getStoreConversations().pipe(
-    //   combineLatest(this.route.params)
-    // ).pipe(takeUntil(this.destroy$)).subscribe(([conversations, params]) => {
-    //   const conversation = conversations.data.filter(c => !c.blacklist && !c.left && !c.deleted).find(c => +c.group_id === +params.id);
-    //   if (conversation) {
-    //     this.store.dispatch({ type: CHAT_SELECTED_CONVERSATION_SET, payload: conversation });
-    //   }
-    // });
-    // // Get messages when select
-    // this.chatConversationService.getStoreSelectedConversationFull().pipe(takeUntil(this.destroy$)).subscribe(res => {
-    //   this.selectedConversation = res.selectedConversation;
-    //   if (res.isDifference) {
-    //     this.chatMessageService.getMessages(res.selectedConversation.group_id);
-    //   }
-    //   this.commonEventService.broadcast({
-    //     channel: 'MessageEditorComponent',
-    //     action: 'focus'
-    //   });
-    // });
-
+    // Handle message updated successfully
+    this.conversationChannel.on(ChannelEvents.CHAT_CONVERSATION_ACCEPTED, (response: any) => {
+      console.log(ChannelEvents.CHAT_CONVERSATION_ACCEPTED, response);
+      const conversation = response.data.attributes;
+      this.acceptInvitationCallback(conversation);
+    });
     this.handleMessageEvents();
-
   }
 
 
@@ -283,6 +258,21 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.store$.dispatch(new ConversationActions.AcceptInvitation({ id: conversation.uuid }));
   }
 
+  acceptInvitationCallback(conversation: any) {
+    this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {
+      conversation: {status: 'accepted'}
+    }}));
+    if (this.conversationId === conversation.uuid) {
+      // Just reload messages on receiver's side
+      console.log('USER:::', this.userService.getSyncProfile().id, conversation.user_id, conversation.owner_id);
+      if (this.userService.getSyncProfile().id !== conversation.creator_id) {
+        this.store$.dispatch(new MessageActions.GetItems({
+          path: `chat/conversations/${this.conversationId}/messages`, queryParams: {cursor: 0}
+        }));
+      }
+    }
+  }
+
   declineInvitation(conversation: any) {
     this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {
       conversation: {status: 'decline'}
@@ -333,6 +323,12 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     e.stopPropagation();
   }
 
+  private invalidConversation(conversation: any) {
+    if (conversation.status === 'decline' || conversation.deleted || conversation.left) {
+      return true;
+    }
+    return false;
+  }
   private resetConversationNotifications() {
     // update notification_count as read
     this.store$.dispatch(new ConversationActions.UpdateDisplay({
