@@ -1,4 +1,4 @@
-<div class="btn-group header-nav-notification visible-xs-inline-block">
+<!-- <div class="btn-group header-nav-notification visible-xs-inline-block">
   <button (click)="gotoChat()" type="button" class="btn btn-default dropdown-toggle"
           pTooltip="{{ tooltip.notifications }}" tooltipPosition="bottom">
     <i class="fa fa-comments-o"></i>
@@ -6,9 +6,9 @@
       {{notificationCount | maxCount: 10}}
     </span>
   </button>
-</div>
+</div> -->
 
-<div class="btn-group header-nav-notification hidden-xs" id="chat-header-notification">
+<div class="btn-group header-nav-notification" id="chat-header-notification">
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false" pTooltip="{{ tooltip.chat }}" tooltipPosition="bottom"
           (click)="toggleViewNotifications()" >

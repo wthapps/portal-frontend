@@ -283,7 +283,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   updateDisplay(conversation: any) {
     this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {conversation: conversation}}));
 
-    if (conversation.deleted) {
+    if (conversation.deleted || conversation.left ) {
       this.redirectToChatHome();
     }
   }

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserService, CommonEventService } from '@shared/services';
-import { ChatService } from '../shared/services/chat.service';
-import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 import { Subject } from 'rxjs';
+
+import { UserService, CommonEventService } from '@shared/services';
+import { ContactSelectionService } from './../shared/selections/contact/contact-selection.service';
 
 @Component({
   templateUrl: 'conversation-list.component.html'
@@ -13,9 +13,7 @@ export class ConversationListComponent implements OnInit, OnDestroy {
 
   constructor(
     public userService: UserService,
-    private chatService: ChatService,
-    private chatConversationService: ChatConversationService,
-    private commonEventService: CommonEventService,
+    private contactSelectionService: ContactSelectionService,
   ) {
   }
 
@@ -38,10 +36,14 @@ export class ConversationListComponent implements OnInit, OnDestroy {
   }
 
   onAddContact() {
-    this.commonEventService.broadcast({
-      channel: 'ZChatShareAddContactComponent',
-      action: 'open',
-      payload: { option: 'addChat' }
+    // this.commonEventService.broadcast({
+    //   channel: 'ZChatShareAddContactComponent',
+    //   action: 'open',
+    //   payload: { option: 'addChat' }
+    // });
+
+    this.contactSelectionService.open({
+      type: 'NEW_CHAT'
     });
   }
 }

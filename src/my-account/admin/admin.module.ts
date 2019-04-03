@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { MySharedModule } from '../shared/shared.module';
 import { MyAdminRoutingModule } from './admin-routing.module';
 
-// import { SharedModule } from '@wth/shared/shared.module';
 import { PipeModule } from '@wth/shared/shared/pipe/pipe.module';
 
 import { MyAdminComponent } from './admin.component';
@@ -13,9 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AccountCreatePartialComponent } from './accounts/account-create-partial.component';
 import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
-// import { MatInputModule, MatNativeDateModule } from '@angular/material';
 import { InviteContactModule } from '@shared/partials/invite-contact/invite-contact.module';
-
 
 @NgModule({
   imports: [
@@ -28,8 +25,7 @@ import { InviteContactModule } from '@shared/partials/invite-contact/invite-cont
     BsModalModule,
     PipeModule,
     MyAdminRoutingModule,
-    MySharedModule,
-    // SharedModule
+    MySharedModule
   ],
   declarations: [
     MyAdminComponent,

@@ -42,7 +42,6 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 import { ZChatShareUserModule } from './user/user.module';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { ZSharedReportModule } from '@shared/shared/components/zone/report/report.module';
-// import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
 import { ZChatSharedModalModule } from './modal/chat-shared-modal.module';
 import { ZChatPipeModule } from './pipe/chat-pipe.module';
 import { CardUserModule } from '@shared/components/card-user/card-user.module';
@@ -66,7 +65,6 @@ import { ChatNotificationService, MemberService } from '@chat/shared/services';
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
-    // ZSharedMenuModule,
     BoxNoDataModule,
     WNavTabModule,
     WTHEmojiModule,
@@ -78,7 +76,6 @@ import { ChatNotificationService, MemberService } from '@chat/shared/services';
     ZChatSharedModalModule,
     ZChatShareUserModule,
     ZChatPipeModule,
-    // ZChatMessageModule,
 
     // third party libs
     TagInputModule,
@@ -93,12 +90,9 @@ import { ChatNotificationService, MemberService } from '@chat/shared/services';
   declarations: [
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    // ZChatShareEditConversationComponent,
-    // ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
     MessageInvitationComponent,
-    // ZChatShareRequestContactComponent,
   ],
   exports: [
     WthCommonModule,
@@ -111,7 +105,6 @@ import { ChatNotificationService, MemberService } from '@chat/shared/services';
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
-    // ZSharedMenuModule,
     BoxNoDataModule,
     WNavTabModule,
     WTHEmojiModule,
@@ -121,11 +114,9 @@ import { ChatNotificationService, MemberService } from '@chat/shared/services';
     MessagesModule,
     MessageModule,
     MessageInvitationComponent,
-    // ZChatShareRequestContactComponent,
     ZChatSharedModalModule,
     ZChatShareUserModule,
     ZChatPipeModule,
-    // ZChatMessageModule,
 
     // third party libs
     TagInputModule,

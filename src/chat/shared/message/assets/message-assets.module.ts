@@ -1,11 +1,8 @@
 import { ZChatShareUserModule } from './../../user/user.module';
 import { NgModule } from '@angular/core';
-// import { SharedModule } from '@wth/shared/shared.module';
 import { MiniEditorModule } from '@wth/shared/shared/components/mini-editor/mini-editor.module';
-// import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
 import { MessageAssetsComponent } from '@chat/shared/message/assets/message-assets.component';
-// import { ZChatShareUserModule } from '@chat/shared/user/user.module';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { CommonModule } from '@angular/common';
@@ -42,11 +39,6 @@ import { TooltipModule } from 'primeng/primeng';
     WNavTabModule,
     WObjectListModule,
     ZChatShareUserModule
-
-    // SharedModule.forRoot(),
-    // SharedServicesModule.forRoot(),
-
-    // ZChatShareUserModule
   ],
   declarations: [MessageAssetsComponent],
   exports: [
@@ -66,8 +58,6 @@ import { TooltipModule } from 'primeng/primeng';
     ZChatShareUserModule,
 
     MessageAssetsComponent
-
-    // ZChatShareUserModule
   ],
   providers: [MessageAssetsService]
 })

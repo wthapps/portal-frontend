@@ -12,7 +12,6 @@ import {
 } from 'primeng/primeng';
 
 import { ZMediaSharedLeftMenuComponent } from '@media/shared/left-menu/left-menu.component';
-// import { MediaUploaderComponent } from './uploader/media-uploader.component';
 import { AlbumService } from './service/album.service';
 import { MediaUploaderDataService } from './uploader/media-uploader-data.service';
 
@@ -21,7 +20,6 @@ import { ZMediaStore } from './store/media.store';
 import { ZMediaSharedHeaderComponent } from './header/header.component';
 import { TagInputModule } from 'ngx-chips';
 import { AlbumDetailInfoComponent } from '../album/album-detail-info.component';
-// import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
 import { MediaObjectService } from './container/media-object.service';
 import { SharingItemComponent } from './media/sharing-item.component';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
@@ -99,7 +97,6 @@ TagInputModule.withDefaults({
     PanelMenuModule,
     TooltipModule
 
-    // SharedModule
   ],
   declarations: [
     // MediaUploaderComponent,
