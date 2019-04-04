@@ -9,7 +9,6 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import {Message} from 'primeng/components/common/api';
 import {MessageService} from 'primeng/components/common/messageservice';
 
 import { ChatService } from './shared/services/chat.service';
@@ -94,7 +93,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.introduction.open();
     }
 
-    this.userEventService.viewProfile$.subscribe(user => {
+    this.userEventService.viewProfile$.pipe(takeUntil(this.destroy$)).subscribe(user => {
       this.viewProfile(user);
     });
 

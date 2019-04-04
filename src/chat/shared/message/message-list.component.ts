@@ -28,6 +28,7 @@ import { ChatConversationService } from '../services/chat-conversation.service';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@chat/store';
 import { MessageActions, MessageSelectors } from '@chat/store/message';
+import { UserEventService } from '@shared/user/event';
 
 
 declare var _: any;
@@ -62,7 +63,8 @@ export class MessageListComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private chatContactService: ChatContactService,
     private chatConversationService: ChatConversationService,
-    private wthEmojiService: WTHEmojiService
+    private wthEmojiService: WTHEmojiService,
+    private userEventService: UserEventService
   ) {
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
@@ -126,12 +128,13 @@ export class MessageListComponent implements OnInit, OnDestroy {
     // }
   }
 
-  onAddContact(contact: any) {
-    // this.requestModal.contact = contact;
-    // this.chatContactService.addContact([contact.id], '').then(res => {
-    //   this.chatConversationService.updateStoreConversation(res.data);
-    //   this.chatConversationService.navigateToConversation(res.data.group_id);
-    // });
+  // Create directly chat with user
+  createChat(user: any) {
+    this.userEventService.createChat(user);
+  }
+
+  viewProfile(user: any) {
+    this.userEventService.viewProfile(user);
   }
 
   doEvent(event: any) {

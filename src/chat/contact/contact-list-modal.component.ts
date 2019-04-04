@@ -71,9 +71,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
       this.modal.open(payload);
       this.selectedTab = payload.selectedTab || 'all';
       this.selectCurrentTab(this.selectedTab);
-    })
-
-    // this.userEventService.viewProfile$.subscribe(user => console.log('viewPROFILE'));
+    });
   }
 
   open(event: CommonEvent) {

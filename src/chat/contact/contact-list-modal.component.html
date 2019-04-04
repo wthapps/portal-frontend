@@ -15,13 +15,13 @@
         </div>
         <ng-template #templateData>
           <w-user-chat class="list-group-item" *ngFor="let contact of contacts" [user]="contact" [size]="'xs'">
-            <button *ngIf="!contact.new" class="btn btn-default" type="button" [pTooltip]="tooltip.sendRequest"
+            <button *ngIf="!contact.new" class="btn btn-default" type="button" [pTooltip]="tooltip.chat"
             tooltipPosition="top" tooltipZIndex="1055" (click)="createConversation(contact)">
               <i class="fa fa-comments-o"></i>
             </button>
 
             <!--show actions for new person-->
-            <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="sendRequest(contact)"
+            <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="createConversation(contact)"
                     [pTooltip]="tooltip.sendRequest" tooltipPosition="top" tooltipZIndex="1055">
               <i class="fa fa-comments-o"></i>
             </button>

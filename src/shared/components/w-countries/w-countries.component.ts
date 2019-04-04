@@ -56,8 +56,6 @@ export class WCountriesComponent implements OnInit, OnChanges, OnDestroy {
       }),
       takeUntil(this.destroySubject)
     ).subscribe((res: Array<any>) => {
-      console.log('res: ', res);
-
       if (res) {
         this.countriesCode = [...res];
       }

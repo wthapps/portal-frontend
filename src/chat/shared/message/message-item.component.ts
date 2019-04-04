@@ -27,7 +27,8 @@ export class MessageItemComponent implements OnInit {
   @Input() contactItem: any;
   @Input() emojiMap: any;
   @Input() selectedConversation;
-  @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onChat: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onViewProfile: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
 
@@ -123,8 +124,12 @@ export class MessageItemComponent implements OnInit {
     });
   }
 
-  onAdd() {
-    this.onAddContact.emit(this.message.file);
+  createChat(user: any) {
+    this.onChat.emit(user);
+  }
+
+  viewProfile(user: any) {
+    this.onViewProfile.emit(user);
   }
 
   onShareContact(data: any) {

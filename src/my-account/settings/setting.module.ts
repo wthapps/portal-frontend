@@ -3,8 +3,7 @@ import { SettingsPasswordComponent } from '@account/settings/password/password.c
 import { MyStorageComponent } from '@account/settings/storage/storage.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedServicesModule } from '@wth/shared/shared-services.module';
-// import { SharedModule } from '@wth/shared/shared.module';
+
 
 import { MySharedModule } from '../shared/shared.module';
 import { MyAccountComponent } from './account/account.component';
@@ -16,7 +15,7 @@ import { MySettingRoutingModule } from './setting-routing.module';
 import { MySettingComponent } from './setting.component';
 import { ModalModule } from '@shared/modals';
 import { AutofocusModule } from '@shared/directives/autofocus';
-import { ProfileModule } from '@shared/user';
+import { ProfileService } from '@shared/user/services';
 
 @NgModule({
   imports: [
@@ -25,7 +24,6 @@ import { ProfileModule } from '@shared/user';
     ModalModule,
     AutofocusModule,
     MySharedModule,
-    ProfileModule
   ],
   declarations: [
     MySettingComponent,
@@ -36,6 +34,7 @@ import { ProfileModule } from '@shared/user';
     MyPreferencesComponent,
     MyStorageComponent
   ],
-  exports: [MySettingComponent]
+  exports: [MySettingComponent],
+  providers: [ProfileService]
 })
 export class MySettingModule {}

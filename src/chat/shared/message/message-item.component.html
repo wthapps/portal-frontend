@@ -196,17 +196,21 @@
 
 <!--Share contact message-->
 <ng-template #messageItemContentContact>
-  <div class="wapper message-item-content message-item-content-contact-sharing">
+  <div class="wapper message-item-content message-padding message-item-content-contact-sharing">
     <div class="message-item-content-contact-sharing-info" >
       <span class="avatar-xs">
-        <img [src]="message?.file?.profile_image" alt="">
+        <a href="javascript:void(0)" (click)="viewProfile(message.file)">
+          <img [src]="message?.file?.profile_image" [alt]="message.file.name">
+        </a>
       </span>
       <span class="message-item-content-contact-sharing">
-        {{ message?.file?.name }}
+        <a href="javascript:void(0)" (click)="viewProfile(message.file)"> {{ message?.file?.name }} </a>
       </span>
     </div>
-    <div class="message-padding can-click">
-      <i class="fa fa-comment-o" (click)="onAdd()"></i>
+    <div>
+      <button type="button" class="btn btn-default"
+              pTooltip="Chat" tooltipPosition="top" (click)="createChat(message.file)">
+        <i class="fa fa-comments-o"></i></button>
     </div>
   </div>
 </ng-template>
@@ -215,8 +219,8 @@
   <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>
   <!--text message menu actions-->
   <ul class="dropdown-menu dropdown-menu-right">
-    <li *ngIf="!message.file">
-      <a href="javascript:;" (click)="remove()">Delete</a>
+    <li>
+      <a href="javascript:void(0);" (click)="remove()">Delete</a>
     </li>
   </ul>
 </ng-template>

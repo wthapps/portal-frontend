@@ -184,8 +184,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.CREATE_SUCCESS: {
       const conversation = action.payload.conversation;
-      console.log('CREATE_SUCCESS', conversation);
-      return conversationAdapter.addOne(
+      return conversationAdapter.upsertOne(
         conversation, {
         ...state,
         doing: false,

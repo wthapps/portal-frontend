@@ -43,8 +43,7 @@ import { UserEventService } from '@shared/user/event';
   selector: 'z-chat-share-sidebar',
   templateUrl: 'sidebar.component.html',
   styleUrls: ['sidebar.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  providers: [UserEventService]
+  encapsulation: ViewEncapsulation.None
 })
 export class ZChatSidebarComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @HostBinding('class') cssClass = 'menuleft-chat';
@@ -129,11 +128,6 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
         .receive('error', ({reason}) => console.log('failed join', reason) )
         .receive('timeout', () => console.log('Networking issue. Still waiting...'));
 
-    // this.userChannel.on('create_conversation_success', (conversation: any) => {
-    //     conversation['id'] = +(new Date());
-    //     console.log('CONVERSATION CREATED SUCCESSFUL:::', conversation);
-    //     this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
-    //   });
 
     this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_CREATED, (response: any) => {
       const conversation = response.data.attributes;
@@ -148,6 +142,11 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPDATED, (response: any) => {
       const conversation = response.data.attributes;
       this.updateConversationCallback(conversation);
+    });
+
+
+    this.userEventService.createChat$.pipe(takeUntil(this.destroy$)).subscribe(user => {
+      this.createConversation({ users: [user] });
     });
   }
 
@@ -218,26 +217,17 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   createConversation(payload: any) {
-
     this.store$.dispatch(new ConversationActions.Create(payload));
-
-    // this.userChannel.push('CHAT_CONVERSATION_CREATED', payload)
-    //   .receive('ok', (conversation: any) => {
-    //   })
-    //   .receive('error', (reasons) => console.log('create failed', reasons) )
-    //   .receive('timeout', () => console.log('Networking issue...') );
   }
 
   createConversationCallback(conversation: any) {
     // if currentUser is owner then redirect to that conversation and join
-    console.log('CREATED CONVERSATION:::', conversation);
     // if currentUser is a member then add to conversation list
     this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
 
-    console.log('BEFORE CONVERSATION:::', this.authService.user);
-    if (this.authService.user.id === conversation.creator_id) {
+    if ((this.authService.user.id === conversation.creator_id && conversation.status === 'sent_request') ||
+      (this.authService.user.id !== conversation.creator_id && conversation.status === 'accepted')) {
       // Redirect to created conversation
-      console.log('REDIRECT CONVERSATION:::', conversation);
       this.router.navigate(['/conversations', conversation.uuid]).then();
     }
   }
