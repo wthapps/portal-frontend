@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, mergeMap } from 'rxjs/operators';
 import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import * as MessageActions from './message.actions';
@@ -73,7 +73,7 @@ export class MessageEffects {
   @Effect()
   create$: Observable<Action> = this.actions$.pipe(
     ofType<MessageActions.Create>(MessageActions.ActionTypes.CREATE),
-    switchMap(action =>
+    mergeMap(action =>
       this.messageService.create(action.payload).pipe(
         map(response => {
           const message = response.data.attributes;

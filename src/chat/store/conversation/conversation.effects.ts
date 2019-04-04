@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { catchError, map, startWith, switchMap, exhaustMap } from 'rxjs/operators';
+import { catchError, map, switchMap, mergeMap } from 'rxjs/operators';
 import { ConversationService } from '../../conversation/conversation.service';
 import * as ConversationActions from './conversation.actions';
 import { ApiBaseService } from '@shared/services';
@@ -72,7 +72,7 @@ export class ConversationEffects {
   @Effect()
   create: Observable<Action> = this.actions$.pipe(
     ofType<ConversationActions.Create>(ConversationActions.ActionTypes.CREATE),
-    switchMap(action =>
+    mergeMap(action =>
       this.conversationService.create(action.payload).pipe(
         map(response => {
           const conversation = response.data.attributes;

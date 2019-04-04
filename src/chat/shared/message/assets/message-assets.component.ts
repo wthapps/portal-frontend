@@ -23,6 +23,7 @@ import { ContactSelectionService } from '@chat/shared/selections/contact/contact
 import * as ConversationActions from '@chat/store/conversation/conversation.actions';
 import { AppState } from '@chat/store';
 import { MemberService } from '@chat/shared/services';
+import { MessageActions } from '@chat/store/message';
 
 
 @Component({
@@ -133,19 +134,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
         this.messageAssetsService.mergeData(filteredData);
       }
     });
-
-    // this.chatConversationService.getStoreSelectedConversation().pipe(
-    //   distinctUntilChanged((p: any, q: any) => p.id === q.id),
-    //   takeUntil(this.destroy$)
-    // ).subscribe(sc => {
-    //   this.conversation = sc;
-    //   if (this.conversation && this.conversation.group_type === 'couple') {
-    //     this.tabs = this.tabsPhoto;
-    //   } else {
-    //     this.tabs = this.tabsMember;
-    //   }
-    //   this.tabAction(this.tabs[0]);
-    // });
   }
 
   ngOnInit() {
@@ -202,12 +190,12 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     this.selectedIds = { [id]: true };
   }
 
-  onRemove(item) {
-    const { group_id, id} = item;
-    this.chatMessageService.deleteMessage(group_id, id).toPromise()
-    .then(() => {
-      this.messageAssetsService.removeMedia(item);
-    });
+  delete(message: any) {
+    this.store$.dispatch(new MessageActions.Delete({
+      conversationId: this.conversation.uuid,
+      message: message
+    }));
+    this.messageAssetsService.removeMedia(message);
   }
 
   viewProfile(user: any) {
@@ -288,10 +276,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       this.messageAssetsService.clear();
       this.getObjects();
     }
-  }
-
-  onCompleteDoubleClick(event: any) {
-    console.log('show photo, note, file:', event); // show photo, note, file
   }
 
   view(item: any) {

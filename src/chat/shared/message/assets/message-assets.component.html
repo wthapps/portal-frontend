@@ -114,8 +114,8 @@
     <ng-template #templateItemHeader let-item="item">
         <div class="message-assets-item-header text-fade">
             <span>{{ (item?.owner || item?.user) | username }}, {{ item?.created_at | timeFormat }}</span>
-
-            <a href="javascript:;" *ngIf="(item?.owner || item?.user)?.uuid === currentUser?.uuid" class="pull-right action" (click)="onRemove(item)"><i class="fa fa-trash"></i></a>
+            <a *ngIf="(item?.owner || item?.user)?.uuid === currentUser?.uuid" href="javascript:void(0);"
+               class="pull-right action" (click)="delete(item)"><i class="fa fa-trash"></i></a>
           </div>
     </ng-template>
     <ng-template #templateNodata>

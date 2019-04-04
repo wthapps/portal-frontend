@@ -88,7 +88,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
           this.redirectToChatHome();
         }
         const cursor = conversation.latest_message.cursor + 1;
-        console.log('JOINED CONVERSATION', conversation.latest_message.cursor, cursor);
         // update message cursor for joined conversation
         this.store$.dispatch(new MessageActions.SetState({ cursor: cursor}));
         this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversation.id}));
@@ -145,21 +144,21 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
     // Handle message created successfully
     this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_CREATED, (response: any) => {
-      console.log(ChannelEvents.CHAT_MESSAGE_CREATED, response);
+      // console.log(ChannelEvents.CHAT_MESSAGE_CREATED, response);
       const message = response.data.attributes;
       this.createMessageCallback(message);
     });
 
     // Handle message updated successfully
     this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_UPDATED, (response: any) => {
-      console.log(ChannelEvents.CHAT_MESSAGE_UPDATED, response);
+      // console.log(ChannelEvents.CHAT_MESSAGE_UPDATED, response);
       const message = response.data.attributes;
       this.updateMessageCallback(message);
     });
 
     // Handle message updated successfully
     this.conversationChannel.on(ChannelEvents.CHAT_CONVERSATION_ACCEPTED, (response: any) => {
-      console.log(ChannelEvents.CHAT_CONVERSATION_ACCEPTED, response);
+      // console.log(ChannelEvents.CHAT_CONVERSATION_ACCEPTED, response);
       const conversation = response.data.attributes;
       this.acceptInvitationCallback(conversation);
     });
@@ -183,7 +182,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   /**
    * Create new message then broadcast to members in being joining conversation
    * @param message: {
-   *     message_type
+   *   message_type
    * }
    */
   createMessage(message: any) {
