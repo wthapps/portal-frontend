@@ -5,6 +5,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 import { DatePipe } from '@angular/common';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { ApiBaseService } from '@shared/services';
+import Media from '@shared/modules/photo/models/media.model';
 
 @Injectable()
 export class NoteService {
@@ -18,8 +19,8 @@ export class NoteService {
   private dataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
 
   constructor(public localStorageService: LocalStorageService,
-              private datePipe: DatePipe,
-              private api: ApiBaseService) {
+    private datePipe: DatePipe,
+    private api: ApiBaseService) {
     this.viewMode$ = this.viewModeSubject.asObservable().pipe(distinctUntilChanged());
     this.viewModeSubject.next(this.localStorageService.get('media_view_mode') || 'grid');
 

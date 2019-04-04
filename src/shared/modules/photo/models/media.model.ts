@@ -5,11 +5,14 @@ import { MediaType } from "./interfaces/media";
 export default class Media extends ObjectDataModel implements MediaType {
   id: number;
   uuid: string;
+  name: string;
   recipients_count: number;
   favorite: boolean;
   selected: boolean;
   model: string;
   object_type: string;
+  description: string;
+  created_at: any;
   apiBaseService = (): ApiBaseService => {
     return ApiBaseService.instance;
   };

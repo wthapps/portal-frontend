@@ -15,6 +15,8 @@ import { WDataViewComponent } from '../../shared/components/w-dataView/w-dataVie
 import { WModalsAddToAlbumComponent } from '../../shared/components/modals/add-to-album/add-to-album.component';
 import { WModalsShareComponent } from '../../shared/components/modals/share/share.component';
 import { WModalsPhotoEditInfoComponent } from '../../shared/components/modals/photo-edit-info/photo-edit-info.component';
+import Album from '@shared/modules/photo/models/album.model';
+import Media from '@shared/modules/photo/models/media.model';
 
 declare let _: any;
 
@@ -84,9 +86,9 @@ export class MPhotosComponent implements OnInit {
   ];
 
   constructor(public mediaService: MMediaService,
-              private dataService: MPhotosService,
-              private albumsService: MAlbumsService,
-              private messageService: MessageService) {
+    private dataService: MPhotosService,
+    private albumsService: MAlbumsService,
+    private messageService: MessageService) {
     this.data$ = this.dataService.data$;
   }
 
@@ -152,7 +154,8 @@ export class MPhotosComponent implements OnInit {
     this.modalAddToAlbum.modal.open();
   }
 
-  async onModalAddCompleted(album: any) {
+
+  async onModalAddCompleted(album: Album) {
     await this.albumsService.addToAlbum(album.id, this.dataView.selectedDocuments).toPromise()
       .then(() => this.modalAddToAlbum.modal.close())
       .then(() => {

@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, from } from 'rxjs';
 import { tap, map, distinctUntilChanged, catchError } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
+import Media from '@shared/modules/photo/models/media.model';
 
 declare let _: any;
 
@@ -15,7 +16,7 @@ export class MPhotosService {
   private dataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
 
   constructor(private api: ApiBaseService,
-              private datePipe: DatePipe) {
+    private datePipe: DatePipe) {
     this.data$ = this.dataSubject.asObservable().pipe(distinctUntilChanged());
     // this.getData().pipe(shareReplay(1)).subscribe();
   }
