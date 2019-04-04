@@ -1,26 +1,18 @@
-<!--
-<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
-    <bs-modal-header [showDismiss]="true">
-      <h4 class="modal-title">Rename Note</h4>
-    </bs-modal-header>
-    <bs-modal-body>
-      <input tabindex="1" autofocus [(ngModel)]="name" type="text" class="form-control" placeholder="Title">
-    </bs-modal-body>
-    <bs-modal-footer>
-      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
-              (click)="modal.close()">Cancel</button>
-      <button type="submit" (click)="onSave()" class="btn btn-outline-primary btn-min">Done
-      </button>
-    </bs-modal-footer>
-</bs-modal>
--->
-
 <bs-modal #modal>
   <bs-modal-header [showDismiss]="true">
-    <h4 class="modal-title">Rename</h4>
+    <h4 *ngIf="permission == 'view'" class="modal-title">Name</h4>
+    <h4 *ngIf="permission !== 'view'" class="modal-title">Rename</h4>
   </bs-modal-header>
   <bs-modal-body>
-    <input tabindex="1" autofocus [(ngModel)]="name" type="text" class="form-control" placeholder="Title">
+    <input *ngIf="permission !== 'view';else templateView"
+           tabindex="1" autofocus
+           [(ngModel)]="name"
+           type="text"
+           class="form-control"
+           placeholder="Title">
+    <ng-template #templateView>
+      <span>{{ name }}</span>
+    </ng-template>
   </bs-modal-body>
   <bs-modal-footer>
     <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSave();modal.close()">Ok</button>

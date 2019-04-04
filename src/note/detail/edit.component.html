@@ -27,7 +27,8 @@
             <h4 *ngIf="note.permission !== 'view'" class="can-click" (click)="modalEditName.modal.open()">
               <span>{{note.name || 'Untitled Note'}}</span>
             </h4>
-            <h4 *ngIf="note.permission == 'view'">{{note.name}}</h4>
+            <h4 *ngIf="note.permission == 'view'" class="can-click" (click)="modalEditName.modal.open()">
+              {{note.name}}</h4>
           </div>
         </div>
         <div class="actions">
@@ -98,7 +99,7 @@
                           (click)="showFormatGroupMobile = !showFormatGroupMobile">
                     <span *ngIf="!showFormatGroupMobile">A</span>
                     <span class="btn-show-format" *ngIf="showFormatGroupMobile"><i
-                            class="fa fa-times"></i></span>
+                      class="fa fa-times"></i></span>
                   </button>
                 </div>
                 <div class="ql-formats">
@@ -166,7 +167,7 @@
                 </select>
 
                 <!-- Add background -->
-                <select class="ql-background right-border-radius" title="Background">                  
+                <select class="ql-background right-border-radius" title="Background">
                   <option value="#ffffff"></option>
                   <option value="#ffff00"></option>
                   <option value="#00ff00"></option>
@@ -282,7 +283,7 @@
               </select>
 
               <!-- Add background -->
-              <select class="ql-background right-border-radius" title="Background">                
+              <select class="ql-background right-border-radius" title="Background">
                 <option value="#ffffff"></option>
                 <option value="#ffff00"></option>
                 <option value="#00ff00"></option>
@@ -338,7 +339,8 @@
       </ng-template>
     </div>
     <div class="note-editor-body" id="scrolling-container">
-      <div id="quill-editor" class="ql-font-{{setting?.font}}" [ngStyle]="{'font-size': setting?.font_size}" [attr.data-size]="setting?.font_size" ></div>
+      <div id="quill-editor" class="ql-font-{{setting?.font}}" [ngStyle]="{'font-size': setting?.font_size}"
+           [attr.data-size]="setting?.font_size"></div>
     </div>
 
     <div class="note-editor-aside ">
@@ -495,7 +497,8 @@
 
 <lock-upload-modal></lock-upload-modal>
 <z-note-shared-modal-edit-name
-        #modalEditName
-        [name]="form.value.name"
-        (eventEmitter)="onSaveName($event)">
+  #modalEditName
+  [name]="form.value.name"
+  [permission]="note.permission"
+  (eventEmitter)="onSaveName($event)">
 </z-note-shared-modal-edit-name>
