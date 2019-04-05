@@ -2,16 +2,16 @@
   <w-header class="header" #header [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async">
     <note-shared-header class="header-nav-left"></note-shared-header>
   </w-header>
-  <main class="main">
+  <main class="main main-note">
     <w-left-menu>
       <z-note-shared-left-menu></z-note-shared-left-menu>
     </w-left-menu>
-    <div class="main-page-body">
-      <ng-template #modalContainer></ng-template>
-      <router-outlet name="modal"></router-outlet>
-      <router-outlet name="detail"></router-outlet>
-      <router-outlet></router-outlet>
-    </div>
+
+    <ng-template #modalContainer></ng-template>
+    <router-outlet name="modal"></router-outlet>
+    <router-outlet name="detail"></router-outlet>
+    <router-outlet></router-outlet>
+
   </main>
   <wth-toast></wth-toast>
   <wth-loading></wth-loading>
@@ -21,8 +21,8 @@
   <w-media-selection></w-media-selection>
 </div>
 <wth-introduction #introduction
-                    [after]="{note: true}"
-                    [data]="[
+                  [after]="{note: true}"
+                  [data]="[
   {
     title: 'Welcome to WTH!Notes',
     icon: 'icon-zone-lg-note',

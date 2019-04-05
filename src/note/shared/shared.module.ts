@@ -46,6 +46,9 @@ import {
 } from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from '@shared/components/modal/modal.module';
+import { WDataViewModule } from "../../sample/shared/components/w-dataView/w-dataView.module";
+import { WModalsModule } from "../../sample/shared/components/modals/modals.module";
+
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -65,6 +68,8 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     ComponentsModule,
     BoxNoDataModule,
     WNavTabModule,
+    WDataViewModule,
+    WModalsModule,
     ZNoteSharedSettingModule,
 
     // third party libs
@@ -73,7 +78,7 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     RadioButtonModule,
     AutoCompleteModule,
     PanelMenuModule,
-    TooltipModule
+    TooltipModule,
   ],
   declarations: [
     ZNoteSharedToolBarComponent,

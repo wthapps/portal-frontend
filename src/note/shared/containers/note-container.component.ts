@@ -1,16 +1,12 @@
-import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ZNoteService } from '../services/note.service';
 import { Store } from '@ngrx/store';
-
-import * as fromRoot from '../reducers/index';
 import * as listReducer from '../reducers/features/list-mixed-entities';
-import * as context from '../reducers/context';
 import { Observable } from 'rxjs';
-import { Folder } from '../reducers/folder';
-import { noteConstants, NoteConstants } from '../config/constants';
-import { Note } from '@shared/shared/models/note.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
+import { WDataViewComponent } from "../../../sample/shared/components/w-dataView/w-dataView.component";
+import { Constants } from "@shared/constant";
 
 declare var _: any;
 
@@ -22,17 +18,47 @@ declare var _: any;
 })
 export class ZNoteContainerComponent implements OnInit {
   @Input() breadcrumbs: any;
+  @HostBinding('class') class = 'main-page-body';
+  @ViewChild('dataView') dataView: WDataViewComponent;
 
-  noteItems$: Observable<Note[]>;
-  folderItems$: Observable<Folder[]>;
-  allItems$: Observable<any[]>;
-  selectedObjects$: Observable<any[]>;
-  isSelectAll$: Observable<boolean>;
-  loading$: Observable<boolean>;
-  items: Observable<any>;
-  context$: Observable<any>;
-  currentFolder$: Observable<any>;
-  noteConstants: NoteConstants = noteConstants;
+  tooltip: any = Constants.tooltip;
+  data$: Observable<any[]>;
+  next: string;
+  menuActions = [
+    {
+      active: true,
+      icon: 'fa fa-share-alt',
+      text: this.tooltip.share,
+      action: 'share'
+    },
+    {
+      active: true,
+      icon: 'fa fa-star-o',
+      text: this.tooltip.favourite,
+      action: 'favorite'
+    },
+    {
+      active: true,
+      icon: 'fa fa-trash-o',
+      text: this.tooltip.delete,
+      action: 'delete'
+    }
+  ];
+
+  otherActions = [
+    {
+      active: true,
+      icon: 'fa fa-pencil',
+      text: 'Edit',
+      action: 'edit'
+    },
+    {
+      active: true,
+      icon: 'fa fa-download',
+      text: 'Move to folder',
+      action: 'move_to_folder'
+    }
+  ];
 
   constructor(
     private noteService: ZNoteService,
@@ -41,13 +67,7 @@ export class ZNoteContainerComponent implements OnInit {
     private wthConfirmService: WthConfirmService,
     private store: Store<any>
   ) {
-    this.noteItems$ = this.store.select(listReducer.getNotes);
-    this.folderItems$ = this.store.select(listReducer.getFolders);
-    this.allItems$ = this.store.select(listReducer.getAllItems);
-    this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
-    this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
-    this.context$ = this.store.select(context.getContext);
-    this.currentFolder$ = this.store.select(fromRoot.getCurrentFolder);
+    this.data$ = this.store.select(listReducer.getAllItems);
   }
 
   ngOnInit() {
@@ -71,7 +91,7 @@ export class ZNoteContainerComponent implements OnInit {
   }
 
   onNewNote() {
-    this.noteService.modalEvent({ action: 'note:open_note_add_modal' });
+    this.noteService.modalEvent({action: 'note:open_note_add_modal'});
   }
 
   onFolder() {
@@ -86,5 +106,51 @@ export class ZNoteContainerComponent implements OnInit {
       payload: event.payload,
       breadcrumb: true
     });
+  }
+
+  // constructor(private dataService: NoteService) {
+  //   this.data$ = this.dataService.data$;
+  // }
+
+  // ngOnInit(): void {
+  //   this.getDataAsync().then();
+  // }
+
+  async getDataAsync() {
+    // const data = await this.dataService.getData(this.next).toPromise();
+    // this.next = data.meta.links.next;
+  }
+
+  onLoadMoreCompleted(event: any) {
+    if (event && this.next) {
+      this.getDataAsync().then();
+    }
+  }
+
+  async onSortComplete(event: any) {
+    // console.log(event);
+    // const data = await this.dataService.sort(event).toPromise();
+    // this.next = data.meta.links.next;
+  }
+
+  onViewComplete(event: any) {
+    this.dataView.viewMode = event;
+    this.dataView.container.update();
+    this.dataView.updateView();
+  }
+
+  onSelectCompleted() {
+
+    // update icon favorite
+    this.updateMenuFavorite(_.every(this.dataView.selectedDocuments, 'favorite'));
+
+    // check menu view
+    const otherActionsEdit = _.find(this.otherActions, ['action', 'edit']);
+    otherActionsEdit.active = !(this.dataView.selectedDocuments.length > 1);
+  }
+
+  private updateMenuFavorite(isFavorite: boolean) {
+    const menuActionsIndex = this.menuActions.findIndex(x => x.action === 'favorite');
+    this.menuActions[menuActionsIndex].icon = isFavorite ? 'fa fa-star' : 'fa fa-star-o';
   }
 }

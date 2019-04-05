@@ -1,3 +1,68 @@
+<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="'MY_NOTE'" [viewMode]="(context$ | async)?.viewMode">
+  <!-- <pre>
+    {{userService.getSyncProfile() | json}}
+  </pre> -->
+  <ng-container *ngIf="(selectedObjects$ | async) as selectedObjects">
+    <div class="btn-group" [ngClass]="{'hidden-xs': selectedObjects.length>0}">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false" [disabled]="!(context$ | async).permissions.enableEdit">
+        <i class="fa fa-plus visible-xs" aria-hidden="true"></i> <span class="hidden-xs">New</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-sm">
+        <li><a (click)="onNewNote()" href="javascript:;"><i class="icon-zone-note"></i> New note</a></li>
+        <li><a (click)="onFolder()" href="javascript:;"><i class="fa fa-folder-o"></i> New folder</a></li>
+      </ul>
+    </div>
+
+    <span [ngClass]="{'hidden-xs': selectedObjects.length>0}" *ngIf="(context$ | async).pathTitle !== ''"
+          class="btn-text no-wrap ml10">{{(context$ | async).pathTitle}}</span>
+
+
+    <span class="btn btn-text text-fade hidden" [ngClass]="{'visible-xs-block': selectedObjects.length>0}">
+        {{ selectedObjects.length }} Selected
+      </span>
+
+  </ng-container>
+
+
+  <z-note-shared-breadcrumb class="note-breadcrumb" [model]="breadcrumbs" [permissions]="(context$ | async).permissions"
+                            (onBreadcrumbAction)="onBreadcrumbAction($event)">
+  </z-note-shared-breadcrumb>
+</z-note-shared-toolbar>
+<div class="page-body-content has-page-body-control">
+  <ng-container *ngIf="!(context$ | async)?.loading; else loadingBlock">
+    <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
+      <note-list [noteItems]="noteItems$ | async"
+                 [folderItems]="folderItems$ | async"
+                 [allItems]="allItems$ | async"
+                 [viewOption]="(context$ | async)?.viewMode"
+                 [sortOption]="(context$ | async)?.sort"
+                 [groupBy]="(context$ | async)?.groupBy"
+                 [page]="(context$ | async).page"
+                 [isSelectAll]="isSelectAll$ | async">
+
+      </note-list>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #loadingBlock>
+    <box-loading outClass="long-height"></box-loading>
+  </ng-template>
+  <ng-template #noDataBlock>
+    <box-no-data [icon]="(context$ | async).noData.icon"
+                 [title]="(context$ | async).noData.title"
+                 [subTitle]="(context$ | async).noData.subTitle"
+                 outClass="long-height"
+    >
+
+      <button *ngIf="(context$ | async).noData.newNode" class="btn btn-outline-primary" (click)="onNewNote()"
+              href="javascript:;" [disabled]="!(context$ | async).permissions.enableEdit">
+        <i class="fa fa-plus" aria-hidden="true"></i> New note
+      </button>
+    </box-no-data>
+  </ng-template>
+</div>
 <div class="objects-main">
   <w-dataView-nav [showViewMode]="true"
                   (sortComplete)="onSortComplete($event)"
