@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { Observable ,  Subject ,  BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { ApiBaseService, BaseEntityService } from '../../../shared/services';
 import { _wu } from '../../../shared/shared/utils/utils';
-import { Contact } from '../../contact/contact.model';
-import { MaxLengthPipe } from '../../../shared/shared/pipe/max-length.pipe';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 declare var _: any;
@@ -19,7 +16,7 @@ export const MY_CONTACTS = 'contacts';
 export class CardService extends BaseEntityService<any> {
 
   items$: Observable<any[]>;
-  item$: Observable<boolean>
+  item$: Observable<boolean>;
   selectedAll$: Observable<boolean>;
   sharedCardNum$: Observable<number>;
 

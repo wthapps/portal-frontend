@@ -32,34 +32,39 @@
     </div>
     <div class="contact-edit-aside">
 
-      <h4>WTH Profile</h4>
+      <h4>Cards</h4>
       <div class="card-list row">
-        <div class="col-sm-12 mb15" >
-          <card-item *ngIf="contact && contact.profile" [card]="contact.profile" (view)="viewCard($event)"></card-item>
-          <div *ngIf="contact && !contact.profile">
-            There is no WTH Profile
-          </div>
-        </div>
+          <ng-container *ngIf="cards?.length > 0; else noData">
+            <div class="col-sm-12 mb15" *ngFor="let card of cards">
+              <card-item [card]="card" (view)="viewCard($event)"></card-item>
+            </div>
+          </ng-container>
+          
+
+        <ng-template #noData>
+            <box-no-data [icon]="'fa fa-address-card xs'"
+                         [title]="'There are no Cards!'"
+                         [subTitle]="'Business cards this person shared with you'">
+            </box-no-data>
+          </ng-template>
       </div>
 
-      <h4 class="regular-email">Business Cards</h4>
-      <div class="card-list row">
-        <ng-container *ngIf="contact && contact.cards && contact.cards.length > 0 else noData">
-          <ng-template ngFor let-c [ngForOf]="contact.cards">
-            <!--<ng-container *ngIf="c.card_type === 'business'">-->
-            <div class="col-sm-12 mb15">
-              <card-item [card]="c" (view)="viewCard($event)"></card-item>
+      <h4 class="regular-email">
+          Regular email
+          <i class="fa fa-info-circle" pTooltip="Entered information didn't match any WTHApps profiles" tooltipPosition="bottom"></i>
+        </h4>
+        <ng-container *ngFor="let email of emails">
+          <div class="user-row">
+            <div class="name">
+              <span>{{ email }}</span>
             </div>
-            <!--</ng-container>-->
-          </ng-template>
+            <div class="action">
+              <button class="btn btn-default" pTooltip="Invite to WTHApps" tooltipPosition="left" (click)="invite(email)">
+                <i class="fa fa-envelope-o"></i>
+              </button>
+            </div>
+          </div>
         </ng-container>
-        <ng-template #noData>
-          <box-no-data [icon]="'fa fa-address-card xs'"
-                       [title]="'There are no Cards!'"
-                       [subTitle]="'Business cards this person shared with you'">
-          </box-no-data>
-        </ng-template>
-      </div>
 
     </div>
   </div>

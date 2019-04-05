@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Subject, Observable, merge } from 'rxjs';
-import { debounceTime, takeUntil, filter, map, mergeMap, tap } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { ZContactService } from '@contacts/shared/services/contact.service';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
@@ -66,12 +66,12 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   // groups: AbstractControl;
   job_title: AbstractControl;
   notes: AbstractControl;
+  emails: FormArray;
 
   filteredGroupsMultiple: any = [];
   originalGroups: Object[];
   disableEdit = true;
-  sub: any;
-  close$: Observable<any>;
+  sub: Subscription;
   private destroySubject: Subject<any> = new Subject();
 
   constructor(private fb: FormBuilder,
@@ -94,25 +94,20 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
 
     this.createForm();
 
-    this.close$ = merge(this.mediaSelectionService.open$, this.destroySubject);
-
     this.handleSelectCropEvent();
 
-    this.sub = this.form.valueChanges
-      .subscribe((e) => {
-        this.eventForm.emit(this.form);
 
-        this.form.get('emails')['controls'].forEach((control, index) => {
-          if (control.valid && control.value.value !== '' && !control.pristine) {
-            const sub = control.valueChanges.pipe(debounceTime(250)).subscribe(ctrl => {
-              const emails = this.form.get('emails')['controls'];
-              this.event.emit({ action: 'contact:contact:edit_email', payload: { item: emails[index].value, emails: emails } });
-              sub.unsubscribe();
-              // this.sub.unsubscribe();
-            });
-          }
-        });
+    this.emails.valueChanges.pipe(
+      debounceTime(500),
+      takeUntil(this.destroySubject)
+    ).subscribe(val => {
+      console.log('emails value:', val);
+      this.emails.controls.forEach(email => {
+        if (email.valid && email.dirty) {
+          this.event.emit({ action: 'contact:contact:edit_email', payload: { item: email.value, emails: email } });
+        }
       });
+    });
   }
 
   ngOnInit(): void {
@@ -187,6 +182,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     // this.groups = this.form.controls['groups'];
     this.job_title = this.form.controls['job_title'];
     this.notes = this.form.controls['notes'];
+    this.emails = this.form.controls['emails'] as FormArray;
     setTimeout(() => {
       this.form.valueChanges.subscribe((data: any) => this.disableEdit = false);
     }, 400);
@@ -236,12 +232,12 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
           formGroup = {
             id: [item.id, Validators.compose([Validators.required])],
             category: [item.category, Validators.compose([Validators.required])],
-            value: [item.value, Validators.compose([CustomValidator.emailFormat])]
+            value: [item.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
           };
         } else {
           formGroup = {
             category: [data.category, Validators.compose([Validators.required])],
-            value: [data.value, Validators.compose([CustomValidator.emailFormat])]
+            value: [data.value, Validators.compose([Validators.required, CustomValidator.emailFormat])]
           };
         }
         break;

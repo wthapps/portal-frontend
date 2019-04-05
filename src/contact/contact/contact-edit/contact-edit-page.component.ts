@@ -20,6 +20,7 @@ import { CardService } from '@contacts/shared/card';
 import { Observable } from 'rxjs';
 import { CardEditModalComponent } from '@contacts/shared/card/components';
 import { ProfileService } from '@shared/user/services';
+import { PUBLIC, BUSINESS, NONE } from '@contacts/shared/card/card.constant';
 
 declare var _: any;
 
@@ -61,11 +62,16 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
 
   contact: Contact = new Contact(DEFAULT_CONTACT_PARAMS);
   card$: Observable<any>;
-  emails = [];
+  emails: String[] = [];
+  cards = [];
   mode = 'view';
   pageTitle: string;
 
   readonly tooltip: any = Constants.tooltip;
+  readonly mediaType = Constants.mediaType;
+  readonly PUBLIC = PUBLIC;
+  readonly BUSINESS = BUSINESS;
+  readonly NONE = NONE;
   formValid = false;
   _contact: any = _contact;
   hasBack = false;
@@ -218,28 +224,16 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
             this.location.back();
           });
         break;
-      case 'contact:contact:remove_email':
+      case 'contact:contact:remove_email': {
+        const { value } = event.payload;
         _.remove(this.emails, email => {
-          return email.value === event.payload.value;
+          return email === value;
         });
+        this.cards = this.cards.filter(card => card.email !== value);
         break;
+      }
       case 'contact:contact:edit_email':
-        this.contactService
-          .checkEmails({ emails_attributes: [event.payload.item] })
-          .subscribe(response => {
-            const currentEmails = _.map(event.payload.emails, 'value.value');
-            _.remove(this.emails, e => {
-              return currentEmails.indexOf(e.value) < 0;
-            });
-
-            // this.emails = this.emails.concat(response.data);
-            const emails = _.map(this.emails, 'value');
-            response.data.forEach(email => {
-              if (emails.indexOf(email.value) < 0) {
-                this.emails = this.emails.concat(email);
-              }
-            });
-          });
+        this.checkEmails([event.payload.item.value]);
         break;
     }
   }
@@ -249,7 +243,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
       data: [
         {
           contactId: this.contact.id,
-          email: email.value,
+          email: email,
           fullName: this.contact.name
         }
       ]
@@ -280,14 +274,20 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   private get(id: number) {
     this.contactService.getIdLocalThenNetwork(id).subscribe(ct => {
       this.contact = Object.assign({}, ct);
-      const emails = this.contact.emails.filter(email => email.value !== '');
+      const emails = this.contact.emails.reduce((arr, item) => item.value !== '' ? [...arr, item.value] : arr, []);
       if (emails.length > 0) {
-        this.contactService
-          .checkEmails({ emails_attributes: emails })
-          .subscribe(response => {
-            this.emails = response.data;
-          });
+        this.checkEmails(emails);
       }
+    });
+  }
+
+  private checkEmails(emails): void {
+
+    this.contactService
+    .checkEmails({ emails })
+    .subscribe(response => {
+      this.cards = _.uniqBy(this.cards.concat(response.cards), 'id');
+      this.emails = _.uniq(this.emails.concat(response.emails));
     });
   }
 
