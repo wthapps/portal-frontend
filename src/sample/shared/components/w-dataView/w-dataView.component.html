@@ -1,11 +1,11 @@
 <ng-container *ngIf="viewMode == 'list'">
-    <div class="content-view content-list">
-        <div class="content-item content-item-header">
-            <div class="item-media">
-                <ng-template [ngTemplateOutlet]="viewHeaderTmpl" [ngTemplateOutletContext]="{$implicit: item}"></ng-template>
-            </div>
-        </div>
+  <div class="content-view content-list">
+    <div class="content-item content-item-header">
+      <div class="item-media">
+        <ng-template [ngTemplateOutlet]="viewHeaderTmpl" [ngTemplateOutletContext]="{$implicit: item}"></ng-template>
+      </div>
     </div>
+  </div>
 </ng-container>
 <dts-select-container #container="dts-select-container"
                       [(selectedItems)]="selectedDocuments"
@@ -15,16 +15,16 @@
                       [infiniteScrollThrottle]="50"
                       [scrollWindow]="scrollWindow"
                       (scrolled)="onLoadMore()">
-    <div class="content-view content-{{viewMode}} content-grid-{{ sliderView }}">
-        <div *ngFor="let item of data" [dtsSelectItem]="item" class="content-item">
-            <div class="item-media">
-                <div class="item-actions">
-                    <i (mouseover)="container.selectMode = true" class="form-checkbox"></i>
-                </div>
-                <div (mouseover)="container.selectMode = false" class="item-select"></div>
-                <ng-template [ngTemplateOutlet]="viewBodyTmpl"
-                             [ngTemplateOutletContext]="{$implicit: item}"></ng-template>
-            </div>
+  <div *ngIf="!isUpdatedView" class="content-view content-{{viewMode}} content-grid-{{ sliderView }}">
+    <div *ngFor="let item of data" [dtsSelectItem]="item" class="content-item">
+      <div class="item-media">
+        <div class="item-actions">
+          <i (mouseover)="container.selectMode = true" class="form-checkbox"></i>
         </div>
+        <div (mouseover)="container.selectMode = false" class="item-select"></div>
+        <ng-template [ngTemplateOutlet]="viewBodyTmpl"
+                     [ngTemplateOutletContext]="{$implicit: item}"></ng-template>
+      </div>
     </div>
+  </div>
 </dts-select-container>

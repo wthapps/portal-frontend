@@ -31,12 +31,13 @@ export class WDataViewComponent implements OnChanges {
   @ViewChild('container') container: SelectContainerComponent;
 
   selectedDocuments: any;
+  isUpdatedView: boolean;
 
   constructor() {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+    console.log('ngOnChanges:', changes);
   }
 
   onSelect(e: any) {
@@ -45,11 +46,16 @@ export class WDataViewComponent implements OnChanges {
 
   onLoadMore() {
     this.loadMoreCompleted.emit(true);
-    this.updateSelect();
+    this.container.update();
   }
 
-  updateSelect() {
-    console.log('this.container.update()');
-    this.container.update();
+  updateView() {
+    this.isUpdatedView = true;
+    this.container.clearSelection();
+    setTimeout(() => {
+      this.isUpdatedView = false;
+      this.container.update();
+    }, 200);
+
   }
 }
