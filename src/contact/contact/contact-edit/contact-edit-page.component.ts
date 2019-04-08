@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 
@@ -17,7 +18,6 @@ import { InvitationCreateModalComponent } from '@shared/shared/components/invita
 import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-add-group/contact-add-group-modal.component';
 import { CommonEvent } from '@shared/services';
 import { CardService } from '@contacts/shared/card';
-import { Observable } from 'rxjs';
 import { CardEditModalComponent } from '@contacts/shared/card/components';
 import { ProfileService } from '@shared/user/services';
 import { PUBLIC, BUSINESS, NONE } from '@contacts/shared/card/card.constant';
@@ -229,7 +229,11 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
         _.remove(this.emails, email => {
           return email === value;
         });
-        this.cards = this.cards.filter(card => card.email !== value);
+
+        const user_ids = this.cards.reduce((acc, card) => (card.email === value ? [...acc, card.id] : acc), []);
+        // TODO: Merge public cards and business cards and refractor later: SHould filter cards by user_ids only
+        // Remove public cards and  business cards
+        this.cards = this.cards.filter(card => card.email !== value && !user_ids.includes(card.user_id));
         break;
       }
       case 'contact:contact:edit_email':

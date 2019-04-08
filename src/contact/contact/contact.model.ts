@@ -5,6 +5,7 @@ import { SocialMedium } from './social-medium.model';
 import { CustomField } from './custom-field.model';
 import { Email } from './email.model';
 import { Phone } from './phone.model';
+import { Card } from '@contacts/shared/card/card.model';
 
 export class Contact extends BaseEntity {
   profile_image = '';
@@ -24,6 +25,8 @@ export class Contact extends BaseEntity {
   user?: any;
   wthapps_user?: any;
   groups: any;
+  using_default_profile_image?: boolean; // TODO: Remove later
+  public_cards?: Card[];
 
   // constructor(options: any) {
   //   super(options);

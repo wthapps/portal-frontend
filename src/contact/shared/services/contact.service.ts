@@ -558,7 +558,7 @@ export class ZContactService extends BaseEntityService<any> {
       return;
     }
     this.contacts = _.map(this.contacts, (ct: any) => {
-      return (contact.id === ct.id) ? contact : ct;
+      return (contact.id === ct.id) ? {...contact} : ct;
     });
 
     _.forEach(this.selectedObjects, (selected: any, index: number) => {
