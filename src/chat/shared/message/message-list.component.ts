@@ -153,4 +153,8 @@ export class MessageListComponent implements OnInit, OnDestroy {
         break;
     }
   }
+
+  trackById(index: number, message: any) {
+    return message.uuid;
+  }
 }

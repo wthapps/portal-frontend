@@ -294,6 +294,9 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   * End of searching here
    */
 
+  trackById(index: number, conversation: any) {
+    return conversation.uuid;
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

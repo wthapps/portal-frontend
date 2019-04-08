@@ -4,7 +4,7 @@
     <div class="media-avatar justify-content-center">
       <div class="media-avatar-img-wrap mr0">
         <div class="media-avatar-img avatar-md">
-          <img [src]="userService.getSyncProfile().profile_image" alt="">
+          <img [src]="(user$|async)?.profile_image" alt="">
         </div>
       </div>
     </div>

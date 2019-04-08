@@ -17,7 +17,7 @@
     <ng-container *ngIf="!(loading$ | async); else loadingBlock">
       <div class="message-item-wrapper">
         <ng-container *ngIf="messages?.length > 0; else templateNodata">
-           <div class="message-item-dv" *ngFor="let message of messages; trackBy: message?.uuid">
+           <div class="message-item-dv" *ngFor="let message of messages; trackBy: trackById">
             <message-item [message]="message"
                           [byMe]="message.user_id === currentUser.id"
                           [emojiMap]="emojiMap$ | async"

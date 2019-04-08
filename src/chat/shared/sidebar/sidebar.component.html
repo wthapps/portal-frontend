@@ -89,7 +89,7 @@
   </ng-container>
   <ng-container *ngIf="searching && searched">
     <ng-container *ngIf="(searchConversations$|async).length > 0; else templateNodata">
-      <div *ngFor="let conversation of searchConversations$|async; trackBy: conversation?.uuid" class="menu-left-item">
+      <div *ngFor="let conversation of searchConversations$|async; trackBy: trackById" class="menu-left-item">
         <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
       </div>
     </ng-container>

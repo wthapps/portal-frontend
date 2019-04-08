@@ -5,7 +5,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   templateUrl: 'message-invitation.component.html'
 })
 export class MessageInvitationComponent {
-  @Input() message: any;
   @Input() conversation: any;
 
   @Output() onAccept: EventEmitter<any> = new EventEmitter<any>();

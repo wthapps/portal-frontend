@@ -11,7 +11,6 @@
        (dragenter)="drag($event)">
 
     <message-invitation [conversation]="conversation"
-                        [message]="(messages$ | async)[0]"
                         (onAccept)="acceptInvitation(conversation)"
                         (onDecline)="declineInvitation(conversation)">
     </message-invitation>

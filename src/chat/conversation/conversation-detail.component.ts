@@ -45,7 +45,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   // @Input() channel = 'ConversationDetailComponent';
   events: any;
   joinedConversation$: Observable<any>;
-  joinedConversationId$: Observable<any>;
   messages$: Observable<any>;
 
   currentUser$: Observable<User>;
@@ -194,12 +193,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       conversationId: this.conversationId,
       message: message,
     }));
-    // this.conversationChannel.push('new_message', message)
-    //   .receive('ok', (msg) => {
-    //     // this.store$.dispatch(new MessageActions.Create());
-    //   })
-    //   .receive('error', (reasons) => console.log('create failed', reasons) )
-    //   .receive('timeout', () => console.log('Networking issue...') );
   }
 
   createMessageCallback(message: any) {
@@ -250,8 +243,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     }
     return message;
   }
-
-
 
   /*
    * Conversation actions
@@ -327,7 +318,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   private invalidConversation(conversation: any) {
-    if (conversation.status === 'decline' || conversation.deleted || conversation.left) {
+    if (conversation.status === 'decline' || conversation.left) {
       return true;
     }
     return false;
