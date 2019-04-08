@@ -4,7 +4,6 @@
     </button>
 
     <button class="btn btn-outline-primary btn-min ml10" type="button" *ngIf="mode === 'create' || mode === 'edit'"
-            [disabled]="!contactEdit?.name?.valid && !contactEdit?.family_name?.valid"
             (click)="contactEdit.onSubmit(contactEdit?.form?.value)" > {{ mode === 'edit' ? 'Save' : 'Create' }}
     </button>
 

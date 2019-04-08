@@ -31,7 +31,7 @@ interface SortOption {
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
-  contacts: Array<any> = new Array<any>();
+  contacts: Array<Contact> = new Array<Contact>();
   mergingObjects: any[] = [];
   mergedObjects: any[] = [];
   page = 1;
@@ -42,7 +42,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   listenToList: any;
   listenToItem: any;
-  contacts$: Observable<any[]>;
+  contacts$: Observable<Contact[]>;
   initLoad$: Observable<boolean>;
   orderDesc$: Observable<boolean>;
   sortOption$: Observable<SortOption>;
