@@ -8,12 +8,11 @@ import { Subscription, Observable, Subject, of } from 'rxjs';
 import { ChatService } from '../shared/services/chat.service';
 import { MessageListComponent } from '../shared/message/message-list.component';
 import { MessageEditorComponent } from '../shared/message/editor/message-editor.component';
-import { ConversationService } from './conversation.service';
+import { ConversationService } from '@shared/services/chat';
 import {
   CommonEvent,
-  CommonEventAction,
   CommonEventService,
-  PhotoService, UserService, ChatCommonService, StorageService, WMessageService, ApiBaseService
+  UserService, StorageService, ApiBaseService
 } from '@wth/shared/services';
 import { CHAT_ACTIONS, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_, NETWORK_ONLINE } from '@wth/shared/constant';
 import { User } from '@wth/shared/shared/models';
@@ -33,6 +32,7 @@ import { ChannelEvents } from '@shared/channels';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 import { MESSAGE_DELETE, MessageEventService } from '@chat/shared/message';
 import { UserEventService } from '@shared/user/event';
+import { NotificationEventService } from '@shared/services/notification';
 
 @Component({
   selector: 'conversation-detail',
@@ -55,6 +55,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   cursor: number;
   conversationChannel: any;
   conversationId: string;
+  conversation: any;
+
 
   constructor(
     private chatService: ChatService,
@@ -73,6 +75,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     private contactSelectionService: ContactSelectionService,
     private messageEventService: MessageEventService,
     private userEventService: UserEventService,
+    private notificationEventService: NotificationEventService
 ) {
     super(commonEventService);
     this.currentUser$ = userService.profile$;
@@ -88,6 +91,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
           this.redirectToChatHome();
         }
         const cursor = conversation.latest_message.cursor + 1;
+        this.conversation = conversation;
         // update message cursor for joined conversation
         this.store$.dispatch(new MessageActions.SetState({ cursor: cursor}));
         this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversation.id}));
@@ -333,5 +337,10 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.store$.dispatch(new ConversationActions.UpdateDisplay({
       id: this.conversationId, body: {conversation: {notification_count: 0}}
     }));
+
+    // update chat notification count
+    if (this.conversation.notification_count > 0) {
+      this.notificationEventService.updateNotificationCount({count: 1, type: 'remove'});
+    }
   }
 }

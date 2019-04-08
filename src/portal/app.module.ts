@@ -25,6 +25,7 @@ import { NotificationModule } from './notifications/notifications.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { FaqModule } from '@portal/faq/faq.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { PortalStoreModule } from '@portal/store';
 
 @NgModule({
   declarations: [AppComponent],
@@ -47,6 +48,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     SupportModule,
     NotificationModule,
     FaqModule,
+
+    // Store
+    PortalStoreModule,
 
     PortalSharedModule.forRoot(),
     CoreModule.forRoot(),

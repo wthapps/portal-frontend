@@ -107,3 +107,4 @@ export const selectUserCount = createSelector(
  *
  */
 export let appEffects: Array<any> = [fromAccount.AccountEffects];
+export * from './myaccount-store.module';

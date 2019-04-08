@@ -25,18 +25,30 @@
         </div>
       </nav>
     </div>
-    <div class="nav-notification-list-content" lockYOffset="30" observeAttributes="true" infinite-scroll
+    <div class="nav-notification-list-content" lockYOffset="30" infinite-scroll
          [scrollWindow]="false"
          (scrolled)="getMore()">
 
-      <div class="notification-list notification-list-xs">
-        <div *ngFor="let conversation of conversations$|async" class="noti-item can-click"
-             [ngClass]="conversation?.notification_count > 0 ? 'conversation_active' : ''">
+      <ng-container *ngIf="loading$|async; then loadingBlock else dataBlock">
+
+      </ng-container>
+    </div>
+    <div class="nav-notification-list-footer">
+      <a href="javascript:void(0);" (click)="gotoChat();"> Go to WTH!Chat </a>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingBlock>
+  <box-loading iconClass="fa-2x"></box-loading>
+</ng-template>
+
+<ng-template #dataBlock>
+  <div class="notification-list notification-list-xs">
+    <ng-container *ngIf="!(noData$|async); else noDataBlock">
+      <div *ngFor="let conversation of conversations$|async" class="noti-item can-click"
+           [ngClass]="conversation?.notification_count > 0 ? 'conversation_active' : ''">
           <div class="noti-item-avatar">
-            <!-- <img *ngIf="conversation.group_type != 'multiple'" class="avatar-xs" [src]="conversation?.display?.image"
-                 alt="">
-            <img *ngIf="conversation.group_type == 'multiple'" class="avatar-xs" [src]="conversation?.group?.profile_image"
-                 alt=""> -->
             <img class="avatar-xs" [src]="conversation?.profile_image" alt="">
           </div>
           <div class="noti-item-content" (click)="navigate(conversation)">
@@ -44,16 +56,16 @@
               <span class="bold">{{ conversation?.name | maxLength:30 }}</span>
               <br>
               <span class="pt5 message emojione-sm">
-                <ng-container *ngIf="conversation?.latest_message?.message_type == 'text'">
-                  <span [innerHtml]="conversation?.latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify | safeHtml"></span>
-                </ng-container>
-                <ng-container *ngIf="conversation?.latest_message?.message_type == 'request'">
-                  <span> Sent a request </span>
-                </ng-container>
-                <ng-container *ngIf="conversation?.latest_message?.message_type == 'file'">
-                  <span> Sent a file </span>
-                </ng-container>
-              </span>
+                      <ng-container *ngIf="conversation?.latest_message?.message_type == 'text'">
+                        <span [innerHtml]="conversation?.latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify | safeHtml"></span>
+                      </ng-container>
+                      <ng-container *ngIf="conversation?.latest_message?.message_type == 'request'">
+                        <span> Sent a request </span>
+                      </ng-container>
+                      <ng-container *ngIf="conversation?.latest_message?.message_type == 'file'">
+                        <span> Sent a file </span>
+                      </ng-container>
+                    </span>
               <br>
               <!--<small class="text-fade"> {{ conversation?.latest_message?.created_at | timeFormat }}-->
               <!--</small>-->
@@ -68,21 +80,19 @@
               </button>
               <ul class="dropdown-menu dropdown-menu-right" style="width: auto !important; top: 22px">
                 <li>
-                  <a href="javascript:;" (click)="markAsRead(conversation); parentHide($event);">Mark as read</a>
-                </li>
-                <li>
-                  <a href="javascript:void(0);" (click)="updateNotification(conversation); parentHide($event);">
-                    {{ conversation?.notification ? 'Disable notification' : 'Enable notification'}}
-                  </a>
+                  <a href="javascript:void(0);" (click)="markAsRead(conversation)">Mark as read</a>
                 </li>
               </ul>
             </div>
           </div>
-        </div>
       </div>
-    </div>
-    <div class="nav-notification-list-footer">
-      <a href="javascript:;" (click)="gotoChat();"> Go to WTH!Chat </a>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="loadingMore$|async">
+      <box-loading boxClass="box-loading-wrap" iconClass="fa-2x"></box-loading>
+    </ng-container>
   </div>
-</div>
+</ng-template>
+
+<ng-template #noDataBlock>
+  <box-no-data icon="fa fa-comments-o" subTitle="No conversations"></box-no-data>
+</ng-template>

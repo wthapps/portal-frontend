@@ -21,6 +21,7 @@ import { GroupModule } from './group/group.module';
 import { ContactSharedModule } from './shared/shared.module';
 // import { ProfileModule } from '@wth/shared/user';
 import { ProfilePageModule } from '@contacts/profile/profile-page.module';
+import { ContactStoreModule } from '@contacts/store';
 
 
 @NgModule({
@@ -40,7 +41,10 @@ import { ProfilePageModule } from '@contacts/profile/profile-page.module';
     GroupModule,
     ModalModule,
     CardModule,
-    // environment.production ? [] : ContactHtmlModule,
+
+    // Store
+    ContactStoreModule,
+
     ScrollToModule.forRoot(),
     ContactSharedModule.forRoot(),
 

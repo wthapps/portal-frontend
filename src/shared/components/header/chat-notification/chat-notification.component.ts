@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { Constants } from '@shared/constant';
 import { WTHNavigateService } from '@shared/services/wth-navigate.service';
-import { ConnectionNotificationService } from '@shared/services/connection-notification.service';
 import { NotificationService } from '@shared/services/notification.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
@@ -12,8 +11,12 @@ import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { Observable } from 'rxjs/Observable';
 import { AuthService, CommonEventHandler, CommonEventService, CommonEvent } from '@shared/services';
 import { Subject } from 'rxjs';
-import { takeUntil, map, switchMap } from 'rxjs/operators';
-import { ConversationService } from '@chat/conversation/conversation.service';
+import { takeUntil, map } from 'rxjs/operators';
+import { ConversationService } from '@shared/services/chat';
+import { select, Store } from '@ngrx/store';
+import { NotificationActions, NotificationSelectors } from '@core/store/notification';
+import { AppState } from '@chat/store';
+import { NotificationEventService } from '@shared/services/notification';
 
 declare var $: any;
 
@@ -23,41 +26,62 @@ declare var $: any;
   styleUrls: ['./chat-notification.component.scss'],
   providers: [ConversationService]
 })
-export class ChatNotificationComponent extends CommonEventHandler implements OnInit, OnDestroy {
+export class ChatNotificationComponent extends CommonEventHandler implements OnInit, AfterViewInit, OnDestroy {
   readonly tooltip: any = Constants.tooltip;
   readonly urls: any = Constants.baseUrls;
   conversations = [];
   conversations$: Observable<any>;
+  loading$: Observable<any>;
+  loadingMore$: Observable<any>;
+  noData$: Observable<any>;
+
   notificationCount = 0;
   links: any;
   inChat = false;
   nextLink: string;
-  channel: any = 'ChatNotificationComponent';
   destroy$ = new Subject();
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
+  isShowing = false;
 
   constructor(
     private navigateService: WTHNavigateService,
     private apiBaseService: ApiBaseService,
     public commonEventService: CommonEventService,
-    public connectionService: ConnectionNotificationService,
     public notificationService: NotificationService,
-    public handlerService: HandlerService,
     public wthNavigateService: WTHNavigateService,
     public authService: AuthService,
     private wthEmojiService: WTHEmojiService,
     private conversationService: ConversationService,
+    private store$: Store<AppState>,
+    private notificationEventService: NotificationEventService
   ) {
     super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
   ngOnInit() {
-    //
+    this.loading$ = this.store$.pipe(select(NotificationSelectors.selectIsLoading));
+    this.loadingMore$ = this.store$.pipe(select(NotificationSelectors.selectIsLoadingMore));
+    this.conversations$ = this.store$.pipe(select(NotificationSelectors.selectAllNotifications));
+    this.noData$ = this.store$.pipe(select(NotificationSelectors.selectIsNoData));
+    this.store$.pipe(select(NotificationSelectors.getLinks), takeUntil(this.destroy$)).subscribe(links => {
+      this.nextLink = links.next;
+    });
+    this.notificationEventService.markAllAsRead$.pipe(takeUntil(this.destroy$)).subscribe(response => {
+      this.markAllAsReadCallBack();
+    });
+
+    this.notificationEventService.updateNotificationCount$.pipe(takeUntil(this.destroy$)).subscribe(notification => {
+      this.updateNotificationCountCallBack(notification);
+    });
   }
 
-  updateNotificationCount(event: CommonEvent) {
-    this.notificationCount = event.payload;
+  ngAfterViewInit(): void {
+
+    this.apiBaseService.get('chat/notifications/count')
+      .subscribe((res: any) => {
+        this.notificationCount = res.data.count;
+      });
   }
 
   ngOnDestroy() {
@@ -78,91 +102,49 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   }
 
   toggleViewNotifications() {
-    this.conversations$ = this.conversationService.getAll({per_page: 8}).pipe(
-      map(response => {
-        this.nextLink = response.links.next;
-        this.conversations = response.data.map(con => con.attributes);
-        return this.conversations;
-      })
-    );
+    this.isShowing = !this.isShowing;
+    if (this.isShowing) {
+      this.store$.dispatch(new NotificationActions.LoadItems({ query: {}}));
+    }
   }
 
   getMore() {
     if (this.nextLink) {
-      this.conversations$ = this.conversationService.getAll({}, this.nextLink).pipe(
-        map(response => {
-          this.nextLink = response.links.next;
-          this.conversations.push(...(response.data.map(con => con.attributes)));
-          return this.conversations;
-        })
-      );
+      this.store$.dispatch(new NotificationActions.LoadMoreItems({ path: this.nextLink }));
     }
   }
 
-  markAllAsReadEvent(event: CommonEvent) {
-    // this.markAllAsRead(event.payload);
-  }
-
   markAllAsRead() {
-    this.apiBaseService.post('chat/notifications/mark_all_as_read').pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(res => {
-        // this.notificationCount = 0;
-        // if (conversations) {
-        //   this.conversations = conversations;
-        // }
-        // this.conversations.markAllAsRead();
-        // this.updateChatStore();
-      });
+    this.notificationEventService.markAllAsRead();
   }
 
-  markAsReadEvent(event: CommonEvent) {
-    this.markAsRead(event.payload);
+  markAllAsReadCallBack() {
+    // Clear notification count on Top right
+    // And current conversations' notification count as well
+    this.store$.dispatch(new NotificationActions.MarkAllAsReadSuccess({}));
+    this.notificationCount = 0;
   }
 
-  markAsRead(c: Conversation) {
-    const group_id = c.group_id;
-    this.apiBaseService
-      .post('zone/chat/notification/mark_as_read', { id: group_id })
-      .subscribe((res: any) => {
-        // this.conversations.markAsRead(group_id);
-        this.notificationCount = this.notificationCount + res.data.notification_count - res.data.last_notification_count;
-        this.updateChatStore();
-      });
+  markAsRead(conversation: Conversation) {
+    this.store$.dispatch(new NotificationActions.MarkAsRead({id: conversation.uuid}));
+    this.notificationEventService.markAsRead(conversation);
+    this.notificationCount = this.notificationCount - conversation.notification_count;
   }
 
-  updateNotification(c: Conversation) {
-    const group_id = c.group_id;
-    this.apiBaseService
-      .addCommand(
-        ConversationApiCommands.updateNotification({
-          id: group_id,
-          notification: !c.notification
-        })
-      ).subscribe((res: any) => {
-        c.notification = res.data.notification;
-        // this.conversations.update(c);
-        this.updateChatStore();
-      });
+  updateNotificationCountCallBack(notification: {count: 0, type: 'add'|'remove'}) {
+    if (notification.type === 'add') {
+      this.notificationCount += notification.count;
+    } else if (notification.type === 'remove') {
+      this.notificationCount -= notification.count;
+    }
   }
-
-  updateChatStore(): void {
-    this.commonEventService.broadcast({
-      channel: 'ChatConversationService',
-      action: 'updateStoreConversationsEvent',
-      payload: this.conversations
-    });
-  }
-
-
 
   navigate(conversation: any) {
     $('#chat-header-notification').removeClass('open');
     this.wthNavigateService.navigateOrRedirect(
-      `conversations/${conversation.group_id}`,
+      `conversations/${conversation.uuid}`,
       'chat'
     );
-    this.handlerService.triggerEvent('on_conversation_select', conversation);
   }
 
   hideActionsMenu(e: any) {
@@ -171,10 +153,6 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     $('#chat-header-notification')
       .find('ul.dropdown-menu')
       .hide();
-  }
-
-  parentHide(event: any) {
-
   }
 
   subToggle(e: any) {

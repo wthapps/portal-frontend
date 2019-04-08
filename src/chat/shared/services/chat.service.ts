@@ -25,7 +25,6 @@ import { FileUploaderService } from '@shared/services/file/file-uploader.service
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators/map';
-import { ConversationService } from '@chat/shared/services';
 import { BlackListPolicy } from '@shared/policies/black-list-policy';
 import { SizePolicy } from '@shared/policies/size-policy';
 import { from } from 'rxjs/observable/from';

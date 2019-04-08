@@ -24,7 +24,7 @@ import { PartialModule } from './../../shared/partials/partial.module';
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
 import { ZChatContactActionsComponent } from './contact-action/contact-actions.component';
-import { ConversationService } from '../conversation/conversation.service';
+import { ConversationService } from '../../shared/services/chat/conversation.service';
 import { ChatService } from './services/chat.service';
 import { ChatContactService } from './services/chat-contact.service';
 import { ZChatSharedHeaderComponent } from './header/header.component';

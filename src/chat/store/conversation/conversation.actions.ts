@@ -49,6 +49,9 @@ export enum ActionTypes  {
   DECLINE_INVITATION_SUCCESS  = 'CONVERSATION_DECLINE_INVITATION_SUCCESS',
   DECLINE_INVITATION_ERROR    = 'CONVERSATION_DECLINE_INVITATION_ERROR',
   SET_STATE                   = 'CONVERSATION_SET_STATE',
+  MARK_AS_READ                = 'CONVERSATION_MARK_AS_READ',
+  MARK_AS_READ_SUCCESS        = 'CONVERSATION_MARK_AS_READ_SUCCESS',
+  MARK_AS_READ_ERROR          = 'CONVERSATION_MARK_AS_READ_ERROR',
   MARK_ALL_AS_READ            = 'CONVERSATION_MARK_ALL_AS_READ',
   MARK_ALL_AS_READ_SUCCESS    = 'CONVERSATION_MARK_ALL_AS_READ_SUCCESS',
   MARK_ALL_AS_READ_ERROR      = 'CONVERSATION_MARK_ALL_AS_READ_ERROR'
@@ -365,7 +368,27 @@ export class DeclineInvitationError implements Action {
   constructor(public payload: any = null) { }
 }
 
-// Accept Invitation actions
+// Mark all as read actions
+export class MarkAsRead implements Action {
+  readonly type = ActionTypes.MARK_AS_READ;
+
+  constructor(public payload: any) { }
+}
+
+export class MarkAsReadSuccess implements Action {
+  readonly type = ActionTypes.MARK_AS_READ_SUCCESS;
+
+  constructor(public payload: any = null) { }
+}
+
+export class MarkAsReadError implements Action {
+  readonly type = ActionTypes.MARK_AS_READ_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
+
+// Mark all as read actions
 export class MarkAllAsRead implements Action {
   readonly type = ActionTypes.MARK_ALL_AS_READ;
 
@@ -434,6 +457,9 @@ export type Actions =
   DeclineInvitationSuccess |
   DeclineInvitationError |
   SetState |
+  MarkAsRead |
+  MarkAsReadSuccess |
+  MarkAsReadError |
   MarkAllAsRead |
   MarkAllAsReadSuccess |
   MarkAllAsReadError;

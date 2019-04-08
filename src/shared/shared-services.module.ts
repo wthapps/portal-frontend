@@ -55,6 +55,7 @@ import { NoteChannelService } from './channels/note-channel.service';
 import { DatePipe } from '@angular/common';
 import { WHttpClientService } from '@shared/services/w-http-client.service';
 import { WebsocketService } from '@shared/channels/websocket.service';
+import { NotificationEventService } from '@shared/services/notification';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -129,6 +130,9 @@ export class SharedServicesModule {
         PageVisibilityService,
         WHttpClientService,
         WebsocketService,
+
+        // Event Service
+        NotificationEventService,
 
         // Service worker related modules
         PromptUpdateService,

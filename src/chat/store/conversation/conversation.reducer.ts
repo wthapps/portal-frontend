@@ -202,7 +202,6 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       };
     }
 
-
     // Update actions
     case ActionTypes.UPDATE: {
       return {
@@ -349,11 +348,22 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       };
     }
 
-    // Select action
+    // Mark all as read action
+    case ActionTypes.MARK_AS_READ_SUCCESS: {
+      const update = {
+        id: action.payload.conversation.id,
+        changes: {
+          notification_count: 0
+        }
+      };
+      return conversationAdapter.updateOne(update, state);
+    }
+
+    // Mark all as read action
     case ActionTypes.MARK_ALL_AS_READ_SUCCESS: {
-      const updates = action.payload.conversation.map(conversation => {
+      const updates = (<number[]>state.ids).map(id => {
         return {
-          id: conversation.id,
+          id: id,
           changes: {
             notification_count: 0
           }

@@ -27,7 +27,6 @@ import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
 import { ChatConversationService } from '../services/chat-conversation.service';
 import { select, Store } from '@ngrx/store';
-import { Conversations } from '@shared/shared/models/chat/conversations.model';
 import {
   AppState,
   ConversationActions,
@@ -37,6 +36,7 @@ import { WebsocketService } from '@shared/channels/websocket.service';
 import { ChannelEvents } from '@shared/channels';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 import { UserEventService } from '@shared/user/event';
+import { NotificationEventService } from '@shared/services/notification';
 
 
 @Component({
@@ -48,28 +48,21 @@ import { UserEventService } from '@shared/user/event';
 export class ZChatSidebarComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @HostBinding('class') cssClass = 'menuleft-chat';
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
-  @Output() onSelectedConversation = new EventEmitter<any>();
 
   readonly chatMenu = Constants.chatMenuItems;
 
   usersOnlineItem$: Observable<any>;
-  favouriteContacts$: Observable<any>;
-  historyContacts$: Observable<any>;
-  recentContacts$: Observable<any>;
-  contactItem$: Observable<any>;
   conversations$: any;
   searchConversations$: Observable<any>;
-  links$: Observable<any>;
   links: any;
+  conversationId: string;
 
   destroy$ = new Subject();
 
-  isRedirect: boolean;
   filter = 'All';
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
 
   searching = false;
-
   searched = false;
 
   channel = 'CONVERSATION_ACTIONS';
@@ -87,7 +80,8 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     private authService: AuthService,
     private websocketService: WebsocketService,
     private contactSelectionService: ContactSelectionService,
-    private userEventService: UserEventService
+    private userEventService: UserEventService,
+    private notificationEventService: NotificationEventService,
   ) {
     super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
@@ -97,15 +91,15 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
     this.conversations$ = this.store$.pipe(select(ConversationSelectors.selectAllConversations));
     this.searchConversations$ = this.store$.pipe(select(ConversationSelectors.selectSearchedConversations));
-    this.store$.pipe(
-      select(ConversationSelectors.getLinks),
-      takeUntil(this.destroy$)
-    ).subscribe(links => {
+    this.store$.pipe(select(ConversationSelectors.getLinks), takeUntil(this.destroy$)).subscribe(links => {
       this.links = links;
+    });
+    this.store$.pipe(select(ConversationSelectors.selectJoinedConversationId), takeUntil(this.destroy$))
+      .subscribe((conversationId: any) => {
+        this.conversationId = conversationId;
     });
 
     this.loadConversations();
-
 
     // handle adding members
     this.contactSelectionService.onSelect$.pipe(
@@ -115,18 +109,17 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       this.createConversation({users: response.payload.data});
     });
 
-    // Init user channel
-    // Create new channel depends on selected conversation
-    // If channel has already been existing don't create new one
-    this.userChannel = this.websocketService.subscribeChannel(`user:${this.authService.user.uuid}`, {token: this.authService.user.uuid});
+    // Register user channel
+    this.userChannel = this.websocketService.subscribeChannel(
+      `user:${this.authService.user.uuid}`,
+      {token: this.authService.user.uuid}
+    );
     this.userChannel.join({token: 'test token'})
-        .receive('ok', ({userInfo}) => {
-          console.log('JOINED USER CHANNEL', userInfo);
-          // Perform some tasks need to do after joining channel successfully
-          // this.store$.dispatch(new ConversationActions.Create(conversationId));
-        })
-        .receive('error', ({reason}) => console.log('failed join', reason) )
-        .receive('timeout', () => console.log('Networking issue. Still waiting...'));
+      .receive('ok', ({userInfo}) => {
+        // console.log('JOINED USER CHANNEL', userInfo);
+      })
+      .receive('error', ({reason}) => {})
+      .receive('timeout', () => {});
 
 
     this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_CREATED, (response: any) => {
@@ -147,6 +140,14 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
 
     this.userEventService.createChat$.pipe(takeUntil(this.destroy$)).subscribe(user => {
       this.createConversation({ users: [user] });
+    });
+
+    this.notificationEventService.markAsRead$.pipe(takeUntil(this.destroy$)).subscribe(conversation => {
+      this.markAsReadCallBack(conversation);
+    });
+
+    this.notificationEventService.markAllAsRead$.pipe(takeUntil(this.destroy$)).subscribe(response => {
+      this.markAllAsReadCallBack();
     });
   }
 
@@ -189,31 +190,13 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     event.preventDefault();
     event.stopPropagation();
     $('#chat-message-text').focus();
-    // if (contact.deleted) {
-    //   this.chatConversationService.apiUpdateGroupUser(contact.group_id, { deleted: false, notification_count: 0 }).then(res => {
-    //     this.chatConversationService.apiGetConversations().then(r2 => {
-    //       this.chatConversationService.navigateToConversation(contact.group_id);
-    //     })
-    //   });
-    // } else {
-    //   const last = contact.notification_count;
-    //   this.chatConversationService.apiUpdateGroupUser(contact.group_id, { notification_count: 0 }).then(res => {
-    //     this.commonEventService.broadcast({
-    //       channel: 'ChatNotificationComponent',
-    //       action: 'addNotificationEvent',
-    //       payload: { notification_count: 0, last_notification_count: last }
-    //     });
-    //     this.chatConversationService.navigateToConversation(contact.group_id);
-    //   })
-    // }
+
     // this.commonEventService.broadcast({
     //   channel: 'MessageEditorComponent',
     //   action: 'resetEditor'
     // })
-    // this.store$.dispatch(new ConversationActions.SetSelectedItem(conversation));
-
     this.router.navigate(['conversations', conversation.uuid]).then();
-    // this.onSelectedConversation.emit(conversation);
+    this.notificationEventService.updateNotificationCount({count: conversation.notification_count, type: 'remove'});
   }
 
   createConversation(payload: any) {
@@ -233,16 +216,21 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   upsertConversationCallback(conversation: any) {
-    console.log('UPSERTED CONVERSATION:::', conversation);
+    // console.log('UPSERTED CONVERSATION:::', conversation);
     // if currentUser is a member then add to conversation list
     this.store$.dispatch(new ConversationActions.UpsertSuccess({conversation: conversation}));
+
+    // increase notification to 1 if having a new message
+    // Just recalculate chat notification count for conversation is not current
+    if ((this.conversationId !== conversation.id) && (conversation.notification_count > 0)) {
+      this.notificationEventService.updateNotificationCount({count: 1, type: 'add'});
+    }
   }
 
   updateConversationCallback(conversation: any) {
-    console.log('UPDATED CONVERSATION:::', conversation);
+    // console.log('UPDATED CONVERSATION:::', conversation);
     this.store$.dispatch(new ConversationActions.UpdateSuccess({conversation: conversation}));
   }
-
 
   openContactSelectionModal() {
     this.contactSelectionService.open({
@@ -258,9 +246,6 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       from: 'ZChatSidebarComponents'
     });
   }
-
-
-
 
   onCloseMenu() {
     this.renderer.removeClass(document.body, 'left-sidebar-open');
@@ -284,7 +269,19 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   markAllAsRead() {
-    this.store$.dispatch(new ConversationActions.MarkAllAsRead({}));
+    this.notificationEventService.markAllAsRead();
+  }
+
+  markAsReadCallBack(conversation: any) {
+    // Clear notification count on Top right
+    // And current conversations' notification count as well
+    this.store$.dispatch(new ConversationActions.MarkAsReadSuccess({conversation: conversation}));
+  }
+
+  markAllAsReadCallBack() {
+    // Clear notification count on Top right
+    // And current conversations' notification count as well
+    this.store$.dispatch(new ConversationActions.MarkAllAsReadSuccess({}));
   }
 
   clearSearch(event: any) {

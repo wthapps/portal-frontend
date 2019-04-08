@@ -13,6 +13,8 @@ import { ZChatEmojiModule } from '@shared/shared/emoji/emoji.module';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { BsModalModule } from 'ng2-bs3-modal';
+import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
+import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 
 @NgModule({
   imports: [
@@ -25,7 +27,9 @@ import { BsModalModule } from 'ng2-bs3-modal';
     PipeModule,
     TooltipModule,
     BsModalModule,
-    WTHEmojiModule
+    WTHEmojiModule,
+    BoxLoadingModule,
+    BoxNoDataModule,
   ],
   declarations: [
     AppsNavigationComponent,

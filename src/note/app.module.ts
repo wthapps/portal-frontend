@@ -28,6 +28,7 @@ import { ZNoteSharedByMeModule } from './shared-by-me/shared-by-me.module';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { NoteStoreModule } from '@notes/store';
 
 @NgModule({
   imports: [
@@ -48,6 +49,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ZNoteTrashModule,
     ZNotePhotoModule,
     ModalModule,
+
+    // Store
+    NoteStoreModule,
+
     SharedServicesModule.forRoot(),
     ZNoteSharedModule.forRoot(),
 

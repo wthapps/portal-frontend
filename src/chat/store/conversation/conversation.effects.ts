@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, mergeMap } from 'rxjs/operators';
-import { ConversationService } from '../../conversation/conversation.service';
+import { ConversationService } from '@shared/services/chat';
 import * as ConversationActions from './conversation.actions';
 import { ApiBaseService } from '@shared/services';
 

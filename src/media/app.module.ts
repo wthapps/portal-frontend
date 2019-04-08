@@ -44,6 +44,7 @@ import { SharingModalComponent } from '@shared/modules/photo/components/modal/sh
 import { TaggingModalComponent } from '@shared/modules/photo/components/modal/tagging/tagging-modal.component';
 import { AddToAlbumModalComponent } from '@shared/modules/photo/components/modal/photo/add-to-album-modal.component';
 import { PhotoEditModalComponent } from '@shared/modules/photo/components/modal/photo/photo-edit-modal.component';
+import { PhotoStoreModule } from '@media/store';
 
 @NgModule({
   imports: [
@@ -70,6 +71,10 @@ import { PhotoEditModalComponent } from '@shared/modules/photo/components/modal/
     AppRoutingModule,
     ModalModule,
     ServiceModule,
+
+    // Store
+    PhotoStoreModule,
+
     ZMediaSharedModule.forRoot(),
     CoreModule.forRoot(),
     SharedServicesModule.forRoot(),

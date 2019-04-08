@@ -6,3 +6,7 @@
 .conversation_active {
   background-color: #f4d0d0;
 }
+
+:host /deep/ .box-loading-wrap {
+  padding: 5px !important;
+}

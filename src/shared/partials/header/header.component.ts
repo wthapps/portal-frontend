@@ -135,15 +135,15 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
   }
 
   countChatNotification(): void {
-    this.apiBaseService.get('chat/notifications/count')
-      .subscribe((res: any) => {
-        this.notificationCount = res.data.count;
-        this.commonEventService.broadcast({
-          channel: 'ChatNotificationComponent',
-          action: 'updateNotificationCount',
-          payload: this.notificationCount
-        })
-      });
+    // this.apiBaseService.get('chat/notifications/count')
+    //   .subscribe((res: any) => {
+    //     this.notificationCount = res.data.count;
+    //     this.commonEventService.broadcast({
+    //       channel: 'ChatNotificationComponent',
+    //       action: 'updateNotificationCount',
+    //       payload: this.notificationCount
+    //     })
+    //   });
   }
 
   subscribeChanneService() {

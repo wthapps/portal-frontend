@@ -4,13 +4,12 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { Observable } from 'rxjs/Observable';
 
 import { ChatService } from '../services/chat.service';
-import { FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
-import { AbstractClassPart } from '@angular/compiler/src/output/output_ast';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { Subject } from 'rxjs';
 import { takeUntil, filter, take } from 'rxjs/operators';
 import { ApiBaseService, CommonEventService } from '@shared/services';
-import { ConversationService } from '@chat/conversation/conversation.service';
+import { ConversationService } from '@shared/services/chat';
 
 @Component({
   selector: 'z-chat-share-edit-conversation',

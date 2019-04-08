@@ -25,7 +25,7 @@ import { MyPlansModule } from './plans/plans.module';
 import { MySettingModule } from './settings/setting.module';
 
 import { MySharedModule } from './shared/shared.module';
-import { appEffects, appReducers, metaReducers } from './store';
+import { appEffects, appReducers, metaReducers, MyaccountStoreModule } from './store';
 import { UserModule } from '@account/users';
 
 @NgModule({
@@ -45,6 +45,10 @@ import { UserModule } from '@account/users';
     ConfirmationModule,
     UserModule,
     FooterModule,
+
+    // Store
+    MyaccountStoreModule,
+
     MySharedModule.forRoot(),
     SharedServicesModule.forRoot(),
     CoreModule.forRoot(),
