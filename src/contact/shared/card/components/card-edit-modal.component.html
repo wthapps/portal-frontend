@@ -11,7 +11,7 @@
         </div>
         <h4 class="modal-title text-capitalize" *ngIf="form.controls.card_type.value === PUBLIC">{{ card_name.value }}</h4>
         
-        <button type="button" (click)="close()" class="btn btn-default btn-default-no-border">
+        <button type="button" (mousedown)="close()" class="btn btn-default btn-default-no-border">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <!-- <ul class="modal-header-navbar">
@@ -197,9 +197,9 @@
   </bs-modal-body>
   <bs-modal-footer>
     <button type="button" class="btn btn-link pull-left" (click)="onToggleShowMore(showMore)"> Show {{ showMore ? 'more' : 'less'}}</button>
-    <button type="button" class="btn btn-min btn-outline-default" (click)="onCancel()">Cancel</button>
+    <button type="button" class="btn btn-min btn-outline-default" (mousedown)="close()">Cancel</button>
     <button type="button" class="btn btn-min btn-outline-primary" [disabled]="form.invalid || form.pristine" (click)="onSave()">Save</button>
   </bs-modal-footer>
 </bs-modal>
-
 </form>
+

@@ -188,7 +188,4 @@ export class CardEditModalComponent {
 
   }
 
-  onCancel() {
-    this.close();
-  }
 }
