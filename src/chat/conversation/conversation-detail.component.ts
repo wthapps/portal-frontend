@@ -131,7 +131,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       // Join selected conversation channel
       this.conversationChannel.join()
         .receive('ok', ({message}) => {
-          console.log('JOIN:::', message);
           // Perform some tasks need to do after joining channel successfully
           this.store$.dispatch(new ConversationActions.GetItem(this.conversationId));
         })

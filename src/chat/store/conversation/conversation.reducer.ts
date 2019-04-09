@@ -24,6 +24,7 @@ export interface ConversationState extends EntityState<Conversation> {
   done?: boolean;
   isLoading?: boolean;
   isLoadingMore?: boolean;
+  loaded?: boolean;
   error?: any;
   links: {
     self: string | null,
@@ -50,6 +51,7 @@ export const initialConversationState: ConversationState = conversationAdapter.g
     done: false,
     isLoading: false,
     isLoadingMore: false,
+    loaded: false,
     error: null,
     links: {
       self: null,
@@ -74,32 +76,20 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       return {
         ...state,
         isLoading: true,
+        loaded: false,
         error: null
       };
     }
     case ActionTypes.GET_ITEMS_SUCCESS: {
-      const links = action.payload.links;
-      // if it is first load
-      if (!links.prev) {
-        return conversationAdapter.addAll([
-          ...action.payload.conversations
-        ], {
-          ...state,
-          isLoading: false,
-          error: null,
-          links: {...action.payload.links},
-        });
-      } else {
-        return conversationAdapter.addMany([
-          ...Object.values(state.entities),
-          ...action.payload.conversations
-        ], {
-          ...state,
-          isLoading: false,
-          error: null,
-          links: {...action.payload.links},
-        });
-      }
+      return conversationAdapter.addAll([
+        ...action.payload.conversations
+      ], {
+        ...state,
+        isLoading: false,
+        loaded: true,
+        error: null,
+        links: action.payload.links,
+      });
     }
     case ActionTypes.GET_ITEMS_ERROR: {
       return {
@@ -109,15 +99,42 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       };
     }
 
+    // Get more items
+    case ActionTypes.GET_MORE_ITEMS: {
+      return {
+        ...state,
+        isLoadingMore: true,
+        error: null
+      };
+    }
+    case ActionTypes.GET_MORE_ITEMS_SUCCESS: {
+      return conversationAdapter.addMany([
+        ...Object.values(state.entities),
+        ...action.payload.conversations
+      ], {
+        ...state,
+        isLoadingMore: false,
+        error: null,
+        links: action.payload.links,
+      });
+    }
+    case ActionTypes.GET_MORE_ITEMS_ERROR: {
+      return {
+        ...state,
+        isLoadingMore: false,
+        error: action.payload.error
+      };
+    }
+
     case ActionTypes.SEARCH: {
       return {
         ...state,
         isLoading: true,
+        loaded: false,
         error: null
       };
     }
     case ActionTypes.SEARCH_SUCCESS: {
-      console.log('SEARCH RESULT:::', action.payload.conversations);
       return {
         ...state,
         searchedConversations: [
@@ -125,14 +142,45 @@ export function reducer(state = initialConversationState, action: Actions): Conv
           ...action.payload.conversations
         ],
         isLoading: false,
+        loaded: true,
         error: null,
-        links: action.payload.links,
+        searchedLinks: action.payload.links,
       };
     }
     case ActionTypes.SEARCH_ERROR: {
       return {
         ...state,
+        isLoading: false,
+        loaded: true,
+        error: action.payload.error
+      };
+    }
+
+    case ActionTypes.SEARCH_MORE: {
+      return {
+        ...state,
+        isLoadingMore: true,
+        loaded: false,
+        error: null
+      };
+    }
+    case ActionTypes.SEARCH_MORE_SUCCESS: {
+      return {
+        ...state,
+        searchedConversations: [
+          ...state.searchedConversations,
+          ...action.payload.conversations
+        ],
         isLoadingMore: false,
+        error: null,
+        searchedLinks: action.payload.links,
+      };
+    }
+    case ActionTypes.SEARCH_MORE_ERROR: {
+      return {
+        ...state,
+        isLoadingMore: false,
+        loaded: true,
         error: action.payload.error
       };
     }
@@ -147,7 +195,6 @@ export function reducer(state = initialConversationState, action: Actions): Conv
     case ActionTypes.GET_ITEM: {
       return {
         ...state,
-        isLoading: true,
         error: null
       };
     }
@@ -157,7 +204,6 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       return {
         ...state,
         joinedConversation: conversation,
-        // joinedConversationId: conversation.id,
         isLoading: false,
         error: null
       };
@@ -270,8 +316,6 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.UPDATE_DISPLAY_SUCCESS: {
       const conversation = action.payload.conversation;
-
-      console.log('UPDATE_DISPLAY_SUCCESS:::', conversation);
       const joinedConversation = state.joinedConversationId === conversation.id ? conversation : state.joinedConversation;
 
       return conversationAdapter.updateOne({
@@ -316,7 +360,6 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.DELETE_SUCCESS: {
       const conversation = action.payload.conversation;
-      console.log('DELETE SUCCESS:::', conversation);
 
       return conversationAdapter.removeOne(conversation.id, {
         ...state,

@@ -24,4 +24,4 @@ import { NotificationStoreModule } from '@core/store/notification';
     EffectsModule.forRoot([])
   ]
 })
-export class AppStoreModule { }
+export class ChatStoreModule { }

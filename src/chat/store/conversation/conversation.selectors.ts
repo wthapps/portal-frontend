@@ -13,11 +13,8 @@ export const FEATURE_NAME = 'conversation';
 export const getError = (state: ConversationState): any => state.error;
 
 export const getIsLoading = (state: ConversationState): boolean => state.isLoading;
-
-// export const getItems = (state: State): Array<Conversation> => state.items;
-
-// export const getSelectedItem = (state: ConversationState): Conversation => state.selectedConversation;
-
+export const getIsLoadingMore = (state: ConversationState): boolean => state.isLoadingMore;
+export const getLoaded = (state: ConversationState): boolean => state.loaded;
 
 export const selectConversationState: MemoizedSelector<
   object,
@@ -57,6 +54,7 @@ export const selectJoinedConversationId   =
   createSelector(selectConversationState, (state: ConversationState) => state.joinedConversationId);
 
 export const getLinks   = createSelector(selectConversationState, (state: ConversationState) => state.links);
+export const getSearchedLinks   = createSelector(selectConversationState, (state: ConversationState) => state.searchedLinks);
 
 
 export const selectConversationById = (id: string) =>
@@ -77,3 +75,13 @@ export const selectIsLoading: MemoizedSelector<
   object,
   boolean
   > = createSelector(selectConversationState, getIsLoading);
+
+export const selectIsLoadingMore: MemoizedSelector<
+  object,
+  boolean
+  > = createSelector(selectConversationState, getIsLoadingMore);
+
+export const selectLoaded: MemoizedSelector<
+  object,
+  boolean
+  > = createSelector(selectConversationState, getLoaded);

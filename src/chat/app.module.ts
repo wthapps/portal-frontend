@@ -22,7 +22,7 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
 import { environment } from '@env/environment';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ChatNoteListModule } from '@shared/components/note-list/chat-module/chat-note-list.module';
-import { AppStoreModule } from '@chat/store';
+import { ChatStoreModule } from '@chat/store';
 import { JwtIntercepter } from '@shared/services/auth/jwt-intercepter';
 import { ContactSelectionModule } from '@chat/shared/selections/contact';
 import { UserCardModule } from '@shared/user/card';
@@ -48,7 +48,10 @@ import { UserEventModule } from '@shared/user/event';
 
     AppRoutingModule,
     ModalModule,
-    AppStoreModule,
+
+    // Store
+    ChatStoreModule,
+
     ZChatSharedModule.forRoot(),
     SharedServicesModule.forRoot(),
     StoreModule.forRoot(ChatStore),

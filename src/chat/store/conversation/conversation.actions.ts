@@ -1,12 +1,18 @@
 import { Action } from '@ngrx/store';
 
 export enum ActionTypes  {
-  GET_ITEMS             = 'CONVERSATION_GET_ITEMS',
-  GET_ITEMS_SUCCESS     = 'CONVERSATION_GET_ITEMS_SUCCESS',
-  GET_ITEMS_ERROR       = 'CONVERSATION_GET_ITEMS_ERROR',
+  GET_ITEMS               = 'CONVERSATION_GET_ITEMS',
+  GET_ITEMS_SUCCESS       = 'CONVERSATION_GET_ITEMS_SUCCESS',
+  GET_ITEMS_ERROR         = 'CONVERSATION_GET_ITEMS_ERROR',
+  GET_MORE_ITEMS          = 'CONVERSATION_GET_MORE_ITEMS',
+  GET_MORE_ITEMS_SUCCESS  = 'CONVERSATION_GET_MORE_ITEMS_SUCCESS',
+  GET_MORE_ITEMS_ERROR    = 'CONVERSATION_GET_MORE_ITEMS_ERROR',
   SEARCH                = 'CONVERSATION_SEARCH',
   SEARCH_SUCCESS        = 'CONVERSATION_SEARCH_SUCCESS',
   SEARCH_ERROR          = 'CONVERSATION_SEARCH_ERROR',
+  SEARCH_MORE           = 'CONVERSATION_SEARCH_MORE',
+  SEARCH_MORE_SUCCESS   = 'CONVERSATION_SEARCH_MORE_SUCCESS',
+  SEARCH_MORE_ERROR     = 'CONVERSATION_SEARCH_MORE_ERROR',
   CLEAR_SEARCH          = 'CONVERSATION_CLEAR_SEARCH',
   GET_ITEM              = 'CONVERSATION_GET_ITEM',
   GET_ITEM_SUCCESS      = 'CONVERSATION_GET_ITEM_SUCCESS',
@@ -78,7 +84,28 @@ export class GetItemsError implements Action {
 }
 
 /**
- * Get more actions
+ * Get more items items Actions
+ */
+export class GetMoreItems implements Action {
+  readonly type = ActionTypes.GET_MORE_ITEMS;
+
+  constructor(public payload: any) { }
+}
+
+export class GetMoreItemsSuccess implements Action {
+  readonly type = ActionTypes.GET_MORE_ITEMS_SUCCESS;
+
+  constructor(public payload: any) { }
+}
+
+export class GetMoreItemsError implements Action {
+  readonly type = ActionTypes.GET_MORE_ITEMS_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
+/**
+ * Search items actions
  */
 export class Search implements Action {
   readonly type = ActionTypes.SEARCH;
@@ -94,6 +121,24 @@ export class SearchSuccess implements Action {
 
 export class SearchError implements Action {
   readonly type = ActionTypes.SEARCH_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
+export class SearchMore implements Action {
+  readonly type = ActionTypes.SEARCH_MORE;
+
+  constructor(public payload: any) { }
+}
+
+export class SearchMoreSuccess implements Action {
+  readonly type = ActionTypes.SEARCH_MORE_SUCCESS;
+
+  constructor(public payload: any) { }
+}
+
+export class SearchMoreError implements Action {
+  readonly type = ActionTypes.SEARCH_MORE_ERROR;
 
   constructor(public payload: any = null) { }
 }
@@ -412,12 +457,18 @@ export type Actions =
   GetItems |
   GetItemsSuccess |
   GetItemsError |
+  GetMoreItems |
+  GetMoreItemsSuccess |
+  GetMoreItemsError |
   GetItem |
   GetItemSuccess |
   GetItemError |
   Search |
   SearchSuccess |
   SearchError |
+  SearchMore |
+  SearchMoreSuccess |
+  SearchMoreError |
   ClearSearch |
   Create |
   CreateSuccess |

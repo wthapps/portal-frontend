@@ -2,19 +2,16 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap, mergeMap } from 'rxjs/operators';
+import { catchError, map, switchMap, mergeMap, concatMap } from 'rxjs/operators';
 import { ConversationService } from '@shared/services/chat';
 import * as ConversationActions from './conversation.actions';
-import { ApiBaseService } from '@shared/services';
 
 @Injectable()
 export class ConversationEffects {
-  constructor(private actions$: Actions,
-              private conversationService: ConversationService,
-              private apiBaseService: ApiBaseService) {}
+  constructor(private actions$: Actions, private conversationService: ConversationService) {}
 
   @Effect()
-  getAll$: Observable<Action> = this.actions$.pipe(
+  getItems$: Observable<Action> = this.actions$.pipe(
     ofType<ConversationActions.GetItems>(ConversationActions.ActionTypes.GET_ITEMS),
     switchMap(action =>
       this.conversationService.getAll(action.payload.query, action.payload.path).pipe(
@@ -30,6 +27,28 @@ export class ConversationEffects {
         }),
         catchError(error =>
           of(new ConversationActions.GetItemsError({ error }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  getMoreItems$: Observable<Action> = this.actions$.pipe(
+    ofType<ConversationActions.GetMoreItems>(ConversationActions.ActionTypes.GET_MORE_ITEMS),
+    concatMap(action =>
+      this.conversationService.getAll(action.payload.query, action.payload.path).pipe(
+        map(response => {
+          const conversations = [];
+          response.data.forEach(item => {
+            conversations.push(item.attributes);
+          });
+          return new ConversationActions.GetMoreItemsSuccess({
+            conversations: conversations,
+            links: response.links
+          });
+        }),
+        catchError(error =>
+          of(new ConversationActions.GetMoreItemsError({ error }))
         )
       )
     )
@@ -60,10 +79,35 @@ export class ConversationEffects {
           response.data.forEach(item => {
             conversations.push(item.attributes);
           });
-          return new ConversationActions.SearchSuccess({conversations: conversations});
+          return new ConversationActions.SearchSuccess({
+            conversations: conversations,
+            links: response.links
+          });
         }),
         catchError(error =>
           of(new ConversationActions.SearchError({ error }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  searchMore$: Observable<Action> = this.actions$.pipe(
+    ofType<ConversationActions.SearchMore>(ConversationActions.ActionTypes.SEARCH_MORE),
+    switchMap(action =>
+      this.conversationService.getAll(action.payload.query, action.payload.path).pipe(
+        map(response => {
+          const conversations = [];
+          response.data.forEach(item => {
+            conversations.push(item.attributes);
+          });
+          return new ConversationActions.SearchMoreSuccess({
+            conversations: conversations,
+            links: response.links
+          });
+        }),
+        catchError(error =>
+          of(new ConversationActions.SearchMoreError({ error }))
         )
       )
     )

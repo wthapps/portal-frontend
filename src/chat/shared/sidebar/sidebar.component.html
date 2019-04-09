@@ -64,35 +64,40 @@
 <div class="menuleft-chat-content" infiniteScroll
       [infiniteScrollDistance]="2"
       [infiniteScrollThrottle]="50"
-      (scrolled)="loadMoreConversations(links)"
+      (scrolled)="loadMoreConversations()"
       [scrollWindow]="false"
 >
-  <ng-container *ngIf="!searching">
-    <ng-container *ngIf="((conversations$ | async) | chatGroupFavorite)?.length > 0">
-      <div class="text-bold conversation-label">
-        <p>Favorites</p>
-      </div>
-      <ng-container *ngIf="((conversations$ | async) | chatGroupFavorite)?.length > 0; else templateNoMessage">
-        <div *ngFor="let conversation of ((conversations$ | async) | chatGroupFavorite)" class="menu-left-item">
+  <ng-container *ngIf="!(loading$|async); else loadingBlock">
+    <ng-container *ngIf="!searching">
+      <ng-container *ngIf="conversations$ | async as conversations">
+        <ng-container *ngIf="(conversations | chatGroupFavorite)?.length > 0">
+          <div class="text-bold conversation-label">
+            <p>Favorites</p>
+          </div>
+          <div *ngFor="let conversation of conversations | chatGroupFavorite" class="menu-left-item">
+            <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="(conversations | chatGroupRecent)?.length > 0; else templateNoMessage">
+          <div class="text-bold conversation-label">
+            <p>Chats</p>
+          </div>
+          <div *ngFor="let conversation of conversations | chatGroupRecent" class="menu-left-item">
+            <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="searching && searched">
+      <ng-container *ngIf="(searchConversations$|async).length > 0; else templateNodata">
+        <div *ngFor="let conversation of searchConversations$|async; trackBy: trackById" class="menu-left-item">
           <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
         </div>
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="((conversations$ | async) | chatGroupRecent)?.length > 0; else templateNoMessage">
-      <div class="text-bold conversation-label">
-        <p>Chats</p>
-      </div>
-        <div *ngFor="let conversation of ((conversations$ | async) | chatGroupRecent)" class="menu-left-item">
-          <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
-        </div>
-    </ng-container>
   </ng-container>
-  <ng-container *ngIf="searching && searched">
-    <ng-container *ngIf="(searchConversations$|async).length > 0; else templateNodata">
-      <div *ngFor="let conversation of searchConversations$|async; trackBy: trackById" class="menu-left-item">
-        <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
-      </div>
-    </ng-container>
+  <ng-container *ngIf="loadingMore$|async">
+    <box-loading boxClass="box-loading-no-padding" iconClass="fa-2x"></box-loading>
   </ng-container>
 </div>
 
@@ -135,25 +140,29 @@
 
 
 <ng-template #templateNodata>
-  <div class="conversation-no-data">
-    <box-no-data [icon]="'fa fa-comments-o'" [subTitle]="'There is no matching conversation'">
-    </box-no-data>
-  </div>
+  <ng-container *ngIf="loaded$|async">
+    <div class="conversation-no-data">
+      <box-no-data [icon]="'fa fa-comments-o'" [subTitle]="'There is no matching conversation'">
+      </box-no-data>
+    </div>
+  </ng-container>
 </ng-template>
 
 <ng-template #templateNoMessage>
-  <div class="conversation-no-data">
-    <box-no-data *ngIf="filter === 'All'"
-                 [icon]="'fa fa-comments-o'" [subTitle]="'No conversations'"></box-no-data>
-    <box-no-data *ngIf="filter === 'Unread'"
-                 [icon]="'fa fa-comments-o'" [subTitle]="'No unread conversations'"></box-no-data>
-    <box-no-data *ngIf="filter === 'Pending Request'"
-                 [icon]="'fa fa-comments-o'" [subTitle]="'No pending request'"></box-no-data>
-    <box-no-data *ngIf="filter === 'Sent Request'"
-                 [icon]="'fa fa-comments-o'" [subTitle]="'No sent request'"></box-no-data>
-  </div>
+  <ng-container *ngIf="loaded$|async">
+    <div class="conversation-no-data">
+      <box-no-data *ngIf="filter === 'All'"
+                   [icon]="'fa fa-comments-o'" [subTitle]="'No conversations'"></box-no-data>
+      <box-no-data *ngIf="filter === 'Unread'"
+                   [icon]="'fa fa-comments-o'" [subTitle]="'No unread conversations'"></box-no-data>
+      <box-no-data *ngIf="filter === 'Pending Request'"
+                   [icon]="'fa fa-comments-o'" [subTitle]="'No pending request'"></box-no-data>
+      <box-no-data *ngIf="filter === 'Sent Request'"
+                   [icon]="'fa fa-comments-o'" [subTitle]="'No sent request'"></box-no-data>
+    </div>
+  </ng-container>
 </ng-template>
 
 <ng-template #loadingBlock>
-  <box-loading></box-loading>
+  <box-loading iconClass="fa-2x"></box-loading>
 </ng-template>

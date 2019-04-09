@@ -52,9 +52,13 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   readonly chatMenu = Constants.chatMenuItems;
 
   usersOnlineItem$: Observable<any>;
+  loading$: Observable<boolean>;
+  loadingMore$: Observable<boolean>;
+  loaded$: Observable<boolean>;
   conversations$: any;
   searchConversations$: Observable<any>;
-  links: any;
+  nextLink: string;
+  nextLinkSearch: string;
   conversationId: string;
 
   destroy$ = new Subject();
@@ -89,10 +93,16 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
 
   ngOnInit() {
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
+    this.loading$ = this.store$.pipe(select(ConversationSelectors.selectIsLoading));
+    this.loadingMore$ = this.store$.pipe(select(ConversationSelectors.selectIsLoadingMore));
+    this.loaded$ = this.store$.pipe(select(ConversationSelectors.selectLoaded));
     this.conversations$ = this.store$.pipe(select(ConversationSelectors.selectAllConversations));
     this.searchConversations$ = this.store$.pipe(select(ConversationSelectors.selectSearchedConversations));
     this.store$.pipe(select(ConversationSelectors.getLinks), takeUntil(this.destroy$)).subscribe(links => {
-      this.links = links;
+      this.nextLink = links.next;
+    });
+    this.store$.pipe(select(ConversationSelectors.getSearchedLinks), takeUntil(this.destroy$)).subscribe(links => {
+      this.nextLinkSearch = links.next;
     });
     this.store$.pipe(select(ConversationSelectors.selectJoinedConversationId), takeUntil(this.destroy$))
       .subscribe((conversationId: any) => {
@@ -158,9 +168,15 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     this.store$.dispatch(new ConversationActions.GetItems({query: query}));
   }
 
-  loadMoreConversations(links: any) {
-    if (links && links.next) {
-      this.store$.dispatch(new ConversationActions.GetItems({path: links.next}));
+  loadMoreConversations() {
+    if (this.searching) {
+      if (this.nextLinkSearch) {
+        this.store$.dispatch(new ConversationActions.SearchMore({path: this.nextLinkSearch}));
+      }
+    } else {
+      if (this.nextLink) {
+        this.store$.dispatch(new ConversationActions.GetMoreItems({path: this.nextLink}));
+      }
     }
   }
 
@@ -209,7 +225,7 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
 
     if ((this.authService.user.id === conversation.creator_id && conversation.status === 'sent_request') ||
-      (this.authService.user.id !== conversation.creator_id && conversation.status === 'accepted')) {
+      (conversation.status === 'accepted')) {
       // Redirect to created conversation
       this.router.navigate(['/conversations', conversation.uuid]).then();
     }
