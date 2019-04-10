@@ -1,5 +1,4 @@
 <form [formGroup]="messageEditorForm" novalidate>
-
   <mini-editor #miniEditor *ngIf="conversation"
                [placeholder]="conversation.blacklist ? placeholderBl : placeholder"
                [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"

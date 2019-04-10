@@ -1,7 +1,7 @@
 <ng-container *ngIf="conversation">
   <div class="page-body-nav">
     <div class="page-body-nav-left">
-      <z-chat-share-user [data]="conversation" [displayAvatar]="false" [isPending]="conversation?.group_type === 'couple' && conversation?.status == 'sent_request'"
+      <z-chat-share-user [data]="conversation" [displayAvatar]="false" [isPending]="conversation?.group_type === 'couple' && conversation?.status == 'pending'"
         [usersOnlineItem]="usersOnlineItem$ | async">
       </z-chat-share-user>
     </div>
@@ -27,7 +27,7 @@
           <!--show if current isn't one user-->
           <ng-container *ngIf="conversation.group_type === 'multiple' && userService.profile.id == conversation.creator_id">
             <li>
-              <a href="javascript:void(0);" (click)="onEditConversation()">Group settings</a>
+              <a href="javascript:void(0);" (click)="onEditConversation()">Group Settings</a>
             </li>
             <li role="separator" class="divider"></li>
           </ng-container>
@@ -38,12 +38,12 @@
 
           <ng-container *ngIf="conversation.group_type === 'multiple'">
             <li>
-              <a href="javascript:;" (click)="leaveConversation()">Leave chat</a>
+              <a href="javascript:;" (click)="leaveConversation()">Leave Chat</a>
             </li>
           </ng-container>
           <!--show if current isn't one user-->
           <li>
-            <a href="javascript:;" (click)="hideConversation()">Hide chat</a>
+            <a href="javascript:;" (click)="hideConversation()">Hide Chat</a>
           </li>
           <li>
             <a href="javascript:;" (click)="deleteConversation()">Delete Chat</a>

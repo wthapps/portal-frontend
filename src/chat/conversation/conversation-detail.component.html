@@ -22,7 +22,7 @@
     </message-list>
     <message-editor class="chat-message-container"
                     #messageEditor
-                    [isDisabled]="!conversation.active || conversation.blacklist || !(networkOnline$ | async)"
+                    [isDisabled]="!conversation.active || conversation.status === 'pending' || !(networkOnline$ | async)"
                     [conversation]="conversation"
                     (onCreate)="createMessage($event)"
                     (onError)="showEditorError($event)">

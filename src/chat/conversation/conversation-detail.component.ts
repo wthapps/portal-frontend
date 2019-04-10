@@ -79,7 +79,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     super(commonEventService);
     this.currentUser$ = userService.profile$;
     this.networkOnline$ = this.storage.getAsync(NETWORK_ONLINE);
-
+    // Load message list
+    this.messages$ = this.store$.pipe(select(MessageSelectors.selectAllMessages));
     // Load joined conversation then load message list
     this.joinedConversation$ = this.store$.pipe(
       select(ConversationSelectors.selectJoinedConversation),
@@ -93,7 +94,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
         this.conversation = conversation;
         // update message cursor for joined conversation
         this.store$.dispatch(new MessageActions.SetState({ cursor: cursor}));
-        this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversation.id}));
+        this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversation.uuid}));
         return conversation;
       })
     );
@@ -106,17 +107,13 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       this.store$.dispatch(new MessageActions.GetItems({
         path: `chat/conversations/${this.conversationId}/messages`, queryParams: {cursor: 0}
       }));
-
+      console.log('CONVERSATION ID:::', conversationId, this.conversationId);
       setTimeout(() => {
         // scroll to bottom
         this.store$.dispatch(new MessageActions.SetState({scrollable: true}));
       }, 200);
       this.resetConversationNotifications();
-
     });
-    // Load message list
-    this.messages$ = this.store$.pipe(select(MessageSelectors.selectAllMessages));
-
   }
 
   ngOnInit() {
@@ -252,12 +249,15 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   acceptInvitationCallback(conversation: any) {
-    this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {
-      conversation: {status: 'accepted'}
-    }}));
+    // this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {
+    //   conversation: {status: 'accepted'}
+    // }}));
+    // console.log('USER:::', conversation);
+    this.store$.dispatch(new ConversationActions.UpdateDisplaySuccess({conversation: conversation}));
+
     if (this.conversationId === conversation.uuid) {
       // Just reload messages on receiver's side
-      console.log('USER:::', this.userService.getSyncProfile().id, conversation.user_id, conversation.owner_id);
+
       if (this.userService.getSyncProfile().id !== conversation.creator_id) {
         this.store$.dispatch(new MessageActions.GetItems({
           path: `chat/conversations/${this.conversationId}/messages`, queryParams: {cursor: 0}

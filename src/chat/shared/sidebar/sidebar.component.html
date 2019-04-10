@@ -65,8 +65,7 @@
       [infiniteScrollDistance]="2"
       [infiniteScrollThrottle]="50"
       (scrolled)="loadMoreConversations()"
-      [scrollWindow]="false"
->
+      [scrollWindow]="false">
   <ng-container *ngIf="!(loading$|async); else loadingBlock">
     <ng-container *ngIf="!searching">
       <ng-container *ngIf="conversations$ | async as conversations">

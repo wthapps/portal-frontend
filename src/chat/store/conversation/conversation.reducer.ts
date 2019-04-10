@@ -17,7 +17,7 @@ export const conversationAdapter: EntityAdapter<Conversation> = createEntityAdap
 });
 
 export interface ConversationState extends EntityState<Conversation> {
-  joinedConversationId: number | null;
+  joinedConversationId: string | null;
   joinedConversation: Conversation | null;
   searchedConversations: Conversation[] | [];
   doing?: boolean;
@@ -316,7 +316,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.UPDATE_DISPLAY_SUCCESS: {
       const conversation = action.payload.conversation;
-      const joinedConversation = state.joinedConversationId === conversation.id ? conversation : state.joinedConversation;
+      const joinedConversation = state.joinedConversationId === conversation.uuid ? conversation : state.joinedConversation;
 
       return conversationAdapter.updateOne({
         id: conversation.id,

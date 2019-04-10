@@ -136,11 +136,15 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
         this.onInit.emit({
             editor: this.quill
         });
+
+      if (this.isDisabled) {
+        this.quill.disable();
+      }
     }
 
     ngOnChanges(changes: SimpleChanges) {
       if (!this.quill) {
-      return;
+        return;
       }
       if (changes['isDisabled'] !== undefined) {
         this.readonly = changes['isDisabled'].currentValue;

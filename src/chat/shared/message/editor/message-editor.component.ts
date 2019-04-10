@@ -49,7 +49,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   @ViewChild('miniEditor') editor: MiniEditorComponent;
   @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
   @ViewChild('longMessageModal') longMessageModal: LongMessageModalComponent;
-  @Input() isDisabled = false;
+  @Input() isDisabled = true;
   @Input() conversation;
   @Input() maxLengthAllow = 2000;
 
@@ -221,9 +221,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   handleKeyUp(e: any) {
     if (e.keyCode === 13) {
-      if (this.validateMessage()) {
-        this.send();
-      }
+      this.send();
     } else if (e.keyCode === 27) {
       this.cancelEditingMessage();
       return;
@@ -448,6 +446,8 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   private validateMessage(): boolean {
+    console.log('message:::', this.message, this.messageService.notEmptyHtml(this.message.message));
+
     if (!this.messageService.notEmptyHtml(this.message.message)) {
       return false;
     }
@@ -455,10 +455,13 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       this.longMessageModal.open();
       return false;
     }
-    return true;
+    return false;
   }
 
   private send() {
+    if (!this.validateMessage()) {
+      return;
+    }
     if (this.mode === FORM_MODE.EDIT) {
       this.messageEventService.update({data: this.message});
       this.mode = FORM_MODE.CREATE;
