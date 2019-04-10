@@ -87,6 +87,7 @@ export class MediaBasicListMixin {
         }
         return ob;
       })
+      this.selectedObjects = this.objects.filter(o => o.selected);
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
       this.onListChanges({ action: 'favorite', payload: res.data });
     });
