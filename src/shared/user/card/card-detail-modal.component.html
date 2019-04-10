@@ -4,18 +4,18 @@
       <div class="card-title" *ngIf="card">
           <h4 class="modal-title">{{ card?.card_type === BUSINESS ? card?.card_name : PUBLIC_PROFILE }} </h4>
       </div>      
-      <ul class="modal-header-navbar" >
-        <li *ngIf="card && card.is_owner">
+      <ul class="modal-header-navbar" *ngIf="card" >
+        <li *ngIf="card.is_owner">
           <button (click)="onEdit()" type="button" class="btn btn-default btn-default-no-border">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
         </li>
-        <li class="dropdown" *ngIf="card">
+        <li class="dropdown" *ngIf="!cardActions">
           <button class="btn btn-default btn-default-no-border" type="button" data-toggle="dropdown">
             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
-            <li *ngIf="card && card.is_owner && card.card_type === BUSINESS">
+            <li *ngIf="card.is_owner && card.card_type === BUSINESS">
               <a href="javascript:;" (click)="onShare()">
                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
               </a>
@@ -26,13 +26,17 @@
             <li>
               <a href="javascript:void(0);" (click)="onExport(EXPORT_TYPE.vcard)"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to v-card</a>
             </li>
-            <li *ngIf="card && card.is_owner && card.card_type === BUSINESS">
+            <li *ngIf="card.is_owner && card.card_type === BUSINESS">
               <a href="javascript:void(0);" (click)="onDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
             </li>
           </ul>
         </li>
+        <li class="dropdown" *ngIf="cardActions">
+            <ng-content select=".card-actions"></ng-content>
+
+        </li>
         <li>
-          <button type="button" (click)="modal.dismiss()" class="btn btn-default btn-default-no-border">
+          <button type="button" (click)="close()" class="btn btn-default btn-default-no-border">
             <i class="fa fa-times" aria-hidden="true"></i>
           </button>
         </li>
@@ -44,7 +48,7 @@
     <div class="pcard-cover" *ngIf="card">
       <div class="media-avatar align-items-center">
         <div class="media-avatar-img-wrap">
-          <ng-container *ngIf="card && card.is_owner && card.card_type ==='business' else readonlyCard">
+          <ng-container *ngIf="card.is_owner && card.card_type ==='business' else readonlyCard">
             <div class="media-avatar-img avatar-md" (click)="onEdit(true)">
               <img [src]="card?.profile_image" [alt]="card?.first_name + ' ' + card?.last_name">
               <span class="w-user-avatar-cover">
@@ -70,7 +74,7 @@
 
 
     <dl class="dl-horizontal pcard-info">
-          <ng-container *ngIf="card && card.emails && card.emails.length > 0">
+          <ng-container *ngIf="card?.emails?.length > 0">
             <dt>Emails</dt>
             <ng-container *ngFor="let item of card.emails; trackBy:trackByFn">
                 <dd>
@@ -79,7 +83,7 @@
             </ng-container>
           </ng-container>
 
-          <ng-container *ngIf="card && card.phones && card.phones.length > 0">
+          <ng-container *ngIf="card?.phones?.length > 0">
             <dt>
                 Phones    
             </dt>
@@ -89,7 +93,7 @@
       
             </ng-container>
 
-        <ng-container *ngIf="card && card.addresses && card.addresses.length > 0">
+        <ng-container *ngIf="card?.addresses?.length > 0">
             <dt>Addresses</dt>  
           <ng-container *ngFor="let item of card.addresses; trackBy:trackByFn">
               <dd>
@@ -99,7 +103,7 @@
         </ng-container>
 
 
-      <ng-container *ngIf="card && card.media && card.media.length > 0">
+      <ng-container *ngIf="card?.media?.length > 0">
           <dt>
               URLs  
           </dt>
@@ -108,12 +112,12 @@
           </ng-template>
         </ng-container>
 
-        <ng-container *ngIf="card && card.sex">
+        <ng-container *ngIf="card?.sex">
             <dt>Gender</dt>   
             <dd>{{ SEX[card?.sex] || NONE }}</dd>
           </ng-container>
   
-          <ng-container *ngIf="card && card.nationality">
+          <ng-container *ngIf="card?.nationality">
               <dt>
                 Nationality
               </dt>
@@ -122,7 +126,7 @@
               </dd>
           </ng-container>
 
-          <ng-container *ngIf="card && card.birthday">
+          <ng-container *ngIf="card?.birthday">
             <dt>Birthday</dt>   
             <dd>{{ (card?.birthday | timeFormat) || NONE }}</dd>
           </ng-container>

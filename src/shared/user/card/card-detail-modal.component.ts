@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter, ViewChild, ContentChild } from '@angular/core';
 
 import { PUBLIC, BUSINESS, NONE } from '../../../contact/shared/card/card.constant';
 import { Constants } from '../../constant';
@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 export class CardDetailModalComponent {
   @ViewChild('modal') modal: any;
   @Input() card: any;
+  @ContentChild('cardActions') cardActions;
+
   @Output() edit = new EventEmitter<any>();
   @Output() share = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
@@ -52,8 +54,4 @@ export class CardDetailModalComponent {
   onExport(type = 'csv') {
     this.export.emit({card: this.card, type});
   }
-
-  // getCountry(code: string): Observable<any> {
-  //   return this.countryService.getCountry(code);
-  // }
 }

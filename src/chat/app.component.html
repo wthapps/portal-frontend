@@ -34,4 +34,26 @@
 
 <app-wth-emoji></app-wth-emoji>
 <card-user></card-user>
-<w-card-detail-modal #cardDetailModal [card]="profile$|async"></w-card-detail-modal>
+
+<w-card-detail-modal #cardDetailModal [card]="profile">
+    <li class="dropdown card-actions" #cardActions>
+        <button class="btn btn-default btn-default-no-border" type="button" data-toggle="dropdown">
+          <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <!-- <li>
+            <a href="#" role="button" (click)="openInContact(profile)"><i class="icon-zone-contact" aria-hidden="true"></i> Open in Contacts</a>
+          </li> -->
+          <li>
+              <a href="#" role="button" (click)="importContact(profile)"><i class="fa fa-user-plus" aria-hidden="true"></i> Import as a contact</a>
+            </li>
+          <li role="separator" class="divider"></li>
+          <li>
+            <a href="#" role="button" (click)="goToChat(profile)"><i class="fa fa-comments-o" aria-hidden="true"></i> Send message</a>
+          </li>
+          <li>
+              <a href="#" role="button" (click)="addBlacklist(profile)"><i class="fa fa-ban" aria-hidden="true"></i> Blacklist</a>
+            </li>
+        </ul>
+      </li>
+</w-card-detail-modal>

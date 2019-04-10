@@ -39,12 +39,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('introduction') introduction: IntroductionModalComponent;
   @ViewChild('cardDetailModal') cardDetailModal: CardDetailModalComponent;
 
-  routerSubscription: Subscription;
-  hiddenSubscription: Subscription;
-
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
-  profile$: Observable<any>;
-  destroy$ = new Subject();
+  profile: any;
+  private destroy$ = new Subject();
 
 
   constructor(
@@ -70,19 +67,23 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.chatService.initalize();
     this.handleOnlineOffline();
 
-    this.hiddenSubscription = this.visibilityService.hiddenState$.subscribe(hidden => {
+    this.visibilityService.hiddenState$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(hidden => {
       this.handleBrowserState(!hidden);
     });
 
-    this.routerSubscription = this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
       });
 
-
-    this.profile$ = this.profileService.profile$;
-
+    this.profileService.profile$.pipe(takeUntil(this.destroy$))
+    .subscribe(profile => this.profile = profile);
     this.visibilityService.reloadIfProfileInvalid();
   }
 
@@ -100,11 +101,27 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   viewProfile(user: any) {
-    console.log('VIEW PROFILE', user);
-
     this.profileService.getProfileNew(user.uuid);
     this.cardDetailModal.open({});
   }
+
+  goToChat(user) {
+    this.userEventService.createChat(user);
+    this.cardDetailModal.close();
+  }
+
+  openInContact(user) {
+    console.log('open in contact: ', user);
+  }
+
+  importContact(user) {
+    console.log('importContact: ', user);
+  }
+
+  addBlacklist(user) {
+    console.log('add blacklist: ', user);
+  }
+
 
   handleOnlineOffline() {
     window.addEventListener('online', () => this.updateChatMessages());
@@ -112,7 +129,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   showOfflineMessage() {
-    // tslint:disable-next-line:max-line-length
     this.messageService.add({severity: 'error', summary: 'No internet connection', detail: 'Please check your connection and try again',
     closable: false, life: 3600 * 24});
   }
@@ -129,8 +145,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   // Conversation handle end
 
   ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
-    this.hiddenSubscription.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -153,8 +167,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private getOutOfDateData() {
-    // this.chatService.getConversationsAsync({forceFromApi: true}).subscribe();
-    // this.chatConversationService.apiGetConversations();
     this.chatService.getOutOfDateMessages();
   }
 
