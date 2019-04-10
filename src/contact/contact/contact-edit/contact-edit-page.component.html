@@ -31,39 +31,31 @@
     </div>
     <div class="contact-edit-aside">
 
-      <h4>Cards</h4>
-      <div class="card-list row">
-          <ng-container *ngIf="cards?.length > 0; else noData">
-            <div class="col-sm-12 mb15" *ngFor="let card of cards">
+      <ng-container *ngIf="public_cards?.length > 0">
+        <h4>Public Profile
+            <button class="btn btn-default" [pTooltip]="PUBLIC_CARD" tooltipPosition="bottom">
+              <i class="fa fa-info-circle text-fade"></i>
+            </button>
+          </h4>
+        <div class="card-list row">
+            <div class="col-sm-12 mb15" *ngFor="let card of public_cards">
               <card-item [card]="card" (view)="viewCard($event)"></card-item>
             </div>
-          </ng-container>
-          
+        </div>
+      </ng-container>
 
-        <ng-template #noData>
-            <box-no-data [icon]="'fa fa-address-card xs'"
-                         [title]="'There are no Cards!'">
-            </box-no-data>
-          </ng-template>
-      </div>
-
-      <h4 class="regular-email">
-          Regular email
-          <i class="fa fa-info-circle" pTooltip="Entered information didn't match any WTHApps profiles" tooltipPosition="bottom"></i>
-        </h4>
-        <ng-container *ngFor="let email of emails">
-          <div class="user-row">
-            <div class="name">
-              <span>{{ email }}</span>
-            </div>
-            <div class="action">
-              <button class="btn btn-default" pTooltip="Invite to WTHApps" tooltipPosition="left" (click)="invite(email)">
-                <i class="fa fa-envelope-o"></i>
-              </button>
-            </div>
+      <ng-container *ngIf="business_cards?.length > 0">
+        <h4>Business Cards
+            <button class="btn btn-default" [pTooltip]="BIZ_CARD"
+                    tooltipPosition="bottom"><i class="fa fa-info-circle text-fade"></i></button>
+          </h4>
+    
+          <div class="card-list row">
+              <div class="col-sm-12 mb15" *ngFor="let card of business_cards">
+                  <card-item [card]="card" (view)="viewCard($event)"></card-item>
+                </div>
           </div>
-        </ng-container>
-
+    </ng-container>
     </div>
   </div>
 

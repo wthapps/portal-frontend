@@ -63,7 +63,8 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   contact: Contact = new Contact(DEFAULT_CONTACT_PARAMS);
   card$: Observable<any>;
   emails: String[] = [];
-  cards = [];
+  business_cards = [];
+  public_cards = [];
   mode = 'view';
   pageTitle: string;
 
@@ -79,6 +80,8 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   isWthContact = false;
   readonly urls = Constants.baseUrls;
   readonly avatarDefault: any = Constants.img.avatar;
+  readonly BIZ_CARD = `Business Cards help you share private contact information with other users`;
+  readonly PUBLIC_CARD = `All the information in your Public Profile card will be public`;
   private destroySubject: Subject<any> = new Subject();
 
   constructor(
@@ -124,7 +127,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
       }
 
       if (this.mode === 'view') {
-        this.pageTitle = 'Contact details';
+        this.pageTitle = '';
         this.hasBack = true;
       } else if (this.mode === 'create') {
         this.pageTitle = 'Create contact';
@@ -230,10 +233,9 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
           return email === value;
         });
 
-        const user_ids = this.cards.reduce((acc, card) => (card.email === value ? [...acc, card.id] : acc), []);
-        // TODO: Merge public cards and business cards and refractor later: SHould filter cards by user_ids only
-        // Remove public cards and  business cards
-        this.cards = this.cards.filter(card => card.email !== value && !user_ids.includes(card.user_id));
+        const user_ids = this.public_cards.reduce((acc, card) => (card.email === value ? [...acc, card.id] : acc), []);
+        this.public_cards = this.public_cards.filter(card => card.email !== value && !user_ids.includes(card.user_id));
+        this.business_cards = this.business_cards.filter(card => card.email !== value && !user_ids.includes(card.user_id));
         break;
       }
       case 'contact:contact:edit_email':
@@ -290,8 +292,8 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
     this.contactService
     .checkEmails({ emails })
     .subscribe(response => {
-      this.cards = _.uniqBy(this.cards.concat(response.cards), 'id');
-      this.emails = _.uniq(this.emails.concat(response.emails));
+      this.public_cards = _.uniqBy(this.public_cards.concat(response.public_cards), 'id');
+      this.business_cards = _.uniqBy(this.business_cards.concat(response.business_cards), 'id');
     });
   }
 
