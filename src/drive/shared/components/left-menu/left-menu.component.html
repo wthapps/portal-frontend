@@ -1,0 +1,103 @@
+<!-- <div class="menuleft-logo">
+  <img src="/assets/images_new/logo-note.png" alt="">
+</div>
+<div class="menuleft-item" [routerLinkActive]="['active']">
+  <span *ngIf="noteFoldersTree.length > 0" (click)="showFolderTree = !showFolderTree"
+    class="can-click menuleft-item-open">
+    <i class="fa" [ngClass]="{'fa-chevron-right': !showFolderTree, 'fa-chevron-down' : showFolderTree}"></i>
+  </span>
+  <a [routerLink]="[myNoteMenu?.link]" [routerLinkActive]="['active']" (click)="onCloseMenu()"
+    href="javascript:void(0);">
+    <i class="{{ myNoteMenu?.icon }}"></i> {{ myNoteMenu?.name }}
+  </a>
+</div>
+
+<div class="well-folder-tree" [ngClass]="{'active': showFolderTree}">
+  <p-panelMenu [(model)]="noteFoldersTree"></p-panelMenu>
+</div>
+
+<ng-container *ngFor="let note of noteMenu;let i = index;">
+  <div class="menuleft-item" *ngIf="note.name != ''" [routerLinkActive]="['active']"
+    [ngClass]="{'hidden': note.link == '/search'}">
+    <a *ngIf="note.link != '#'" [routerLink]="[note.link]" [queryParams]="{}" (click)="onCloseMenu()"
+      href="javascript:;">
+      <i class="{{ note.icon }}"></i> {{ note.name }}
+    </a>
+    <a *ngIf="note.link == '#'" (click)="doEvent({action: note.action}); onCloseMenu()" href="javascript:;">
+      <i class="{{ note.icon }}"></i> {{ note.name }}
+    </a>
+  </div>
+</ng-container>
+
+<div class="menuleft-item">
+  <a (click)="setting.open()" href="javascript:void(0);">
+    <i class="{{ settingMenu?.icon }}"></i> {{ settingMenu?.name }}
+  </a>
+</div> -->
+
+<div class="main-left-menu">
+  <div class="menuleft-container">
+    <div class="menuleft-content">
+      <div class="menuleft-item mt10 dropdown">
+        <a aria-expanded="true" aria-haspopup="true" class="btn dropdown-toggle" data-toggle="dropdown"
+          tooltipposition="bottom" type="button">
+          <i class="fa fa-plus"></i>
+          <span class="hidden-xs"> New</span>
+        </a>
+        <ul class="dropdown-menu">
+          <!-- <li>
+            <a href="#" (click)="upload(['image/*', 'video/mp4', 'video/x-m4v', 'video/*'])">
+              <span class="fileinput-button">
+                <i class="fa fa-image"></i> Upload Item
+              </span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" (click)="openCreateAlbumModal(selectedObjects)">
+              <i class="fa fa-plus-circle"></i> Create Album
+            </a>
+          </li> -->
+          <li>
+            <a (click)="onMenu({action: 'note:open_note_add_modal', payload: {parent_id: item.id}})"
+              href="javascript:;">
+              <i class="fa fa-folder-o"></i> New folder
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a (click)="onpenFileUpload()" href="javascript:;">
+              <i class="fa fa-upload"></i> Upload files
+            </a>
+          </li>
+          <li>
+            <a (click)="onMenu({action: 'note:folder:edit', payload: item})" href="javascript:;">
+              <i class="fa fa-cloud-upload"></i> Upload folder
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="menuleft-item-divider">
+        <div class="menuleft-item">
+          <a href="#"><i class="fa fa-folder" aria-hidden="true"></i> My Drive</a>
+        </div>
+        <div class="menuleft-item"><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i> Recent</a></div>
+        <div class="menuleft-item"><a href="#"><i class="fa fa-star" aria-hidden="true"></i> Favorite</a></div>
+        <div class="menuleft-item"><a href="#"><i class="fa fa-plus" aria-hidden="true"></i> Shared with me</a></div>
+        <div class="menuleft-item"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i> Trash</a></div>
+      </div>
+
+    </div>
+    <div class="menuleft-footer ng-star-inserted">
+      <div>
+        <a rel="noopener" target="_blank" href="https://test.wthapps.com/policies/terms">
+          Term of service</a> •
+        <a rel="noopener" target="_blank" href="https://test.wthapps.com/policies/privacy">
+          Privacy &amp; policies</a>
+      </div>
+      <span>©2018 WTHApps - v1.7.0</span>
+    </div>
+  </div>
+</div>
+
+<!-- <z-note-shared-setting #setting></z-note-shared-setting> -->

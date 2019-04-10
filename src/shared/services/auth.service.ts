@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable ,  BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie';
 
@@ -32,8 +32,7 @@ export class AuthService {
   constructor(
     private cookieService: CookieService,
     private api: ApiBaseService,
-    private windowService: WindowService,
-    private userService: UserService // TODO will be remove after refactoring by AuthService
+    private windowService: WindowService
   ) {
 
     this.loggedIn$ = this._loggedIn$.asObservable();
@@ -119,7 +118,7 @@ export class AuthService {
 
   validateToken() {
     if (this.jwt) {
-      this.api.post(`users/current_session/profile`, {jwt: this.jwt}).subscribe((response) => {
+      this.api.post(`users/current_session/profile`, { jwt: this.jwt }).subscribe((response) => {
         this.loggedIn = true;
         this._loggedIn$.next(this.loggedIn);
         this.user = response.data;

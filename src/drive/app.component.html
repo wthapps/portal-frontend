@@ -1,0 +1,11 @@
+<div class="wrapper">
+  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async"
+    [hasSearch]="false">
+    <drive-shared-header class="header-nav-left"></drive-shared-header>
+  </w-header>
+  <div class="main main-note">
+    <router-outlet></router-outlet>
+  </div>
+
+  <drive-upload-dock></drive-upload-dock>
+</div>

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable ,  Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { ZNoteService } from './shared/services/note.service';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
@@ -36,7 +36,6 @@ import { LogUpdateService } from '@shared/services/service-worker/log-update.ser
 import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
 import { SwPushService } from '@shared/services/service-worker/sw-push.service';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
-import { SwUpdate } from '@angular/service-worker';
 
 declare var _: any;
 
