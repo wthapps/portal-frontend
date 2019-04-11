@@ -3,8 +3,8 @@
     <button *ngIf="mode === 'create'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts']">Cancel
     </button>
 
-    <button class="btn btn-outline-primary btn-min ml10" type="button" *ngIf="mode === 'create' || mode === 'edit'"
-            (click)="contactEdit.onSubmit(contactEdit?.form?.value)" > {{ mode === 'edit' ? 'Save' : 'Create' }}
+    <button class="btn btn-outline-primary btn-min ml10" [ngClass]="{'disabled': saving}" type="button" *ngIf="mode === 'create' || mode === 'edit'"
+            (click)="saving = true; contactEdit.onSubmit(contactEdit?.form?.value)" > {{ mode === 'edit' ? 'Save' : 'Create' }}
     </button>
 
     <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min ml10" (click)="goBack()">Cancel
@@ -38,7 +38,7 @@
             </button>
           </h4>
         <div class="card-list row">
-            <div class="col-sm-12 mb15" *ngFor="let card of public_cards">
+            <div class="col-sm-12 mb15" *ngFor="let card of public_cards; trackBy: trackByCard">
               <card-item [card]="card" (view)="viewCard($event)"></card-item>
             </div>
         </div>
@@ -51,7 +51,7 @@
           </h4>
     
           <div class="card-list row">
-              <div class="col-sm-12 mb15" *ngFor="let card of business_cards">
+              <div class="col-sm-12 mb15" *ngFor="let card of business_cards; trackBy: trackByCard">
                   <card-item [card]="card" (view)="viewCard($event)"></card-item>
                 </div>
           </div>

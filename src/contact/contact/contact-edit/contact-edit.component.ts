@@ -101,10 +101,10 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
       debounceTime(500),
       takeUntil(this.destroySubject)
     ).subscribe(val => {
-      console.log('emails value:', val);
       this.emails.controls.forEach(email => {
         if (email.valid && email.dirty) {
-          this.event.emit({ action: 'contact:contact:edit_email', payload: { item: email.value, emails: email } });
+          this.event.emit({ action: 'contact:contact:edit_email', payload: { item: email.value,
+             emails: this.emails.value.map(em => em.value) } });
         }
       });
     });
@@ -331,7 +331,6 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
   setPhoto(base64Photo): void {
     Object.assign(this.contact, this.form.value);
     this.contact.avatar = base64Photo;
-    console.log(this.contact);
     this.upsertContact(this.contact);
   }
 

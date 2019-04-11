@@ -22,10 +22,10 @@
               <div class="name"><span> {{ itemDisplay | contactNamePipe: contactsSortBy}} </span></div>
             </div>
             <div class="contact-dl-email">
-              <p class="m0" *ngFor="let email of item.emails">{{ email.value }}</p>
+              <p class="m0" *ngIf="item?.emails?.length > 0">{{ item?.emails[0].value }}</p>
             </div>
             <div class="contact-dl-phone">
-              <p class="m0" *ngFor="let phone of item.phones">{{ phone.value }}</p>
+              <p class="m0" *ngIf="item?.phones?.length > 0">{{ item?.phones[0].value }}</p>
             </div>
             <div class="contact-dl-action">
               <z-contact-shared-actions-bar [data]="item" [contacts]="[item]" [showQuickInvitation]="item.wthapps_user == null" [showNumber]="false"

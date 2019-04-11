@@ -67,6 +67,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   public_cards = [];
   mode = 'view';
   pageTitle: string;
+  saving = false;
 
   readonly tooltip: any = Constants.tooltip;
   readonly mediaType = Constants.mediaType;
@@ -113,6 +114,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
       const id = paramMap.get('id');
       this.mode = paramMap.get('mode') || 'create';
       this.isWthContact = paramMap.get('wth') && paramMap.get('wth') === 'true';
+      this.saving = false;
 
       if (this.mode === 'view') {
         this.hasBack = true;
@@ -214,7 +216,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
               response.data.id,
               { mode: 'view' }
             ]);
-          });
+          }, error => this.toastsService.danger('Something wrong happens. ', error));
         break;
       case 'contact:contact:update':
         const item = event.payload.item || event.payload.selectedObjects || this.contactService.selectedObjects;
@@ -225,7 +227,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
               'Contact has been just updated successfully!'
             );
             this.location.back();
-          });
+          }, error => this.toastsService.danger('Something wrong happens. ', error));
         break;
       case 'contact:contact:remove_email': {
         const { value } = event.payload;
@@ -238,9 +240,13 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
         this.business_cards = this.business_cards.filter(card => card.email !== value && !user_ids.includes(card.user_id));
         break;
       }
-      case 'contact:contact:edit_email':
+      case 'contact:contact:edit_email': {
+        const emails = event.payload.emails;
+        this.public_cards = this.public_cards.filter(card => emails.includes(card.email));
+        this.business_cards = this.business_cards.filter(card => emails.includes(card.email));
         this.checkEmails([event.payload.item.value]);
         break;
+      }
     }
   }
 
@@ -264,6 +270,10 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   goBack() {
     this.hasBack = true;
     this.location.back();
+  }
+
+  trackByCard(index, card) {
+    return card ? card.id : index;
   }
 
   viewCard(card: any) {
@@ -299,7 +309,6 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
 
   private getWthContact(id: number) {
     this.contactService.getWthContact(id).subscribe(res => {
-      console.log('get WTH Contact: ', res);
       this.contact = res.data;
     });
   }
