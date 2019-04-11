@@ -38,7 +38,7 @@ export class ChatConversationService extends CommonEventHandler {
 
   apiAddMembers(event: CommonEvent) {
     const body = { add_members: true, user_ids: event.payload.map(user => user.id) };
-    of(body).pipe(withLatestFrom(this.getStoreSelectedConversation()), map(([data, sc]) => {
+    of(body).pipe(withLatestFrom(this.getStoreSelectedConversation()), map((data:any, sc:any) => {
       this.apiBaseService
         .put(`zone/chat/group/${sc.group_id}`, data)
         .subscribe((res: any) => {

@@ -300,7 +300,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   shareContact(ids: any) {
-    of(ids).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([ids, sc]) => {
+    of(ids).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map((ids:any, sc:any) => {
       return {ids: ids, sc: sc}
     })).toPromise().then(res => {
       this.apiBaseService

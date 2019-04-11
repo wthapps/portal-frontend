@@ -24,7 +24,7 @@ export class ChatMessageService {
   }
 
   createTextMessage(message: any, option: any = {}) {
-    of(message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([message, sc]) => {
+    of(message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map((message:any, sc:any) => {
       const id: any = uuid();
       const data: any = { status: 'pending', client_id: id, group_id: sc.group_id, message_type: 'text',
        message: message, user_id: this.userService.getSyncProfile().id };
@@ -61,7 +61,7 @@ export class ChatMessageService {
   }
   createMediaMessage(media: any) {
     return of(media).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()),
-    map(([md, sc]) => {
+    map((md:any, sc:any) => {
       this.api
         .post('zone/chat/message', {
           data: {
@@ -115,7 +115,7 @@ export class ChatMessageService {
   }
 
   addCurrentMessages(res: any) {
-    of(res.message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([data, sc]) => {
+    of(res.message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map((data:any, sc:any) => {
       // update deleted and hide conversation to show, move to first
       this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe((conversations: Conversations) => {
         conversations.data = conversations.data.map(c => {
