@@ -3,8 +3,11 @@
     <button *ngIf="mode === 'create'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts']">Cancel
     </button>
 
-    <button class="btn btn-outline-primary btn-min ml10" [ngClass]="{'disabled': saving}" type="button" *ngIf="mode === 'create' || mode === 'edit'"
-            (click)="saving = true; contactEdit.onSubmit(contactEdit?.form?.value)" > {{ mode === 'edit' ? 'Save' : 'Create' }}
+    <button class="btn btn-outline-primary btn-min ml10" [disabled]="saving" type="button" *ngIf=" mode === 'edit'"
+            (click)="saving = true; contactEdit.onSubmit(contactEdit?.form?.value)" > {{ !saving ? 'Save' : 'Saving' }}
+    </button>
+    <button class="btn btn-outline-primary btn-min ml10" [disabled]="saving" type="button" *ngIf="mode === 'create'"
+            (click)="saving = true; contactEdit.onSubmit(contactEdit?.form?.value)" > {{ !saving ? 'Create' : 'Creating' }}
     </button>
 
     <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min ml10" (click)="goBack()">Cancel

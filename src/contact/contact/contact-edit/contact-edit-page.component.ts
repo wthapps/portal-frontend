@@ -216,7 +216,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
               response.data.id,
               { mode: 'view' }
             ]);
-          }, error => this.toastsService.danger('Something wrong happens. ', error));
+          }, error => { this.saving = true; this.toastsService.danger('Something wrong happens. Please retry'); });
         break;
       case 'contact:contact:update':
         const item = event.payload.item || event.payload.selectedObjects || this.contactService.selectedObjects;
@@ -227,7 +227,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
               'Contact has been just updated successfully!'
             );
             this.location.back();
-          }, error => this.toastsService.danger('Something wrong happens. ', error));
+          }, error => { this.saving = true; this.toastsService.danger('Something wrong happens. Please retry'); });
         break;
       case 'contact:contact:remove_email': {
         const { value } = event.payload;
@@ -242,8 +242,10 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
       }
       case 'contact:contact:edit_email': {
         const emails = event.payload.emails;
+
         this.public_cards = this.public_cards.filter(card => emails.includes(card.email));
-        this.business_cards = this.business_cards.filter(card => emails.includes(card.email));
+        const user_ids = this.public_cards.map(card => card.user_id);
+        this.business_cards = this.business_cards.filter(card => user_ids.includes(card.user_id));
         this.checkEmails([event.payload.item.value]);
         break;
       }

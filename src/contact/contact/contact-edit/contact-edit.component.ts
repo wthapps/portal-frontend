@@ -87,10 +87,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
         this.filteredGroupsMultiple.push({ value: v.name, display: v.name });
       });
     });
-    this.deleteObjects['emails'] = [];
-    this.deleteObjects['phones'] = [];
-    this.deleteObjects['addresses'] = [];
-    this.deleteObjects['media'] = [];
+    this.resetDeletedObject();
 
     this.createForm();
 
@@ -377,6 +374,8 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     this.contact.notes = values.notes;
 
     this.upsertContact(this.contact);
+
+    this.resetDeletedObject();
   }
 
   upsertContact(contact: Contact) {
@@ -392,4 +391,12 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
     const controlArray = <FormArray>this.form.get('phones');
     controlArray.controls[i].get('country_alpha_code').setValue(country.value);
   }
+
+  private resetDeletedObject() {
+    this.deleteObjects['emails'] = [];
+    this.deleteObjects['phones'] = [];
+    this.deleteObjects['addresses'] = [];
+    this.deleteObjects['media'] = [];
+  }
+
 }
