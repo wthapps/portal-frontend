@@ -38,8 +38,9 @@ export class WebsocketService {
   }
 
   subscribeChannel(topic: string, options: any): any {
+    console.log('SOCKET CHANNELS:::', this.socket.channels);
     if (!this.socket) {
-      console.log('Please createSocket');
+
       this.createSocket({token: options.token});
     }
     return this.socket.channel(topic, {token: options.token});

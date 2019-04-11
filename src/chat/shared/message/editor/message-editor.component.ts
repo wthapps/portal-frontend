@@ -35,9 +35,7 @@ import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 import { MessageEventService } from '@chat/shared/message';
 
-
 declare var $: any;
-declare var _: any;
 
 @Component({
   selector: 'message-editor',
@@ -283,11 +281,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   openContactsSelection() {
-    // this.commonEventService.broadcast({
-    //   channel: 'ZChatShareAddContactComponent',
-    //   action: 'open',
-    //   payload: {option: 'shareContacts'}
-    // });
     this.contactSelectionService.open({
       type: 'SHARE_CONTACT',
       title: 'Select Contacts'
@@ -374,7 +367,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
 
   chooseDone(allMedia: any[]) {
-    console.log('handle send photo', allMedia);
     // Create multiple chat messages in batches of CONCURRENT_UPLOAD (default value is 2)
     from(allMedia).pipe(
       mergeMap(media => this.chatMessageService.createMediaMessage(media),
@@ -455,7 +447,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       this.longMessageModal.open();
       return false;
     }
-    return false;
+    return true;
   }
 
   private send() {

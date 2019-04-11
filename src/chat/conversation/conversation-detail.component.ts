@@ -56,7 +56,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   conversationId: string;
   conversation: any;
 
-
   constructor(
     private chatService: ChatService,
     public commonEventService: CommonEventService,
@@ -107,7 +106,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       this.store$.dispatch(new MessageActions.GetItems({
         path: `chat/conversations/${this.conversationId}/messages`, queryParams: {cursor: 0}
       }));
-      console.log('CONVERSATION ID:::', conversationId, this.conversationId);
+      // console.log('CONVERSATION ID:::', conversationId, this.conversationId);
       setTimeout(() => {
         // scroll to bottom
         this.store$.dispatch(new MessageActions.SetState({scrollable: true}));
@@ -122,48 +121,29 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       this.conversationId = params['id'];
       // Create new channel depends on selected conversation
       // If channel has already been existing don't create new one
-      this.conversationChannel = this.websocketService.subscribeChannel(`conversation:${this.conversationId}`,
-        {token: this.userService.getSyncProfile().uuid});
-
+      this.connectConversationChannel();
       // Join selected conversation channel
       this.conversationChannel.join()
         .receive('ok', ({message}) => {
           // Perform some tasks need to do after joining channel successfully
           this.store$.dispatch(new ConversationActions.GetItem(this.conversationId));
+          this.handleConversationChannelEvents();
         })
         .receive('error', ({reason}) => console.log('failed join', reason) )
         .receive('timeout', () => console.log('Networking issue. Still waiting...'));
-
-    });
-
-    const presence = new Presence(this.conversationChannel);
-    presence.onSync(() => {
-      console.log('presence list', presence.list());
-    });
-
-    // Handle message created successfully
-    this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_CREATED, (response: any) => {
-      // console.log(ChannelEvents.CHAT_MESSAGE_CREATED, response);
-      const message = response.data.attributes;
-      this.createMessageCallback(message);
-    });
-
-    // Handle message updated successfully
-    this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_UPDATED, (response: any) => {
-      // console.log(ChannelEvents.CHAT_MESSAGE_UPDATED, response);
-      const message = response.data.attributes;
-      this.updateMessageCallback(message);
-    });
-
-    // Handle message updated successfully
-    this.conversationChannel.on(ChannelEvents.CHAT_CONVERSATION_ACCEPTED, (response: any) => {
-      // console.log(ChannelEvents.CHAT_CONVERSATION_ACCEPTED, response);
-      const conversation = response.data.attributes;
-      this.acceptInvitationCallback(conversation);
     });
     this.handleMessageEvents();
+    // TODO present list
+    // const presence = new Presence(this.conversationChannel);
+    // presence.onSync(() => {
+    //   console.log('presence list', presence.list());
+    // });
   }
 
+  connectConversationChannel() {
+    this.conversationChannel = this.websocketService.subscribeChannel(`conversation:${this.conversationId}`,
+      {token: this.userService.getSyncProfile().uuid});
+  }
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -192,9 +172,11 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   createMessageCallback(message: any) {
-    this.store$.dispatch(new MessageActions.CreateSuccess({message: message}));
-    this.store$.dispatch(new MessageActions.SetState({scrollable: true}));
-    this.resetConversationNotifications();
+    if (this.conversation.id === message.group_id) {
+      this.store$.dispatch(new MessageActions.CreateSuccess({message: message}));
+      this.store$.dispatch(new MessageActions.SetState({scrollable: true}));
+      this.resetConversationNotifications();
+    }
   }
 
   updateMessage(message: any) {
@@ -216,6 +198,31 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       this.store$.dispatch(new MessageActions.Delete({ conversationId: this.conversationId, message: payload.data }));
     });
   }
+
+  handleConversationChannelEvents() {
+    // Handle message created successfully
+    this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_CREATED, (response: any) => {
+      console.log(ChannelEvents.CHAT_MESSAGE_CREATED, response);
+      const message = response.data.attributes;
+      this.createMessageCallback(message);
+    });
+
+    // Handle message updated successfully
+    this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_UPDATED, (response: any) => {
+      // console.log(ChannelEvents.CHAT_MESSAGE_UPDATED, response);
+      const message = response.data.attributes;
+      this.updateMessageCallback(message);
+    });
+
+    // Handle message updated successfully
+    this.conversationChannel.on(ChannelEvents.CHAT_CONVERSATION_ACCEPTED, (response: any) => {
+      // console.log(ChannelEvents.CHAT_CONVERSATION_ACCEPTED, response);
+      const conversation = response.data.attributes;
+      this.acceptInvitationCallback(conversation);
+    });
+  }
+
+
 
   cancelMessage(event: CommonEvent) {
     const { message_type, meta_data, file, group_id, id } = event.payload;
@@ -276,8 +283,9 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   updateDisplay(conversation: any) {
     this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {conversation: conversation}}));
 
-    if (conversation.deleted || conversation.left ) {
+    if (conversation.hidden || conversation.deleted || conversation.left) {
       this.redirectToChatHome();
+      this.store$.dispatch(new ConversationActions.DeleteSuccess({ conversation: conversation}));
     }
   }
 

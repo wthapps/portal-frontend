@@ -207,10 +207,10 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     event.stopPropagation();
     $('#chat-message-text').focus();
 
-    // this.commonEventService.broadcast({
-    //   channel: 'MessageEditorComponent',
-    //   action: 'resetEditor'
-    // })
+    this.commonEventService.broadcast({
+      channel: 'MessageEditorComponent',
+      action: 'resetEditor'
+    });
     this.router.navigate(['conversations', conversation.uuid]).then();
     this.notificationEventService.updateNotificationCount({count: conversation.notification_count, type: 'remove'});
   }

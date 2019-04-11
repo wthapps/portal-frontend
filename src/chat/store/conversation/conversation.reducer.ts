@@ -137,10 +137,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
     case ActionTypes.SEARCH_SUCCESS: {
       return {
         ...state,
-        searchedConversations: [
-          ...state.searchedConversations,
-          ...action.payload.conversations
-        ],
+        searchedConversations: action.payload.conversations,
         isLoading: false,
         loaded: true,
         error: null,
