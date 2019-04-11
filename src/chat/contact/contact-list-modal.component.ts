@@ -27,7 +27,7 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
   tabs: Array<any> = [
     {
       id: 'all',
-      name: 'All Contacts',
+      name: 'My Contacts',
       link: 'all',
       icon: null,
       number: null

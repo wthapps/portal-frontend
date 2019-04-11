@@ -40,7 +40,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('cardDetailModal') cardDetailModal: CardDetailModalComponent;
 
   confirmDialog: ConfirmDialogModel = Constants.confirmDialog;
-  profile: any;
+  // profile: any;
+  profile$: Observable<any>;
   private destroy$ = new Subject();
 
 
@@ -82,9 +83,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         document.body.scrollTop = 0;
       });
 
-    this.profileService.profile$.pipe(takeUntil(this.destroy$))
-    .subscribe(profile => this.profile = profile);
+    this.profile$ = this.profileService.profile$;
     this.visibilityService.reloadIfProfileInvalid();
+
+    this.userEventService.viewProfile$.pipe(takeUntil(this.destroy$)).subscribe(user => {
+      this.profileService.getProfileNew(user.uuid);
+      this.cardDetailModal.open({});
+      });
   }
 
   ngAfterViewInit() {
@@ -93,33 +98,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     ) {
       this.introduction.open();
     }
-
-    this.userEventService.viewProfile$.pipe(takeUntil(this.destroy$)).subscribe(user => {
-      this.viewProfile(user);
-    });
-
-  }
-
-  viewProfile(user: any) {
-    this.profileService.getProfileNew(user.uuid);
-    this.cardDetailModal.open({});
-  }
-
-  goToChat(user) {
-    this.userEventService.createChat(user);
-    this.cardDetailModal.close();
-  }
-
-  openInContact(user) {
-    console.log('open in contact: ', user);
-  }
-
-  importContact(user) {
-    console.log('importContact: ', user);
-  }
-
-  addBlacklist(user) {
-    console.log('add blacklist: ', user);
   }
 
 

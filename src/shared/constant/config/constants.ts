@@ -125,7 +125,7 @@ export class ConstantsBase {
 
   contactMenuItems: any = [
     {
-      name: 'All Contacts',
+      name: 'My Contacts',
       value: 'all contacts',
       link: '/list',
       icon: 'fa fa-address-book-o',

@@ -1,14 +1,14 @@
-import { Component, ViewEncapsulation, Input, Output, EventEmitter, ViewChild, ContentChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ContentChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { PUBLIC, BUSINESS, NONE } from '../../../contact/shared/card/card.constant';
 import { Constants } from '../../constant';
 import { CountryService } from '../../shared/components/countries/countries.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'w-card-detail-modal',
   templateUrl: 'card-detail-modal.component.html',
   styleUrls: ['card-detail-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardDetailModalComponent {
   @ViewChild('modal') modal: any;

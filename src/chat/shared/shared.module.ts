@@ -46,6 +46,7 @@ import { ZChatSharedModalModule } from './modal/chat-shared-modal.module';
 import { ZChatPipeModule } from './pipe/chat-pipe.module';
 import { CardUserModule } from '@shared/components/card-user/card-user.module';
 import { ChatNotificationService, MemberService } from '@chat/shared/services';
+import {  } from './modal/cards/chat-card-detail-modal.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -92,7 +93,7 @@ import { ChatNotificationService, MemberService } from '@chat/shared/services';
     ZChatToolbarComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
-    MessageInvitationComponent,
+    MessageInvitationComponent
   ],
   exports: [
     WthCommonModule,
@@ -131,7 +132,7 @@ import { ChatNotificationService, MemberService } from '@chat/shared/services';
     ZChatSidebarComponent,
     ZChatToolbarComponent,
     ZChatSharedHeaderComponent,
-    ZChatContactActionsComponent,
+    ZChatContactActionsComponent
   ]
 })
 export class ZChatSharedModule {
@@ -147,7 +148,7 @@ export class ZChatSharedModule {
         ChatCommonService,
         MessageService,
         ChatNotificationService,
-        MemberService,
+        MemberService
       ]
     };
   }

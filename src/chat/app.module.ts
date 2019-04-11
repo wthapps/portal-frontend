@@ -25,8 +25,9 @@ import { ChatNoteListModule } from '@shared/components/note-list/chat-module/cha
 import { ChatStoreModule } from '@chat/store';
 import { JwtIntercepter } from '@shared/services/auth/jwt-intercepter';
 import { ContactSelectionModule } from '@chat/shared/selections/contact';
-import { UserCardModule } from '@shared/user/card';
+// import { UserCardModule } from '@shared/user/card';
 import { UserEventModule } from '@shared/user/event';
+import { ZChatCardModule } from './shared/modal/cards/chat-card-detail-modal.module';
 
 @NgModule({
   imports: [
@@ -37,13 +38,13 @@ import { UserEventModule } from '@shared/user/event';
     AppRoutingModule,
 
     // ZChatHomeModule,
+    ZChatCardModule,
     ZChatSettingModule,
     ZChatConversationModule,
     ZChatContactModule,
     ZChatPhotoModule,
     ChatNoteListModule,
     ContactSelectionModule,
-    UserCardModule,
     UserEventModule,
 
     AppRoutingModule,
@@ -70,8 +71,7 @@ import { UserEventModule } from '@shared/user/event';
       provide: APP_BASE_HREF,
       useValue: '/'
     },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtIntercepter, multi: true },
-
+    { provide: HTTP_INTERCEPTORS, useClass: JwtIntercepter, multi: true }
   ],
   bootstrap: [AppComponent]
 })
