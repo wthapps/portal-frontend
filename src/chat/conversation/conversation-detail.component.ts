@@ -91,6 +91,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
         }
         const cursor = conversation.latest_message.cursor + 1;
         this.conversation = conversation;
+        //console.log('SELECTED CONVERSATION:::', this.conversation);
         // update message cursor for joined conversation
         this.store$.dispatch(new MessageActions.SetState({ cursor: cursor}));
         this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversation.uuid}));
@@ -172,11 +173,9 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   createMessageCallback(message: any) {
-    if (this.conversation.id === message.group_id) {
-      this.store$.dispatch(new MessageActions.CreateSuccess({message: message}));
-      this.store$.dispatch(new MessageActions.SetState({scrollable: true}));
-      this.resetConversationNotifications();
-    }
+    this.store$.dispatch(new MessageActions.CreateSuccess({message: message}));
+    this.store$.dispatch(new MessageActions.SetState({scrollable: true}));
+    this.resetConversationNotifications();
   }
 
   updateMessage(message: any) {
@@ -202,9 +201,11 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   handleConversationChannelEvents() {
     // Handle message created successfully
     this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_CREATED, (response: any) => {
-      console.log(ChannelEvents.CHAT_MESSAGE_CREATED, response);
       const message = response.data.attributes;
-      this.createMessageCallback(message);
+      //console.log(ChannelEvents.CHAT_MESSAGE_CREATED, message, this.conversation.id);
+      if (this.conversation.id === message.group_id) {
+        this.createMessageCallback(message);
+      }
     });
 
     // Handle message updated successfully

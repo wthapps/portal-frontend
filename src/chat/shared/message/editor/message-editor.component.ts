@@ -438,8 +438,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   private validateMessage(): boolean {
-    console.log('message:::', this.message, this.messageService.notEmptyHtml(this.message.message));
-
     if (!this.messageService.notEmptyHtml(this.message.message)) {
       return false;
     }

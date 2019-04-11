@@ -56,7 +56,6 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
 
     // Get all actions
     case ActionTypes.GET_ITEMS: {
-      console.log('GET ITEMS:::', state.cursor, state.currentCursor, action.payload);
       if (action.payload.queryParams.cursor === 0) {
         action.payload.queryParams.cursor = state.cursor;
       }
@@ -71,7 +70,6 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       // If response has items
       if (action.payload.messages.length > 0) {
         const currentCursor = action.payload.messages[action.payload.messages.length - 1].cursor;
-        console.log('CURSOR MESSAGE:::', currentCursor);
         // if it is first load
         if (!links.prev) {
           return messageAdapter.addAll(action.payload.messages.reverse(), {
@@ -119,7 +117,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
     }
     case ActionTypes.GET_MORE_SUCCESS: {
       const currentCursor = action.payload.messages[action.payload.messages.length - 1].cursor;
-      console.log('LOAD MORE MESSAGE:::', currentCursor);
+      // console.log('LOAD MORE MESSAGE:::', currentCursor);
       return messageAdapter.addAll([
         ...action.payload.messages.reverse(),
         ...Object.values(state.entities)
@@ -191,15 +189,6 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
         scrollable: true,
         error: null,
       });
-      // return {
-      //   ...state,
-      //   messages: [
-      //     ...state.messages,
-      //     message
-      //   ],
-      //   loading: false,
-      //   error: null,
-      // };
     }
 
     case ActionTypes.CREATE_ERROR: {
@@ -260,7 +249,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
     }
 
     case ActionTypes.SET_STATE: {
-      console.log('UPDATE STATE:::', action.payload);
+      // console.log('UPDATE STATE:::', action.payload);
       return {
         ...state,
         ...action.payload,

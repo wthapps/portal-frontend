@@ -36,7 +36,8 @@
     <button class="btn btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="showEmojiBtn($event)">
       <i class="fa fa-smile-o"></i>
     </button>
-    <a class="btn chat-message-action-send btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="send()">
+    <a class="btn chat-message-action-send btn-default" href="javascript:void(0)"
+       [attr.disabled]="isDisabled ? 'disabled' : null" (click)="send()">
       <i class="fa fa-send"></i>
     </a>
   </div>

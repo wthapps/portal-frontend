@@ -135,7 +135,9 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     if (notification.type === 'add') {
       this.notificationCount += notification.count;
     } else if (notification.type === 'remove') {
-      this.notificationCount -= notification.count;
+      const newNotificationCount = this.notificationCount - notification.count;
+      this.notificationCount = newNotificationCount < 0 ? 0 : newNotificationCount;
+
     }
   }
 

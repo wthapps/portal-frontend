@@ -7,7 +7,7 @@
     <div class="message-item-card">
       <div *ngIf="message.showInfo" class="message-item-owner">
         <h6 *ngIf="!byMe" class="message-item-owner-name">
-          <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user.name | maxLength:50}} </a>
+          <a class="mr5" [routerLink]="[profileUrl, message?.user?.uuid]"> {{ message?.user?.name | maxLength:50}} </a>
         </h6>
         <small class="message-item-owner-time text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>
       </div>
@@ -200,7 +200,7 @@
     <div class="message-item-content-contact-sharing-info" >
       <span class="avatar-xs">
         <a href="javascript:void(0)" (click)="viewProfile(message.file)">
-          <img [src]="message?.file?.profile_image" [alt]="message.file.name">
+          <img [src]="message?.file?.profile_image" [alt]="message?.file?.name">
         </a>
       </span>
       <span class="message-item-content-contact-sharing">

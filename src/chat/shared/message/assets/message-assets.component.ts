@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { filter, map, takeUntil, distinctUntilChanged, tap } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { Constants, STORE_CONVERSATIONS } from '@shared/constant';
@@ -20,10 +20,10 @@ import { ChatConversationService } from '@chat/shared/services/chat-conversation
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
 import { User } from '@shared/shared/models';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
-import * as ConversationActions from '@chat/store/conversation/conversation.actions';
-import { AppState } from '@chat/store';
+import { AppState, ConversationActions } from '@chat/store';
 import { MemberService } from '@chat/shared/services';
 import { MessageActions } from '@chat/store/message';
+import * as ConversationSelectors from '@chat/store/conversation/conversation.selectors';
 
 
 @Component({
@@ -87,7 +87,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   medias: Array<any>;
   nextLink: string;
   isLoading: boolean;
-  conversations$: any;
   users: any = [];
   selectedIds = {};
   currentUser: User;
@@ -145,6 +144,16 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     ).subscribe(payload => {
       this.addMembers(payload);
     });
+
+    // this.store$.pipe(
+    //   select(ConversationSelectors.selectJoinedConversationId),
+    //   filter(conversationId => conversationId !== null),
+    //   takeUntil(this.destroy$)
+    // ).subscribe(conversationId => {
+    //   console.log('load data:::', conversationId, this.currentTab);
+    //   this.loadMessagesByType(this.currentTab);
+    //   }
+    // );
   }
 
   ngOnDestroy() {
@@ -154,8 +163,6 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
   open() {
     this.objectListService.setMultipleSelection(false);
-
-
     if (this.conversation && this.conversation.group_type === 'couple') {
       this.tabs = this.tabsPhoto;
     } else {
@@ -167,16 +174,9 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   tabAction(event: WTab) {
     this.currentTab = event.link;
     if (this.currentTab !== 'members') {
-      this.isLoading = false;
-      this.nextLink = this.buildNextLink();
-      if (this.nextLink) {
-        this.getObjects(true);
-      } else {
-        this.messageAssetsService.clear();
-      }
+      this.loadMessagesByType(this.currentTab);
     } else {
       this.isLoading = true;
-      // this.conversations$ = this.store.select(STORE_CONVERSATIONS);
       this.apiBaseService.get('chat/conversations/' + this.conversation.uuid + '/members').pipe(
         takeUntil(this.destroy$)
       ).subscribe(res => {
@@ -304,6 +304,16 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
 
   download(item: any) {
     console.log('download:item:::', item);
+  }
+
+  loadMessagesByType(type: string) {
+    this.isLoading = false;
+    this.nextLink = this.buildNextLink();
+    if (this.nextLink) {
+      this.getObjects(true);
+    } else {
+      this.messageAssetsService.clear();
+    }
   }
 
   private buildNextLink() {
