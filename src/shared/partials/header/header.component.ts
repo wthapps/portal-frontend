@@ -148,8 +148,9 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
 
   subscribeChanneService() {
     this.channelService.subscribe();
-    this.webSocketService.createSocket({token: this.authService.user.uuid});
-
+    if (this.authService.isAuthenticated()) {
+      this.webSocketService.createSocket({token: this.authService.user.uuid});
+    }
   }
 
   onShowSideBar(event: Event) {
