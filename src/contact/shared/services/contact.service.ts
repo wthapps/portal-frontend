@@ -553,7 +553,7 @@ export class ZContactService extends BaseEntityService<any> {
     this.notifyContactsObservers();
   }
 
-  private updateCallback(contact: any): void {
+  updateCallback(contact: any): void {
     if (contact && contact.length === 0) {
       return;
     }

@@ -94,7 +94,7 @@ export class ZContactSharedSidebarComponent implements OnInit, OnDestroy {
   deleteGroup(group: any) {
     const contacts_length = group.count || 0;
     this.wthConfirmService.confirm({
-      message: `This group has ${contacts_length} contacts. Delete this group will remove it from all contacts.
+      message: `This group has ${contacts_length} contacts. Delete this group will remove it from my contacts.
       <br /> This action can't be undone.`,
       header: 'Delete group',
       accept: () => {

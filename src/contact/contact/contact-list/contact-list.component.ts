@@ -112,7 +112,7 @@ export class ZContactListComponent
         const category = location.pathname === '/others' ? 'others' : 'myContacts';
         let group = '';
         switch (params['group']) {
-          case 'all contacts':
+          case 'my contacts':
           case 'undefined':
             group = undefined;
             break;

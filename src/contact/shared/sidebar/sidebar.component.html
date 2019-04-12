@@ -25,8 +25,8 @@
   </ul>
 </div>
 <div class="menuleft-item-divider">
-  <div class="menuleft-item" [ngClass]="{'active' : ( currentGroup === 'all contacts')}">
-    <a href="javascript:;" [routerLink]="['contacts', {group: 'all contacts'}]"
+  <div class="menuleft-item" [ngClass]="{'active' : ( currentGroup === 'my contacts')}">
+    <a href="javascript:;" [routerLink]="['contacts', {group: 'my contacts'}]"
        (click)="doEvent({action: 'contacts', event: $event})">
       <i class="fa fa-address-book-o"></i> My Contacts ({{ contactService.myContactCount }})
     </a>

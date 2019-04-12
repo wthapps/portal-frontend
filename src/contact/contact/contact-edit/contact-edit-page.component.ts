@@ -292,10 +292,9 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   private get(id: number) {
     this.contactService.getIdLocalThenNetwork(id).subscribe(ct => {
       this.contact = Object.assign({}, ct);
-      const emails = this.contact.emails.reduce((arr, item) => item.value !== '' ? [...arr, item.value] : arr, []);
-      if (emails.length > 0) {
-        this.checkEmails(emails);
-      }
+      this.public_cards = this.contact.public_cards;
+      this.business_cards = this.contact.business_cards;
+      this.contactService.updateCallback(this.contact);
     });
   }
 

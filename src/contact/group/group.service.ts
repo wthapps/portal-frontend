@@ -95,7 +95,7 @@ export class GroupService extends BaseEntityService<Group> {
     const cMenus = _.map(this.groupsSubject.getValue(), (m: any) => {
       if (menus[m.name]) {
         return Object.assign(m, { count: menus[m.name].count });
-      } else if (m.name === 'all contacts') {
+      } else if (m.name === 'my contacts') {
         return Object.assign(m, { count: contacts.length });
       } else { return Object.assign(m, { count: 0 }); }
     });
@@ -192,7 +192,7 @@ export class GroupService extends BaseEntityService<Group> {
       count: 0,
       order: group.system ? group.order : 100 + group.order,
       icon:
-        group.name === 'all contacts'
+        group.name === 'my contacts'
           ? 'fa fa-address-book-o'
           : group.name === 'favourite'
             ? 'fa fa-star'

@@ -27,6 +27,7 @@ export class Contact extends BaseEntity {
   groups: any;
   using_default_profile_image?: boolean; // TODO: Remove later
   public_cards?: Card[];
+  business_cards?: Card[];
 
   // constructor(options: any) {
   //   super(options);

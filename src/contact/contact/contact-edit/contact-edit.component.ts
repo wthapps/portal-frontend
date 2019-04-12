@@ -99,7 +99,7 @@ export class ZContactEditComponent implements OnChanges, OnInit, OnDestroy {
       takeUntil(this.destroySubject)
     ).subscribe(val => {
       this.emails.controls.forEach(email => {
-        if (email.valid && email.dirty) {
+        if (email.dirty) {
           this.event.emit({ action: 'contact:contact:edit_email', payload: { item: email.value,
              emails: this.emails.value.map(em => em.value) } });
         }
