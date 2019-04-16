@@ -114,9 +114,18 @@
           <ng-container *ngIf="!['sent_request', 'pending'].includes(conversation?.status)">
             <span class="emojione-sm" *ngIf="conversation?.latest_message?.message_type == 'text'"
                   [innerHtml]="conversation?.latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify  | safeHtml">
-          </span>
+            </span>
             <span *ngIf="conversation?.latest_message?.message_type == 'file'"> Sent a file </span>
           </ng-container>
+          <span *ngIf="conversation?.latest_message?.message_type === 'notification' && conversation?.latest_message?.message.indexOf('added into conversation') > -1">
+            Added member
+          </span>
+          <span *ngIf="conversation?.latest_message?.message_type === 'notification' && conversation?.latest_message?.message.indexOf('removed from conversation') > -1">
+            Removed member
+          </span>
+          <span *ngIf="conversation?.latest_message?.message_type === 'notification' && conversation?.latest_message?.message.indexOf('left this conversation') > -1">
+            Left member
+          </span>
         </small>
         <!-- {{conversation.latest_message}} -->
         <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>

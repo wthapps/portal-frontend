@@ -30,6 +30,7 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   @Output() onAddMember: EventEmitter<any> = new EventEmitter<any>();
   @Output() onUpdateDisplay: EventEmitter<any> = new EventEmitter<any>();
   @Output() onViewDetail: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onLeave: EventEmitter<any> = new EventEmitter<any>();
 
   showMemberBar = false;
   usersOnlineItem$: Observable<any>;
@@ -112,7 +113,8 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   leaveConversation() {
-    this.onUpdateDisplay.emit({...this.conversation, left: true});
+    // this.onUpdateDisplay.emit({...this.conversation, left: true});
+    this.onLeave.emit(this.conversation);
   }
 
   hideConversation() {

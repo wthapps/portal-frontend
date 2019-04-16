@@ -20,4 +20,9 @@ export class MemberService extends BaseEntityService<any> {
     return this.apiBaseService.post(url, body);
   }
 
+  leave(conversationId: string): Observable<any> {
+    const url = `${this.url}/${conversationId}/members/leave`;
+    return this.apiBaseService.post(url, {});
+  }
+
 }

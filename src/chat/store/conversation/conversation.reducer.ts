@@ -125,7 +125,6 @@ export function reducer(state = initialConversationState, action: Actions): Conv
         error: action.payload.error
       };
     }
-
     case ActionTypes.SEARCH: {
       return {
         ...state,
@@ -344,6 +343,14 @@ export function reducer(state = initialConversationState, action: Actions): Conv
         ...state,
         isLoading: false,
       });
+    }
+
+    // Delete actions
+    case ActionTypes.LEAVE: {
+      return {
+        ...state,
+        error: null
+      };
     }
 
     // Delete actions

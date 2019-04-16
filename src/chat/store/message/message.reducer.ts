@@ -137,6 +137,30 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       };
     }
 
+    // Get newer actions
+    case ActionTypes.GET_NEWER_ITEMS: {
+      return {
+        ...state,
+        error: null
+      };
+    }
+    case ActionTypes.GET_NEWER_ITEMS_SUCCESS: {
+      const currentCursor = action.payload.messages[action.payload.messages.length - 1].cursor;
+      return messageAdapter.addMany(
+        action.payload.messages, {
+        ...state,
+        currentCursor: currentCursor,
+        scrollable: true,
+        error: null,
+      });
+    }
+    case ActionTypes.GET_NEWER_ITEMS_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error
+      };
+    }
+
     // Get item actions
     case ActionTypes.GET_ITEM: {
       return {

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 
 import {MessageService} from 'primeng/components/common/messageservice';
 
@@ -23,6 +23,10 @@ import { Socket, Presence } from 'phoenix';
 import { CardDetailModalComponent } from '@shared/user/card';
 import { ProfileService } from '@shared/user/services';
 import { UserEventService } from '@shared/user/event';
+import { select, Store } from '@ngrx/store';
+import * as ConversationSelectors from '@chat/store/conversation/conversation.selectors';
+import * as MessageActions from '@chat/store/message/message.actions';
+import { AppState } from '@chat/store';
 
 declare const _: any;
 
@@ -55,7 +59,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private visibilityService: PageVisibilityService,
     private wthConfirmService: WthConfirmService,
     private profileService: ProfileService,
-    private userEventService: UserEventService
+    private userEventService: UserEventService,
+    private store$: Store<AppState>,
+
   ) {
     this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
       this.confirmDialog = res;
@@ -71,6 +77,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.visibilityService.hiddenState$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(hidden => {
+      console.log('test get out of date data');
       this.handleBrowserState(!hidden);
     });
 
@@ -115,13 +122,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.messageService.clear();
   }
 
-  // Conversation handle
-  createConversation(payload: any) {
-
-  }
-
-  // Conversation handle end
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
@@ -137,6 +137,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     const online = navigator.onLine;
     this.setNetworkOnline(online);
     if (online) {
+      console.log('testing out of date data');
       this.getOutOfDateData();
       this.clearOfflineMessage();
     } else {
@@ -145,7 +146,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private getOutOfDateData() {
-    this.chatService.getOutOfDateMessages();
+    this.store$.pipe(
+      select(ConversationSelectors.selectJoinedConversation),
+      filter(conversation => !conversation),
+      take(1),
+      takeUntil(this.destroy$)
+    ).subscribe((conversation: any) => {
+      const cursor = conversation.latest_message.cursor;
+      // load newer messages
+      this.store$.dispatch(new MessageActions.GetNewerItems({
+        path: `chat/conversations/${conversation.uuid}/messages`,
+        queryParams: { newer_cursor: cursor }
+      }));
+    });
   }
 
   private setNetworkOnline(online: boolean) {

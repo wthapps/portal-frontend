@@ -220,13 +220,9 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   createConversationCallback(conversation: any) {
-    // if currentUser is owner then redirect to that conversation and join
-    // if currentUser is a member then add to conversation list
     this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
-
-    if ((this.authService.user.id === conversation.creator_id && conversation.status === 'sent_request') ||
-      (conversation.status === 'accepted')) {
-      // Redirect to created conversation
+    // Redirect to created conversation just in creator side
+    if ((this.authService.user.id === conversation.creator_id) && ['sent_request', 'accepted'].includes(conversation.status)) {
       this.router.navigate(['/conversations', conversation.uuid]).then();
     }
   }

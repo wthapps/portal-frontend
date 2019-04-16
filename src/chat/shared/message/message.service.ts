@@ -17,11 +17,6 @@ export class MessageService extends BaseEntityService<any> {
     return this.httpClient.get(`${this.url}/${id}`);
   }
 
-  // getAll(path: string, queryParams?: {cursor: 1541674034512}): Observable<any> {
-  //   return super.getAll(queryParams, path);
-  //   // return this.httpClient.get<any>(`${this.url}/${conversationId}/messages?cursor=${queryParams.cursor}`, {headers: {Accept: 'application/json'}});
-  // }
-
   create(payload: any): Observable<any> {
     return this.apiBaseService.post(`${this.path}/${payload.conversationId}/messages`, {message: payload.message});
   }

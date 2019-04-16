@@ -33,6 +33,7 @@ import { ContactSelectionService } from '@chat/shared/selections/contact/contact
 import { MESSAGE_DELETE, MessageEventService } from '@chat/shared/message';
 import { UserEventService } from '@shared/user/event';
 import { NotificationEventService } from '@shared/services/notification';
+import { MemberService } from '@chat/shared/services';
 
 @Component({
   selector: 'conversation-detail',
@@ -73,7 +74,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     private contactSelectionService: ContactSelectionService,
     private messageEventService: MessageEventService,
     private userEventService: UserEventService,
-    private notificationEventService: NotificationEventService
+    private notificationEventService: NotificationEventService,
+    private memberService: MemberService
 ) {
     super(commonEventService);
     this.currentUser$ = userService.profile$;
@@ -91,7 +93,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
         }
         const cursor = conversation.latest_message.cursor + 1;
         this.conversation = conversation;
-        //console.log('SELECTED CONVERSATION:::', this.conversation);
+        console.log('SELECTED CONVERSATION:::', this.conversation);
         // update message cursor for joined conversation
         this.store$.dispatch(new MessageActions.SetState({ cursor: cursor}));
         this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversation.uuid}));
@@ -135,10 +137,10 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     });
     this.handleMessageEvents();
     // TODO present list
-    // const presence = new Presence(this.conversationChannel);
-    // presence.onSync(() => {
-    //   console.log('presence list', presence.list());
-    // });
+    const presence = new Presence(this.conversationChannel);
+    presence.onSync(() => {
+      console.log('presence list', presence.list());
+    });
   }
 
   connectConversationChannel() {
@@ -202,7 +204,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     // Handle message created successfully
     this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_CREATED, (response: any) => {
       const message = response.data.attributes;
-      //console.log(ChannelEvents.CHAT_MESSAGE_CREATED, message, this.conversation.id);
+      console.log(ChannelEvents.CHAT_MESSAGE_CREATED, message, this.conversation);
       if (this.conversation.id === message.group_id) {
         this.createMessageCallback(message);
       }
@@ -290,6 +292,14 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     }
   }
 
+  leaveConversation(conversation: any) {
+    // this.store$.dispatch(new ConversationActions.Leave({ conversationId: conversation.uuid}));
+    this.memberService.leave(conversation.uuid).pipe(takeUntil(this.destroy$)).subscribe(response => {
+      this.redirectToChatHome();
+      this.store$.dispatch(new ConversationActions.DeleteSuccess({ conversation: conversation}));
+    });
+
+  }
    /*
    * Conversation actions ending
    */

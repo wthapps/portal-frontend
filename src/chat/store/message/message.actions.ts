@@ -7,6 +7,9 @@ export enum ActionTypes  {
   GET_MORE          = 'MESSAGE_GET_MORE',
   GET_MORE_SUCCESS  = 'MESSAGE_GET_MORE_SUCCESS',
   GET_MORE_ERROR    = 'MESSAGE_GET_MORE_ERROR',
+  GET_NEWER_ITEMS          = 'CONVERSATION_GET_NEWER_ITEMS',
+  GET_NEWER_ITEMS_SUCCESS  = 'CONVERSATION_GET_NEWER_ITEMS_SUCCESS',
+  GET_NEWER_ITEMS_ERROR    = 'CONVERSATION_GET_NEWER_ITEMS_ERROR',
   GET_ITEM          = 'MESSAGE_GET_ITEM',
   GET_ITEM_SUCCESS  = 'MESSAGE_GET_ITEM_SUCCESS',
   GET_ITEM_ERROR    = 'MESSAGE_GET_ITEM_ERROR',
@@ -61,6 +64,27 @@ export class GetMoreSuccess implements Action {
 
 export class GetMoreError implements Action {
   readonly type = ActionTypes.GET_MORE_ERROR;
+
+  constructor(public payload: any = null) { }
+}
+
+/**
+ * Get newer items Actions
+ */
+export class GetNewerItems implements Action {
+  readonly type = ActionTypes.GET_NEWER_ITEMS;
+
+  constructor(public payload: {path: string, queryParams: {}}) { }
+}
+
+export class GetNewerItemsSuccess implements Action {
+  readonly type = ActionTypes.GET_NEWER_ITEMS_SUCCESS;
+
+  constructor(public payload: {messages: any[], links?: {}}) { }
+}
+
+export class GetNewerItemsError implements Action {
+  readonly type = ActionTypes.GET_NEWER_ITEMS_ERROR;
 
   constructor(public payload: any = null) { }
 }
@@ -182,6 +206,9 @@ export type Actions =
   GetMore |
   GetMoreSuccess |
   GetMoreError |
+  GetNewerItems |
+  GetNewerItemsSuccess |
+  GetNewerItemsError |
   GetItem |
   GetItemSuccess |
   GetItemError |

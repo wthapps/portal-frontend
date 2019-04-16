@@ -296,13 +296,13 @@ export class JoinError implements Action {
 export class Leave implements Action {
   readonly type = ActionTypes.LEAVE;
 
-  constructor(public payload: any) { }
+  constructor(public payload: {conversationId: string}) { }
 }
 
 export class LeaveSuccess implements Action {
   readonly type = ActionTypes.LEAVE_SUCCESS;
 
-  constructor(public payload: any = null) { }
+  constructor(public payload: {success: boolean}) { }
 }
 
 export class LeaveError implements Action {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap, mergeMap } from 'rxjs/operators';
+import { catchError, map, switchMap, mergeMap, concatMap } from 'rxjs/operators';
 import { Action } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import * as MessageActions from './message.actions';
@@ -50,6 +50,27 @@ export class MessageEffects {
         }),
         catchError(error =>
           of(new MessageActions.GetItemsError({ error }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  getNewer$: Observable<Action> = this.actions$.pipe(
+    ofType<MessageActions.GetNewerItems>(MessageActions.ActionTypes.GET_NEWER_ITEMS),
+    concatMap(action =>
+      this.messageService.getAll(action.payload.queryParams, action.payload.path).pipe(
+        map(response => {
+          const messages = [];
+          response.data.forEach(item => {
+            messages.push(item.attributes);
+          });
+          return new MessageActions.GetNewerItemsSuccess({
+            messages: messages.reverse()
+          });
+        }),
+        catchError(error =>
+          of(new MessageActions.GetNewerItemsError({ error }))
         )
       )
     )
