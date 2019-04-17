@@ -1,19 +1,6 @@
 @import "../../fonts/wicon/style.css";
-
-//@import 'https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Source+Sans+Pro:400,400i,700,700i&subset=latin-ext,vietnamese';
-//font-family: 'Source Sans Pro', sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i');
 //font-family: 'Lato', sans-serif;
-
-@include font-face("Source Sans Pro", Source_Sans_Pro/SourceSansPro-Regular, normal, normal, ttf);
-@include font-face("Source Sans Pro", Source_Sans_Pro/SourceSansPro-Italic, normal, italic, ttf);
-@include font-face("Source Sans Pro", Source_Sans_Pro/SourceSansPro-Bold, bold, normal, ttf);
-@include font-face("Source Sans Pro", Source_Sans_Pro/SourceSansPro-BoldItalic, bold, italic, ttf);
-
-@include font-face("Lato", Lato/Lato-Regular, normal, normal, ttf);
-@include font-face("Lato", Lato/Lato-Italic, normal, italic, ttf);
-@include font-face("Lato", Lato/Lato-Bold, bold, normal, ttf);
-@include font-face("Lato", Lato/Lato-BoldItalic, bold, italic, ttf);
-
 
 @import "../../fonts/font-awesome/scss/_custom-variables.scss";
 
