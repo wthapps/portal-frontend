@@ -496,6 +496,7 @@ export class ConstantsBase {
     hide: 'Hide',
     info: 'Info',
     information: 'Information',
+    importToContact: 'Import to contact',
     listView: 'List view',
     markAsRead: 'Mark as read',
     markAsUnread: 'Mark as unread',

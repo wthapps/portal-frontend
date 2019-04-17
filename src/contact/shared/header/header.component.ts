@@ -68,7 +68,13 @@ export class ZContactSharedHeaderComponent implements OnDestroy {
   onEnter(search: any) {
     this.show = false;
     this.search = search;
-    this.router.navigate(['search', {q: this.search}]);
+    const url = this.router.url;
+    if (url.startsWith('/search')) {
+      const routeUrl = this.urlService.parseRoute(url);
+      this.router.navigate([routeUrl, {q: this.search}]);
+    } else {
+      this.router.navigate(['search', {q: this.search}]);
+    }
   }
 
   onKey(search: any) {

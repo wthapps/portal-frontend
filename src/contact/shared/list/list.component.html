@@ -29,7 +29,8 @@
             </div>
             <div class="contact-dl-action">
               <z-contact-shared-actions-bar [data]="item" [contacts]="[item]" [showQuickInvitation]="item.wthapps_user == null" [showNumber]="false"
-                [showSocial]="item | isContactInternal" [showChat]="item | isContactInternal" [showInvitation]="item | canInvite "
+              [inContactBook]="inContactBook"
+              [showSocial]="item | isContactInternal" [showChat]="item | isContactInternal" [showInvitation]="item | canInvite "
                 [showEdit]="!isStranger" [showFavorite]="!isStranger" [isStranger]="isStranger" [showAddToContacts]="!item.my_contact"
                 [toggleFavourite]="item | contactHasGroup:'favourite'" [toggleBlacklist]="item | contactHasGroup:'blacklist'"
                 (eventOut)="doActionsToolbar($event)">

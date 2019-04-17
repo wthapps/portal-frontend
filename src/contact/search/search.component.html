@@ -1,8 +1,8 @@
 <z-contact-search-shared-toolbar class="page-body-control">
   <div class="page-body-control-nav page-body-control-nav-right page-body-control-nav-action">
-
     <z-contact-shared-actions-bar *ngIf="contactService.selectedObjects | isAll:'contact':contactService.selectedObjects.length"
       [contacts]="contacts"
+      [inContactBook]="currentTab !== TABS.wth"
       [showSocial]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
       [showChat]="contactService.selectedObjects && contactService.selectedObjects.length==1 && (contactService.selectedObjects | isContactInternal)"
       [showViewDetail]="false" [showEdit]="false" [showInvitation]="false" [toggleBlacklist]="_contact.isContactsHasGroupName(contactService.selectedObjects,'blacklist')"
@@ -23,7 +23,7 @@
     </box-no-data>
   </div>
   <div class="page-body-content-in" *ngIf="contacts && contacts.length >= 1">
-    <z-contact-shared-list [data]="contacts" [contactsSortBy]="contactService.contactsSortBy"  [isStranger]="currentTab === 'wth'" (itemSelected)="onItemSelected($event)"></z-contact-shared-list>
+    <z-contact-shared-list [data]="contacts" [contactsSortBy]="contactService.contactsSortBy" [inContactBook]="currentTab !== TABS.wth" [isStranger]="currentTab === 'wth'" (itemSelected)="onItemSelected($event)"></z-contact-shared-list>
   </div>
 </div>
 <contact-add-group-modal #modal></contact-add-group-modal>

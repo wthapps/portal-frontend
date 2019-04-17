@@ -134,6 +134,10 @@ export class ZContactService extends BaseEntityService<any> {
       });
   }
 
+  importContact(user): Promise<any> {
+    return this.apiBaseService.post('contact/wcontacts/import_contact', user).toPromise();
+  }
+
   getSettings(): Observable<any> {
     return this.apiBaseService.post(`contact/wcontacts/get_settings`);
   }
