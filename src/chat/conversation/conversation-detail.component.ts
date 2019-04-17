@@ -263,9 +263,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     //   conversation: {status: 'accepted'}
     // }}));
     // console.log('USER:::', conversation);
-    this.store$.dispatch(new ConversationActions.UpdateDisplaySuccess({conversation: conversation}));
-
     if (this.conversationId === conversation.uuid) {
+      this.store$.dispatch(new ConversationActions.UpdateDisplaySuccess({conversation: conversation}));
       // Just reload messages on receiver's side
 
       if (this.userService.getSyncProfile().id !== conversation.creator_id) {

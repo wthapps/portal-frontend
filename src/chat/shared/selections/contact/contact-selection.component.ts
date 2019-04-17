@@ -61,6 +61,9 @@ export class ContactSelectionComponent implements OnInit {
       distinctUntilChanged(),
       switchMap((searchEvent: any) => this.apiBaseService.get(`account/search?q=${searchEvent.query}`)))
       .subscribe((res: any) => {
+        if (!this.selectedUsers) {
+          this.resetData();
+        }
         const selectedIds = this.selectedUsers.map(user => user.id);
         this.suggestedUsers = res.data.filter(user => !selectedIds.includes(user.id));
       },
@@ -73,7 +76,6 @@ export class ContactSelectionComponent implements OnInit {
     this.contactSelectionService.onOpen$.pipe(
       filter(options => options != null),
       takeUntil(this.destroy$)
-
     ).subscribe(options => {
       this.open(options);
     });

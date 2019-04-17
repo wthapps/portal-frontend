@@ -126,6 +126,9 @@
           <span *ngIf="conversation?.latest_message?.message_type === 'notification' && conversation?.latest_message?.message.indexOf('left this conversation') > -1">
             Left member
           </span>
+          <span *ngIf="conversation?.latest_message?.message_type === 'share_contact_message'">
+            Shared a contact
+          </span>
         </small>
         <!-- {{conversation.latest_message}} -->
         <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>

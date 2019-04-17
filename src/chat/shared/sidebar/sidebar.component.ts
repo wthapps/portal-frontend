@@ -228,7 +228,7 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   upsertConversationCallback(conversation: any) {
-    // console.log('UPSERTED CONVERSATION:::', conversation);
+    console.log('UPSERTED CONVERSATION:::', conversation);
     // if currentUser is a member then add to conversation list
     this.store$.dispatch(new ConversationActions.UpsertSuccess({conversation: conversation}));
 
@@ -240,7 +240,7 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   updateConversationCallback(conversation: any) {
-    // console.log('UPDATED CONVERSATION:::', conversation);
+    console.log('UPDATED CONVERSATION:::', conversation);
     this.store$.dispatch(new ConversationActions.UpdateSuccess({conversation: conversation}));
   }
 
@@ -280,6 +280,16 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     this.searched = true;
   }
 
+  clearSearch(event: any) {
+    this.searching = false;
+    this.searched = false;
+    this.textbox.search = '';
+    this.store$.dispatch(new ConversationActions.ClearSearch());
+  }
+  /*
+  * End of searching here
+  */
+
   markAllAsRead() {
     this.notificationEventService.markAllAsRead();
   }
@@ -295,16 +305,6 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     // And current conversations' notification count as well
     this.store$.dispatch(new ConversationActions.MarkAllAsReadSuccess({}));
   }
-
-  clearSearch(event: any) {
-    this.searching = false;
-    this.searched = false;
-    this.textbox.search = '';
-    this.store$.dispatch(new ConversationActions.ClearSearch());
-  }
-  /*
-  * End of searching here
-   */
 
   trackById(index: number, conversation: any) {
     return conversation.uuid;

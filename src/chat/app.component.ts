@@ -148,7 +148,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private getOutOfDateData() {
     this.store$.pipe(
       select(ConversationSelectors.selectJoinedConversation),
-      filter(conversation => !conversation),
+      filter(conversation => conversation !== null),
       take(1),
       takeUntil(this.destroy$)
     ).subscribe((conversation: any) => {

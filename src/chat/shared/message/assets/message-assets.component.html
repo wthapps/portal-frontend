@@ -98,8 +98,7 @@
                   <i class="fa fa-file-archive-o fz30 mt5"></i>
                 </div>
                 <div class="media-body" [title]="item?.file?.full_name">
-                  <a [href]="item?.file?.url"> {{ item?.file?.full_name }}
-                  </a>
+                  <a [href]="item?.file?.url" target="_blank"> {{ item?.file?.full_name }} </a>
                   <div><small class="text-fade"> {{ item?.file?.size | bytes:0 }}</small></div>              </div>
               </div>
             </div>

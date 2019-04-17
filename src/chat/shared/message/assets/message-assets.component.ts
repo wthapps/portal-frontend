@@ -145,15 +145,14 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       this.addMembers(payload);
     });
 
-    // this.store$.pipe(
-    //   select(ConversationSelectors.selectJoinedConversationId),
-    //   filter(conversationId => conversationId !== null),
-    //   takeUntil(this.destroy$)
-    // ).subscribe(conversationId => {
-    //   console.log('load data:::', conversationId, this.currentTab);
-    //   this.loadMessagesByType(this.currentTab);
-    //   }
-    // );
+    this.store$.pipe(
+      select(ConversationSelectors.selectJoinedConversationId),
+      filter(conversationId => conversationId !== null),
+      takeUntil(this.destroy$)
+    ).subscribe(conversationId => {
+      this.messageAssetsService.close();
+      }
+    );
   }
 
   ngOnDestroy() {
