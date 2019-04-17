@@ -1,44 +1,54 @@
 @import "../../../../assets/styles/global";
 
 .chat-message-container {
-  margin: 20px auto;
-  width: 1000px;
-  max-width: 100%;
-  position: relative;
-  background-color: #ffffff;
-  border: 1px solid $line;
-  border-radius: 5px;
-  padding: 2px;
+  > form {
+    margin: 0;
+    width: 1000px;
+    max-width: 100%;
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid $line;
+    border-radius: 5px;
+    padding: 2px;
+    @media (min-width: $screen-sm-min) {
+      margin: 20px auto;
+    }
 
-  .chat-message-action {
-    position: absolute;
-    top: 1px;
-    right: 2px;
+    .chat-message-action {
+      position: absolute;
+      top: 1px;
+      right: 2px;
 
-    .btn {
+      .btn {
 
-      &:hover,
-      &:focus {
-        background-color: #e6e5e5;
+        &:hover,
+        &:focus {
+          background-color: #e6e5e5;
+        }
+      }
+
+      .chat-message-action-send {
+
+        &:hover,
+        &:focus {
+          color: $theme-color;
+        }
       }
     }
 
-    .chat-message-action-send {
+    .mini-editor {
+      margin-right: 120px;
+      overflow: auto;
+      max-height: 118px;
+    }
 
-      &:hover,
-      &:focus {
-        color: $theme-color;
-      }
+    .ql-container.ql-snow {
+      border-width: 0;
     }
   }
-
-  .mini-editor {
-    margin-right: 120px;
-    overflow: auto;
-    max-height: 118px;
-  }
-
-  .ql-container.ql-snow {
-    border-width: 0;
+  @media (max-width: $screen-xs-max) {
+    padding: 10px;
+    border-top: 1px solid $line;
+    background-color: #ffffff;
   }
 }
