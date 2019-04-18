@@ -9,6 +9,7 @@
       <w-dataView [data]="list"
                   (loadMoreCompleted)="onLoadMoreCompleted($event)"
                   (selectCompleted)="onSelectCompleted()"
+                  (dblClick)="onDblClick($event)"
                   #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">
