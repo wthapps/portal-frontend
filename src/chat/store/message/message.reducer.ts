@@ -62,6 +62,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       return {
         ...state,
         loading: true,
+        scrollable: false,
         error: null
       };
     }
@@ -76,6 +77,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
             ...state,
             currentCursor: currentCursor,
             loading: false,
+            scrollable: true,
             error: null,
             links: links
           });
@@ -145,14 +147,18 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
       };
     }
     case ActionTypes.GET_NEWER_ITEMS_SUCCESS: {
-      const currentCursor = action.payload.messages[action.payload.messages.length - 1].cursor;
-      return messageAdapter.addMany(
-        action.payload.messages, {
-        ...state,
-        currentCursor: currentCursor,
-        scrollable: true,
-        error: null,
-      });
+      if (action.payload.messages.length > 0) {
+        const currentCursor = action.payload.messages[action.payload.messages.length - 1].cursor;
+        return messageAdapter.addMany(
+          action.payload.messages, {
+            ...state,
+            currentCursor: currentCursor,
+            scrollable: true,
+            error: null,
+          });
+      } else {
+        return state;
+      }
     }
     case ActionTypes.GET_NEWER_ITEMS_ERROR: {
       return {

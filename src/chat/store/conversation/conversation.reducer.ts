@@ -17,7 +17,7 @@ export const conversationAdapter: EntityAdapter<Conversation> = createEntityAdap
 });
 
 export interface ConversationState extends EntityState<Conversation> {
-  joinedConversationId: string | null;
+  joinedConversationId: string | null; // set joined Id for redirecting to conversation detail
   joinedConversation: Conversation | null;
   searchedConversations: Conversation[] | [];
   doing?: boolean;
@@ -229,6 +229,8 @@ export function reducer(state = initialConversationState, action: Actions): Conv
       return conversationAdapter.upsertOne(
         conversation, {
         ...state,
+        joinedConversationId: conversation.uuid,
+        joinedConversation: conversation,
         doing: false,
         done: true,
         error: null,

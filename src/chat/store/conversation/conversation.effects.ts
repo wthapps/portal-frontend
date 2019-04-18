@@ -120,7 +120,7 @@ export class ConversationEffects {
       this.conversationService.create(action.payload).pipe(
         map(response => {
           const conversation = response.data.attributes;
-          return new ConversationActions.UpdateSuccess({conversation: conversation});
+          return new ConversationActions.CreateSuccess({conversation: conversation});
         }),
         catchError(error =>
           of(new ConversationActions.CreateError({ error }))

@@ -104,9 +104,15 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     this.store$.pipe(select(ConversationSelectors.getSearchedLinks), takeUntil(this.destroy$)).subscribe(links => {
       this.nextLinkSearch = links.next;
     });
-    this.store$.pipe(select(ConversationSelectors.selectJoinedConversationId), takeUntil(this.destroy$))
+    this.store$.pipe(
+      select(ConversationSelectors.selectJoinedConversationId),
+      filter(conversationId => conversationId != null),
+      takeUntil(this.destroy$))
       .subscribe((conversationId: any) => {
         this.conversationId = conversationId;
+        // this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversationId}));
+        console.log('conversationId:::', conversationId);
+        this.redirectToConversationDetails(conversationId);
     });
 
     this.loadConversations();
@@ -207,11 +213,7 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     event.stopPropagation();
     $('#chat-message-text').focus();
 
-    this.commonEventService.broadcast({
-      channel: 'MessageEditorComponent',
-      action: 'resetEditor'
-    });
-    this.router.navigate(['conversations', conversation.uuid]).then();
+    this.redirectToConversationDetails(conversation.uuid);
     this.notificationEventService.updateNotificationCount({count: conversation.notification_count, type: 'remove'});
   }
 
@@ -220,11 +222,12 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   createConversationCallback(conversation: any) {
-    this.store$.dispatch(new ConversationActions.CreateSuccess({conversation: conversation}));
+    console.log('CREATED CONVERSATION:::', conversation);
+    this.store$.dispatch(new ConversationActions.UpsertSuccess({conversation: conversation}));
     // Redirect to created conversation just in creator side
-    if ((this.authService.user.id === conversation.creator_id) && ['sent_request', 'accepted'].includes(conversation.status)) {
-      this.router.navigate(['/conversations', conversation.uuid]).then();
-    }
+    // if ((this.authService.user.id === conversation.creator_id) && ['sent_request', 'accepted'].includes(conversation.status)) {
+    //   this.redirectToConversationDetails(conversation.uuid);
+    // }
   }
 
   upsertConversationCallback(conversation: any) {
@@ -257,6 +260,10 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       payload: { selectedTab: 'all' },
       from: 'ZChatSidebarComponents'
     });
+  }
+
+  redirectToConversationDetails(conversationId: string) {
+    this.router.navigate(['conversations', conversationId]).then();
   }
 
   onCloseMenu() {

@@ -93,7 +93,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
         }
         const cursor = conversation.latest_message.cursor + 1;
         this.conversation = conversation;
-        console.log('SELECTED CONVERSATION:::', this.conversation);
+        console.log('SELECTED CONVERSATION:::', conversation.uuid, this.conversation);
         // update message cursor for joined conversation
         this.store$.dispatch(new MessageActions.SetState({ cursor: cursor}));
         this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversation.uuid}));
@@ -106,13 +106,19 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
       takeUntil(this.destroy$),
     ).subscribe(conversationId => {
       // Load messages for joined conversation
+      console.log('load conversation detail', conversationId);
+      this.conversationId = conversationId;
       this.store$.dispatch(new MessageActions.GetItems({
         path: `chat/conversations/${this.conversationId}/messages`, queryParams: {cursor: 0}
       }));
       // console.log('CONVERSATION ID:::', conversationId, this.conversationId);
       setTimeout(() => {
         // scroll to bottom
-        this.store$.dispatch(new MessageActions.SetState({scrollable: true}));
+        // this.store$.dispatch(new MessageActions.SetState({scrollable: true}));
+        this.commonEventService.broadcast({
+          channel: 'MessageEditorComponent',
+          action: 'resetEditor'
+        });
       }, 200);
       this.resetConversationNotifications();
     });
@@ -347,7 +353,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     }));
 
     // update chat notification count
-    if (this.conversation.notification_count > 0) {
+    if (this.conversation && this.conversation.notification_count > 0) {
       this.notificationEventService.updateNotificationCount({count: 1, type: 'remove'});
     }
   }
