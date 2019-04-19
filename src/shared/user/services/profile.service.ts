@@ -12,7 +12,6 @@ export class ProfileService {
   private _profile = new Subject<any>();
   private _myProfile = new Subject<any>();
 
-  private url = 'zone/social_networkd/users/';
   private newUrl = 'account/profiles';
   constructor(private apiBaseService: ApiBaseService,
               private userService: UserService,

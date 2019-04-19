@@ -1,3 +1,4 @@
+import { WTHNavigateService } from './../../services/wth-navigate.service';
 import { Component, Input, Output, EventEmitter, ViewChild, ContentChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { PUBLIC, BUSINESS, NONE } from '../../../contact/shared/card/card.constant';
@@ -28,7 +29,10 @@ export class CardDetailModalComponent {
   readonly SEX = Constants.sex;
   readonly EXPORT_TYPE = { csv: 'csv', vcard: 'vcard' };
 
-  constructor(public countryService: CountryService) {}
+  constructor(
+    public countryService: CountryService,
+    private navigateService: WTHNavigateService
+    ) {}
 
   open(options: any): void {
     this.modal.open();
@@ -37,6 +41,10 @@ export class CardDetailModalComponent {
   close(): void {
     this.closed.emit(true);
     this.modal.close();
+  }
+
+  goToChat(card) {
+    this.navigateService.navigateOrRedirect('conversations', 'chat', {user_id: card.id});
   }
 
   onEdit(editImage: boolean = false) {

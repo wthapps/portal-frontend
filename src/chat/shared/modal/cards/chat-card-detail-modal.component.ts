@@ -30,9 +30,6 @@ interface CardStatusResponse {
         <li>
           <a href="javascript:;" role="button" (click)="goToChat(card)"><i class="fa fa-comments-o" aria-hidden="true"></i> Send message</a>
         </li>
-        <li>
-            <a href="javascript:;" role="button" (click)="addBlacklist(card)"><i class="fa fa-ban" aria-hidden="true"></i> Blacklist</a>
-          </li>
       </ul>
     </li>
 </w-card-detail-modal>

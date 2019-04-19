@@ -21,11 +21,14 @@
               </a>
             </li>
             <li>
+                <a href="javascript:;" role="button" (click)="goToChat(card)"><i class="fa fa-comments-o" aria-hidden="true"></i> Send message</a>
+            </li>
+            <!-- <li>
               <a href="javascript:void(0);" (click)="onExport(EXPORT_TYPE.csv)"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
             </li>
             <li>
               <a href="javascript:void(0);" (click)="onExport(EXPORT_TYPE.vcard)"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to v-card</a>
-            </li>
+            </li> -->
             <li *ngIf="card.is_owner && card.card_type === BUSINESS">
               <a href="javascript:void(0);" (click)="onDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
             </li>
