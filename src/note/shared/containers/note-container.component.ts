@@ -1,6 +1,6 @@
 import { reducers } from './../reducers/index';
 import { ApiBaseService } from './../../../shared/services/apibase.service';
-import { Component, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 import { ZNoteService } from '../services/note.service';
 import { Store } from '@ngrx/store';
 import * as listReducer from '../reducers/features/list-mixed-entities';
@@ -23,7 +23,7 @@ const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
   styleUrls: ['note-container.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZNoteContainerComponent implements OnInit {
+export class ZNoteContainerComponent implements OnInit, OnChanges {
   @Input() breadcrumbs: any;
   @HostBinding('class') class = 'main-page-body';
   @ViewChild('dataView') dataView: WDataViewComponent;
@@ -52,44 +52,43 @@ export class ZNoteContainerComponent implements OnInit {
     }
   ];
 
-  otherActions = [
-    {
+  otherActions = {
+    edit: {
       active: true,
       icon: 'fa fa-pencil',
       text: 'Edit',
       action: 'edit'
     },
-    {
+    move_to_folder: {
       active: true,
       icon: 'fa fa-download',
       text: 'Move to folder',
       action: 'move_to_folder'
     },
-    {
-      active: true,
-      icon: 'fa fa-pencil',
-      text: 'Rename',
-      action: 'rename'
-    },
-    {
+    make_copy: {
       active: true,
       icon: 'fa fa-files-o',
       text: 'Make copy',
       action: 'make_copy'
     },
-    {
-      active: true,
+    divider: {
+      active: false,
+      divider: true,
+      action: ''
+    },
+    print: {
+      active: false,
       icon: 'fa fa-print',
       text: 'Print',
       action: 'print'
     },
-    {
-      active: true,
+    export_to_pdf: {
+      active: false,
       icon: 'fa fa-cloud-download',
       text: 'Export to PDF',
       action: 'export_to_pdf'
     }
-  ];
+  };
 
   constructor(
     private noteService: ZNoteService,
@@ -122,6 +121,104 @@ export class ZNoteContainerComponent implements OnInit {
         });
       }
     });
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+  }
+
+  validatePermission() {
+    if (!this.dataView) { return; }
+    const objects: any[] = this.dataView.selectedDocuments;
+    const path = this.route.routeConfig.path;
+
+    /*====================================
+    [Permission] validate
+    ====================================*/
+    // const permissonValidateObjects = (action, objs) => {
+    //   // check permission in each objects
+    //   objs.map((object: any) => {
+    //     // if permission is view turn off all acions edit
+    //     if (
+    //       object.permission === 'view' &&
+    //       (action.needPermission === 'edit' || action.needPermission === 'owner')
+    //     ) {
+    //       action.active = false;
+    //     }
+    //     if (object.permission === 'edit' && action.needPermission === 'owner') {
+    //       action.active = false;
+    //     }
+    //   });
+    // };
+    // Object.keys(this.otherActions).map((action: any) =>
+    //   permissonValidateObjects(this.otherActions[action], objects)
+    // );
+
+
+    /*====================================
+    [Path And Page] validate (shared-with-me, shared-by-me)
+    ====================================*/
+    const pathValidate = (action, currentPath) => {
+      // ==================
+      if (currentPath !== 'shared-by-me' && action.title === 'Stop Sharing') {
+        action.active = false;
+      }
+      if (
+        ['my-note'].includes(currentPath) &&
+        action.action === 'find_folder'
+      ) {
+        action.active = false;
+      }
+    };
+    Object.keys(this.otherActions).map((action: any) =>
+      pathValidate(this.otherActions[action], path)
+    );
+
+    /*====================================
+    [Objects_Number] validate
+    ====================================*/
+    if (objects.length > 1) {
+      this.otherActions.edit.active = false;
+    } else if (objects.length === 1) {
+      this.otherActions.edit.active = true;
+      this.otherActions.edit.text = objects[0].object_type === OBJECT_TYPE.FOLDER ? 'Rename' : 'Edit';
+    }
+
+    /*====================================
+    [Objects_Type] validate
+    ====================================*/
+    const folderSelected = objects.some((obj: any) =>
+      obj.object_type === OBJECT_TYPE.FOLDER
+    );
+    this.otherActions['make_copy'].active = !folderSelected;
+    this.otherActions['export_to_pdf'].active = !folderSelected && objects.length === 1;
+
+    /*====================================
+    [Favourite] validate
+    ====================================*/
+    // let allFavorite: any = true;
+    // const permissonValidateFavourites = (action, objs) => {
+    //   // check Favourite in each objects
+    //   objs.map((object: any) => {
+    //     if (action.title === 'Favourite') {
+    //       if (object.favourite === false) {
+    //         allFavorite = false;
+    //       }
+    //     }
+    //   });
+    // };
+    // Object.keys(this.otherActions).map((action: any) =>
+    //   permissonValidateFavourites(this.otherActions[action], objects)
+    // );
+    // if (allFavorite) {
+    //   this.otherActions.favourite.iconClass = 'fa fa-star';
+    // }
+    // if (!allFavorite) {
+    //   this.otherActions.favourite.iconClass = 'fa fa-star-o';
+    // }
+
+    this.otherActions['divider'].active = (this.otherActions['print'].active || this.otherActions['export_to_pdf'].active);
+
   }
 
   onNewNote() {
@@ -261,18 +358,6 @@ export class ZNoteContainerComponent implements OnInit {
         });
         break;
       }
-      case 'rename': {
-      // Apply for folder objects only
-        if (selectedObjects.length === 1 && selectedObjects[0].object_type === OBJECT_TYPE.FOLDER) {
-          this.commonEventService.broadcast({
-            channel: 'noteActionsBar',
-            action: 'note:folder:edit',
-            payload: selectedObjects[0]
-          });
-
-        }
-        break;
-      }
       case 'stop_sharing': {
         this.wthConfirm.confirm({
           message:
@@ -358,8 +443,7 @@ export class ZNoteContainerComponent implements OnInit {
     this.updateMenuFavorite(_.every(this.dataView.selectedDocuments, 'favorite'));
 
     // check menu view
-    const otherActionsEdit = _.find(this.otherActions, ['action', 'edit']);
-    otherActionsEdit.active = !(this.dataView.selectedDocuments.length > 1);
+    this.validatePermission();
   }
 
   private updateMenuFavorite(isFavorite: boolean) {

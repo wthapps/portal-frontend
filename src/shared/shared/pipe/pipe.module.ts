@@ -35,6 +35,7 @@ import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.
 import { UsernamePipe } from './username.pipe';
 import { CountryCode2ValuePipe } from './country-code-2-value.pipe';
 import { TrimPipe } from './trim.pipe';
+import { ObjectValuesPipe } from './object-values.pipe';
 
 @NgModule({
   imports: [CommonModule],
@@ -60,6 +61,7 @@ import { TrimPipe } from './trim.pipe';
     TimeFormatPipe,
     LinkifyPipe,
     FreeSpacePipe,
+    ObjectValuesPipe,
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
     PhoneCodeOnlyFlagPipe,
@@ -70,7 +72,7 @@ import { TrimPipe } from './trim.pipe';
     PhoneCodeToDisplayCodePipe,
     TrimPipe,
     UsernamePipe,
-    KeysPipe,
+    KeysPipe
   ],
   exports: [
     AddFirstCharacterPipe,
@@ -95,6 +97,7 @@ import { TrimPipe } from './trim.pipe';
     LinkifyPipe,
     FreeSpacePipe,
     StripHtmlPipe,
+    ObjectValuesPipe,
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
     PhoneCodeOnlyFlagPipe,
@@ -104,7 +107,7 @@ import { TrimPipe } from './trim.pipe';
     PhoneCodeToDisplayCodePipe,
     TrimPipe,
     UsernamePipe,
-    KeysPipe,
+    KeysPipe
   ],
   providers: []
 })

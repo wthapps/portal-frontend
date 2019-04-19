@@ -24,7 +24,7 @@ const FIELD_MAP = { owner: 'user.name' };
 export const getNotes = createSelector(
   getNotesEntities,
   context.getSortOptionContext,
-  (notes: Note[], sort: any) => {
+  (notes: { [id: number]: Note }, sort: any) => {
     let sortField = ['name', 'title'].includes(sort.field)
       ? 'name'
       : sort.field;
@@ -38,7 +38,7 @@ export const getNotes = createSelector(
 export const getFolders = createSelector(
   getFolderEntities,
   context.getSortOptionContext,
-  (notes: Folder[], sort: any) => {
+  (notes: { [id: number]: Folder }, sort: any) => {
     let sortField = ['name', 'title'].includes(sort.field)
       ? 'name'
       : sort.field;

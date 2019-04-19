@@ -49,10 +49,11 @@
               <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <ng-container *ngFor="let menu of otherActions">
-                <li *ngIf="menu.active">
+              <ng-container *ngFor="let menu of otherActions | objectValues">
+                <li *ngIf="menu.active && !menu.divider">
                   <a (click)="onMenuAction(menu.action)" href="#"><i [class]="menu.icon"></i> {{ menu.text }}</a>
                 </li>
+                <li *ngIf="menu.active && menu.divider" class="divider"></li>
               </ng-container>
             </ul>
           </li>
