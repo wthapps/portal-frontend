@@ -1,7 +1,8 @@
 @import "../../assets/styles/global";
 
 .my-notification-container {
-  padding: 20px 200px 10px 200px ;
+  padding-top: 20px;
+  padding-bottom: 10px;
 
   @media (max-width: $screen-xs-max) {
     padding: 5px;

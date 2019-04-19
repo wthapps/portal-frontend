@@ -26,6 +26,7 @@ export class WDataViewComponent implements OnChanges {
   @Input() viewMode = 'grid';
   @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadMoreCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() dblClick: EventEmitter<any> = new EventEmitter<any>();
   @ContentChild('viewBody') viewBodyTmpl: TemplateRef<any>;
   @ContentChild('viewHeader') viewHeaderTmpl: TemplateRef<any>;
   @ViewChild('container') container: SelectContainerComponent;
