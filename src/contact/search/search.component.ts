@@ -130,17 +130,18 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
         this.save();
         break;
       }
-      case 'import_contact': {
-        const user = event.payload;
-        this.contactService.importContact(user).then(
+      case 'import_contacts': {
+        const users = event.payload;
+        const uuids = users.map(u => u.uuid);
+        this.contactService.importContacts(uuids).then(
           (res) => {
-            this.contactService.createCallback(res.data);
+            this.contactService.addLocalContacts(res.data);
 
             // Remove imported user from user list
-            this.contacts = this.contacts.filter(ct => ct.uuid !== user.uuid);
-            this.toastsService.success(`Yay, import ${user.first_name} ${user.last_name} into contact book successfully`);
+            this.contacts = this.contacts.filter(ct => !uuids.includes(ct.uuid));
+            this.toastsService.success(`Yay, import ${users.length} user(s) into contact book successfully`);
           },
-          error => this.toastsService.danger(`Oops, cannot import ${user.first_name} ${user.last_name} into contact book. Please try again`)
+          error => this.toastsService.danger(`Oops, cannot import ${users.length} user(s) into contact book. Please try again`)
         );
         break;
       }

@@ -67,4 +67,9 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
       }
     });
   }
+
+  importToContact(data) {
+    const contacts = this.contactService.selectedObjects.length > 0 ? this.contactService.selectedObjects : [data];
+    this.emitEvent({action: 'import_contacts', payload: contacts});
+  }
 }

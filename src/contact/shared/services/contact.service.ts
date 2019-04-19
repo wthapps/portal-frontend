@@ -138,6 +138,11 @@ export class ZContactService extends BaseEntityService<any> {
     return this.apiBaseService.post('contact/wcontacts/import_contact', user).toPromise();
   }
 
+  /// uuids: user uuid list
+  importContacts(uuids): Promise<any> {
+    return this.apiBaseService.post('contact/wcontacts/import_contacts', {uuids}).toPromise();
+  }
+
   getSettings(): Observable<any> {
     return this.apiBaseService.post(`contact/wcontacts/get_settings`);
   }
@@ -550,6 +555,11 @@ export class ZContactService extends BaseEntityService<any> {
           this.followingLoad(this.nextLink);
         });
     } else { this.notifyContactsObservers(); }
+  }
+
+  addLocalContacts(contacts: Contact[]): void {
+    this.contacts.unshift(...contacts);
+    this.notifyContactsObservers();
   }
 
   createCallback(contact: any): void {
