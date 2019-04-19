@@ -40,7 +40,6 @@ export class ContactSelectionComponent implements OnInit {
   subscription: Subscription;
   searchSubscription: Subscription;
 
-
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
   private destroy$ = new Subject();
   private DEFAULT_OPTIONS = {
@@ -57,6 +56,17 @@ export class ContactSelectionComponent implements OnInit {
 
   ngOnInit() {
     this.searchSubscription = this.search$.pipe(
+      filter((event: any) => {
+        // Not search empty string
+        const query = event.query.toString().trim();
+        if (!query) {
+          this.suggestedUsers = [];
+          return;
+        } else {
+          event.query = query;
+          return event;
+        }
+      }),
       debounceTime(Constants.searchDebounceTime),
       distinctUntilChanged(),
       switchMap((searchEvent: any) => this.apiBaseService.get(`account/search?q=${searchEvent.query}`)))
@@ -103,9 +113,6 @@ export class ContactSelectionComponent implements OnInit {
     this.type = options.type || CONTACT_SELECTION.SHARE_CONTACT;
     this.title = options.title || 'Select Contacts';
     const path = options.path || `account/get_my_contacts_accounts?size=1000`;
-    // {
-    //   link = `zone/chat/group/${options.conversationSelected.group_id}/contacts_not_in_group`;
-
 
     this.loading = true;
     this.resetData();
@@ -160,6 +167,14 @@ export class ContactSelectionComponent implements OnInit {
         return;
       }
     });
+  }
+
+  handleKeyUp(event: any) {
+    console.log('keyup:::', event);
+  }
+
+  handleClear(event: any) {
+    console.log('clear:::', event);
   }
 
   toggleUserSelection(user: any) {

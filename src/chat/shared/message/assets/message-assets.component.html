@@ -80,7 +80,7 @@
           <ng-container *ngIf="item.file_type === 'Note::Note'">
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
   
-            <div class="message-assets-item-body" (click)="onClickItem(item)" >
+            <div class="message-assets-item-body" (click)="onClickItem(item)" (dblclick)="view(item)">
               <span class="bold wobject-box-title-note name-clickable"><i class="fa fa-sticky-note"></i>
                 <a [href]="noteUrl + '/' + item.uuid" class="note-title" target="_blank"> {{ item?.file?.name === '' ? 'Untitled' :
                   item?.file?.name }} </a> </span>
@@ -92,13 +92,13 @@
           <ng-container *ngIf="item.file_type === 'Common::GenericFile'">
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
   
-            <div class="message-assets-item-body text-fade" (click)="onClickItem(item)">
+            <div class="message-assets-item-body text-fade" (click)="onClickItem(item)" (dblclick)="view(item)">
               <div class="media">
                 <div class="media-left">
                   <i class="fa fa-file-archive-o fz30 mt5"></i>
                 </div>
                 <div class="media-body" [title]="item?.file?.full_name">
-                  <a [href]="item?.file?.url" target="_blank"> {{ item?.file?.full_name }} </a>
+                  <a href="javascript:void(0)"> {{ item?.file?.full_name }} </a>
                   <div><small class="text-fade"> {{ item?.file?.size | bytes:0 }}</small></div>              </div>
               </div>
             </div>

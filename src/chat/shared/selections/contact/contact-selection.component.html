@@ -5,8 +5,14 @@
   </bs-modal-header>
   <bs-modal-body>
     <div class="form-group">
-      <p-autoComplete #auto placeholder="Enter name or email" [multiple]="true" [minLength]="1" field="name" [(ngModel)]="selectedUsers"
-        [suggestions]="suggestedUsers" (onSelect)="selectUser($event)" (onUnselect)="deselectUser($event)" (completeMethod)="search$.next($event)">
+      <p-autoComplete #auto placeholder="Enter name or email" [multiple]="true" [minLength]="1" field="name"
+                      [(ngModel)]="selectedUsers"
+                      [suggestions]="suggestedUsers"
+                      dropdownMode="current"
+                      required="true"
+                      (onSelect)="selectUser($event)"
+                      (onUnselect)="deselectUser($event)"
+                      (completeMethod)="search$.next($event)">
         <ng-template let-user pTemplate="item">
           <div class="ui-help-clearfix user-row">
             <div class="avatar">

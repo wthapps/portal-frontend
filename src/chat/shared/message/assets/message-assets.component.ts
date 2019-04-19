@@ -298,6 +298,10 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       case 'Note::Note':
         window.open(`${this.noteUrl}/${item.uuid}`);
         break;
+      // Download file
+      default:
+        window.open(item.file.url);
+      break;
     }
   }
 

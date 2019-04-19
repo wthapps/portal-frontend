@@ -288,11 +288,21 @@ export function reducer(state = initialConversationState, action: Actions): Conv
     case ActionTypes.UPSERT_SUCCESS: {
       const conversation = action.payload.conversation;
 
-      return conversationAdapter.upsertOne(conversation, {
-        ...state,
-        isLoading: false,
-        error: null,
-      });
+      if (state.joinedConversationId && state.joinedConversationId === conversation.uuid) {
+        return conversationAdapter.upsertOne(conversation, {
+          ...state,
+          joinedConversationId: conversation.uuid,
+          joinedConversation: conversation,
+          isLoading: false,
+          error: null,
+        });
+      } else {
+        return conversationAdapter.upsertOne(conversation, {
+          ...state,
+          isLoading: false,
+          error: null,
+        });
+      }
     }
 
     case ActionTypes.UPSERT_ERROR: {
