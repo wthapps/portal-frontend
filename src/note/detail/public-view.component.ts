@@ -58,6 +58,7 @@ export class ZNotePublicViewComponent implements OnInit, AfterViewInit {
   currentTab: any = 'note';
   tooltip: any = Constants.tooltip;
   note: any;
+  visibleTab: 'comment' | 'attachment' | undefined = undefined;
 
   constructor(
     private apiBaseService: ApiBaseService,
@@ -105,6 +106,23 @@ export class ZNotePublicViewComponent implements OnInit, AfterViewInit {
 
     });
   }
+
+  handleActionEvents(event) {
+    switch (event) {
+      case 'showComments': {
+        this.visibleTab = (this.visibleTab === 'comment') ? undefined : 'comment';
+        break;
+      }
+      case 'openAttactments': {
+        this.visibleTab = (this.visibleTab === 'attachment') ? undefined : 'attachment';
+        break;
+      }
+      default: {
+
+      }
+    }
+  }
+
   raiseError() {
     this.wthConfirmService.confirm({
       message:

@@ -1,7 +1,7 @@
 <ul class="page-body-control-menu" *ngIf="show">
   <ng-template ngFor let-menu [ngForOf]="actionsMenu | mapToIterable">
     <li *ngIf="!menu.val.inDropDown">
-      <button [disabled]="!menu.val.show" href="javascript:;" class="{{menu.val.class}}" (click)="menu.val.action()"
+      <button [disabled]="!menu.val.show" type="button" class="{{menu.val.class}}" (click)="menu.val.action()"
          pTooltip="{{menu.val.tooltip}}" tooltipPosition="{{menu.val.tooltipPosition}}">
         <i class="{{menu.val.iconClass}}"></i>
       </button>

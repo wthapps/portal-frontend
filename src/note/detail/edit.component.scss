@@ -96,11 +96,11 @@ $note-editor-aside-w: 400px;
         &[data-size="24pt"] .ql-blank::before {
           font-size: 24pt;
         }
-        
+
         &[data-size="36pt"] .ql-blank::before {
           font-size: 36pt;
         }
-        
+
       }
     }
 
@@ -179,9 +179,10 @@ $note-editor-aside-w: 400px;
         right: 0;
       }
     }
-    
+
   }
   .note-editor-toolbar {
+    background-color: #fff;
     #quill-toolbar:not(.ql-toolbar) {
       display: none;
     }
@@ -280,7 +281,7 @@ $note-editor-aside-w: 400px;
       .ql-toolbar {
         &.ql-snow {
           @include flexbox;
-          @include justify-content(center);
+          @include justify-content(flex-start);
           padding-top: 10px;
           padding-bottom: 10px;
           .ql-formats {
@@ -334,9 +335,7 @@ $note-editor-aside-w: 400px;
     .note-editor-toolbar {
       @include order(2);
       @include box-shadow(0px -1px 1px -1px rgba(#000000, 0.3));
-      background-color: #fff;
 
-      
       .ql-picker.ql-expanded {
         .ql-picker-options {
           top: unset;
