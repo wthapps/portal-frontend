@@ -53,22 +53,23 @@
           </div>
           <div class="noti-item-content" (click)="navigate(conversation)">
             <div>
-              <span class="bold">{{ conversation?.name | maxLength:30 }}</span>
-              <br>
-              <span class="pt5 message emojione-sm">
-                      <ng-container *ngIf="conversation?.latest_message?.message_type == 'text'">
-                        <span [innerHtml]="conversation?.latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify | safeHtml"></span>
-                      </ng-container>
-                      <ng-container *ngIf="conversation?.latest_message?.message_type == 'request'">
-                        <span> Sent a request </span>
-                      </ng-container>
-                      <ng-container *ngIf="conversation?.latest_message?.message_type == 'file'">
-                        <span> Sent a file </span>
-                      </ng-container>
-                    </span>
-              <br>
-              <!--<small class="text-fade"> {{ conversation?.latest_message?.created_at | timeFormat }}-->
-              <!--</small>-->
+              <div class="conversation-name">
+                <p> {{ conversation?.name }}</p>
+              </div>
+              <div class="conversation-message">
+                <span class="message emojione-sm message-content">
+                  <ng-container *ngIf="conversation?.latest_message?.message_type == 'text'">
+                    <span [innerHtml]="conversation?.latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify | safeHtml"></span>
+                  </ng-container>
+                  <ng-container *ngIf="conversation?.latest_message?.message_type == 'request'">
+                    <span> Sent a request </span>
+                  </ng-container>
+                  <ng-container *ngIf="conversation?.latest_message?.message_type == 'file'">
+                    <span> Sent a file </span>
+                  </ng-container>
+                </span>
+              </div>
+              <small class="text-fade"> {{ conversation?.latest_message?.created_at | timeFormat }} </small>
             </div>
           </div>
           <div class="noti-item-action">

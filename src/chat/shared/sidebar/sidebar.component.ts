@@ -308,9 +308,8 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   markAllAsReadCallBack() {
-    // Clear notification count on Top right
-    // And current conversations' notification count as well
-    this.store$.dispatch(new ConversationActions.MarkAllAsReadSuccess({}));
+    // Clear notification count on Top right and conversation list's notification count as well
+    this.store$.dispatch(new ConversationActions.MarkAllAsRead({}));
   }
 
   trackById(index: number, conversation: any) {

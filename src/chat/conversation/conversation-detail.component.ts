@@ -352,10 +352,5 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.store$.dispatch(new ConversationActions.UpdateDisplay({
       id: this.conversationId, body: {conversation: {notification_count: 0}}
     }));
-
-    // update chat notification count
-    if (this.conversation && this.conversation.notification_count > 0) {
-      this.notificationEventService.updateNotificationCount({count: 1, type: 'remove'});
-    }
   }
 }
