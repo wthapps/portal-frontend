@@ -2,7 +2,7 @@
   <w-dataView-nav [showViewMode]="true"
                   (sortComplete)="onSortComplete($event)"
                   (viewComplete)="onViewComplete($event)">
-    <h4 class="title">My Note</h4>
+    <h4 class="title">{{ (context$ | async)?.pathTitle }}</h4>
   </w-dataView-nav>
   <ng-container *ngIf="data$ | async as list; else templateloading">
     <ng-container *ngIf="list?.length > 0; else templateNodata">
@@ -38,13 +38,13 @@
                            [selectedObjects]="dataView.selectedDocuments"
                            (clear)="dataView.container.clearSelection()">
         <ul class="nav-selection-actions">
-          <ng-container *ngFor="let menu of menuActions">
+          <ng-container *ngFor="let menu of menuActions | objectValues">
             <li *ngIf="menu.active">
               <button (click)="onMenuAction(menu.action)" class="btn btn-icon" type="button"><i [class]="menu.icon"></i>
               </button>
             </li>
           </ng-container>
-          <li class="dropdown">
+          <li class="dropdown" *ngIf="!noOtherActions">
             <button class="btn btn-icon" type="button" data-toggle="dropdown">
               <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
             </button>

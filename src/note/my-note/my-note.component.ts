@@ -26,7 +26,7 @@ export class ZNoteMyNoteComponent implements OnInit {
       type: context.SET_CONTEXT,
       payload: {
         page: this.noteConstants.PAGE_MY_NOTE,
-        pathTitle: 'My notes',
+        pathTitle: 'My Notes',
         permissions: this.noteConstants.PAGE_PERMISSIONS.MY_NOTE,
         noData: this.noteConstants.NO_DATA.MY_NOTE
       }
