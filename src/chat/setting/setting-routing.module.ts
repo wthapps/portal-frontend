@@ -7,11 +7,11 @@ import { ZChatSettingComponent } from './setting.component';
 @NgModule({
   imports: [
     RouterModule.forChild([
-      {
-        path: 'settings',
-        component: ZChatSettingComponent,
-        canActivate: [AuthGuard]
-      }
+      // {
+      //   path: 'settings',
+      //   component: ZChatSettingComponent,
+      //   canActivate: [AuthGuard]
+      // }
     ])
   ],
   exports: [RouterModule]

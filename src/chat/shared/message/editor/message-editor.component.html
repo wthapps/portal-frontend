@@ -3,6 +3,7 @@
                [placeholder]="conversation.blacklist ? placeholderBl : placeholder"
                [(ngModel)]="message.message"
                [ngModelOptions]="{standalone: true}"
+               [htmlResourcesFilter]="['img', 'video', 'audio', 'picture', 'source']"
                [isDisabled]="isDisabled"
                (onKeyUp)="handleKeyUp($event)" (onImagePaste)="handleImagePaste($event)">
     <p-header>

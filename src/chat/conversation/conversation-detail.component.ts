@@ -313,7 +313,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.contactSelectionService.open({
       type: 'ADD_MEMBER',
       title: 'Add Members',
-      path: `chat/conversations/${conversation.uuid}/members/my_contacts`
+      path: `chat/conversations/${conversation.uuid}/members/my_contacts`,
+      searchQueryParams: { conversation_id: conversation.uuid }
     });
   }
 

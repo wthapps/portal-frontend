@@ -39,6 +39,8 @@ export class ContactSelectionComponent implements OnInit {
 
   subscription: Subscription;
   searchSubscription: Subscription;
+  searchQueryParams = null;
+
 
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
   private destroy$ = new Subject();
@@ -69,7 +71,13 @@ export class ContactSelectionComponent implements OnInit {
       }),
       debounceTime(Constants.searchDebounceTime),
       distinctUntilChanged(),
-      switchMap((searchEvent: any) => this.apiBaseService.get(`account/search?q=${searchEvent.query}`)))
+      switchMap((searchEvent: any) => {
+        let query = { q: searchEvent.query };
+        if (this.searchQueryParams) {
+          query = { ...query, ...this.searchQueryParams };
+        }
+        return this.apiBaseService.get(`account/search`, query);
+      }))
       .subscribe((res: any) => {
         if (!this.selectedUsers) {
           this.resetData();
@@ -112,6 +120,7 @@ export class ContactSelectionComponent implements OnInit {
   open(options: any) {
     this.type = options.type || CONTACT_SELECTION.SHARE_CONTACT;
     this.title = options.title || 'Select Contacts';
+    this.searchQueryParams = options.searchQueryParams || null;
     const path = options.path || `account/get_my_contacts_accounts?size=1000`;
 
     this.loading = true;

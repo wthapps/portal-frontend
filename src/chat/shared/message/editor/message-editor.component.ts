@@ -271,7 +271,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       content_type: type,
       meta_data: {}
     });
-
     const fakeMessage = this.chatMessageService.create(this.conversation.id, message);
     const uploadedMessage = this.uploadService.uploadPhotos([file]).toPromise();
     Promise.all([fakeMessage, uploadedMessage]).then(([fake, uploaded]) => {

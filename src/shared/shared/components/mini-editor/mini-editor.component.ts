@@ -48,6 +48,12 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
     @Input() debug: string;
     @Input() isDisabled = true;
 
+     /** this will remove image/video/audio
+     * input value must be array of below values
+     * 'img', 'video', 'audio', 'picture', 'source'
+     */
+    @Input() htmlResourcesFilter = null;
+
     @Output() onInit: EventEmitter<any> = new EventEmitter();
 
     value: string;
@@ -68,6 +74,7 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
         const defaultModule  = {toolbar: toolbarElement};
         const modules = this.modules ? {...defaultModule, ...this.modules} : defaultModule;
 
+        console.log('modules:::', modules);
         this.extendClipboard(this);
 
         this.quill = new Quill(editorElement, {
@@ -104,6 +111,15 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
         this.quill.keyboard.addBinding({ key: 'escape'}, function(range, context) {
           this.onKeyUp.emit({keyCode: KEYCODE.escape});
         }.bind(this));
+
+        // Quill clipboard
+        if (this.htmlResourcesFilter && this.htmlResourcesFilter.length > 0) {
+          this.htmlResourcesFilter.forEach((filterTag: string) => {
+            this.quill.clipboard.addMatcher(filterTag, function (node, delta) {
+              return new Delta();
+            });
+          });
+        }
 
         this.quill.on('text-change', (delta, oldContents, source) => {
             if (source === 'user') {
@@ -164,6 +180,9 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
 
             const dataClipboard1 = e.clipboardData.types;
             let fileClipboard: any;
+
+            console.log('paste data', dataClipboard1);
+
             if (dataClipboard1[0].match('Files')) {
               if (e.clipboardData.items[0].type.match('image/*')) {
                 fileClipboard = e.clipboardData.items[0].getAsFile();
@@ -178,6 +197,7 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
             this.quill.selection.update(Quill.sources.SILENT);
             setTimeout(() => {
               if (dataClipboard1[0].match('text/*')) {
+                console.log('paste text', e);
                 delta = delta.concat(this.convert()).delete(range.length);
                 this.quill.updateContents(delta, Quill.sources.USER);
                 this.quill.setSelection(
