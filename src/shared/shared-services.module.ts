@@ -1,9 +1,4 @@
-import {
-  NgModule,
-  ModuleWithProviders,
-  SkipSelf,
-  Optional
-} from '@angular/core';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
@@ -70,7 +65,7 @@ export class SharedServicesModule {
   constructor(
     @Optional()
     @SkipSelf()
-    parentModule: SharedServicesModule
+      parentModule: SharedServicesModule
   ) {
     if (parentModule) {
       throw new Error(

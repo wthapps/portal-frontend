@@ -14,36 +14,45 @@
     }
   }
   .objects-main-nav {
-    @include flexbox;
-    @include justify-content(space-between);
-    @include align-items(center);
     margin: 30px 30px 0;
-    .title {
-      margin: 0;
-    }
-    .action {
-      @include flexbox;
-      a {
-        text-decoration: none;
-      }
-      .slider {
-        @include flexbox;
-        @include align-items(center);
-        margin: 0 20px;
-      }
-    }
   }
-
   .objects-main-content {
-    @include flex(1);
-    position: relative;
     .content-grid {
       padding: 30px 20px;
     }
-    .content-list {
-      .content-item-header {
-        margin-top: 10px;
-      }
+  }
+}
+
+.objects-main-nav {
+  @include flexbox;
+  @include justify-content(space-between);
+  @include align-items(center);
+  margin: 15px 15px 0;
+  .title {
+    margin: 0;
+  }
+  .action {
+    @include flexbox;
+    a {
+      text-decoration: none;
+    }
+    .slider {
+      @include flexbox;
+      @include align-items(center);
+      margin: 0 20px;
+    }
+  }
+}
+
+.objects-main-content {
+  @include flex(1);
+  position: relative;
+  .content-grid {
+    padding-top: 15px;
+  }
+  .content-list {
+    .content-item-header {
+      margin-top: 10px;
     }
   }
 }

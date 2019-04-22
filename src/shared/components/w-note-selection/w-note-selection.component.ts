@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
-import { WNoteSelectionService } from '@shared/components/w-note-selection/w-note-selection.service';
-import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { Media } from '@shared/shared/models/media.model';
-import { Note } from '@shared/shared/models/note.model';
-import { BsModalComponent } from 'ng2-bs3-modal';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { WDataViewComponent } from '../../../sample/shared/components/w-dataView/w-dataView.component';
+import { Constants } from '@shared/constant';
 import { Observable } from 'rxjs';
+import { WNoteSelectionService } from '@shared/components/w-note-selection/w-note-selection.service';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { takeUntil } from 'rxjs/operators';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 @Component({
   selector: 'w-note-selection',
@@ -18,6 +17,14 @@ import { takeUntil } from 'rxjs/operators';
 
 export class WNoteSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
+  @ViewChild('dataView') dataView: WDataViewComponent;
+  tooltip: any = Constants.tooltip;
+  data$: Observable<any>;
+  next: string;
+
+  title: string;
+
+  searchShow: boolean;
   tabs: WTab[] = [
     {
       name: 'My Note',
@@ -42,32 +49,20 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     }
   ];
   currentTab = 'my_note'; // my_note, favourites, shared_with_me
-
-  // search
-  searchShow: Boolean = false;
-  searchText: string;
-
-  // end search
-  view$: Observable<string>;
-  notes$: Observable<Note[]>;
-  selectedNotes$: Observable<Media[]>;
-  isLoading: boolean;
-  url: string;
-  next: any;
-
-  constructor(private noteSelectionService: WNoteSelectionService,
-              private objectListService: WObjectListService) {
-    this.notes$ = this.noteSelectionService.notes$;
-    this.selectedNotes$ = this.objectListService.selectedObjects$;
-    this.view$ = this.objectListService.view$;
+  constructor(private dataService: WNoteSelectionService) {
+    this.data$ = this.dataService.data$;
+    this.updateTitle();
   }
 
   ngOnInit(): void {
-    this.noteSelectionService.open$
+    this.dataService.open$
       .pipe(takeUntil(componentDestroyed(this)))
       .subscribe((res: any) => {
+        console.log(res);
         if (res) {
-          this.open();
+          this.next = null;
+          this.modal.open().then();
+          this.getDataAsync().then();
         }
       });
   }
@@ -75,70 +70,84 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  open() {
-    this.modal.open().then();
-    this.url = '/note/v1/mixed_entities?parent_id=null';
-    this.next = this.url;
-    this.initView();
-    this.getData();
+  onModalClose(event) {
+    console.log(event);
+    this.dataService.close();
   }
 
-  initView() {
-    this.objectListService.setSortOrderGroup('asc');
+  async getDataAsync() {
+    const data = await this.dataService.getData(this.next).toPromise();
+    this.next = data.meta.links.next;
   }
 
-  getData() {
-    this.isLoading = true;
-    this.noteSelectionService.getData(this.url)
-      .subscribe(
-        (res: any) => {
-          if (res && res.meta) {
-            this.next = res.meta.links.next;
-            this.url = this.next;
-          }
-        },
-        err => console.log(err),
-        () => this.isLoading = false
-      );
-  }
-
-  onCompleteLoadMore(event: boolean) {
+  onLoadMoreCompleted(event: any) {
+    console.log(event);
     if (event && this.next) {
-      this.getData();
+      this.getDataAsync().then();
     }
   }
 
-  /**
-   * Search
-   * @param e
-   */
-  onSearchEnter(e: any) {
-    this.searchText = e.search;
+  async onSortComplete(event: any) {
+    console.log(event);
+    const data = await this.dataService.sort(this.next, event).toPromise();
+    this.next = data.meta.links.next;
   }
 
-  onSearchEscape(e?: any) {
-    if (e) {
-      this.searchShow = false;
-      this.searchText = null;
-    }
+  onViewComplete(event: any) {
+    this.dataView.viewMode = event;
+    this.dataView.container.update();
+    this.dataView.updateView();
   }
-
-  /**
-   * end Search
-   */
 
   tabAction(event: any) {
-    this.noteSelectionService.clear();
+    if (this.currentTab == event.link) {
+      return false;
+    }
+
+    this.dataService.clear();
     this.currentTab = event.link;
+    this.updateTitle();
+
+    switch (this.currentTab) {
+      case 'my_note':
+        this.next = '/note/v1/mixed_entities?parent_id=null';
+        // this.tabMyNote();
+        // /note/v1/mixed_entities?parent_id=null
+        break;
+      case 'favourites':
+        this.next = '/note/v1/mixed_entities?favourite=true';
+        // this.tabFavourites();
+        // /note/v1/mixed_entities?favourite=true
+        break;
+      case 'shared_with_me':
+        this.next = '/note/v1/mixed_entities?shared_with_me=true';
+        // this.tabSharedWithMe();
+        // /note/v1/mixed_entities?shared_with_me=true
+        break;
+    }
+    this.getDataAsync().then();
   }
 
-  onInsert() {
-    this.noteSelectionService.setSelectedNotes(this.objectListService.getSelectedObjects());
-    this.noteSelectionService.clear();
+  updateTitle() {
+    const result = this.tabs.find(tab => tab.link === this.currentTab);
+    this.title = result.name;
   }
 
-  dismiss(event: any): void {
-    console.log('Post Photo Select Component DISMISSED', event);
-    this.noteSelectionService.clear();
+  onDblClick(event) {
+  }
+
+  onSelectCompleted() {
+
+    // update icon favorite
+    // this.updateMenuFavorite(_.every(this.dataView.selectedDocuments, 'favorite'));
+
+    // check menu view
+    // const otherActionsEdit = _.find(this.otherActions, ['action', 'edit']);
+    // otherActionsEdit.active = !(this.dataView.selectedDocuments.length > 1);
+  }
+
+  private updateMenuFavorite(isFavorite: boolean) {
+    // const menuActionsIndex = this.menuActions.findIndex(x => x.action === 'favorite');
+    // this.menuActions[menuActionsIndex].icon = isFavorite ? 'fa fa-star' : 'fa fa-star-o';
   }
 }
