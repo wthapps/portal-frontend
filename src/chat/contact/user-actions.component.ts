@@ -18,8 +18,4 @@ export class UserActionsComponent {
   chat(user: any) {
     this.onChat.emit(user);
   }
-
-  remove(user: any) {
-    this.onRemove.emit(user);
-  }
 }

@@ -40,6 +40,7 @@ export class ContactSelectionComponent implements OnInit {
   subscription: Subscription;
   searchSubscription: Subscription;
   searchQueryParams = null;
+  searchable = true;
 
 
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
@@ -120,6 +121,7 @@ export class ContactSelectionComponent implements OnInit {
   open(options: any) {
     this.type = options.type || CONTACT_SELECTION.SHARE_CONTACT;
     this.title = options.title || 'Select Contacts';
+    this.searchable = options.searchable === false ? false : true;
     this.searchQueryParams = options.searchQueryParams || null;
     const path = options.path || `account/get_my_contacts_accounts?size=1000`;
 

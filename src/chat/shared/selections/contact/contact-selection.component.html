@@ -4,32 +4,34 @@
     <h4 class="modal-title"> {{ title }}</h4>
   </bs-modal-header>
   <bs-modal-body>
-    <div class="form-group">
-      <p-autoComplete #auto placeholder="Enter name or email" [multiple]="true" [minLength]="1" field="name"
-                      [(ngModel)]="selectedUsers"
-                      [suggestions]="suggestedUsers"
-                      dropdownMode="current"
-                      required="true"
-                      (onSelect)="selectUser($event)"
-                      (onUnselect)="deselectUser($event)"
-                      (completeMethod)="search$.next($event)">
-        <ng-template let-user pTemplate="item">
-          <div class="ui-help-clearfix user-row">
-            <div class="avatar">
-              <a href="javascript:void(0)">
-                <img class="img-circle small" [alt]="user.name" [src]="user.profile_image">
-              </a>
+    <ng-container *ngIf="searchable">
+      <div class="form-group">
+        <p-autoComplete #auto placeholder="Enter name or email" [multiple]="true" [minLength]="1" field="name"
+                        [(ngModel)]="selectedUsers"
+                        [suggestions]="suggestedUsers"
+                        dropdownMode="current"
+                        required="true"
+                        (onSelect)="selectUser($event)"
+                        (onUnselect)="deselectUser($event)"
+                        (completeMethod)="search$.next($event)">
+          <ng-template let-user pTemplate="item">
+            <div class="ui-help-clearfix user-row">
+              <div class="avatar">
+                <a href="javascript:void(0)">
+                  <img class="img-circle small" [alt]="user.name" [src]="user.profile_image">
+                </a>
+              </div>
+              <div class="name">
+                <a class="text-link" href="javascript:void(0)">
+                  <p class="mb0">{{ user.name }}</p>
+                </a>
+                <span *ngIf="user.new" class="text-color-light text-small"> new person</span>
+              </div>
             </div>
-            <div class="name">
-              <a class="text-link" href="javascript:void(0)">
-                <p class="mb0">{{ user.name }}</p>
-              </a>
-              <span *ngIf="user.new" class="text-color-light text-small"> new person</span>
-            </div>
-          </div>
-        </ng-template>
-      </p-autoComplete>
-    </div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+    </ng-container>
     <ng-container *ngIf="!loading; else loadingBlock">
       <div class="content-overflow">
         <div class="row media-user-list-group" *ngIf="contacts">

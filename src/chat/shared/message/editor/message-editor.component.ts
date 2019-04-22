@@ -282,7 +282,8 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   openContactsSelection() {
     this.contactSelectionService.open({
       type: 'SHARE_CONTACT',
-      title: 'Select Contacts'
+      title: 'Select Contacts',
+      searchable: false
     });
   }
 
