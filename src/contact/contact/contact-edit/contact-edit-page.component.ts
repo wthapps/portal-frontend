@@ -244,7 +244,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
         const emails = event.payload.emails;
 
         this.public_cards = this.public_cards.filter(card => emails.includes(card.email));
-        const user_ids = this.public_cards.map(card => card.user_id);
+        const user_ids = this.public_cards.map(card => card.id);
         this.business_cards = this.business_cards.filter(card => user_ids.includes(card.user_id));
         this.checkEmails([event.payload.item.value]);
         break;
