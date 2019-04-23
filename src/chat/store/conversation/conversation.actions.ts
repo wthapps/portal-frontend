@@ -196,7 +196,7 @@ export class Update implements Action {
 export class UpdateSuccess implements Action {
   readonly type = ActionTypes.UPDATE_SUCCESS;
 
-  constructor(public payload: any = null) { }
+  constructor(public payload: { conversation: any }) { }
 }
 
 export class UpdateError implements Action {

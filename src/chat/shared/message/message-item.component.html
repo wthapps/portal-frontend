@@ -91,7 +91,7 @@
   <!-- photo type-->
   <div class="wapper message-item-content-photo" *ngIf="message.file?.object_type == 'Media::Photo'">
     <figure>
-      <a href="javascript:void(0);" (click)="onPreviewPhoto(message)">
+      <a href="javascript:void(0);" (click)="preview(message)">
         <img [src]="message.file?.url" alt="">
       </a>
     </figure>
@@ -99,7 +99,7 @@
   <!-- video type-->
   <div class="wapper message-item-content-photo" *ngIf="message.file?.object_type == 'Media::Video'">
     <figure>
-      <div class="photo-box-figure-in can-click" (click)="onPreviewPhoto(message)">
+      <div class="photo-box-figure-in can-click" (click)="preview(message)">
         <img [src]="message.file?.thumbnail_url" alt="">
         <i class="fa fa-play-circle-o"></i>
       </div>

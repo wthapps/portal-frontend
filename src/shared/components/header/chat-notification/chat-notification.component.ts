@@ -3,8 +3,6 @@ import { Constants } from '@shared/constant';
 import { WTHNavigateService } from '@shared/services/wth-navigate.service';
 import { NotificationService } from '@shared/services/notification.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
-import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
-import { HandlerService } from '@shared/services/handler.service';
 import { Conversation } from '@chat/shared/models/conversation.model';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';

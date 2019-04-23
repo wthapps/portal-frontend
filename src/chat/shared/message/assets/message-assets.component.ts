@@ -24,6 +24,7 @@ import { AppState, ConversationActions } from '@chat/store';
 import { MemberService } from '@chat/shared/services';
 import { MessageActions } from '@chat/store/message';
 import * as ConversationSelectors from '@chat/store/conversation/conversation.selectors';
+import { MessageEventService } from '@chat/shared/message';
 
 
 @Component({
@@ -111,6 +112,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     private contactSelectionService: ContactSelectionService,
     private store$: Store<AppState>,
     private memberService: MemberService,
+    private messageEventService: MessageEventService,
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
     this.currentUser = userService.getSyncProfile();
@@ -190,11 +192,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   delete(message: any) {
-    this.store$.dispatch(new MessageActions.Delete({
-      conversationId: this.conversation.uuid,
-      message: message
-    }));
-    this.messageAssetsService.removeMedia(message);
+    this.messageEventService.delete({ data: message });
   }
 
   viewProfile(user: any) {
@@ -281,19 +279,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     switch (item.file_type) {
       case 'Media::Photo':
       case 'Media::Video':
-        this.router.navigate([{
-          outlets: {
-            modal: [
-              'preview',
-              item.file.uuid,
-              {
-                object: 'conversation',
-                parent_uuid: this.conversation.uuid,
-                only_preview: false
-              }
-            ]
-          }
-        }], { queryParamsHandling: 'preserve', preserveFragment: true });
+        this.messageEventService.preview({message: item});
         break;
       case 'Note::Note':
         window.open(`${this.noteUrl}/${item.uuid}`);

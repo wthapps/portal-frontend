@@ -256,17 +256,23 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.UPDATE_SUCCESS: {
       const conversation = action.payload.conversation;
-
-      return conversationAdapter.updateOne({
-        id: conversation.id,
-        changes: conversation
-      }, {
-        ...state,
-        joinedConversation: {
-          ...state.joinedConversation,
-          ...conversation
-        }
-      });
+      if (state.joinedConversationId === conversation.uuid) {
+        return conversationAdapter.updateOne({
+          id: conversation.id,
+          changes: conversation
+        }, {
+          ...state,
+          joinedConversation: {
+            ...state.joinedConversation,
+            ...conversation
+          }
+        });
+      } else {
+        return conversationAdapter.updateOne({
+          id: conversation.id,
+          changes: conversation
+        }, state);
+      }
     }
 
     case ActionTypes.UPDATE_ERROR: {

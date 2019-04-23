@@ -20,7 +20,6 @@ import { WUploader } from '@shared/services/w-uploader';
 import { Message } from '@chat/shared/models/message.model';
 import { CommonEventHandler } from '@shared/services/common-event/common-event.handler';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
-import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 import * as ConversationSelectors from '@chat/store/conversation/conversation.selectors';
 import { AppState } from '@chat/store';
 import * as ConversationActions from '@chat/store/conversation/conversation.actions';
@@ -34,6 +33,7 @@ import { MESSAGE_DELETE, MessageEventService } from '@chat/shared/message';
 import { UserEventService } from '@shared/user/event';
 import { NotificationEventService } from '@shared/services/notification';
 import { MemberService } from '@chat/shared/services';
+import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
 
 @Component({
   selector: 'conversation-detail',
@@ -58,10 +58,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   conversation: any;
 
   constructor(
-    private chatService: ChatService,
     public commonEventService: CommonEventService,
-    private chatConversationService: ChatConversationService,
-    private chatMessageService: ChatMessageService,
     private router: Router,
     private route: ActivatedRoute,
     public userService: UserService,
@@ -73,6 +70,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     private websocketService: WebsocketService,
     private contactSelectionService: ContactSelectionService,
     private messageEventService: MessageEventService,
+    private messageAssetService: MessageAssetsService,
     private userEventService: UserEventService,
     private notificationEventService: NotificationEventService,
     private memberService: MemberService
@@ -195,6 +193,29 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
 
   handleMessageEvents() {
+    // Preview message
+    this.messageEventService.preview$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+      const message = payload.message;
+      switch (message.file_type) {
+        case 'Media::Photo':
+        case 'Media::Video':
+          this.router.navigate([{
+            outlets: {
+              modal: [
+                'preview',
+                message.file.uuid,
+                {
+                  object: 'conversation',
+                  parent_uuid: this.conversation.uuid,
+                  only_preview: false
+                }
+              ]
+            }
+          }], { queryParamsHandling: 'preserve', preserveFragment: true });
+          break;
+      }
+    });
+
     // Update message
     this.messageEventService.update$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
       this.store$.dispatch(new MessageActions.Update({ conversationId: this.conversationId, message: payload.data }));
@@ -203,6 +224,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     // Delete message
     this.messageEventService.delete$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
       this.store$.dispatch(new MessageActions.Delete({ conversationId: this.conversationId, message: payload.data }));
+      this.messageAssetService.removeMedia(payload.data);
     });
   }
 
@@ -324,21 +346,6 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
   redirectToChatHome() {
     this.router.navigate(['conversations']).then();
-  }
-
-  drop(e: any) {
-    e.preventDefault();
-    e.stopPropagation();
-    const data = e.dataTransfer.files;
-    if (data.length > 0) {
-      this.chatService.createUploadingFile(data);
-    }
-    return false;
-  }
-
-  drag(e: any) {
-    e.preventDefault();
-    e.stopPropagation();
   }
 
   private invalidConversation(conversation: any) {

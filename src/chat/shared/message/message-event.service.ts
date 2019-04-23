@@ -5,7 +5,8 @@ import {
   MESSAGE_COPY,
   MESSAGE_DELETE, MESSAGE_EDIT,
   MESSAGE_QUOTE,
-  MESSAGE_UPDATE
+  MESSAGE_UPDATE,
+  MESSAGE_PREVIEW
 } from '@chat/shared/message/message-event.constant';
 import { EventData } from '@shared/base-event';
 
@@ -15,6 +16,14 @@ export class MessageEventService {
 
   constructor() {
     this.eventSubject = new Subject<EventData>();
+  }
+
+  preview(payload?: { message: any }) {
+    this.broadcast(MESSAGE_PREVIEW, payload);
+  }
+
+  get preview$(): Observable<any> {
+    return this.on(MESSAGE_PREVIEW);
   }
 
   edit(payload?: any) {

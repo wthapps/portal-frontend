@@ -1,10 +1,9 @@
 import { UserService } from './../../shared/services/user.service';
 import { ZMediaPreviewComponent } from './../../shared/components/w-media-preview/media-preview.component';
-import { Component, ViewChild, Input } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Constants } from '@shared/constant';
-import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 import { User } from '@shared/shared/models';
-import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { MessageEventService } from '@chat/shared/message';
 
 @Component({
   selector: 'chat-media-preview',
@@ -18,24 +17,19 @@ export class ChatMediaPreviewComponent {
   user: User;
 
   constructor(
-    private chatMessageService: ChatMessageService,
-    private toastsService: ToastsService,
-    private userService: UserService
+    private userService: UserService,
+    private messageEventService: MessageEventService,
+
   ) {
       this.user = userService.getSyncProfile();
   }
 
   download() {
-    this.mediaPreview.download();
+    this.mediaPreview.download({module: 'chat', object_id: this.parent.id, object_type: this.parent.object_type});
   }
 
   removeMessage() {
-    const { group_id, id} = this.parent;
-    this.chatMessageService.deleteMessage(group_id, id).toPromise()
-    .then(() => {
-        this.toastsService.success('You have removed this message successfully');
-        this.mediaPreview.back();
-    });
-
+    this.messageEventService.delete({ data: this.parent });
+    this.mediaPreview.back();
   }
 }

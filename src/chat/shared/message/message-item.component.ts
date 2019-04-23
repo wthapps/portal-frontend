@@ -55,22 +55,25 @@ export class MessageItemComponent implements OnInit {
     // console.log(this.message);
   }
 
-  onPreviewPhoto(message: any) {
-    if (!_.get(message, 'file.uuid')) { return; }
-    // const currentConversation = this.storageService.get(CONVERSATION_SELECT);
-    this.router.navigate([{
-      outlets: {
-        modal: [
-          'preview',
-          message.file.uuid,
-          {
-            object: 'conversation',
-            parent_uuid: _.get(this.selectedConversation, 'group_uuid'),
-            only_preview: true
-          }
-        ]
-      }
-    }], { queryParamsHandling: 'preserve', preserveFragment: true });
+  preview(message: any) {
+    this.messageEventService.preview({
+      message: message
+    });
+    // if (!_.get(message, 'file.uuid')) { return; }
+    // // const currentConversation = this.storageService.get(CONVERSATION_SELECT);
+    // this.router.navigate([{
+    //   outlets: {
+    //     modal: [
+    //       'preview',
+    //       message.file.uuid,
+    //       {
+    //         object: 'conversation',
+    //         parent_uuid: _.get(this.selectedConversation, 'group_uuid'),
+    //         only_preview: true
+    //       }
+    //     ]
+    //   }
+    // }], { queryParamsHandling: 'preserve', preserveFragment: true });
   }
 
   doAction(event: CommonEvent) {

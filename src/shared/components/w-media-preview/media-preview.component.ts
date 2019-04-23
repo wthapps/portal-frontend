@@ -80,7 +80,7 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
   openModalShare: (input: any) => void;
   onEditShare: (e: SharingModalResult, sharing: any) => void;
 
-  downloadMedia: (media: any) => void;
+  downloadMedia: (media: any, options?: any) => void;
   loadModalComponent: (component: any) => void;
 
   openEditModal: (object: any) => void;
@@ -305,7 +305,7 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
         permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          this.downloadMedia([this.object]);
+          this.downloadMedia([this.object], null);
         },
         class: '',
         liclass: '',
@@ -331,8 +331,8 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
     };
   }
 
-  download() {
-    this.downloadMedia([this.object]);
+  download(options: any = null) {
+    this.downloadMedia([this.object], options);
   }
 
   // onPrev: (term) => void;
