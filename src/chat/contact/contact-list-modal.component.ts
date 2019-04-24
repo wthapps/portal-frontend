@@ -67,11 +67,11 @@ export class ContactListModalComponent extends CommonEventHandler implements OnI
   }
 
   ngOnInit() {
-    this.modalService.open$.pipe(takeUntil(this.destroy$)).subscribe(payload => {
-      this.modal.open(payload);
-      this.selectedTab = payload.selectedTab || 'all';
-      this.selectCurrentTab(this.selectedTab);
-    });
+    this.commonEventService.filter(
+      (event: CommonEvent) => event.channel === 'closeModal')
+      .pipe(takeUntil(this.destroy$)).subscribe(() => {
+        this.modal.close();
+      });
   }
 
   open(event: CommonEvent) {

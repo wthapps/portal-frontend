@@ -10,6 +10,7 @@ import { AppState } from '@chat/store';
 import * as ConversationActions from '@chat/store/conversation/conversation.actions';
 import { UserService } from '@shared/services';
 import { ContactSelectionService } from './../shared/selections/contact/contact-selection.service';
+import { ModalService } from '@shared/components/modal/modal-service';
 
 @Component({
   templateUrl: 'conversation-list.component.html'
@@ -21,12 +22,14 @@ export class ConversationListComponent implements OnInit {
     private userService: UserService,
     private userEventService: UserEventService,
     private route: ActivatedRoute,
+    private modalService: ModalService,
     private contactSelectionService: ContactSelectionService) {
       this.route.queryParamMap.subscribe(queryParams => {
         const user_id = queryParams.get('user_id');
         if (user_id) {
           // create convesation with above user
           this.userEventService.createChat({id: user_id});
+          this.modalService.close();
         }
       });
     }

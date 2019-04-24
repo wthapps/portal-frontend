@@ -77,7 +77,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.visibilityService.hiddenState$.pipe(
       takeUntil(this.destroy$)
     ).subscribe(hidden => {
-      console.log('test get out of date data');
       this.handleBrowserState(!hidden);
     });
 

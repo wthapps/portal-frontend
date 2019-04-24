@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 
 import { ProfileService } from '@shared/user/services';
 import { UserEventService } from '@shared/user/event';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 interface CardStatusResponse {
@@ -47,6 +47,7 @@ export class ZChatCardDetailModalComponent implements OnDestroy {
     private api: ApiBaseService,
     private profileService: ProfileService,
     private toastsService: ToastsService,
+    private commonEventService: CommonEventService,
     private userEventService: UserEventService) {
 
   }
@@ -72,6 +73,7 @@ export class ZChatCardDetailModalComponent implements OnDestroy {
 
   goToChat(user) {
     this.userEventService.createChat(user);
+    this.commonEventService.broadcast({ channel: 'closeModal' });
     this.cardDetailModal.close();
   }
 
