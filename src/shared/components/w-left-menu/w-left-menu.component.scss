@@ -58,6 +58,7 @@ $active-color: red;
   .menuleft-bottom {
     padding: 5px 10px;
   }
+
   .menuleft-item {
     @include flexbox;
     @include justify-content(space-between);
@@ -103,6 +104,13 @@ $active-color: red;
       //background-color: #e5e5e5;
       > a {
         color: $theme-color;
+      }
+    }
+    &.menuleft-topitem {
+      border-bottom: 1px solid $line;
+      > a {
+        padding-top: 15px;
+        padding-bottom: 15px;
       }
     }
   }

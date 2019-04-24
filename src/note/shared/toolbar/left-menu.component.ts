@@ -2,14 +2,15 @@ import {
   Component,
   OnDestroy, Renderer2
 } from '@angular/core';
-import { take } from 'rxjs/operators';
-import { Constants } from '@shared/constant/config/constants';
+import {take} from 'rxjs/operators';
+import {Constants} from '@shared/constant/config/constants';
 import * as fromRoot from '../reducers/index';
-import { Store } from '@ngrx/store';
+import {Store} from '@ngrx/store';
 
-import { ApiBaseService } from '@shared/services/apibase.service';
-import { CommonEventService } from '@shared/services/common-event/common-event.service';
+import {ApiBaseService} from '@shared/services/apibase.service';
+import {CommonEventService} from '@shared/services/common-event/common-event.service';
 import * as fromFolder from '../actions/folder';
+import {ZNoteService} from "@notes/shared/services/note.service";
 
 declare let $: any;
 declare let _: any;
@@ -32,7 +33,8 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     private store: Store<any>,
     private apiBaseService: ApiBaseService,
     private commonEventService: CommonEventService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private noteService: ZNoteService
   ) {
     [this.myNoteMenu, this.settingMenu, ...this.noteMenu] = Constants.noteMenuItems;
     this.sub = this.store
@@ -51,7 +53,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     this.sub2 = this.commonEventService
       .filter((event: any) => event.channel === 'noteLeftMenu')
       .subscribe((event: any) => {
-        const { payload, action } = event;
+        const {payload, action} = event;
         if (!payload || action === '') {
           return;
         }
@@ -114,8 +116,8 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
 
   loadMenu(event: any) {
     const htmlTarget: any = event.originalEvent.target;
-    const { item } = event;
-    const { expanded, id } = item;
+    const {item} = event;
+    const {expanded, id} = item;
     const iconClick = (htmlTarget.className.includes('ui-panelmenu-icon'));
 
     if (
@@ -145,16 +147,18 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     target.title = target.name;
     target.icon = 'fa fa-folder-o';
     target.styleClass = `js-note-folders-tree-${target.id}`;
-    if (!target.items) { target.items = []; }
+    if (!target.items) {
+      target.items = [];
+    }
     target.command = (event: any) => this.loadMenu(event);
     target.routerLink = ['/folders', target.id];
-    target.routerLinkActiveOptions = { exact: true };
-    const { id, parent_id, label, name, expanded, routerLink, routerLinkActiveOptions } = target;
+    target.routerLinkActiveOptions = {exact: true};
+    const {id, parent_id, label, name, expanded, routerLink, routerLinkActiveOptions} = target;
     if (!parent_id) {
       if (_.some(folders, ['id', id])) {
         for (const folder of folders) {
           if (folder.id === id) {
-            Object.assign(folder, {label, name, expanded, routerLink, routerLinkActiveOptions });
+            Object.assign(folder, {label, name, expanded, routerLink, routerLinkActiveOptions});
           }
         }
       } else {
@@ -171,7 +175,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
         if (_.some(folder.items, ['id', id])) {
           for (const f of folder.items) {
             if (f.id === id) {
-              Object.assign(f, {label, name, routerLink, routerLinkActiveOptions });
+              Object.assign(f, {label, name, routerLink, routerLinkActiveOptions});
             }
           }
         } else {
@@ -215,5 +219,13 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
 
   onCloseMenu() {
     this.renderer.removeClass(document.body, 'left-sidebar-open');
+  }
+
+  onNewNote() {
+    this.noteService.modalEvent({action: 'note:open_note_add_modal'});
+  }
+
+  onFolder() {
+    this.noteService.modalEvent({action: 'note:folder:create'});
   }
 }
