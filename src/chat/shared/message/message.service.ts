@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { WHttpClientService } from '@shared/services/w-http-client.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiBaseService, BaseEntityService } from '@shared/services';
@@ -29,6 +28,10 @@ export class MessageService extends BaseEntityService<any> {
   delete(conversationId: string, id: string): Observable<any> {
     const url = `${this.path}/${conversationId}/messages`;
     return this.apiBaseService.delete(`${url}/${id}`);
+  }
+
+  download(conversationId: string, id: string): Observable<any> {
+    return this.apiBaseService.download(`${this.path}/${conversationId}/messages/${id}/download`);
   }
 
 }

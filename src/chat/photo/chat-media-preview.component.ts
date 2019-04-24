@@ -29,7 +29,7 @@ export class ChatMediaPreviewComponent {
   }
 
   removeMessage() {
-    this.messageEventService.delete({ data: this.parent });
+    this.messageEventService.delete({ message: this.parent });
     this.mediaPreview.back();
   }
 }

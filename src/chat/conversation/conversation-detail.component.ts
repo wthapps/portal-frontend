@@ -29,11 +29,12 @@ import { Channel, Presence } from 'phoenix';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { ChannelEvents } from '@shared/channels';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
-import { MESSAGE_DELETE, MessageEventService } from '@chat/shared/message';
+import { MESSAGE_DELETE, MessageEventService, MessageService } from '@chat/shared/message';
 import { UserEventService } from '@shared/user/event';
 import { NotificationEventService } from '@shared/services/notification';
 import { MemberService } from '@chat/shared/services';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'conversation-detail',
@@ -73,7 +74,8 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     private messageAssetService: MessageAssetsService,
     private userEventService: UserEventService,
     private notificationEventService: NotificationEventService,
-    private memberService: MemberService
+    private memberService: MemberService,
+    private messageService: MessageService
 ) {
     super(commonEventService);
     this.currentUser$ = userService.profile$;
@@ -218,13 +220,22 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
 
     // Update message
     this.messageEventService.update$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
-      this.store$.dispatch(new MessageActions.Update({ conversationId: this.conversationId, message: payload.data }));
+      this.store$.dispatch(new MessageActions.Update({ conversationId: this.conversationId, message: payload.message }));
+    });
+
+    // Download message
+    this.messageEventService.download$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+      this.messageService.download(this.conversation.uuid, payload.message.uuid).pipe(takeUntil(this.destroy$))
+        .subscribe(file => {
+        const blob = new Blob([file], { type: file.content_type });
+        saveAs(blob, payload.message.file.full_name);
+      });
     });
 
     // Delete message
     this.messageEventService.delete$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
-      this.store$.dispatch(new MessageActions.Delete({ conversationId: this.conversationId, message: payload.data }));
-      this.messageAssetService.removeMedia(payload.data);
+      this.store$.dispatch(new MessageActions.Delete({ conversationId: this.conversationId, message: payload.message }));
+      this.messageAssetService.removeMedia(payload.message);
     });
   }
 

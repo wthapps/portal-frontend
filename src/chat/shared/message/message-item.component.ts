@@ -59,21 +59,6 @@ export class MessageItemComponent implements OnInit {
     this.messageEventService.preview({
       message: message
     });
-    // if (!_.get(message, 'file.uuid')) { return; }
-    // // const currentConversation = this.storageService.get(CONVERSATION_SELECT);
-    // this.router.navigate([{
-    //   outlets: {
-    //     modal: [
-    //       'preview',
-    //       message.file.uuid,
-    //       {
-    //         object: 'conversation',
-    //         parent_uuid: _.get(this.selectedConversation, 'group_uuid'),
-    //         only_preview: true
-    //       }
-    //     ]
-    //   }
-    // }], { queryParamsHandling: 'preserve', preserveFragment: true });
   }
 
   doAction(event: CommonEvent) {
@@ -83,7 +68,7 @@ export class MessageItemComponent implements OnInit {
   }
 
   copy() {
-    this.messageEventService.copy({data: {
+    this.messageEventService.copy({message: {
       group_id: this.message.group_id,
       message: this.message.message,
       message_type: this.message.message_type,
@@ -92,23 +77,19 @@ export class MessageItemComponent implements OnInit {
   }
 
   quote() {
-    this.messageEventService.quote({data: this.message});
+    this.messageEventService.quote({message: this.message});
   }
 
   edit() {
-    this.messageEventService.edit({data: this.message});
+    this.messageEventService.edit({message: this.message});
   }
 
   delete() {
-    this.messageEventService.delete({data: this.message});
+    this.messageEventService.delete({message: this.message});
   }
 
   download() {
-    this.doAction({
-      channel: 'ConversationDetailComponent',
-      action: CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD,
-      payload: this.message
-    });
+    this.messageEventService.download({message: this.message});
   }
 
   cancel() {

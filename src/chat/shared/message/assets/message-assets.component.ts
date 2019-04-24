@@ -192,7 +192,7 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   delete(message: any) {
-    this.messageEventService.delete({ data: message });
+    this.messageEventService.delete({ message: message });
   }
 
   viewProfile(user: any) {
@@ -284,10 +284,9 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
       case 'Note::Note':
         window.open(`${this.noteUrl}/${item.uuid}`);
         break;
-      // Download file
       default:
-        window.open(item.file.url);
-      break;
+        this.messageEventService.download({message: item});
+        break;
     }
   }
 

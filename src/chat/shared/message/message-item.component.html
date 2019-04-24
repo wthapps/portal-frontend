@@ -176,7 +176,7 @@
   <!--videos menu actions-->
   <ul class="dropdown-menu dropdown-menu-right" *ngIf="['file'].includes(message.message_type) ">
     <li *ngIf="message.file && message.message_type !== 'message_deleted'">
-      <a [href]="message.file.url" target="_blank" download>
+      <a href="javascript:void(0)" (click)="download()">
         Download
       </a>
     </li>

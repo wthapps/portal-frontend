@@ -6,7 +6,8 @@ import {
   MESSAGE_DELETE, MESSAGE_EDIT,
   MESSAGE_QUOTE,
   MESSAGE_UPDATE,
-  MESSAGE_PREVIEW
+  MESSAGE_PREVIEW,
+  MESSAGE_DOWNLOAD
 } from '@chat/shared/message/message-event.constant';
 import { EventData } from '@shared/base-event';
 
@@ -26,7 +27,7 @@ export class MessageEventService {
     return this.on(MESSAGE_PREVIEW);
   }
 
-  edit(payload?: any) {
+  edit(payload: { message?: any }) {
     this.broadcast(MESSAGE_EDIT, payload);
   }
 
@@ -34,7 +35,7 @@ export class MessageEventService {
     return this.on(MESSAGE_EDIT);
   }
 
-  update(payload?: any) {
+  update(payload: { message?: any }) {
     this.broadcast(MESSAGE_UPDATE, payload);
   }
 
@@ -42,7 +43,7 @@ export class MessageEventService {
     return this.on(MESSAGE_UPDATE);
   }
 
-  copy(payload?: any) {
+  copy(payload: { message?: any }) {
     this.broadcast(MESSAGE_COPY, payload);
   }
 
@@ -50,7 +51,7 @@ export class MessageEventService {
     return this.on(MESSAGE_COPY);
   }
 
-  quote(payload?: any) {
+  quote(payload: { message?: any }) {
     this.broadcast(MESSAGE_QUOTE, payload);
   }
 
@@ -58,7 +59,15 @@ export class MessageEventService {
     return this.on(MESSAGE_QUOTE);
   }
 
-  delete(payload?: any) {
+  download(payload: { message?: any }) {
+    this.broadcast(MESSAGE_DOWNLOAD, payload);
+  }
+
+  get download$(): Observable<any> {
+    return this.on(MESSAGE_DOWNLOAD);
+  }
+
+  delete(payload: { message?: any }) {
     this.broadcast(MESSAGE_DELETE, payload);
   }
 

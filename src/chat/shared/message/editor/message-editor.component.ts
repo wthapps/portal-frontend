@@ -138,17 +138,17 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
     // Edit message
     this.messageEventService.edit$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
-      this.editMessage(payload.data);
+      this.editMessage(payload.message);
     });
 
     // Copy message
     this.messageEventService.copy$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
-      this.copyMessage(payload.data);
+      this.copyMessage(payload.message);
     });
 
     // Quote message
     this.messageEventService.copy$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
-      this.quoteMessage(payload.data);
+      this.quoteMessage(payload.message);
     });
   }
 
@@ -453,7 +453,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       return;
     }
     if (this.mode === FORM_MODE.EDIT) {
-      this.messageEventService.update({data: this.message});
+      this.messageEventService.update({message: this.message});
       this.mode = FORM_MODE.CREATE;
       this.resetEditor();
     } else {
