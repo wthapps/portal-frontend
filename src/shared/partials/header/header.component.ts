@@ -59,7 +59,7 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
     public connectionService: ConnectionNotificationService,
     public commonEventService: CommonEventService,
     public notificationService: NotificationService,
-    private webSocketService: WebsocketService
+    private websocketService: WebsocketService
   ) {
     super(commonEventService);
   }
@@ -150,9 +150,9 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
   subscribeChanneService() {
     this.channelService.subscribe();
     if (this.authService.isAuthenticated()) {
-      this.webSocketService.createSocket({token: this.authService.user.uuid});
+      this.websocketService.createSocket({token: this.authService.user.uuid});
       // connect user channel
-      this.webSocketService.connectUserChannel(this.authService.user.uuid);
+      this.websocketService.connectUserChannel(this.authService.user.uuid);
     }
   }
 

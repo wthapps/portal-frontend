@@ -28,11 +28,14 @@ export class ShortMessagePipe implements PipeTransform {
       } else if (message_type === 'message_deleted') {
         result = 'Deleted message';
       } else if (message_type === 'text') {
-        console.log('message', message);
         result = message;
       } else {
         result = message;
       }
+    }
+    console.log('message', result);
+    if (result === null || result === undefined) {
+      result = '';
     }
     return result;
   }

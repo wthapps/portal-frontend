@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { Constants } from '@shared/constant';
 import { WTHNavigateService } from '@shared/services/wth-navigate.service';
 import { NotificationService } from '@shared/services/notification.service';
@@ -76,17 +76,6 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     this.notificationEventService.updateNotificationCount$.pipe(takeUntil(this.destroy$)).subscribe(notification => {
       this.updateNotificationCountCallBack(notification);
     });
-
-    this.websocketService.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPSERTED, (response: any) => {
-      const conversation = response.data.attributes;
-      if (conversation.notification_count > 0) {
-        // if be current conversation will not add notification
-        if (window.location.pathname.indexOf(conversation.uuid) > -1) {
-          return;
-        }
-        this.updateNotificationCountCallBack({count: 1, type: 'add'});
-      }
-    });
   }
 
   ngAfterViewInit(): void {
@@ -94,6 +83,20 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
       .subscribe((res: any) => {
         this.notificationCount = res.data.count;
       });
+    // handle chat message notification
+    // set timeout to make sure userChannel is always available
+    setTimeout(() => {
+      this.websocketService.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPSERTED, (response: any) => {
+        const conversation = response.data.attributes;
+        if (conversation.notification_count > 0) {
+          // if be current conversation will not add notification
+          if (window.location.pathname.indexOf(conversation.uuid) > -1) {
+            return;
+          }
+          this.updateNotificationCountCallBack({count: 1, type: 'add'});
+        }
+      });
+    }, 500);
   }
 
   ngOnDestroy() {
