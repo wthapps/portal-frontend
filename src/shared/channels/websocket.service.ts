@@ -6,6 +6,7 @@ import { ConfigByEnv } from '@env/environment';
 export class WebsocketService {
   private socket: any;
   private conversation: any;
+  userChannel: any;
 
   createSocket(params: any) {
 
@@ -46,4 +47,17 @@ export class WebsocketService {
     return this.socket.channel(topic, {token: options.token});
   }
 
+  connectUserChannel(userId: string): any {
+    const params = {token: userId };
+    if (!this.socket) {
+      this.createSocket(params);
+    }
+    this.userChannel = this.socket.channel(`user:${userId}`, params);
+    this.userChannel.join({token: 'test token'})
+      .receive('ok', ({userInfo}) => {
+        // console.log('JOINED USER CHANNEL', userInfo);
+      })
+      .receive('error', ({reason}) => {})
+      .receive('timeout', () => {});
+  }
 }

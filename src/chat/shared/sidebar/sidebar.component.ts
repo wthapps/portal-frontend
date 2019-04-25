@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   HostBinding, OnDestroy,
@@ -125,35 +126,23 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
       this.createConversation({users: response.payload.data});
     });
 
-    // Register user channel
-    this.userChannel = this.websocketService.subscribeChannel(
-      `user:${this.authService.user.uuid}`,
-      {token: this.authService.user.uuid}
-    );
-    this.userChannel.join({token: 'test token'})
-      .receive('ok', ({userInfo}) => {
-        // console.log('JOINED USER CHANNEL', userInfo);
-      })
-      .receive('error', ({reason}) => {})
-      .receive('timeout', () => {});
-
-
-    this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_CREATED, (response: any) => {
+    // handle user channel events
+    this.websocketService.userChannel.on(ChannelEvents.CHAT_CONVERSATION_CREATED, (response: any) => {
       const conversation = response.data.attributes;
       this.createConversationCallback(conversation);
     });
 
-    this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPSERTED, (response: any) => {
+    this.websocketService.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPSERTED, (response: any) => {
       const conversation = response.data.attributes;
       this.upsertConversationCallback(conversation);
     });
 
-    this.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPDATED, (response: any) => {
+    this.websocketService.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPDATED, (response: any) => {
       const conversation = response.data.attributes;
       this.updateConversationCallback(conversation);
     });
 
-
+    // Handle user events
     this.userEventService.createChat$.pipe(takeUntil(this.destroy$)).subscribe(user => {
       this.createConversation({ users: [user] });
     });
@@ -238,7 +227,7 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     // increase notification to 1 if having a new message
     // Just recalculate chat notification count for conversation is not current
     if ((this.conversationId !== conversation.uuid) && (conversation.notification_count > 0)) {
-      this.notificationEventService.updateNotificationCount({count: 1, type: 'add'});
+      // this.notificationEventService.updateNotificationCount({count: 1, type: 'add'});
     }
   }
 

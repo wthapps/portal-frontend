@@ -75,7 +75,8 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
     }
 
     if (this.authService.isAuthenticated()) {
-      this.countCommonNotification().then(() => this.countChatNotification());
+      this.countCommonNotification();
+      this.countChatNotification();
     }
 
     // Handle disconnected network use-case
@@ -150,6 +151,8 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
     this.channelService.subscribe();
     if (this.authService.isAuthenticated()) {
       this.webSocketService.createSocket({token: this.authService.user.uuid});
+      // connect user channel
+      this.webSocketService.connectUserChannel(this.authService.user.uuid);
     }
   }
 

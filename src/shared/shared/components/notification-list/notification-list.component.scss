@@ -43,12 +43,18 @@
       }
       p {
         margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .noti-item-content-text {
         .user-name {
           color: #4a4a4a;
         }
+      }
+      .message-content p i {
+        top: 1px;
       }
     }
     .noti-item-content-inner {

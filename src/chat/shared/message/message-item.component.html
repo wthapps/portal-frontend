@@ -1,5 +1,5 @@
 <!-- Template message -->
-<ng-container *ngIf="['text', 'file', 'share_contact_message'].includes(message.message_type)">
+<ng-container *ngIf="['text', 'file', 'share_contact_message', 'message_deleted'].includes(message.message_type)">
   <div class="message-item" [ngClass]="byMe ? 'message-item-right' : 'message-item-left'">
     <div class="message-item-date" *ngIf="message.showDate">
       <span>{{ message.created_at | timeFormat:'day' }}</span>
@@ -25,6 +25,7 @@
             <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemContentText : ''"></ng-container>
             <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemContentFile : ''"></ng-container>
             <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemContentContact : ''"></ng-container>
+            <ng-container *ngTemplateOutlet="message.message_type == 'message_deleted' ? messageItemContentText : ''"></ng-container>
           </div>
         </div>
         <div class="message-item-menu dropdown" *ngIf="byMe" style="padding: 5px !important">
@@ -32,9 +33,10 @@
           <ng-container *ngTemplateOutlet="message.message_type == 'text' ? messageItemMenuText : ''"></ng-container>
           <ng-container *ngTemplateOutlet="message.message_type == 'file' ? messageItemMenuFile : ''"></ng-container>
           <ng-container *ngTemplateOutlet="message.message_type == 'share_contact_message' ? messageItemMenuContact : ''"></ng-container>
+          <ng-container *ngTemplateOutlet="message.message_type == 'message_deleted' ? messageItemMenuText : ''"></ng-container>
         </div>
         <div class="message-item-card-main-notify">
-          <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i>
+          <i *ngIf="message.updated && !message.deleted" class="icon-edited fa fa-pencil text-fade"></i>
         </div>
       </div>
     </div>
@@ -43,31 +45,39 @@
 
 <!-- Text message -->
 <ng-template #messageItemContentText>
-  <ng-container *ngIf="message.status !== 'fail'" class="wapper message-item-content message-padding">
-    <ng-container *ngIf="message.status == 'pending'">
-      <i class="message-margin text-fade fa fa-spinner fa-spin fa-fw"></i>
-      <div class="text-fade wapper message-item-content message-padding">
+  <ng-container *ngIf="!message.deleted">
+    <ng-container *ngIf="message.status !== 'fail'" class="wapper message-item-content message-padding">
+      <ng-container *ngIf="message.status == 'pending'">
+        <i class="message-margin text-fade fa fa-spinner fa-spin fa-fw"></i>
+        <div class="text-fade wapper message-item-content message-padding">
+          <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="message.status !== 'pending'">
+        <div class="wapper message-item-content message-padding">
+          <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="message.status == 'fail'">
+      <i class="fa fa-exclamation-triangle message-error message-padding"></i>
+      <div class="wapper message-item-content message-padding text-fade">
         <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
       </div>
     </ng-container>
-    <ng-container *ngIf="message.status !== 'pending'">
-      <div class="wapper message-item-content message-padding">
-        <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
+    <!-- <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i> -->
+    <div *ngFor="let link of message.links" style="clear: both">
+      <div *ngIf="link.image && !message.deleted" class="message-padding">
+        <display-link class="message-item-content-link" [data]="link" *ngIf="link.image"></display-link>
       </div>
-    </ng-container>
-  </ng-container>
-  <ng-container *ngIf="message.status == 'fail'">
-    <i class="fa fa-exclamation-triangle message-error message-padding"></i>
-    <div class="wapper message-item-content message-padding text-fade">
-      <span [innerHtml]="message.message | wth2Emojis:emojiMap | linkify | safeHtml"></span>
     </div>
   </ng-container>
-  <!-- <i *ngIf="message.updated" class="icon-edited fa fa-pencil text-fade"></i> -->
-  <div *ngFor="let link of message.links" style="clear: both">
-    <div *ngIf="link.image && !message.deleted" class="message-padding">
-      <display-link class="message-item-content-link" [data]="link" *ngIf="link.image"></display-link>
+  <ng-container *ngIf="message.deleted">
+    <div class="wapper message-item-content message-padding">
+      <i class="fa fa-trash-o"></i>&nbsp;
+      <span>This message was deleted</span>
     </div>
-  </div>
+  </ng-container>
 </ng-template>
 <ng-template #messageItemMenuText>
   <i class="fa fa-sort-down" data-toggle="dropdown" pTooltip="{{ tooltip.showActions }}" tooltipPosition="top"></i>

@@ -47,6 +47,7 @@ import { ZChatPipeModule } from './pipe/chat-pipe.module';
 import { CardUserModule } from '@shared/components/card-user/card-user.module';
 import { ChatNotificationService, MemberService } from '@chat/shared/services';
 import {  } from './modal/cards/chat-card-detail-modal.module';
+import { ChatPipeModule } from '@shared/chat/pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -77,6 +78,7 @@ import {  } from './modal/cards/chat-card-detail-modal.module';
     ZChatSharedModalModule,
     ZChatShareUserModule,
     ZChatPipeModule,
+    ChatPipeModule,
 
     // third party libs
     TagInputModule,

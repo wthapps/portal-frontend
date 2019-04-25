@@ -331,6 +331,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
     case ActionTypes.UPDATE_DISPLAY_SUCCESS: {
       const conversation = action.payload.conversation;
       const joinedConversation = state.joinedConversationId === conversation.uuid ? conversation : state.joinedConversation;
+      console.log('update display:::', conversation, state.joinedConversationId, state.joinedConversation);
 
       return conversationAdapter.updateOne({
         id: conversation.id,
@@ -382,6 +383,7 @@ export function reducer(state = initialConversationState, action: Actions): Conv
 
     case ActionTypes.DELETE_SUCCESS: {
       const conversation = action.payload.conversation;
+      console.log('delete display:::', conversation, state.joinedConversationId, state.joinedConversation);
 
       return conversationAdapter.removeOne(conversation.id, {
         ...state,

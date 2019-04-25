@@ -132,7 +132,8 @@ export class MessageEffects {
       this.messageService.delete(action.payload.conversationId, action.payload.message.uuid).pipe(
         map(response => {
           const message = response.data.attributes;
-          return new MessageActions.DeleteSuccess({message: message});
+          // return new MessageActions.DeleteSuccess({message: message});
+          return new MessageActions.UpdateSuccess({message: message});
         }),
         catchError(error =>
           of(new MessageActions.UpdateError({ error }))

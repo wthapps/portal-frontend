@@ -15,6 +15,7 @@ import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { BsModalModule } from 'ng2-bs3-modal';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
+import { ChatPipeModule } from '@shared/chat/pipe';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-da
     InfiniteScrollModule,
     NotificationListModule,
     ZChatEmojiModule,
+    ChatPipeModule,
     PipeModule,
     TooltipModule,
     BsModalModule,

@@ -235,7 +235,9 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     // Delete message
     this.messageEventService.delete$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
       this.store$.dispatch(new MessageActions.Delete({ conversationId: this.conversationId, message: payload.message }));
-      this.messageAssetService.removeMedia(payload.message);
+      if (payload.message.file) {
+        this.messageAssetService.removeMedia(payload.message);
+      }
     });
   }
 
@@ -244,7 +246,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.conversationChannel.on(ChannelEvents.CHAT_MESSAGE_CREATED, (response: any) => {
       const message = response.data.attributes;
       console.log(ChannelEvents.CHAT_MESSAGE_CREATED, message, this.conversation);
-      if (this.conversation.id === message.group_id) {
+      if (this.conversation && this.conversation.id === message.group_id) {
         this.createMessageCallback(message);
       }
     });
@@ -325,8 +327,9 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     this.store$.dispatch(new ConversationActions.UpdateDisplay({ id: conversation.uuid, body: {conversation: conversation}}));
 
     if (conversation.hidden || conversation.deleted || conversation.left) {
-      this.redirectToChatHome();
+      this.conversation = null;
       this.store$.dispatch(new ConversationActions.DeleteSuccess({ conversation: conversation}));
+      this.redirectToChatHome();
     }
   }
 
@@ -367,6 +370,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
   }
   private resetConversationNotifications() {
     // update notification_count as read
+    console.log('reset notification count:::');
     this.store$.dispatch(new ConversationActions.UpdateDisplay({
       id: this.conversationId, body: {conversation: {notification_count: 0}}
     }));

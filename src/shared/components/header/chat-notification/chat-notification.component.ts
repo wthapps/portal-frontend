@@ -15,6 +15,8 @@ import { select, Store } from '@ngrx/store';
 import { NotificationActions, NotificationSelectors } from '@core/store/notification';
 import { AppState } from '@chat/store';
 import { NotificationEventService } from '@shared/services/notification';
+import { ChannelEvents } from '@shared/channels';
+import { WebsocketService } from '@shared/channels/websocket.service';
 
 declare var $: any;
 
@@ -40,6 +42,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   destroy$ = new Subject();
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
   isShowing = false;
+  userChannel: any;
 
   constructor(
     private navigateService: WTHNavigateService,
@@ -51,7 +54,8 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     private wthEmojiService: WTHEmojiService,
     private conversationService: ConversationService,
     private store$: Store<AppState>,
-    private notificationEventService: NotificationEventService
+    private notificationEventService: NotificationEventService,
+    private websocketService: WebsocketService
   ) {
     super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
@@ -72,10 +76,20 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     this.notificationEventService.updateNotificationCount$.pipe(takeUntil(this.destroy$)).subscribe(notification => {
       this.updateNotificationCountCallBack(notification);
     });
+
+    this.websocketService.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPSERTED, (response: any) => {
+      const conversation = response.data.attributes;
+      if (conversation.notification_count > 0) {
+        // if be current conversation will not add notification
+        if (window.location.pathname.indexOf(conversation.uuid) > -1) {
+          return;
+        }
+        this.updateNotificationCountCallBack({count: 1, type: 'add'});
+      }
+    });
   }
 
   ngAfterViewInit(): void {
-
     this.apiBaseService.get('chat/notifications/count')
       .subscribe((res: any) => {
         this.notificationCount = res.data.count;
@@ -100,10 +114,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
   }
 
   toggleViewNotifications() {
-    this.isShowing = !this.isShowing;
-    if (this.isShowing) {
-      this.store$.dispatch(new NotificationActions.LoadItems({ query: {}}));
-    }
+    this.store$.dispatch(new NotificationActions.LoadItems({ query: {}}));
   }
 
   getMore() {
@@ -129,7 +140,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     this.notificationCount = this.notificationCount - conversation.notification_count;
   }
 
-  updateNotificationCountCallBack(notification: {count: 0, type: 'add'|'remove'}) {
+  updateNotificationCountCallBack(notification: {count: number, type: 'add'|'remove'}) {
     if (notification.type === 'add') {
       this.notificationCount += notification.count;
     } else if (notification.type === 'remove') {
