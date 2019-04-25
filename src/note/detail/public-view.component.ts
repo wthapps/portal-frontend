@@ -1,51 +1,23 @@
 import {
   Component,
-  ViewChild,
-  SimpleChanges,
   OnInit,
   ViewEncapsulation,
-  AfterViewInit
+  AfterViewInit,
+  OnDestroy
 } from '@angular/core';
-import { FormGroup, AbstractControl, FormBuilder } from '@angular/forms';
-
-import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable ,  Subject ,  Subscription ,  of } from 'rxjs';
-import { Store } from '@ngrx/store';
+import {  Subject } from 'rxjs';
 import {
   takeUntil,
-  switchMap,
-  combineLatest,
-  filter,
-  mergeMap,
-  map,
-  debounceTime,
-  tap
 } from 'rxjs/operators';
 
-import * as fromRoot from '../shared/reducers/index';
-import * as context from '../shared/reducers/context';
-import * as note from '../shared/actions/note';
-import { Note } from '@shared/shared/models/note.model';
 import { Constants } from '@shared/constant/config/constants';
-import { PhotoUploadService } from '@shared/services/photo-upload.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ApiBaseService } from '@shared/services/apibase.service';
-import { ClientDetectorService } from '@shared/services/client-detector.service';
-import { PhotoService } from '@shared/services/photo.service';
-import * as Delta from 'quill-delta/lib/delta';
-import { CommonEventService, UrlService, WthConfirmService } from '@wth/shared/services';
-import { ZNoteService } from '../shared/services/note.service';
-import { noteConstants } from '@notes/shared/config/constants';
-import { Counter } from '@wth/core/quill/modules/counter';
-import { CustomImage } from '@wth/core/quill/modules/custom-image';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
-import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
-import ImageBlot from '@wth/core/quill/blots/image';
-import IconBlot from '@wth/core/quill/blots/icon';
-import { FileUploaderService } from '@shared/services/file/file-uploader.service';
-import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
+import { UserService } from './../../shared/services/user.service';
 
-const DEBOUNCE_MS = 2500;
+import { Router } from '@angular/router';
+import { ApiBaseService } from '@shared/services/apibase.service';
+import { UrlService, WthConfirmService } from '@wth/shared/services';
+import { ZNoteSharedSettingsService } from '@notes/shared/services/settings.service';
+
 declare let _: any;
 
 @Component({
@@ -54,20 +26,36 @@ declare let _: any;
   styleUrls: ['public-view.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZNotePublicViewComponent implements OnInit, AfterViewInit {
+export class ZNotePublicViewComponent implements OnInit, AfterViewInit, OnDestroy {
   currentTab: any = 'note';
   tooltip: any = Constants.tooltip;
   note: any;
   visibleTab: 'comment' | 'attachment' | undefined = undefined;
+  profile;
+  setting;
+  modalEditName;
+  destroySubject: Subject<any> = new Subject();
 
   constructor(
     private apiBaseService: ApiBaseService,
     private wthConfirmService: WthConfirmService,
     private router: Router,
+    private userService: UserService,
+    private noteSetting: ZNoteSharedSettingsService,
     private urlService: UrlService) {}
 
   ngOnInit() {
+    this.profile = this.userService.getSyncProfile();
+    this.noteSetting.setting$.pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe(setting => this.setting = setting)
+    ;
 
+  }
+
+  ngOnDestroy(): void {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
   }
 
   ngAfterViewInit() {
