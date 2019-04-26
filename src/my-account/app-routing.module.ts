@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MyMyAppsListComponent } from '@account/my-apps/list/list.component';
 
 @NgModule({
   imports: [

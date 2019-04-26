@@ -3,6 +3,11 @@
 .faq-content {
   @include flexbox;
 
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
   @media(min-width: $screen-sm-min) {
     .faq-content-left {
       @include flex(1);
