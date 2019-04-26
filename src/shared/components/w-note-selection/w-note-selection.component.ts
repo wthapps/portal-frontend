@@ -21,7 +21,6 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('dataView') dataView: WDataViewComponent;
   tooltip: any = Constants.tooltip;
   data$: Observable<any>;
-  next: string;
 
   title: string;
   breadcrumb: Note[];
@@ -29,30 +28,35 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   tabs: WTab[] = [
     {
       name: 'My Note',
-      link: 'my_note',
+      link: 'parent_id=null',
       icon: 'icon-zone-note',
       number: null,
       type: 'tab'
     },
     {
       name: 'Favourites',
-      link: 'favourites',
+      link: 'favourites=true',
       icon: 'fa fa-star',
       number: null,
       type: 'tab'
     },
     {
       name: 'Shared with me',
-      link: 'shared_with_me',
+      link: 'shared_with_me=true',
       icon: 'fw fw-shared-with-me',
       number: null,
       type: 'tab'
     }
   ];
-  currentTab = 'my_note'; // my_note, favourites, shared_with_me
+
+  currentTab = 'parent_id=null'; // my_note, favourites, shared_with_me
+  current: string;
+  next: string;
+
   constructor(private dataService: WNoteSelectionService) {
     this.data$ = this.dataService.data$;
     this.updateTitle();
+    this.current = this.buildLink();
   }
 
   ngOnInit(): void {
@@ -61,7 +65,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         console.log(res);
         if (res) {
-          this.next = null;
+          this.next = this.current;
           this.modal.open().then();
           this.getDataAsync().then();
         }
@@ -94,8 +98,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   }
 
   async onSortComplete(event: any) {
-    console.log(event);
-    const data = await this.dataService.sort(this.next, event).toPromise();
+    const data = await this.dataService.sort(this.current, event).toPromise();
     this.next = data.meta.links.next;
   }
 
@@ -118,23 +121,14 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     if (!id) {
       this.getRootData();
     } else {
-
+      this.getFolderContent(id);
     }
   }
 
-  updateTitle() {
-    const result = this.tabs.find(tab => tab.link === this.currentTab);
-    this.title = result.name;
-  }
-
   onDblClick(event: Note) {
-    this.dataView.container.clearSelection();
-    this.dataService.clear();
-    console.log(event);
-    this.next = `/note/v1/mixed_entities?parent_id=${event.object.id}`;
-    // /note/folders/get_folder_path/96?page=MY_NOT
-    this.getDataAsync().then();
-    this.getParentDataAsync(event.object.id).then();
+    if (event.object.object_type === 'Note::Folder') {
+      this.getFolderContent(event.object.id);
+    }
   }
 
   onSelectCompleted() {
@@ -147,27 +141,33 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     // otherActionsEdit.active = !(this.dataView.selectedDocuments.length > 1);
   }
 
-  // getFolderContre
+  private updateTitle() {
+    const result = this.tabs.find(tab => tab.link === this.currentTab);
+    this.title = result.name;
+  }
+
+  private getFolderContent(id) {
+    this.dataService.clear();
+    this.next = this.buildLink(id);
+    this.getDataAsync().then();
+    this.getParentDataAsync(id).then();
+    if (this.dataView && this.dataView.container) {
+      this.dataView.container.clearSelection();
+    }
+  }
 
   private getRootData() {
     this.dataService.clear();
     this.breadcrumb = null;
-    switch (this.currentTab) {
-      case 'my_note':
-        this.next = '/note/v1/mixed_entities?active=true';
-        break;
-      case 'favourites':
-        this.next = '/note/v1/mixed_entities?favourite=true';
-        break;
-      case 'shared_with_me':
-        this.next = '/note/v1/mixed_entities?shared_with_me=true';
-        break;
-    }
+    this.current = this.buildLink();
+    this.next = this.current;
     this.getDataAsync().then();
   }
 
-  private updateMenuFavorite(isFavorite: boolean) {
-    // const menuActionsIndex = this.menuActions.findIndex(x => x.action === 'favorite');
-    // this.menuActions[menuActionsIndex].icon = isFavorite ? 'fa fa-star' : 'fa fa-star-o';
+  private buildLink(id?) {
+    if (id) {
+      return `note/v1/mixed_entities?parent_id=${id}`
+    }
+    return `note/v1/mixed_entities?${this.currentTab}`;
   }
 }

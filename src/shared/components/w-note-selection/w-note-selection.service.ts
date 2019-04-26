@@ -11,9 +11,6 @@ declare let _: any;
 
 @Injectable()
 export class WNoteSelectionService {
-  // apiUrl = 'note/mixed_entities';
-  apiUrl = '/note/v1/mixed_entities?parent_id=null';
-
   viewMode$: Observable<string>;
   data$: Observable<any[]>;
   open$: Observable<any>;
@@ -54,8 +51,7 @@ export class WNoteSelectionService {
     this.localStorageService.set('media_view_mode', view);
   }
 
-  getData(nextLink?: any): Observable<any> {
-    const link = nextLink ? nextLink : this.apiUrl;
+  getData(link: string): Observable<any> {
     return this.api.get(link).pipe(
       map((res: ResponseMetaData) => {
         res.data.map((item) => ({
