@@ -13,7 +13,7 @@ export class ConstantsBase {
     cdn: Config.CDN
   };
   cdn: any = Config.CDN;
-  currentVersion = '2018 WTHApps - v1.11.0';
+  currentVersion = '2018 WTHApps - v1.12.0';
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
