@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { MyMyAppsListComponent } from '@account/my-apps/list/list.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,7 @@ import { RouterModule } from '@angular/router';
         path: 'notifications',
         loadChildren:
           './notifications/notifications.module#MyNotificationModule'
-      }
+      },
       // {
       //   path: 'dashboard',
       //   children: [

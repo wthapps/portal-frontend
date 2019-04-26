@@ -15,7 +15,7 @@ import { AccountListComponent } from './accounts/account-list.component';
         canActivate: [AuthGuard],
         children: [
           { path: '', component: AccountListComponent },
-          { path: 'accounts', component: AccountListComponent },
+          // { path: 'accounts', component: AccountListComponent },
           { path: 'invitations', component: MyInvitationsComponent }
         ]
       }

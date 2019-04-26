@@ -140,7 +140,7 @@
                            'has-success': (changedEmailForm.valid && !changedEmailForm.pristine)}">
 
             <input type="email" formControlName="email" class="form-control" placeholder="Enter email"
-            (keyup)="checkTakenEmail($event)" autofocus/>
+            (keyup)="checkTakenEmail($event)" autofocus="false"/>
             <div *ngIf="!changedEmailForm.valid && !changedEmailForm.pristine">
               <span *ngIf="!changedEmailForm.controls.email.valid && changedEmailForm.controls.email.errors.required"
                     class="help-block">An email is required</span>
