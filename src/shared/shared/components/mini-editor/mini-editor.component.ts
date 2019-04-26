@@ -181,8 +181,6 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
             const dataClipboard1 = e.clipboardData.types;
             let fileClipboard: any;
 
-            console.log('paste data', dataClipboard1);
-
             if (dataClipboard1[0].match('Files')) {
               if (e.clipboardData.items[0].type.match('image/*')) {
                 fileClipboard = e.clipboardData.items[0].getAsFile();
@@ -197,7 +195,6 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
             this.quill.selection.update(Quill.sources.SILENT);
             setTimeout(() => {
               if (dataClipboard1[0].match('text/*')) {
-                console.log('paste text', e);
                 delta = delta.concat(this.convert()).delete(range.length);
                 this.quill.updateContents(delta, Quill.sources.USER);
                 this.quill.setSelection(

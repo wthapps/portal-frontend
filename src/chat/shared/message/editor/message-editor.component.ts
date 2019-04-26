@@ -147,7 +147,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     });
 
     // Quote message
-    this.messageEventService.copy$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+    this.messageEventService.quote$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
       this.quoteMessage(payload.message);
     });
   }
@@ -161,17 +161,11 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   copyMessage(message: any) {
-    this.updateAttributes({
-      message: message,
-      mode: FORM_MODE.CREATE
-    });
+    // this.updateAttributes({
+    //   message: message,
+    //   mode: FORM_MODE.CREATE
+    // });
     this.focus();
-    // Real copy
-    const temp = $('<input>');
-    $('body').append(temp);
-    temp.val(message).select();
-    document.execCommand('copy');
-    temp.remove();
   }
 
   quoteMessage(message: any) {

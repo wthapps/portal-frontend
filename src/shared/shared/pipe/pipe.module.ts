@@ -36,6 +36,7 @@ import { UsernamePipe } from './username.pipe';
 import { CountryCode2ValuePipe } from './country-code-2-value.pipe';
 import { TrimPipe } from './trim.pipe';
 import { ObjectValuesPipe } from './object-values.pipe';
+import { HtmlToPlaintextPipe } from '@shared/shared/pipe/html-to-plaintext.pipe';
 
 @NgModule({
   imports: [CommonModule],
@@ -72,7 +73,8 @@ import { ObjectValuesPipe } from './object-values.pipe';
     PhoneCodeToDisplayCodePipe,
     TrimPipe,
     UsernamePipe,
-    KeysPipe
+    KeysPipe,
+    HtmlToPlaintextPipe
   ],
   exports: [
     AddFirstCharacterPipe,
@@ -107,7 +109,8 @@ import { ObjectValuesPipe } from './object-values.pipe';
     PhoneCodeToDisplayCodePipe,
     TrimPipe,
     UsernamePipe,
-    KeysPipe
+    KeysPipe,
+    HtmlToPlaintextPipe
   ],
   providers: []
 })

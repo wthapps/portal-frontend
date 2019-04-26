@@ -24,6 +24,7 @@ import { ZChatMessageAssetsModule } from './assets/message-assets.module';
 import { ZChatMessageEditorModule } from './editor/message-editor.module';
 import { MessageService } from '@chat/shared/message/message.service';
 import { MessageEventService } from '@chat/shared/message/message-event.service';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { MessageEventService } from '@chat/shared/message/message-event.service'
 
     // third party libs
     TooltipModule,
+    ClipboardModule,
 
     ModalModule,
     BoxLoadingModule,
