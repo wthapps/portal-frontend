@@ -83,6 +83,11 @@ export class WNoteSelectionService {
     );
   }
 
+  getParent(id: string) {
+    const link = `/note/folders/get_folder_path/${id}?page=MY_NOTE`;
+    return this.api.get(link);
+  }
+
   sort(url: string, sort: any) {
     this.dataSubject.next(null);
     return this.getData(`${url}&sort=${sort.orderBy}&sort_name=${sort.sortBy}`);

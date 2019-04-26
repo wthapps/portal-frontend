@@ -24,6 +24,8 @@ export class WDataViewComponent implements OnChanges {
   @Input() scrollWindow: false;
   @Input() sliderView = 3;
   @Input() viewMode = 'grid';
+  @Input() disableDrag = false;
+  @Input() selectOnDrag = false;
   @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
   @Output() loadMoreCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() dblClick: EventEmitter<any> = new EventEmitter<any>();
@@ -57,6 +59,9 @@ export class WDataViewComponent implements OnChanges {
       this.isUpdatedView = false;
       this.container.update();
     }, 200);
+  }
 
+  trackItem(index, item) {
+    return item ? item.id : undefined;
   }
 }

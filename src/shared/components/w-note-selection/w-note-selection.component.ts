@@ -7,6 +7,7 @@ import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { takeUntil } from 'rxjs/operators';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { Note } from '@shared/shared/models/note.model';
 
 @Component({
   selector: 'w-note-selection',
@@ -23,7 +24,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   next: string;
 
   title: string;
-
+  breadcrumb: Note[];
   searchShow: boolean;
   tabs: WTab[] = [
     {
@@ -80,6 +81,11 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     this.next = data.meta.links.next;
   }
 
+  async getParentDataAsync(id) {
+    const res = await this.dataService.getParent(id).toPromise();
+    this.breadcrumb = res.data;
+  }
+
   onLoadMoreCompleted(event: any) {
     console.log(event);
     if (event && this.next) {
@@ -103,29 +109,17 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     if (this.currentTab == event.link) {
       return false;
     }
-
-    this.dataService.clear();
     this.currentTab = event.link;
     this.updateTitle();
+    this.getRootData();
+  }
 
-    switch (this.currentTab) {
-      case 'my_note':
-        this.next = '/note/v1/mixed_entities?parent_id=null';
-        // this.tabMyNote();
-        // /note/v1/mixed_entities?parent_id=null
-        break;
-      case 'favourites':
-        this.next = '/note/v1/mixed_entities?favourite=true';
-        // this.tabFavourites();
-        // /note/v1/mixed_entities?favourite=true
-        break;
-      case 'shared_with_me':
-        this.next = '/note/v1/mixed_entities?shared_with_me=true';
-        // this.tabSharedWithMe();
-        // /note/v1/mixed_entities?shared_with_me=true
-        break;
+  onBreadcrumb(id?) {
+    if (!id) {
+      this.getRootData();
+    } else {
+
     }
-    this.getDataAsync().then();
   }
 
   updateTitle() {
@@ -133,7 +127,14 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     this.title = result.name;
   }
 
-  onDblClick(event) {
+  onDblClick(event: Note) {
+    this.dataView.container.clearSelection();
+    this.dataService.clear();
+    console.log(event);
+    this.next = `/note/v1/mixed_entities?parent_id=${event.object.id}`;
+    // /note/folders/get_folder_path/96?page=MY_NOT
+    this.getDataAsync().then();
+    this.getParentDataAsync(event.object.id).then();
   }
 
   onSelectCompleted() {
@@ -144,6 +145,25 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     // check menu view
     // const otherActionsEdit = _.find(this.otherActions, ['action', 'edit']);
     // otherActionsEdit.active = !(this.dataView.selectedDocuments.length > 1);
+  }
+
+  // getFolderContre
+
+  private getRootData() {
+    this.dataService.clear();
+    this.breadcrumb = null;
+    switch (this.currentTab) {
+      case 'my_note':
+        this.next = '/note/v1/mixed_entities?active=true';
+        break;
+      case 'favourites':
+        this.next = '/note/v1/mixed_entities?favourite=true';
+        break;
+      case 'shared_with_me':
+        this.next = '/note/v1/mixed_entities?shared_with_me=true';
+        break;
+    }
+    this.getDataAsync().then();
   }
 
   private updateMenuFavorite(isFavorite: boolean) {

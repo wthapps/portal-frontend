@@ -8,6 +8,8 @@
   </div>
 </ng-container>
 <dts-select-container #container="dts-select-container"
+                      [disableDrag]="disableDrag"
+                      [selectOnDrag]="selectOnDrag"
                       [(selectedItems)]="selectedDocuments"
                       (select)="onSelect($event)"
                       infinite-scroll
@@ -16,7 +18,7 @@
                       [scrollWindow]="scrollWindow"
                       (scrolled)="onLoadMore()">
   <div *ngIf="!isUpdatedView" class="content-view content-{{viewMode}} content-grid-{{ sliderView }}">
-    <div *ngFor="let item of data" [dtsSelectItem]="item" class="content-item">
+    <div *ngFor="let item of data; trackBy: trackItem" [dtsSelectItem]="item" class="content-item">
       <div class="item-media">
         <div class="item-actions">
           <i (mouseover)="container.selectMode = true" class="form-checkbox"></i>

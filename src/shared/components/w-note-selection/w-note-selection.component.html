@@ -32,7 +32,17 @@
         <w-dataView-nav [showViewMode]="true"
                         (sortComplete)="onSortComplete($event)"
                         (viewComplete)="onViewComplete($event)">
-          <h4 class="title">{{ title }}</h4>
+          <h4 *ngIf="!breadcrumb" class="title">{{ title }}</h4>
+          <div *ngIf="breadcrumb" class="breadcrumb-wrap">
+            <ol class="breadcrumb">
+              <li>
+                <button (click)="onRoot()" class="btn btn-default" type="button">{{ title }}</button>
+              </li>
+              <ng-container *ngFor="let item of breadcrumb; let i = index">
+                <li>{{ item.name }} - {{ i }}</li>
+              </ng-container>
+            </ol>
+          </div>
         </w-dataView-nav>
         <ng-container *ngIf="notesList?.length > 0; else templateNodata">
           <w-dataView [data]="notesList"
