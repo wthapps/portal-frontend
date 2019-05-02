@@ -8,15 +8,14 @@ import { DirectiveModule } from '@shared/shared/directive/directive.module';
 import { CheckboxModule } from 'primeng/primeng';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonEventService } from '@shared/services';
+import { DrivePipeModule } from './pipes/pipe.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule, DrivePipeModule],
   declarations: [],
   exports: [
     BrowserAnimationsModule,
@@ -30,7 +29,10 @@ import { CommonEventService } from '@shared/services';
     //
     CheckboxModule,
     // Directive
-    DirectiveModule
+    DirectiveModule,
+
+    // Pipe
+    DrivePipeModule
   ]
 })
 export class SampleSharedModule {

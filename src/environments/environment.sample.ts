@@ -30,6 +30,7 @@ export const ConfigByEnv: EnvConfig = {
   SOCKET_API: `ws://127.0.0.1:5000/socket`,
   GOOGLE_ANALYTICS_ID: 'UA-139547065-1',
   ENV: 'DEV',
+  CLOUDFRONT: '	https://d9njqd2jjuvpj.cloudfront.net/fit-in',
   DOMAIN: 'localhost',
   SUB_DOMAIN: {
     APP: 'http://localhost:3000',

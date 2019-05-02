@@ -44,8 +44,11 @@
         <ng-template #viewBody let-item>
           <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === 'Common::GenericFile'}">
             <i *ngIf="item.object_type === 'Common::Folder'" class="fa fa-folder"></i>
-            <ng-container *ngIf="item.object_type === 'Common::GenericFile'">
+            <ng-container *ngIf="item.object_type === 'Common::GenericFile' && !item?.thumbnail_url">
               <i class="fa fa-file-o"></i>
+            </ng-container>
+            <ng-container *ngIf="item.object_type === 'Common::GenericFile' && item?.thumbnail_url">
+              <img [src]="item?.thumbnail_url" alt="" draggable="false" class="img-center lazy-load">
             </ng-container>
           </div>
           <div class="item-media-name">

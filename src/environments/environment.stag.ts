@@ -26,6 +26,7 @@ export const ConfigByEnv: EnvConfig = {
   SOCKET_API: `wss://socket-${fullDomain}/socket`,
   GOOGLE_ANALYTICS_ID: 'UA-139547065-1',
   ENV: 'STAG',
+  CLOUDFRONT: '',
   DOMAIN: `${domain}`,
   SUB_DOMAIN: {
     APP: `${protocol}://${fullDomain}`,

@@ -16,6 +16,7 @@ export class ConstantsBase {
   googleAnalyticsId = Config.GOOGLE_ANALYTICS_ID;
   currentVersion = '2018 WTHApps - v1.12.0';
   env: any = Config.ENV;
+  cloudfront = Config.CLOUDFRONT;
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
