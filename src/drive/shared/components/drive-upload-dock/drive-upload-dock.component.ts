@@ -15,7 +15,7 @@ import { ApiBaseService, CommonEventService, CommonEventHandler } from '@shared/
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { ModalService } from '@shared/components/modal/modal-service';
 import { Constants } from '@shared/constant';
-import { FileUploadService } from '@shared/services/file-upload.service';
+import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import DriveFile from '@shared/modules/drive/models/drive-file.model';
 import DriveFileList from '@shared/modules/drive/models/functions/drive-file-list';
 
@@ -44,7 +44,7 @@ export class DriveUploadDockComponent implements OnInit {
     error: 'fa fa-exclamation-triangle text-danger',
     loading: 'fa fa-spinner fa-spin'
   };
-  collapse: boolean = false;
+  collapse = false;
   tooltip: any = Constants.tooltip;
   files: Array<DriveFile> = [];
   readonly upload_steps: any = {
@@ -59,32 +59,40 @@ export class DriveUploadDockComponent implements OnInit {
   constructor(
     public apiBaseService: ApiBaseService,
     public toastsService: ToastsService,
-    public fileUploadService: FileUploadService,
+    public fileDriveUploadService: FileDriveUploadService,
     public commonEventService: CommonEventService,
   ) {
   }
 
   ngOnInit() {
-    this.fileUploadService.onStart.subscribe(res => {
+    this.fileDriveUploadService.onStart.subscribe(res => {
+      this.modalDock.open();
       this.files = DriveFileList.map(res).map((item: DriveFile) => {
-        this.modalDock.open();
-        item.setMetadata({ percent: 0, status: this.upload_steps.init })
+        item.setMetadata({ percent: 0, status: this.upload_steps.init });
         return item;
       });
     });
-    // this.fileUploadService.onProgress.subscribe(res => {
-    //   console.log(res);
-    // });
-    this.fileUploadService.onDone.subscribe(res => {
+    this.fileDriveUploadService.onProgress.subscribe(res => {
       this.files = this.files.map((item: DriveFile) => {
-        item.setMetadata({ percent: 100, status: this.upload_steps.uploaded })
+        if (item.id === res.id) {
+          item = new DriveFile({ ...res, ...item });
+          item.setMetadata({ percent: 0, status: this.upload_steps.init, cancelable: true });
+        }
+        return item;
+      });
+    });
+    this.fileDriveUploadService.onDone.subscribe(res => {
+      this.files = this.files.map((item: DriveFile) => {
+        if (item.id === res.id) {
+          item.setMetadata({ percent: 100, status: this.upload_steps.uploaded });
+        }
         return item;
       });
     });
   }
 
   cancel(file) {
-
+    this.fileDriveUploadService.abortMultipartUploadS3(file.Bucket, file.id, file.UploadId);
   }
 
   close(event: any) {

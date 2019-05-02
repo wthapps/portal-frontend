@@ -37,7 +37,7 @@
             <span *ngSwitchCase="this.upload_steps.uploaded" class="fwb text-muted pull-right">
               Done
             </span>
-            <span *ngSwitchCase="this.upload_steps.init" class="fwb text-muted pull-right">
+            <span *ngSwitchCase="this.upload_steps.init && file._metadata.cancelable" class="fwb text-muted pull-right">
               <a href="#" (click)="cancel(file)">Stop</a>
             </span>
             <span *ngSwitchCase="this.upload_steps.error" class="fwb text-muted pull-right">

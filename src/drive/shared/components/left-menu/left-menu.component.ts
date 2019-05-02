@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
-import { FileUploadService } from '@shared/services/file-upload.service';
+import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 
 declare let $: any;
 declare let _: any;
@@ -29,7 +29,7 @@ export class ZDriveSharedLeftMenuComponent implements OnInit {
 
   constructor(
     private apiBaseService: ApiBaseService,
-    private fileUploadService: FileUploadService,
+    private fileDriveUploadService: FileDriveUploadService,
     private commonEventService: CommonEventService,
   ) {
     [this.myNoteMenu, this.settingMenu, ...this.noteMenu] = Constants.noteMenuItems;
@@ -41,6 +41,6 @@ export class ZDriveSharedLeftMenuComponent implements OnInit {
   }
 
   onpenFileUpload() {
-    this.fileUploadService.open();
+    this.fileDriveUploadService.open();
   }
 }

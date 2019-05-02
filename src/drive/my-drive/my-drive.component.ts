@@ -7,7 +7,7 @@ import { WDataViewComponent } from 'sample/shared/components/w-dataView/w-dataVi
 import { DriveService } from 'drive/shared/services/drive.service';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import DriveFileList from '@shared/modules/drive/models/functions/drive-file-list';
-import { FileUploadService } from '@shared/services/file-upload.service';
+import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 
 
@@ -66,18 +66,18 @@ export class MyDriveComponent implements OnInit {
   constructor(
     private dataService: DriveService,
     private apiBaseService: ApiBaseService,
-    private fileUploadService: FileUploadService,
+    private fileDriveUploadService: FileDriveUploadService,
   ) {
     this.data$ = this.dataService.data$;
   }
 
   ngOnInit(): void {
     this.loadObjects();
-    this.fileUploadService.onDone.subscribe(res => {
+    this.fileDriveUploadService.onDone.subscribe(res => {
       this.objects = [...DriveFileList.map([res]), ...this.objects]
     });
-    this.fileUploadService.onChange.subscribe(event => {
-      this.fileUploadService.upload(event.target.files);
+    this.fileDriveUploadService.onChange.subscribe(event => {
+      this.fileDriveUploadService.upload(event.target.files);
     });
   }
 
@@ -102,6 +102,6 @@ export class MyDriveComponent implements OnInit {
   }
 
   onBreadcrumbEvent(event: any) {
-    this.fileUploadService.open();
+    this.fileDriveUploadService.open();
   }
 }

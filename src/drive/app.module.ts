@@ -5,8 +5,20 @@ import { AppComponent } from './app.component';
 import { SampleSharedModule } from './shared/shared.module';
 import { CookieModule } from 'ngx-cookie';
 import { WDriveUploadDockModule } from './shared/components/drive-upload-dock/drive-upload-dock.module';
-import { CommonEventService, AuthService, UserService, ServiceManager, StorageService, UrlService, ChatCommonService, HandlerService, WMessageService, WTHNavigateService, NotificationService } from '@shared/services';
-import { FileUploadService } from '@shared/services/file-upload.service';
+import {
+  CommonEventService,
+  AuthService,
+  UserService,
+  ServiceManager,
+  StorageService,
+  UrlService,
+  ChatCommonService,
+  HandlerService,
+  WMessageService,
+  WTHNavigateService,
+  NotificationService
+} from '@shared/services';
+import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { HeaderModule } from '@shared/partials/header';
 import { WDriveHeaderModule } from './shared/components/header/header.module';
 import { WindowService } from '@shared/services/window.service';
@@ -35,7 +47,7 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
     AppComponent,
   ],
   providers: [CommonEventService,
-    FileUploadService,
+    FileDriveUploadService,
     AuthService,
     WindowService,
     ChannelService,

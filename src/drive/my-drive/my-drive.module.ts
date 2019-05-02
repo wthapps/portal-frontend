@@ -19,7 +19,7 @@ import { WModalsModule } from '../shared/components/modals/modals.module';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { DriveService } from 'drive/shared/services/drive.service';
 import { MyDriveComponent } from './my-drive.component';
-import { FileUploadService } from '@shared/services/file-upload.service';
+import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { WDriveBreadcrumbModule } from 'drive/shared/components/breadcrumb/breadcrumb.module';
 import { WDriveLeftMenuModule } from 'drive/shared/components/left-menu/left-menu.module';
 import { MyDriveRoutingModule } from './my-drive-routing.module';
