@@ -11,6 +11,8 @@ declare let _: any;
 
 @Injectable()
 export class WNoteSelectionService {
+  apiUrl = 'note/mixed_entities';
+
   viewMode$: Observable<string>;
   data$: Observable<any[]>;
   open$: Observable<any>;
@@ -43,7 +45,7 @@ export class WNoteSelectionService {
   }
 
   getView() {
-    return this.viewModeSubject.getValue()
+    return this.viewModeSubject.getValue();
   }
 
   changeView(view: string) {
@@ -51,7 +53,9 @@ export class WNoteSelectionService {
     this.localStorageService.set('media_view_mode', view);
   }
 
-  getData(link: string): Observable<any> {
+  getData(tab: string, id: number = null): Observable<any> {
+    const link = id ? `${this.apiUrl}?parent_id=${id}` : `${this.apiUrl}?${tab}`;
+
     return this.api.get(link).pipe(
       map((res: ResponseMetaData) => {
         res.data.map((item) => ({
@@ -84,9 +88,8 @@ export class WNoteSelectionService {
     return this.api.get(link);
   }
 
-  sort(url: string, sort: any) {
+  sort(sort: any) {
     this.dataSubject.next(null);
-    return this.getData(`${url}&sort=${sort.orderBy}&sort_name=${sort.sortBy}`);
   }
 }
 

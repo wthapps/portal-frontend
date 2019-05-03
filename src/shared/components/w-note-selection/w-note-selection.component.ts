@@ -35,28 +35,27 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     },
     {
       name: 'Favourites',
-      link: 'favourites=true',
+      link: 'parent_id=null&favourites=true',
       icon: 'fa fa-star',
       number: null,
       type: 'tab'
     },
     {
       name: 'Shared with me',
-      link: 'shared_with_me=true',
+      link: 'parent_id=null&shared_with_me=true',
       icon: 'fw fw-shared-with-me',
       number: null,
       type: 'tab'
     }
   ];
 
-  currentTab = 'parent_id=null'; // my_note, favourites, shared_with_me
-  current: string;
-  next: string;
+  currentTab = this.tabs[0].link;
+
+  parentID: number;
 
   constructor(private dataService: WNoteSelectionService) {
     this.data$ = this.dataService.data$;
     this.updateTitle();
-    this.current = this.buildLink();
   }
 
   ngOnInit(): void {
@@ -65,7 +64,6 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         console.log(res);
         if (res) {
-          this.next = this.current;
           this.modal.open().then();
           this.getDataAsync().then();
         }
@@ -81,8 +79,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   }
 
   async getDataAsync() {
-    const data = await this.dataService.getData(this.next).toPromise();
-    this.next = data.meta.links.next;
+    await this.dataService.getData(this.currentTab, this.parentID).toPromise();
   }
 
   async getParentDataAsync(id) {
@@ -92,14 +89,10 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
 
   onLoadMoreCompleted(event: any) {
     console.log(event);
-    if (event && this.next) {
-      this.getDataAsync().then();
-    }
   }
 
-  async onSortComplete(event: any) {
-    const data = await this.dataService.sort(this.current, event).toPromise();
-    this.next = data.meta.links.next;
+  onSortComplete(event: any) {
+    this.dataService.sort(event);
   }
 
   onViewComplete(event: any) {
@@ -126,8 +119,9 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   }
 
   onDblClick(event: Note) {
-    if (event.object.object_type === 'Note::Folder') {
-      this.getFolderContent(event.object.id);
+    if (event.object_type === 'Note::Folder') {
+      this.parentID = event.id;
+      this.getFolderContent(event.id);
     }
   }
 
@@ -148,7 +142,6 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
 
   private getFolderContent(id) {
     this.dataService.clear();
-    this.next = this.buildLink(id);
     this.getDataAsync().then();
     this.getParentDataAsync(id).then();
     if (this.dataView && this.dataView.container) {
@@ -159,15 +152,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   private getRootData() {
     this.dataService.clear();
     this.breadcrumb = null;
-    this.current = this.buildLink();
-    this.next = this.current;
+    this.parentID = null;
     this.getDataAsync().then();
-  }
-
-  private buildLink(id?) {
-    if (id) {
-      return `note/v1/mixed_entities?parent_id=${id}`
-    }
-    return `note/v1/mixed_entities?${this.currentTab}`;
   }
 }

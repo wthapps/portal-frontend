@@ -66,25 +66,26 @@
               <div class="item-note-date">Last Modified</div>
             </ng-template>
             <ng-template #viewBody let-item>
-              <div class="item-media-img" [ngClass]="{'item-note-img': item.object.object_type === 'Note::Note'}">
-                <i *ngIf="item.object.object_type === 'Note::Folder'" class="fa fa-folder"></i>
+              <div class="item-media-img" [ngClass]="{'item-note-img': item.object_type === 'Note::Note'}">
+                <i *ngIf="item.object_type === 'Note::Folder'" class="fa fa-folder"></i>
                 <ng-container *ngIf="item.object_type === 'Note::Note'">
                   <i class="fa fa-sticky-note"></i>
-                  <div class="item-note-content" [innerHTML]="item?.object?.content | safeHtml"></div>
+                  <div class="item-note-content" [innerHTML]="item?.content | safeHtml"></div>
                 </ng-container>
               </div>
               <div class="item-media-name">
-                <span>{{ item.object.name ? item.object.name : 'Untitled' }}</span>
+                <span>{{ item.name ? item.name : 'Untitled' }}</span>
               </div>
               <div class="item-note-owner">
-                {{ (item.role === 'owner') ? 'me' : item.shareder.name }}
+                {{ (item.role === 'owner') ? 'me' : item.user.name }}
               </div>
-              <div class="item-note-date">{{ item.object.created_at | timeFormat }}</div>
+              <div class="item-note-date">{{ item.created_at | timeFormat }}</div>
             </ng-template>
           </w-dataView>
           <w-dataView-selected *ngIf="dataView && dataView?.selectedDocuments?.length"
                                [selectedObjects]="dataView.selectedDocuments"
                                (clear)="dataView.container.clearSelection()">
+            <button class="btn btn-outline-primary" type="button">Insert</button>
           </w-dataView-selected>
         </ng-container>
         <ng-template #templateNodata>
