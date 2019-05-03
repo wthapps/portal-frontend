@@ -65,14 +65,14 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
   }
 
   ngOnInit(): void {
-    if (!this.swUpdate.isEnabled) {
+    // if (!this.swUpdate.isEnabled) {
       this.subscribeChanneService();
-    } else {
-      this.swUpdate.checkForUpdate()
-        .then((res) => {
-          this.subscribeChanneService();
-        });
-    }
+    // } else {
+    //   this.swUpdate.checkForUpdate()
+    //     .then((res) => {
+    //       this.subscribeChanneService();
+    //     });
+    // }
 
     if (this.authService.isAuthenticated()) {
       this.countCommonNotification();

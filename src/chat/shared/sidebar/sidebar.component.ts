@@ -217,6 +217,9 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
     // if ((this.authService.user.id === conversation.creator_id) && ['sent_request', 'accepted'].includes(conversation.status)) {
     //   this.redirectToConversationDetails(conversation.uuid);
     // }
+    if (conversation.notification_count > 0) {
+      this.notificationEventService.updateNotificationCount({count: conversation.notification_count, type: 'add'});
+    }
   }
 
   upsertConversationCallback(conversation: any) {
@@ -226,9 +229,9 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
 
     // increase notification to 1 if having a new message
     // Just recalculate chat notification count for conversation is not current
-    if ((this.conversationId !== conversation.uuid) && (conversation.notification_count > 0)) {
-      // this.notificationEventService.updateNotificationCount({count: 1, type: 'add'});
-    }
+    // if ((this.conversationId !== conversation.uuid) && (conversation.notification_count > 0)) {
+    //   this.notificationEventService.updateNotificationCount({count: 1, type: 'add'});
+    // }
   }
 
   updateConversationCallback(conversation: any) {

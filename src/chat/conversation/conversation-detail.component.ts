@@ -368,9 +368,9 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
     }
     return false;
   }
+
   private resetConversationNotifications() {
     // update notification_count as read
-    console.log('reset notification count:::');
     this.store$.dispatch(new ConversationActions.UpdateDisplay({
       id: this.conversationId, body: {conversation: {notification_count: 0}}
     }));

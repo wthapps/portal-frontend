@@ -37,12 +37,9 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
 
   notificationCount = 0;
   links: any;
-  inChat = false;
   nextLink: string;
   destroy$ = new Subject();
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
-  isShowing = false;
-  userChannel: any;
 
   constructor(
     private navigateService: WTHNavigateService,
@@ -104,14 +101,6 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     this.destroy$.complete();
   }
 
-  addNotificationEvent(event: CommonEvent) {
-    this.addNotification(event.payload);
-  }
-
-  addNotification(res: any) {
-    this.notificationCount = this.notificationCount + (res.notification_count - res.last_notification_count);
-  }
-
   gotoChat() {
     this.navigateService.navigateOrRedirect('conversations', 'chat');
   }
@@ -143,13 +132,16 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
     this.notificationCount = this.notificationCount - conversation.notification_count;
   }
 
+  /**
+   * Add or remove chat notification numbers on top right
+   * @param notification: an object {count: number, type:'add'|'remove'} with count and type attribute
+   */
   updateNotificationCountCallBack(notification: {count: number, type: 'add'|'remove'}) {
     if (notification.type === 'add') {
       this.notificationCount += notification.count;
     } else if (notification.type === 'remove') {
       const newNotificationCount = this.notificationCount - notification.count;
       this.notificationCount = newNotificationCount < 0 ? 0 : newNotificationCount;
-
     }
   }
 
@@ -159,6 +151,7 @@ export class ChatNotificationComponent extends CommonEventHandler implements OnI
       `conversations/${conversation.uuid}`,
       'chat'
     );
+    this.updateNotificationCountCallBack({count: conversation.notification_count, type: 'remove'});
   }
 
   hideActionsMenu(e: any) {

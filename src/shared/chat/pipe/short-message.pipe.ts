@@ -33,7 +33,6 @@ export class ShortMessagePipe implements PipeTransform {
         result = message;
       }
     }
-    console.log('message', result);
     if (result === null || result === undefined) {
       result = '';
     }
