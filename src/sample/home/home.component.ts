@@ -10,11 +10,17 @@ import { WNoteSelectionService } from '@shared/components/w-note-selection/w-not
   styleUrls: ['home.component.scss']
 })
 export class HomeComponent {
+  selectedDocuments: any;
 
   constructor(private noteSelectionService: WNoteSelectionService) {
   }
 
   onShowNoteSelections() {
     this.noteSelectionService.open();
+  }
+
+  onSelectCompleted(event) {
+    console.log(event);
+    this.selectedDocuments = event;
   }
 }

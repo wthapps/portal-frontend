@@ -13,6 +13,7 @@ import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-con
 import { DirectiveModule } from '@shared/shared/directive/directive.module';
 import { ToastModule } from 'primeng/toast';
 import { WModalsModule } from '../shared/components/modals/modals.module';
+import { WNoteSelectionModule } from '@shared/components/w-note-selection/w-note-selection.module';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { WModalsModule } from '../shared/components/modals/modals.module';
     WthConfirmModule,
     DirectiveModule,
     ToastModule,
-    WModalsModule
+    WModalsModule,
+    WNoteSelectionModule
   ],
   declarations: [HomeComponent],
   exports: [HomeComponent],

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { WDataViewComponent } from '../../../sample/shared/components/w-dataView/w-dataView.component';
 import { Constants } from '@shared/constant';
 import { Observable } from 'rxjs';
@@ -19,6 +19,8 @@ import { Note } from '@shared/shared/models/note.model';
 export class WNoteSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('dataView') dataView: WDataViewComponent;
+  @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
+
   tooltip: any = Constants.tooltip;
   data$: Observable<any>;
 
@@ -126,13 +128,15 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   }
 
   onSelectCompleted() {
+    // console.log('onSelectCompleted');
+    // this.selectCompleted.emit(this.dataView.selectedDocuments);
+    // this.modal.close().then();
+  }
 
-    // update icon favorite
-    // this.updateMenuFavorite(_.every(this.dataView.selectedDocuments, 'favorite'));
-
-    // check menu view
-    // const otherActionsEdit = _.find(this.otherActions, ['action', 'edit']);
-    // otherActionsEdit.active = !(this.dataView.selectedDocuments.length > 1);
+  onInsert() {
+    console.log('onInsert: ', this.dataView.selectedDocuments);
+    this.selectCompleted.emit(this.dataView.selectedDocuments);
+    this.modal.close().then();
   }
 
   private updateTitle() {

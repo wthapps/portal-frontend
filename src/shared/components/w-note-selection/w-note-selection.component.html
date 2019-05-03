@@ -85,7 +85,7 @@
           <w-dataView-selected *ngIf="dataView && dataView?.selectedDocuments?.length"
                                [selectedObjects]="dataView.selectedDocuments"
                                (clear)="dataView.container.clearSelection()">
-            <button class="btn btn-outline-primary" type="button">Insert</button>
+            <button (click)="onInsert()" class="btn btn-outline-primary" type="button">Insert</button>
           </w-dataView-selected>
         </ng-container>
         <ng-template #templateNodata>
