@@ -11,6 +11,7 @@ import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { PageVisibilityService } from './../shared/services/page-visibility.service';
 
+declare let ga: Function;
 
 /**
  * This class represents the main application component.
@@ -48,6 +49,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
+
+        ga('set', 'page', event.urlAfterRedirects);
+        ga('send', 'pageview');
       });
     // fix scroll to top after changing route
     this.router.events.subscribe(evt => {

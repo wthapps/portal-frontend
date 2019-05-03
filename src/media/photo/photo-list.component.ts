@@ -1,3 +1,4 @@
+import { GoogleAnalyticsService } from './../../shared/services/analytics/google-analytics.service';
 import { Component, OnInit, ComponentFactoryResolver, OnDestroy, ViewContainerRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -89,6 +90,7 @@ export class ZMediaPhotoListComponent extends CommonEventHandler implements OnIn
     public commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
     public localStorageService: LocalStorageService,
+    private googleAnalytics: GoogleAnalyticsService,
     private uploader: WUploader
   ) {
     super(commonEventService);
@@ -375,6 +377,7 @@ custom method please overwirte any method*/
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.downloadMedia(this.selectedObjects);
+          this.googleAnalytics.eventEmitter('photoList', 'download');
         },
         class: '',
         liclass: '',

@@ -45,6 +45,7 @@ import { TaggingModalComponent } from '@shared/modules/photo/components/modal/ta
 import { AddToAlbumModalComponent } from '@shared/modules/photo/components/modal/photo/add-to-album-modal.component';
 import { PhotoEditModalComponent } from '@shared/modules/photo/components/modal/photo/photo-edit-modal.component';
 import { PhotoStoreModule } from '@media/store';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 @NgModule({
   imports: [
@@ -92,7 +93,8 @@ import { PhotoStoreModule } from '@media/store';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    GoogleAnalyticsService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -108,4 +110,4 @@ import { PhotoStoreModule } from '@media/store';
     SharingDetailInfoComponent
   ]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,15 +1,18 @@
 import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+
+import { filter, take } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Subscription, Subject } from 'rxjs';
+
 import { Constants } from '@shared/constant/config/constants';
 import { WUploader } from '@shared/services/w-uploader';
 import { CommonEventService, ApiBaseService, CommonEventHandler, CommonEvent } from '@shared/services';
-import { filter, take } from 'rxjs/operators';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { Router } from '@angular/router';
-import { Subscription, Subject } from 'rxjs';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
 import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
 import { AlbumAddMixin, AlbumCreateMixin } from '@shared/modules/photo/mixins';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 @Mixins([AlbumAddMixin, AlbumCreateMixin])
 @Component({
@@ -31,6 +34,7 @@ export class ZMediaSharedLeftMenuComponent extends CommonEventHandler implements
 
   constructor(
     private renderer: Renderer2,
+    private googleAnalytics: GoogleAnalyticsService,
     public commonEventService: CommonEventService,
     public apiBaseService: ApiBaseService,
     public toastsService: ToastsService,
@@ -63,6 +67,8 @@ export class ZMediaSharedLeftMenuComponent extends CommonEventHandler implements
         { channel: 'ZMediaPhotoListComponent', action: 'reLoadObjects' }
       );
     });
+
+    this.googleAnalytics.eventEmitter('leftMenu', 'uploadItem');
   }
 
   /* AlbumCreateMixin This is album create methods, to
