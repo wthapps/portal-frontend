@@ -141,6 +141,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   }
 
   private getFolderContent(id) {
+    this.parentID = id;
     this.dataService.clear();
     this.getDataAsync().then();
     this.getParentDataAsync(id).then();

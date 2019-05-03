@@ -89,7 +89,10 @@ export class WNoteSelectionService {
   }
 
   sort(sort: any) {
-    this.dataSubject.next(null);
+    // console.log(sort); // orderBy: "asc" sortBy: "created_at"
+    const data = this.dataSubject.getValue();
+    const dataSorted = _.orderBy(data, ['object_type', sort.sortBy.toLocaleLowerCase()], ['asc', sort.orderBy]);
+    this.dataSubject.next(dataSorted);
   }
 }
 
