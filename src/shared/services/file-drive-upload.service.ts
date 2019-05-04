@@ -2,6 +2,8 @@ import { Injectable, Output, EventEmitter } from "@angular/core";
 import { CookieService } from "ngx-cookie";
 import { Constants } from "@shared/constant";
 import { ApiBaseService } from "./apibase.service";
+import { environment } from "@env/environment";
+
 const uuidv1 = require('uuid/v1');
 const AWS = require('aws-sdk');
 
@@ -41,7 +43,7 @@ export class FileDriveUploadService {
     this.onStart.emit(this.files);
     // this.uploadLocal();
     this.files.forEach(f => {
-      if (Constants.env === 'PROD') {
+    if (environment.production) {
         this.uploadS3(f);
       } else {
         this.uploadLocal(f);

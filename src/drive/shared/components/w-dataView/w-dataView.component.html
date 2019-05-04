@@ -11,7 +11,7 @@
 <dts-select-container #container="dts-select-container" [(selectedItems)]="selectedDocuments"
     (select)="onSelect($event)">
     <div class="content-view content-{{viewMode}} content-grid-{{ sliderView }}">
-        <div *ngFor="let item of data " [dtsSelectItem]="item" class="content-item">
+        <div *ngFor="let item of data | itemListDisplay " [dtsSelectItem]="item" class="content-item">
             <div class="item-media">
                 <div class="item-actions">
                     <i (mouseover)="container.selectMode = true" class="form-checkbox"></i>
