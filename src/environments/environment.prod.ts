@@ -21,6 +21,7 @@ export const ConfigByEnv: EnvConfig = {
   CDN: `${protocol}://cdn-apps.${domain}`,
   API: `${protocol}://api${fullDomain}`,
   SOCKET_API: `wss://socket.${domain}/socket`,
+  GOOGLE_ANALYTICS_ID: 'UA-139547065-1',
   ENV: 'PROD',
   DOMAIN: `${domain}`,
   SUB_DOMAIN: {
@@ -33,22 +34,3 @@ export const ConfigByEnv: EnvConfig = {
     NOTE: `${protocol}://notes${fullDomain}`
   }
 };
-
-// // const host = '192.168.0.116';
-// const host = 'localhost';
-//
-// export const ConfigByEnv: EnvConfig = {
-//   CDN: `http://${host}:4000/assets`,
-//   API: `http://${host}:4000`,
-//   ENV: 'DEV',
-//   DOMAIN: 'localhost',
-//   SUB_DOMAIN: {
-//     APP: 'http://localhost:3000',
-//     MYACCOUNT: 'http://localhost:3005',
-//     MEDIA: 'http://localhost:3010',
-//     SOCIAL: 'http://localhost:3015',
-//     CHAT: 'http://localhost:3020',
-//     CONTACT: 'http://localhost:3025',
-//     NOTE: 'http://localhost:3030',
-//   }
-// };

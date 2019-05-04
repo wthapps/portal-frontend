@@ -23,6 +23,7 @@ export const ConfigByEnv: EnvConfig = {
   CDN: `${protocol}://cdn-apps.${domain}`,
   API: `${protocol}://api-${fullDomain}`,
   SOCKET_API: `wss://socket-${fullDomain}/socket`,
+  GOOGLE_ANALYTICS_ID: 'UA-139547065-1',
   ENV: 'STAG',
   DOMAIN: `${domain}`,
   SUB_DOMAIN: {

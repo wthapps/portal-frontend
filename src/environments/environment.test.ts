@@ -21,6 +21,7 @@ export const ConfigByEnv: EnvConfig = {
   CDN: `${protocol}://cdn-apps-test.${domain}/assets`,
   API: `${protocol}://api-${fullDomain}`,
   SOCKET_API: `wss://socket-${fullDomain}/socket`,
+  GOOGLE_ANALYTICS_ID: 'UA-139547065-1',
   ENV: 'TEST',
   DOMAIN: `${domain}`,
   SUB_DOMAIN: {
