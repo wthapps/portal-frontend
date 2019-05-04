@@ -9,7 +9,7 @@
           aria-expanded="false">
           {{ item.label }} <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-sm">
           <li>
             <a (click)="onMenu({action: 'note:open_note_add_modal', payload: {parent_id: item.id}})"
               href="javascript:;">

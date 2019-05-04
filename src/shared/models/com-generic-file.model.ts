@@ -2,7 +2,7 @@ import User from "./user.model";
 import ObjectDataModel from "./object-data.model";
 
 export default class CommonGenericFile extends ObjectDataModel {
-  static model_const = "Common::GenericFile"
+  static model_const = "Common::GenericFile";
   id: number;
   uuid: string;
   name: string;
@@ -12,7 +12,7 @@ export default class CommonGenericFile extends ObjectDataModel {
   url: string;
   thumbnail_url: string;
   size: string;
-  object_type: string;
+  object_type: string = CommonGenericFile.model_const;
   created_at: string;
   updated_at: string;
   original_filename: string;

@@ -9,7 +9,7 @@ import { AuthService } from '@shared/services';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  constructor(private authService: AuthService) {
+  constructor(public authService: AuthService) {
 
   }
 }

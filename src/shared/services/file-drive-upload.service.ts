@@ -44,11 +44,17 @@ export class FileDriveUploadService {
       if (Constants.env === 'PROD') {
         this.uploadS3(f);
       } else {
-        // this.uploadLocal(f);
-        this.uploadS3(f);
-
+        this.uploadLocal(f);
       }
     });
+  }
+
+  retry(file: any) {
+    if (Constants.env === 'PROD') {
+      this.uploadS3(file);
+    } else {
+      this.uploadLocal(file);
+    }
   }
 
   abortMultipartUploadS3(bucket, key, uploadId) {
@@ -82,12 +88,11 @@ export class FileDriveUploadService {
     this.apiBaseService.post('drive/files/create_metadata',
       { name: file.name, file_upload_id: file.id, type: file.type }).subscribe(res => {
         this.createS3instane(res);
-
         const reader = new FileReader();
         let partNum = 0;
         const uploadParts = [];
         reader.addEventListener("load", (event: any) => {
-          const step = 5242880;
+          const step = 5 * 1000 * 1000; // 5MB
           // const step = 32428800;
           // Single uploading
           if (event.total < step) {
@@ -116,7 +121,11 @@ export class FileDriveUploadService {
             };
 
             this.s3.createMultipartUpload(params, (err, data) => {
-              if (err) console.log(err, err.stack);
+              if (err) {
+                file.error = err;
+                this.onError.emit(file);
+                return;
+              }
               file.Bucket = res.data.bucket;
               file.UploadId = data.UploadId;
               this.onProgress.emit(file);
@@ -135,9 +144,9 @@ export class FileDriveUploadService {
                   // if (err) console.log(err1, err1.stack); // an error occurred
                   // else console.log(data1);           // successful response
                   if (err1) {
-                    console.log(err1, err1.stack);
+                    file.error = err1;
+                    this.onError.emit(file);
                   } else {
-                    console.log(data1);
                     uploadParts.push({ ETag: data1.ETag, PartNumber: params1.PartNumber });
                     if (uploadParts.length === partNum) {
                       uploadParts.sort((a: any, b: any) => {
@@ -152,10 +161,10 @@ export class FileDriveUploadService {
                         UploadId: data.UploadId
                       };
                       this.s3.completeMultipartUpload(params2, (err2, data2) => {
-                        if (err) console.log(err2, err2.stack); // an error occurred
-                        else console.log(data2);           // successful response
-                        if (err) this.onError.emit(err); // an error occurred
-                        else this.onDone.emit(file);           // successful response
+                        if (err2) {
+                          file.error = err2;
+                          this.onError.emit(file);
+                        } else this.onDone.emit(file);           // successful response
                       });
                     }
                   }
@@ -172,8 +181,15 @@ export class FileDriveUploadService {
   uploadLocal(file: any) {
     const request = new XMLHttpRequest();
     request.upload.addEventListener('progress', (e) => {
-      file.percent = (e.loaded / e.total) * 100;
-      // this.onProgress.emit(file);
+      this.onProgress.emit(file);
+    });
+    request.upload.addEventListener('error', (e) => {
+      file.error = e;
+      this.onError.emit(file);
+    });
+    request.addEventListener('error', (e) => {
+      file.error = e;
+      this.onError.emit(file);
     });
 
     // Send POST request to the server side script

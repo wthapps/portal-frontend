@@ -3,12 +3,12 @@ import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Constants } from '@shared/constant';
-import { WDataViewComponent } from 'sample/shared/components/w-dataView/w-dataView.component';
 import { DriveService } from 'drive/shared/services/drive.service';
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import DriveFileList from '@shared/modules/drive/models/functions/drive-file-list';
 import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
+import { WDataViewComponent } from 'drive/shared/components/w-dataView/w-dataView.component';
 
 
 @Component({
@@ -98,6 +98,14 @@ export class MyDriveComponent implements OnInit {
   }
 
   onSelectCompleted() {
+
+  }
+
+  onSortComplete(event: any) {
+
+  }
+
+  onViewComplete(event: any) {
 
   }
 

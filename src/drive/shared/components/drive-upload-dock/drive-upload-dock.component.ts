@@ -68,7 +68,7 @@ export class DriveUploadDockComponent implements OnInit {
     this.fileDriveUploadService.onStart.subscribe(res => {
       this.modalDock.open();
       this.files = DriveFileList.map(res).map((item: DriveFile) => {
-        item.setMetadata({ percent: 0, status: this.upload_steps.init });
+        item.setMetadata({ percent: 0, status: this.upload_steps.begin });
         return item;
       });
     });
@@ -89,10 +89,22 @@ export class DriveUploadDockComponent implements OnInit {
         return item;
       });
     });
+    this.fileDriveUploadService.onError.subscribe(res => {
+      this.files = this.files.map((item: DriveFile) => {
+        if (item.id === res.id) {
+          item.setMetadata({ percent: 0, status: this.upload_steps.error });
+        }
+        return item;
+      });
+    });
   }
 
   cancel(file) {
     this.fileDriveUploadService.abortMultipartUploadS3(file.Bucket, file.id, file.UploadId);
+  }
+
+  retry(file) {
+    this.fileDriveUploadService.retry(file);
   }
 
   close(event: any) {

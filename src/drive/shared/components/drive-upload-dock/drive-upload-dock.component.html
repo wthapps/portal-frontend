@@ -1,4 +1,4 @@
-<wth-modal-dock #modalDock>
+<wth-modal-dock #modalDock class="media-uploader-dock">
   <wth-modal-dock-header [hasCollapse]="false" [hasCloseIcon]="false">
     <div *ngIf="files.length > 0"> Uploading {{files.length}} items</div>
     <div *ngIf="files.length === 0"> Uploaded 0 items</div>
@@ -43,9 +43,6 @@
             <span *ngSwitchCase="this.upload_steps.error" class="fwb text-muted pull-right">
               <a href="#" (click)="retry(file)">Retry</a>
             </span>
-            <span *ngSwitchDefault class="fwb text-muted pull-right">
-              <a href="#" (click)="retry(file)">Retry</a>
-            </span>
           </td>
         </tr>
       </tbody>
@@ -64,7 +61,7 @@
   </bs-modal-body>
   <bs-modal-footer>
     <button class="btn btn-outline-default btn-min" (click)="modal.close();">Continue uploads</button>
-    <button class="btn btn-outline-primary btn-min" (click)="clearItems(); modal.close(); modalDock.close()">Cancel
-      uploads</button>
+    <!-- <button class="btn btn-outline-primary btn-min" (click)="clearItems(); modal.close(); modalDock.close()">Cancel
+      uploads</button> -->
   </bs-modal-footer>
 </bs-modal>
