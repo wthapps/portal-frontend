@@ -74,7 +74,7 @@ export class MyDriveComponent implements OnInit {
   ngOnInit(): void {
     this.loadObjects();
     this.fileDriveUploadService.onDone.subscribe(res => {
-      this.objects = [...DriveFileList.map([res]), ...this.objects]
+      this.objects = [...DriveFileList.map([res]), ...this.objects];
     });
     this.fileDriveUploadService.onChange.subscribe(event => {
       this.fileDriveUploadService.upload(event.target.files);

@@ -43,10 +43,11 @@ export class FileDriveUploadService {
     this.onStart.emit(this.files);
     // this.uploadLocal();
     this.files.forEach(f => {
-    if (environment.production) {
+      if (environment.production) {
         this.uploadS3(f);
       } else {
-        this.uploadLocal(f);
+        this.uploadS3(f);
+        // this.uploadLocal(f);
       }
     });
   }
@@ -93,8 +94,9 @@ export class FileDriveUploadService {
         const reader = new FileReader();
         let partNum = 0;
         const uploadParts = [];
+        file.key = res.data.key;
         reader.addEventListener("load", (event: any) => {
-          const step = 5 * 1000 * 1000; // 5MB
+          const step = 50 * 1000 * 1000; // 5MB
           // const step = 32428800;
           // Single uploading
           if (event.total < step) {
