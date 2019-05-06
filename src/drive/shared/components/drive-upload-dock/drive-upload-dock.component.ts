@@ -66,7 +66,8 @@ export class DriveUploadDockComponent implements OnInit {
 
   ngOnInit() {
     this.fileDriveUploadService.onStart.subscribe(res => {
-      this.modalDock.open();
+      // this.modalDock.open();
+      this.modalDock.open('media-uploader-dock');
       this.files = DriveFileList.map(res).map((item: DriveFile) => {
         item.setMetadata({ percent: 0, status: this.upload_steps.begin });
         return item;
