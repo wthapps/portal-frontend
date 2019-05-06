@@ -341,7 +341,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
         notes.forEach(p => {
           messages.push(new Message({
             message_type: 'file',
-            file_id: p.object_id,
+            file_id: p.uuid,
             file_type: p.object_type
           }));
         });
