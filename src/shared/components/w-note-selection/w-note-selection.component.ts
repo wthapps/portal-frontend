@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
-import { WDataViewComponent } from '../../../sample/shared/components/w-dataView/w-dataView.component';
+import { WDataViewComponent } from '../w-dataView/w-dataView.component';
 import { Constants } from '@shared/constant';
 import { Observable } from 'rxjs';
 import { WNoteSelectionService } from '@shared/components/w-note-selection/w-note-selection.service';
@@ -66,8 +66,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         console.log(res);
         if (res) {
-          this.modal.open().then();
-          this.getDataAsync().then();
+          this.open();
         }
       });
   }
@@ -75,8 +74,12 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  onModalClose(event) {
-    console.log(event);
+  open() {
+    this.modal.open().then();
+    this.getDataAsync().then();
+  }
+
+  close() {
     this.dataService.close();
   }
 

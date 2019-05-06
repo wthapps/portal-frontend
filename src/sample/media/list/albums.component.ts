@@ -1,5 +1,5 @@
 import { Component, HostBinding, ViewChild } from '@angular/core';
-import { WDataViewComponent } from '../../shared/components/w-dataView/w-dataView.component';
+import { WDataViewComponent } from '../../../shared/components/w-dataView/w-dataView.component';
 
 @Component({
   selector: 's-media-list',

@@ -46,7 +46,7 @@ import {
 } from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from '@shared/components/modal/modal.module';
-import { WDataViewModule } from "../../sample/shared/components/w-dataView/w-dataView.module";
+import { WDataViewModule } from "../../shared/components/w-dataView/w-dataView.module";
 import { WModalsModule } from "../../sample/shared/components/modals/modals.module";
 
 /**

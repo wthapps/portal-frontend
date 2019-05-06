@@ -1,4 +1,4 @@
-@import "../../../../assets/styles/global";
+@import "../../../assets/styles/global";
 
 // Example for overriding the color of the selection retangle
 $dts-primary: $theme-color;
@@ -12,7 +12,7 @@ $selected-item-border-color: transparent;
 $selected-item-border-size: 0px;
 
 $box-shadow: false;
-@import "~ngx-drag-to-select/scss/ngx-drag-to-select";
+@import "../../../../node_modules/ngx-drag-to-select/scss/ngx-drag-to-select";
 
 .dts-select-container {
   // position: absolute !important;

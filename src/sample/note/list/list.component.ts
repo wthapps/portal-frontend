@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Constants } from '@shared/constant';
 
-import { WDataViewComponent } from '../../shared/components/w-dataView/w-dataView.component';
+import { WDataViewComponent } from '../../../shared/components/w-dataView/w-dataView.component';
 import { NoteService } from '../shared/note.service';
 
 @Component({

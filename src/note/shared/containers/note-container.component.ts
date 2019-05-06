@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { WDataViewComponent } from "../../../sample/shared/components/w-dataView/w-dataView.component";
+import { WDataViewComponent } from "../../../shared/components/w-dataView/w-dataView.component";
 import { Constants } from "@shared/constant";
 import { noteConstants } from '../config/constants';
 import * as note from '../actions/note';

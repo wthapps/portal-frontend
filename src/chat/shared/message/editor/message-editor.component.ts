@@ -7,35 +7,38 @@ import {
   Input,
   OnChanges,
   AfterViewInit,
-  AfterContentInit,
-  DoCheck,
-  AfterViewChecked,
-  EventEmitter, Output
+  EventEmitter,
+  Output
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Subject, Subscription,  Observable, from, merge } from 'rxjs';
+import { Subject, Subscription, Observable, from, merge } from 'rxjs';
 import { filter, take, takeUntil, mergeMap, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
-import { Constants, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
-import { ApiBaseService, WMessageService, StorageService, PhotoUploadService, CommonEventService, CommonEventHandler, CommonEvent } from '@wth/shared/services';
+import { Constants, FORM_MODE } from '@wth/shared/constant';
+import {
+  ApiBaseService,
+  WMessageService,
+  StorageService,
+  PhotoUploadService,
+  CommonEventService,
+  CommonEventHandler
+} from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { noteConstants } from '@notes/shared/config/constants';
-import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
 import { WUploader } from '@shared/services/w-uploader';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { LongMessageModalComponent } from '@shared/components/modal/long-message-modal.component';
-import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
 import { ChatMessageService } from '@chat/shared/services/chat-message.service';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 import { MessageEventService } from '@chat/shared/message';
-
-declare var $: any;
+import { WNoteSelectionComponent } from '@shared/components/w-note-selection/w-note-selection.component';
+import { StripHtmlPipe } from '@shared/shared/pipe/strip-html.pipe';
 
 @Component({
   selector: 'message-editor',
@@ -45,7 +48,7 @@ declare var $: any;
 })
 export class MessageEditorComponent extends CommonEventHandler implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @ViewChild('miniEditor') editor: MiniEditorComponent;
-  @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
+  @ViewChild('noteList') notesListModal: WNoteSelectionComponent;
   @ViewChild('longMessageModal') longMessageModal: LongMessageModalComponent;
   @Input() isDisabled = true;
   @Input() conversation;
@@ -92,7 +95,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     private uploader: WUploader,
     private emojiService: WTHEmojiService,
     private contactSelectionService: ContactSelectionService,
-    private messageEventService: MessageEventService,
+    private messageEventService: MessageEventService
   ) {
     super(commonEventService);
     this.createForm();
@@ -247,7 +250,9 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   focus() {
     // set background color #ffd when editing
-    if (this.editor) { this.editor.focus(); }
+    if (this.editor) {
+      this.editor.focus();
+    }
   }
 
   cancelEditingMessage() {
@@ -286,7 +291,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       allowedFileTypes: null,
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/before_upload_file',
       afterCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/after_upload_file',
-      payload: {group_id: this.conversation.id},
+      payload: { group_id: this.conversation.id },
       module: 'chat'
     });
   }
@@ -306,7 +311,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       allowedFileTypes: ['image/*'],
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/before_upload_file',
       afterCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/after_upload_file',
-      payload: { group_id: this.conversation.id },
+      payload: { group_id: this.conversation.id }
     });
 
     this.mediaSelectionService.selectedMedias$
@@ -325,7 +330,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
           messages.push(new Message({
             message_type: 'file',
             file_id: p.id,
-            file_type: p.object_type,
+            file_type: p.object_type
           }));
         });
         break;
@@ -337,7 +342,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
           messages.push(new Message({
             message_type: 'file',
             file_id: p.object_id,
-            file_type: p.object_type,
+            file_type: p.object_type
           }));
         });
         break;
@@ -347,7 +352,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
           messages.push(new Message({
             message_type: 'share_contact_message',
             file_id: contact.id,
-            file_type: '::User',
+            file_type: '::User'
           }));
         });
         break;
@@ -435,7 +440,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     if (!this.messageService.notEmptyHtml(this.message.message)) {
       return false;
     }
-    if (this.stripHtml.transform(this.message.message).length > this.maxLengthAllow ) {
+    if (this.stripHtml.transform(this.message.message).length > this.maxLengthAllow) {
       this.longMessageModal.open();
       return false;
     }
@@ -447,7 +452,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       return;
     }
     if (this.mode === FORM_MODE.EDIT) {
-      this.messageEventService.update({message: this.message});
+      this.messageEventService.update({ message: this.message });
       this.mode = FORM_MODE.CREATE;
       this.resetEditor();
     } else {
@@ -459,7 +464,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   private sendMessage(message: any) {
     this.onCreate.emit({
       ...message,
-      group_id: this.conversation.id,
+      group_id: this.conversation.id
     });
   }
 

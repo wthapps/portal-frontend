@@ -5,7 +5,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { CommonModule } from '@angular/common';
 import { CookieModule } from 'ngx-cookie';
 import { FormsModule } from '@angular/forms';
-import { WDataViewModule } from '../shared/components/w-dataView/w-dataView.module';
+import { WDataViewModule } from '../../shared/components/w-dataView/w-dataView.module';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';

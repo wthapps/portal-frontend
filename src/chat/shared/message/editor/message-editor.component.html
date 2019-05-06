@@ -43,7 +43,9 @@
     </a>
   </div>
 </form>
-<chat-note-list-modal #noteList (onSelect)="createMessage('notes', $event)">
-</chat-note-list-modal>
+<!--<chat-note-list-modal #noteList (onSelect)="createMessage('notes', $event)"></chat-note-list-modal>-->
+<w-note-selection #noteList (selectCompleted)="createMessage('notes', $event)"></w-note-selection>
+
+
 <long-message-modal #longMessageModal></long-message-modal>
 

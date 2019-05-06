@@ -2,8 +2,8 @@
           [keyboard]="false"
           [animation]="false"
           [backdrop]="'static'"
-          (onDismiss)="onModalClose($event)"
-          (onClose)="onModalClose($event)">
+          (onDismiss)="close($event)"
+          (onClose)="close($event)">
   <bs-modal-header [showDismiss]="true">
     <div *ngIf="searchShow" class="modal-media-search">
       <div class="modal-media-search-in">

@@ -11,7 +11,7 @@ import { MMediaService } from '../shared/media.service';
 import { MPhotosService } from '../shared/services/photos.service';
 
 import { MAlbumsService } from '../shared/services/albums.service';
-import { WDataViewComponent } from '../../shared/components/w-dataView/w-dataView.component';
+import { WDataViewComponent } from '../../../shared/components/w-dataView/w-dataView.component';
 import { WModalsAddToAlbumComponent } from '../../shared/components/modals/add-to-album/add-to-album.component';
 import { WModalsShareComponent } from '../../shared/components/modals/share/share.component';
 import { WModalsPhotoEditInfoComponent } from '../../shared/components/modals/photo-edit-info/photo-edit-info.component';
