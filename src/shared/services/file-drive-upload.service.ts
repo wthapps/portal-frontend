@@ -3,8 +3,10 @@ import { CookieService } from "ngx-cookie";
 import { Constants } from "@shared/constant";
 import { ApiBaseService } from "./apibase.service";
 import { environment } from "@env/environment";
+import { FileUtil } from "@shared/shared/utils/file/file.util";
 
 const uuidv1 = require('uuid/v1');
+const uuidv3 = require('uuid/v3');
 const AWS = require('aws-sdk');
 
 @Injectable()
@@ -56,19 +58,26 @@ export class FileDriveUploadService {
     if (Constants.env === 'PROD') {
       this.uploadS3(file);
     } else {
-      this.uploadLocal(file);
+      this.uploadS3(file);
+      // this.uploadLocal(file);
     }
   }
 
-  abortMultipartUploadS3(bucket, key, uploadId) {
+  abortMultipartUploadS3(file) {
+    // file.Bucket, file.id, file.UploadId
     const params = {
-      Bucket: bucket,
-      Key: key,
-      UploadId: uploadId
+      Bucket: file.Bucket,
+      Key: file.id,
+      UploadId: file.UploadId
     };
-    this.s3.abortMultipartUpload(params, function (err, data) {
+    this.s3.abortMultipartUpload(params, (err, data) => {
       if (err) console.log(err, err.stack); // an error occurred
-      else console.log(data);           // successful response
+      else {
+        this.onError.emit({});
+        this.apiBaseService.post('drive/files/remove_metadata', { id: file.key }).subscribe(res => {
+          console.log(res);
+        });
+      }
     });
   }
 
@@ -96,7 +105,7 @@ export class FileDriveUploadService {
         const uploadParts = [];
         file.key = res.data.key;
         reader.addEventListener("load", (event: any) => {
-          const step = 50 * 1000 * 1000; // 5MB
+          const step = 5.3 * 1000 * 1000; // 50MB
           // const step = 32428800;
           // Single uploading
           if (event.total < step) {
@@ -145,8 +154,6 @@ export class FileDriveUploadService {
                   UploadId: data.UploadId
                 };
                 this.s3.uploadPart(params1, (err1: any, data1: any) => {
-                  // if (err) console.log(err1, err1.stack); // an error occurred
-                  // else console.log(data1);           // successful response
                   if (err1) {
                     file.error = err1;
                     this.onError.emit(file);
@@ -221,7 +228,7 @@ export class FileDriveUploadService {
   beforeUpload(files: Array<File>) {
     this.files = Object.keys(files).map((key, index) => (
       {
-        id: uuidv1() + files[key].name,
+        id: uuidv1() + uuidv3(files[key].name, uuidv1()) + '.' + FileUtil.getExtension(files[key]),
         data: files[key],
         name: files[key].name,
         type: files[key].type,

@@ -101,7 +101,7 @@ export class DriveUploadDockComponent implements OnInit {
   }
 
   cancel(file) {
-    this.fileDriveUploadService.abortMultipartUploadS3(file.Bucket, file.id, file.UploadId);
+    this.fileDriveUploadService.abortMultipartUploadS3(file);
   }
 
   retry(file) {

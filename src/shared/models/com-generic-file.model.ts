@@ -7,7 +7,7 @@ export default class CommonGenericFile extends ObjectDataModel {
   uuid: string;
   name: string;
   full_name: string;
-  extendsion: string;
+  extension: string;
   content_type: string;
   url: string;
   thumbnail_url: string;

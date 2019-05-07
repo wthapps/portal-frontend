@@ -33,6 +33,7 @@ export default class Album extends ObjectDataModel implements MediaType {
     if (this.sharing_id && this.recipients_count > 0) return true;
     return false;
   }
+
   existSharing(): boolean {
     if (this.sharing_id) return true;
     return false;
