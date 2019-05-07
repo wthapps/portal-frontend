@@ -1,4 +1,4 @@
-<form [formGroup]="pmForm" id="adyen-encrypted-form" novalidate>
+<form novalidate>
   <bs-modal #modal
             [cssClass]="'modal-account-edit'"
             [keyboard]="false"
@@ -12,61 +12,15 @@
     </bs-modal-header>
     <bs-modal-body>
 
-      <div>
-        <div class="form-group" [ngClass]="{'has-error': (!holderName.valid && holderName.dirty),
-                                            'has-success': (holderName.valid && holderName.dirty)}">
-          <label for="card-name">Card Name</label>
-          <input [formControl]="holderName" class="form-control" type="text"
-                 id="card-name" size="20"
-                 autocomplete="off" data-encrypted-name="holderName" [readonly]="mode ==='edit'">
-        </div>
-        <div class="form-group" [ngClass]="{'has-error': (!number.valid && number.dirty),
-                                            'has-success': (number.valid && number.dirty)}">
-          <label for="card-number">Card Number</label>
-          <div class="cardinfo-card-number">
-            <input [formControl]="number" class="form-control" type="tel" id="card-number" size="20" wccnumber
-                 autocomplete="off" data-encrypted-name="number" [readonly]="mode ==='edit'">
-
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-3">
-            <div class="form-group" [ngClass]="{'has-error': (!expiryMonth.valid && expiryMonth.dirty),
-                                                'has-success': (expiryMonth.valid && expiryMonth.dirty)}">
-              <label for="card-expiry-month">Expiry month</label>
-              <input [formControl]="expiryMonth" class='form-control' type="tel" id="card-expiry-month" size="2"
-                     maxlength="2" placeholder="MM" wccmonth min="1" max="12"
-                     autocomplete="off" data-encrypted-name="expiryMonth">
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="form-group" [ngClass]="{'has-error': (!expiryYear.valid && expiryYear.dirty),
-                                                'has-success': (expiryYear.valid && expiryYear.dirty)}">
-              <label for="card-expiry-month">Expiry year</label>
-              <input [formControl]="expiryYear" class='form-control' type="tel" id="card-expiry-year" size="4"
-                     maxlength="4" placeholder="YYYY" wccyear
-                     autocomplete="off" data-encrypted-name="expiryYear">
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="form-group" [ngClass]="{'has-error': (!cvc.valid && cvc.dirty),
-                                                'has-success': (cvc.valid && cvc.dirty)}">
-              <label for="card-cvv">CVV</label>
-              <input [formControl]="cvc" class='form-control' type="tel" id="card-cvv" size="4" wcccvc
-                     maxlength="4" data-encrypted-name="cvc" [readonly]="mode ==='edit'">
-            </div>
-          </div>
-        </div>
-      </div>
-      <input type="hidden" [formControl]="generationtime" data-encrypted-name="generationtime" />
-
+      <!-- secured card form from Adyen -->
+      <div id="card-container"></div>
 
     </bs-modal-body>
 
     <bs-modal-footer>
       <div>
         <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
-        <button class="btn btn-outline-primary btn-min pull-right" [disabled]="!pmForm.valid"
+        <button class="btn btn-outline-primary btn-min pull-right"
                 (click)="save()"> {{ (options?.mode === 'add') ? 'Add' : 'Update' }}</button>
       </div>
     </bs-modal-footer>

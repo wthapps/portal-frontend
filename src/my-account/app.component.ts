@@ -6,7 +6,7 @@ import {
   ViewContainerRef,
   ViewChild,
   ComponentFactoryResolver,
-  AfterViewInit
+  AfterViewInit, enableProdMode
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -31,6 +31,7 @@ import * as fromAccount from './store/account';
 import { AuthService, UserService } from '@wth/shared/services';
 import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
+import { environment } from '@env/environment';
 
 
 /**
@@ -82,6 +83,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loadDynamicScripts();
     this.currentUser = this.userService.getSyncProfile();
 
     this.routerSubscription = this.router.events
@@ -192,5 +194,23 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       modalComponentFactory
     );
     this.modal = this.modalComponent.instance;
+  }
+
+  private loadDynamicScripts() {
+    // Load payment gateway scripts
+    // <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/2.4.2/adyen.js"></script>
+    if (environment.production) {
+      document.write(`
+        <script type="text/javascript" src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/2.4.2/adyen.js">
+        </script>`
+      );
+      enableProdMode();
+
+    } else {
+      document.write(`
+        <script type="text/javascript" src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/2.4.2/adyen.js">
+        </script>`
+      );
+    }
   }
 }

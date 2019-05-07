@@ -14,7 +14,7 @@ import { ApiBaseService } from '@shared/services';
   styleUrls: ['payment-method-list.component.scss']
 })
 
-export class PaymentMethodListComponent implements OnInit, AfterViewInit {
+export class PaymentMethodListComponent implements OnInit {
   @ViewChild('addModal') addModal: PaymentMethodAddModalComponent;
 
   pageTitle = 'Payment methods';
@@ -37,11 +37,6 @@ export class PaymentMethodListComponent implements OnInit, AfterViewInit {
         this.paymentMethod = response.data[0];
         this.loaded = true;
       });
-  }
-
-
-  ngAfterViewInit() {
-    // this.openModal();
   }
 
   openModal(paymentMethod: any = null) {

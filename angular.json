@@ -203,16 +203,12 @@
               "src/assets/styles/styles-app-loading.scss",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "src/my-account/styles/my-account.scss",
-              "node_modules/adyen-cse-web/js/addOns/adyen.cardtype.css"
+              "src/my-account/styles/my-account.scss"
             ],
             "scripts": [
               "src/shared/channels/common.js",
               "node_modules/moment/min/moment.min.js",
-              "node_modules/payment/dist/payment.js",
-              "node_modules/adyen-cse-web/js/adyen.encrypt.min.js",
-              "node_modules/adyen-cse-web/js/adyen.encrypt.nodom.min.js",
-              "node_modules/adyen-cse-web/js/addOns/adyen.cardtype.min.js"
+              "node_modules/payment/dist/payment.js"
             ]
           },
           "configurations": {

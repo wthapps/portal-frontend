@@ -1,16 +1,24 @@
-import { Component, Output, Input, ViewChild, HostBinding, OnInit, EventEmitter, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  enableProdMode,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
+import { AbstractControl, FormBuilder } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { ApiBaseService } from '@shared/services';
 import { environment } from '@env/environment';
-import { CreditCardValidator } from '@account/shared/credit-card';
 
-declare const adyen: any;
+declare const $: any;
+declare const AdyenCheckout: any;
 
 @Component({
   selector: 'payment-method-add-modal',
-  templateUrl: 'payment-method-add-modal.component.html'
+  templateUrl: 'payment-method-add-modal.component.html',
+  styleUrls: ['payment-method-add-modal.component.scss'],
 })
 
 export class PaymentMethodAddModalComponent implements OnInit {
@@ -20,13 +28,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
 
   options: any;
   pmType = 'card';
-  pmForm: FormGroup;
   holderName: AbstractControl;
-  number: AbstractControl;
-  expiryMonth: AbstractControl;
-  expiryYear: AbstractControl;
-  cvc: AbstractControl;
-  generationtime: AbstractControl;
   defaultOptions: {
     data: null,
     mode: 'add' | 'edit'
@@ -40,7 +42,6 @@ export class PaymentMethodAddModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initializeForm();
   }
 
   /*
@@ -54,10 +55,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
     this.mode = options.mode;
 
     this.initializeForm(this.mode);
-    this.pmForm.controls.generationtime.setValue(this.pm.generation_time);
     if (options.mode === 'edit') {
-      this.pmForm.controls.holderName.setValue(this.pm.object_json.holderName);
-      this.pmForm.controls.number.setValue(`**** **** **** ${this.pm.object_json.last4Number}`);
       this.title = 'Update';
     } else {
       this.title = 'Add';
@@ -67,7 +65,9 @@ export class PaymentMethodAddModalComponent implements OnInit {
   }
 
   close(options?: any) {
-    this.modal.close(options).then();
+    this.modal.close(options).then(
+      $('div.adyen-checkout__card-input').remove()
+    );
   }
 
 
@@ -75,48 +75,70 @@ export class PaymentMethodAddModalComponent implements OnInit {
     const key = environment.keys.adyen_public_key;
     let options = {cardTypeElement: null};
     let postData = {};
-    let form    = document.getElementById('adyen-encrypted-form');
-    const cseInstance = adyen.encrypt.createEncryption(key, options);
-
-    // Bind encryption to the form
-    let encryptedForm = adyen.encrypt.createEncryptedForm(form, key, options);
-
-    postData['card'] = cseInstance.encrypt(this.pmForm.value);
-
-    encryptedForm.addCardTypeDetection(options.cardTypeElement);
-
     if (this.options.mode === 'edit') {
-      postData['card'] = {expiryMonth: this.expiryMonth.value, expiryYear: this.expiryYear.value};
     }
     this.onSaved.emit({paymentMethod: {...this.pm, ...postData}, mode: this.options.mode});
   }
 
   private initializeForm(mode: string = 'add') {
-    if (mode === 'add') {
-      this.pmForm = this.fb.group({
-        holderName: ['', [Validators.required]],
-        number: ['', [Validators.required, CreditCardValidator.validateCardNumber]],
-        expiryMonth: ['', [Validators.required, CreditCardValidator.validateExpiryMonth]],
-        expiryYear: ['', [Validators.required]],
-        cvc: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(4)]],
-        generationtime: [null, [Validators.required]]
-      });
-    } else if (mode === 'edit') {
-      this.pmForm = this.fb.group({
-        holderName: ['', [Validators.required]],
-        number: ['', [Validators.required]],
-        expiryMonth: ['', [Validators.required, CreditCardValidator.validateExpiryMonth]],
-        expiryYear: ['', [Validators.required]],
-        cvc: ['', []],
-        generationtime: [null, [Validators.required]]
-      });
-    }
+    // if (mode === 'add') {
 
-    this.holderName = this.pmForm.controls.holderName;
-    this.number = this.pmForm.controls.number;
-    this.expiryMonth = this.pmForm.controls.expiryMonth;
-    this.expiryYear = this.pmForm.controls.expiryYear;
-    this.cvc = this.pmForm.controls.cvc;
-    this.generationtime = this.pmForm.controls.generationtime;
-  }
+    //   });
+    // } else if (mode === 'edit') {
+
+    // }
+
+
+
+    function handleOnChange(state: any, component: any) {
+
+    }
+    const configuration = {
+      locale: 'en_US',
+      originKey: environment.keys.adyen_origin_key,
+      loadingContext: 'https://checkoutshopper-test.adyen.com/checkoutshopper/'
+    };
+
+    const checkout = new AdyenCheckout(configuration);
+    // Define style object
+    const styleObject = {
+      base: {
+        color: '#555555'
+      },
+      error: {
+        color: '#d9534f'
+      },
+      placeholder: {
+        color: '#d8d8d8'
+      }
+    };
+
+    // Create card params
+    // https://docs.adyen.com/payment-methods/cards/#configuring-the-component
+    const card = checkout.create('card', {
+      styles: styleObject,
+      hasHolderName: true,
+      holderNameRequired: true,
+      holderName: 'test card',
+      placeholders: {
+        encryptedCardNumber : '4111 1111 1111 1111',
+        encryptedExpiryDate : 'MM/YY',
+        encryptedSecurityCode : 'CVC/CVV'
+      },
+      onChange: (state: any, component: any) => {
+        console.log('handle changed card:::', state, component);
+        // state.isValid // true or false.
+        // state.data
+        /* {type: "scheme",
+            encryptedCardNumber: "adyenjs_0_1_18$MT6ppy0FAMVMLH...",
+            encryptedExpiryMonth: "adyenjs_0_1_18$MT6ppy0FAMVMLH...",
+            encryptedExpiryYear: "adyenjs_0_1_18$MT6ppy0FAMVMLH...",
+            encryptedSecurityCode: "adyenjs_0_1_18$MT6ppy0FAMVMLH..."}
+        */
+      },
+    }).mount('#card-container');
+    if (!card.isValid()) {
+      card.showValidation();
+      return false;
+    }}
 }
