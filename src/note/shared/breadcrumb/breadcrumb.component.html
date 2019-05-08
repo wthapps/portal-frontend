@@ -1,47 +1,50 @@
-<div class="breadcrumb-wrap" [ngClass]="{styleClass:styleClass}" [ngStyle]="style">
-  <ol class="breadcrumb">
-    <li *ngFor="let item of model; let last = last;" [ngClass]="{'active': last}" [title]="item.label">
-      <button *ngIf="!last" type="button" class="btn btn-default dropdown-toggle" (click)="onClick(item)">
-        {{ item.label }}
-      </button>
-      <div *ngIf="last" class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false" [disabled]="!permissions.enableEdit">
-          {{ item.label }} <span class="caret"></span>
+<div class="breadcrumb-wrap">
+  <ol class="breadcrumb m0 p0">
+    <ng-container *ngFor="let item of model; let i = index; let last = last" [ngClass]="{'active': last}">
+      <li *ngIf="last">
+        <div class="btn-group">
+          <span class="title can-click text-capitalize" data-toggle="dropdown">
+            {{ item.label }} <span class="caret"></span>
+          </span>
+          <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+            <li>
+              <a (click)="onMenu({action: 'note:open_note_add_modal', payload: {parent_id: item.id}})" href="javascript:;">
+                <i class="icon-zone-note"></i> New note
+              </a>
+            </li>
+            <li>
+              <a (click)="onMenu({action: 'note:folder:create'})" href="javascript:;">
+                <i class="fa fa-folder-o"></i> New folder
+              </a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a (click)="onMenu({action: 'note:folder:edit', payload: item})" href="javascript:;">
+                <i class="fa fa-pencil"></i> Edit folder
+              </a>
+            </li>
+            <li>
+              <a (click)="onMenu({action: 'note:mixed_entity:open_sharing_modal', payload: [item]})" href="javascript:void(0);">
+                <i class="fa fa-share-alt"></i> Sharing
+              </a>
+            </li>
+            <li>
+              <a (click)="onMenu({action: 'note:mixed_entity:delete', payload: [item]})" href="javascript:void(0);">
+                <i class="fa fa-trash-o"></i> Delete</a>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <a (click)="onMenu({action: 'note:mixed_entity:open_move_to_folder_modal', payload: [item]})" href="javascript:;">Move
+                to folder</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li *ngIf="!last">
+        <button (click)="onClick(item)" class="btn btn-default" type="button">
+          {{ item.label }}
         </button>
-        <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-          <li>
-            <a (click)="onMenu({action: 'note:open_note_add_modal', payload: {parent_id: item.id}})" href="javascript:;">
-              <i class="icon-zone-note"></i> New note
-            </a>
-          </li>
-          <li>
-            <a (click)="onMenu({action: 'note:folder:create'})" href="javascript:;">
-              <i class="fa fa-folder-o"></i> New folder
-            </a>
-          </li>
-          <li role="separator" class="divider"></li>
-          <li>
-            <a (click)="onMenu({action: 'note:folder:edit', payload: item})" href="javascript:;">
-              <i class="fa fa-pencil"></i> Edit folder
-            </a>
-          </li>
-          <li>
-            <a (click)="onMenu({action: 'note:mixed_entity:open_sharing_modal', payload: [item]})" href="javascript:void(0);">
-              <i class="fa fa-share-alt"></i> Sharing
-            </a>
-          </li>
-          <li>
-            <a (click)="onMenu({action: 'note:mixed_entity:delete', payload: [item]})" href="javascript:void(0);">
-              <i class="fa fa-trash-o"></i> Delete</a>
-          </li>
-          <li role="separator" class="divider"></li>
-          <li>
-            <a (click)="onMenu({action: 'note:mixed_entity:open_move_to_folder_modal', payload: [item]})" href="javascript:;">Move
-              to folder</a>
-          </li>
-        </ul>
-      </div>
-    </li>
+      </li>
+    </ng-container>
   </ol>
 </div>

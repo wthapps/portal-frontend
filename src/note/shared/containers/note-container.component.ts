@@ -1,4 +1,3 @@
-import { reducers } from './../reducers/index';
 import { ApiBaseService } from './../../../shared/services/apibase.service';
 import { Component, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 import { ZNoteService } from '../services/note.service';
@@ -9,14 +8,15 @@ import { Observable } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { WDataViewComponent } from "../../../shared/components/w-dataView/w-dataView.component";
-import { Constants } from "@shared/constant";
+import { WDataViewComponent } from '../../../shared/components/w-dataView/w-dataView.component';
+import { Constants } from '@shared/constant';
 import { noteConstants } from '../config/constants';
 import * as note from '../actions/note';
 import { CommonEventService } from '@shared/services';
 
 declare var _: any;
 const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
+
 @Component({
   selector: 'z-note-container',
   templateUrl: 'note-container.component.html',
@@ -24,7 +24,7 @@ const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
   encapsulation: ViewEncapsulation.None
 })
 export class ZNoteContainerComponent implements OnInit, OnChanges {
-  @Input() breadcrumbs: any;
+  @Input() breadcrumbs: any = null;
   @HostBinding('class') class = 'main-page-body';
   @ViewChild('dataView') dataView: WDataViewComponent;
 
@@ -137,7 +137,9 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
   }
 
   validatePermission() {
-    if (!this.dataView) { return; }
+    if (!this.dataView) {
+      return;
+    }
     const objects: any[] = this.dataView.selectedDocuments;
     const path = this.router.url;
 
@@ -213,7 +215,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
   }
 
   onNewNote() {
-    this.noteService.modalEvent({action: 'note:open_note_add_modal'});
+    this.noteService.modalEvent({ action: 'note:open_note_add_modal' });
   }
 
   onFolder() {
@@ -251,7 +253,11 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
 
   onMenuAction(action: string) {
     const selectedObjects = this.dataView.selectedDocuments;
-    const objects = this.dataView.selectedDocuments.map(({id, object_type, favourite}) => ({id, object_type, favourite}));
+    const objects = this.dataView.selectedDocuments.map(({ id, object_type, favourite }) => ({
+      id,
+      object_type,
+      favourite
+    }));
     switch (action) {
       case 'share': {
         if (selectedObjects.length > 0) {
@@ -265,7 +271,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
       }
       case 'favorite': {
         this.apiBaseService
-          .post('note/mixed_entities/favourites', {objects: objects})
+          .post('note/mixed_entities/favourites', { objects: objects })
           .subscribe((res: any) => {
             // this.selectedObjects = res.data;
             // this.validatePermission(this.selectedObjects);
