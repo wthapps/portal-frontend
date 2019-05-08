@@ -27,6 +27,8 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   title: string;
   breadcrumb: Note[];
   searchShow: boolean;
+  searchText = '';
+
   tabs: WTab[] = [
     {
       name: 'My Note',
@@ -54,6 +56,9 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   currentTab = this.tabs[0].link;
 
   parentID: number;
+  // TODO Replace this one by dataView.selectedDocuments when supporting share Folder
+  // It only shares Note right now
+  selectedObjects: Array<any> = [];
 
   constructor(private dataService: WNoteSelectionService) {
     this.data$ = this.dataService.data$;
@@ -107,7 +112,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   }
 
   tabAction(event: any) {
-    if (this.currentTab == event.link) {
+    if (this.currentTab === event.link) {
       return false;
     }
     this.currentTab = event.link;
@@ -115,7 +120,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     this.getRootData();
   }
 
-  onBreadcrumb(id?) {
+  onBreadcrumb(id?: any) {
     if (!id) {
       this.getRootData();
     } else {
@@ -130,15 +135,26 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectCompleted() {
-    // console.log('onSelectCompleted');
-    // this.selectCompleted.emit(this.dataView.selectedDocuments);
-    // this.modal.close().then();
+  onSelectCompleted(objects: Array<any>) {
+    this.selectedObjects = objects.filter(object => object.object_type !== 'Note::Folder');
+  }
+
+  onSearchEnter(event: any) {
+    this.searchText = event.search;
+    this.title = 'Search results';
+    this.dataService.search(this.searchText);
+  }
+
+  onSearchEscape(event: any) {
+    this.searchShow = false;
+    this.searchText = '';
+    this.updateTitle();
+    this.dataService.getByParams(this.currentTab);
+    console.log('current tab:::', this.currentTab);
   }
 
   onInsert() {
-    console.log('onInsert: ', this.dataView.selectedDocuments);
-    this.selectCompleted.emit(this.dataView.selectedDocuments);
+    this.selectCompleted.emit(this.selectedObjects);
     this.modal.close().then();
   }
 
@@ -147,7 +163,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     this.title = result.name;
   }
 
-  private getFolderContent(id) {
+  private getFolderContent(id: any) {
     this.parentID = id;
     this.dataService.clear();
     this.getDataAsync().then();

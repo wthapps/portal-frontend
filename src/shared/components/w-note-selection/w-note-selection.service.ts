@@ -4,7 +4,7 @@ import { ApiBaseService } from '@shared/services';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 
 import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
-import { catchError, distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
 import { LocalStorageService } from 'angular-2-local-storage';
 
 declare let _: any;
@@ -20,6 +20,7 @@ export class WNoteSelectionService {
   private viewModeSubject: BehaviorSubject<string> = new BehaviorSubject<string>('grid');
   private dataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
   private openSubject: Subject<any> = new Subject<any>();
+  private destroy$: Subject<any> = new Subject<any>();
 
   constructor(public localStorageService: LocalStorageService,
               private datePipe: DatePipe,
@@ -93,6 +94,28 @@ export class WNoteSelectionService {
     const data = this.dataSubject.getValue();
     const dataSorted = _.orderBy(data, ['object_type', sort.sortBy.toLocaleLowerCase()], ['asc', sort.orderBy]);
     this.dataSubject.next(dataSorted);
+  }
+
+  search(keyword: string) {
+    const link = `note/search?q=${keyword}`;
+    this.api.get(link).pipe(takeUntil(this.destroy$)).subscribe(res => {
+      this.dataSubject.next(this.mapToView(res.data));
+    });
+  }
+
+  getByParams(queryParams: string) {
+    const link = `${this.apiUrl}?${queryParams}`;
+    this.api.get(link).pipe(takeUntil(this.destroy$)).subscribe(res => {
+      this.dataSubject.next(this.mapToView(res.data));
+    });
+  }
+
+  private mapToView(items: Array<any>) {
+    return items.map((item) => ({
+      ...item, group_by_day: this.datePipe.transform(item.created_at, 'yyyy-MM-dd'),
+      group_by_month: this.datePipe.transform(item.created_at, 'yyyy-MM'),
+      group_by_year: this.datePipe.transform(item.created_at, 'yyyy')
+    }));
   }
 }
 

@@ -55,7 +55,7 @@
         <ng-container *ngIf="notesList?.length > 0; else templateNodata">
           <w-dataView [data]="notesList"
                       (loadMoreCompleted)="onLoadMoreCompleted($event)"
-                      (selectCompleted)="onSelectCompleted()"
+                      (selectCompleted)="onSelectCompleted($event)"
                       (dblClick)="onDblClick($event)"
                       #dataView>
             <ng-template #viewHeader>
@@ -82,24 +82,32 @@
               <div class="item-note-date">{{ item.created_at | timeFormat }}</div>
             </ng-template>
           </w-dataView>
-          <w-dataView-selected *ngIf="dataView && dataView?.selectedDocuments?.length"
-                               [selectedObjects]="dataView.selectedDocuments"
+
+          <w-dataView-selected *ngIf="selectedObjects?.length"
+                               [selectedObjects]="selectedObjects"
                                (clear)="dataView.container.clearSelection()">
             <button (click)="onInsert()" class="btn btn-outline-primary" type="button">Insert</button>
           </w-dataView-selected>
         </ng-container>
         <ng-template #templateNodata>
-          <div class="align-self-center" [ngSwitch]="currentTab">
-            <box-no-data *ngSwitchCase="'my_note'" [icon]="'fa fa-photo'" [title]="'There is no photo!'"
-                         [subTitle]="'There is no photo.'">
-            </box-no-data>
+          <ng-container *ngIf="!searchShow">
+            <div class="align-self-center" [ngSwitch]="currentTab">
+              <box-no-data *ngSwitchCase="'my_note'" [icon]="'fa fa-photo'" [title]="'There is no photo!'"
+                           [subTitle]="'There is no photo.'">
+              </box-no-data>
 
-            <box-no-data *ngSwitchCase="'favourites'" [icon]="'fa fa-star'" [title]="'There is no favourite!'"
-                         [subTitle]="'There is no favourite.'">
-            </box-no-data>
-            <box-no-data *ngSwitchCase="'shared_with_me'" [icon]="'fw fw-shared-with-me'"
-                         [title]="'There is no shared with me!'"
-                         [subTitle]="'There is no shared with me.'">
+              <box-no-data *ngSwitchCase="'favourites'" [icon]="'fa fa-star'" [title]="'There is no favourite!'"
+                           [subTitle]="'There is no favourite.'">
+              </box-no-data>
+              <box-no-data *ngSwitchCase="'shared_with_me'" [icon]="'fw fw-shared-with-me'"
+                           [title]="'There is no shared with me!'"
+                           [subTitle]="'There is no shared with me.'">
+              </box-no-data>
+            </div>
+          </ng-container>
+          <div class="align-self-center" *ngIf="searchShow">
+            <box-no-data title="No matched search results"
+                         subTitle="You search did not match any data">
             </box-no-data>
           </div>
         </ng-template>

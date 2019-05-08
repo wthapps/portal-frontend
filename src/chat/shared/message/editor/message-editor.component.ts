@@ -338,11 +338,11 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
         const notes = payload;
 
         this.notesListModal.close();
-        notes.forEach(p => {
+        notes.forEach(note => {
           messages.push(new Message({
             message_type: 'file',
-            file_id: p.uuid,
-            file_type: p.object_type
+            file_id: note.id,
+            file_type: note.object_type
           }));
         });
         break;
