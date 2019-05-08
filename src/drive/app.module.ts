@@ -29,6 +29,9 @@ import { PageVisibilityService } from '@shared/services/page-visibility.service'
 import { WebsocketService } from '@shared/channels/websocket.service';
 import { WHttpClientService } from '@shared/services/w-http-client.service';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
+import { LockUploadModalComponent } from '@shared/components/modal/lock-upload-modal.component';
+import { BsModalModule } from 'ng2-bs3-modal';
+import { PipeModule } from '@shared/shared/pipe/pipe.module';
 
 @NgModule({
   imports: [
@@ -41,10 +44,13 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
     ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: false
     }),
-    WDriveUploadDockModule
+    WDriveUploadDockModule,
+    PipeModule,
+    BsModalModule
   ],
   declarations: [
     AppComponent,
+    LockUploadModalComponent
   ],
   providers: [CommonEventService,
     FileDriveUploadService,

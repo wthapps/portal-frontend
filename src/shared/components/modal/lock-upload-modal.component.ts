@@ -23,7 +23,7 @@ export class LockUploadModalComponent implements OnInit, OnDestroy {
     video: "fa fa-video-camera"
   }
 
-  constructor(private commonEventService: CommonEventService) {}
+  constructor(private commonEventService: CommonEventService) { }
 
 
   ngOnInit() {
@@ -42,7 +42,7 @@ export class LockUploadModalComponent implements OnInit, OnDestroy {
           return f;
         });
         this.modal.open();
-    });
+      });
   }
 
   ngOnDestroy() {

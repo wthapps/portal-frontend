@@ -4,6 +4,8 @@ import { Constants } from "@shared/constant";
 import { ApiBaseService } from "./apibase.service";
 import { environment } from "@env/environment";
 import { FileUtil } from "@shared/shared/utils/file/file.util";
+import { SizePolicy } from "@shared/policies/size-policy";
+import { CommonEventService } from "./common-event/common-event.service";
 
 const uuidv1 = require('uuid/v1');
 const uuidv3 = require('uuid/v3');
@@ -23,7 +25,10 @@ export class FileDriveUploadService {
   @Output() onProgress: EventEmitter<any> = new EventEmitter();
   @Output() onError: EventEmitter<any> = new EventEmitter();
 
-  constructor(private cookieService: CookieService, private apiBaseService: ApiBaseService) {
+  constructor(
+    private cookieService: CookieService,
+    private commonEventService: CommonEventService,
+    private apiBaseService: ApiBaseService) {
 
   }
 
@@ -43,15 +48,37 @@ export class FileDriveUploadService {
   upload(files: any) {
     this.beforeUpload(files);
     this.onStart.emit(this.files);
-    // this.uploadLocal();
     this.files.forEach(f => {
-      if (environment.production) {
-        this.uploadS3(f);
-      } else {
-        this.uploadS3(f);
-        // this.uploadLocal(f);
-      }
+      const sizePolicy = new SizePolicy(50);
+      sizePolicy.validate(f.data);
     });
+    const filesNotAllow = this.files.map(f => f.data).filter(f => {
+      if (f.allow === false) {
+        return true;
+      }
+      return false;
+    });
+    if (filesNotAllow && filesNotAllow.length > 0) {
+      this.commonEventService.broadcast({
+        channel: 'LockMessage',
+        payload: filesNotAllow
+      });
+    } else {
+      const filesAllow = this.files.filter(f => {
+        if (f.allow === false) {
+          return false;
+        }
+        return true;
+      });
+      filesAllow.forEach(f => {
+        if (environment.production) {
+          this.uploadS3(f);
+        } else {
+          this.uploadS3(f);
+          // this.uploadLocal(f);
+        }
+      });
+    }
   }
 
   retry(file: any) {
@@ -105,7 +132,7 @@ export class FileDriveUploadService {
         const uploadParts = [];
         file.key = res.data.key;
         reader.addEventListener("load", (event: any) => {
-          const step = 5.3 * 1000 * 1000; // 50MB
+          const step = 50 * 1000 * 1000; // 50MB
           // const step = 32428800;
           // Single uploading
           if (event.total < step) {
