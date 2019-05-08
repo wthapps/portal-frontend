@@ -1,8 +1,8 @@
-import User from "./user.model";
-import ObjectDataModel from "./object-data.model";
+import User from './user.model';
+import ObjectDataModel from './object-data.model';
 
 export default class CommonGenericFile extends ObjectDataModel {
-  static model_const = "Common::GenericFile";
+  static model_const = 'Common::GenericFile';
   id: number;
   uuid: string;
   name: string;

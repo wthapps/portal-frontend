@@ -32,7 +32,7 @@
           </li>
         </ul>
       </w-dataView-selected>
-      <w-dataView [data]="list" (loadMoreObjects)="loadMoreObjects($event)" (selectCompleted)="onSelectCompleted()"
+      <w-dataView [data]="list" (loadMoreObjects)="loadMoreObjects($event)" (selectCompleted)="onSelectCompleted()" viewMode="grid" sliderView="3"
         #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">
@@ -42,20 +42,20 @@
           <div class="item-note-date">Last Modified</div>
         </ng-template>
         <ng-template #viewBody let-item>
-          <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === 'Common::GenericFile'}">
-            <i *ngIf="item.object_type === 'Common::Folder'" class="fa fa-folder"></i>
-            <ng-container *ngIf="item.object_type === 'Common::GenericFile' && !item?.thumbnail_url">
+          <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === OBJECT_TYPE.FILE}">
+            <i *ngIf="item.object_type === OBJECT_TYPE.FOLDER" class="fa fa-folder"></i>
+            <ng-container *ngIf="item.object_type === OBJECT_TYPE.FILE && !item?.temp_thumbnail_url">
               <i class="fa fa-file-o"></i>
             </ng-container>
-            <ng-container *ngIf="item.object_type === 'Common::GenericFile' && item?.thumbnail_url">
-              <img [src]="item?.thumbnail_url" alt="" draggable="false" class="img-center lazy-load">
+            <ng-container *ngIf="item.object_type === OBJECT_TYPE.FILE && item?.temp_thumbnail_url">
+              <img [src]="item?.temp_thumbnail_url" alt="" draggable="false" class="img-center lazy-load">
             </ng-container>
           </div>
           <div class="item-media-name">
             <span>{{ item.full_name || 'Untitled' }}</span>
           </div>
           <div class="item-note-owner">
-            {{ item.user.name }}
+            {{ item?.owner?.name }}
           </div>
           <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
         </ng-template>

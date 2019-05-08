@@ -21,7 +21,11 @@ export class MyDriveComponent implements OnInit {
 
   @ViewChild('dataView') dataView: WDataViewComponent;
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
+  readonly OBJECT_TYPE = {
+    FILE: 'Common::GenericFile',
+    FOLDER: 'Drive::Folder'
+  };
   data$: Observable<any>;
   objects: any;
   files: any = [];
@@ -82,7 +86,7 @@ export class MyDriveComponent implements OnInit {
   }
 
   loadObjects() {
-    this.apiBaseService.get('drive/files').subscribe(res => {
+    this.apiBaseService.get('drive/drive').subscribe(res => {
       this.objects = DriveFileList.map(res.data);
       this.next = res.meta.links.next;
     });

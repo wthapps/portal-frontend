@@ -25,7 +25,7 @@ export class ZDriveSharedLeftMenuComponent implements OnInit {
   sub: any;
   sub2: any;
   noteFoldersTree: any[] = [];
-  showFolderTree: boolean;
+  showFolderTree = true;
 
   constructor(
     private apiBaseService: ApiBaseService,

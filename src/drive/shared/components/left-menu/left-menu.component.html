@@ -80,6 +80,9 @@
         <div class="menuleft-item">
           <a href="#"><i class="fa fa-folder" aria-hidden="true"></i> My Drive</a>
         </div>
+        <div class="well-folder-tree" [ngClass]="{'active': showFolderTree}">
+            <p-panelMenu [(model)]="noteFoldersTree"></p-panelMenu>
+          </div>
         <div class="menuleft-item"><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i> Recent</a></div>
         <div class="menuleft-item"><a href="#"><i class="fa fa-star" aria-hidden="true"></i> Favorite</a></div>
         <div class="menuleft-item"><a href="#"><i class="fa fa-plus" aria-hidden="true"></i> Shared with me</a></div>
