@@ -32,6 +32,8 @@ import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { LockUploadModalComponent } from '@shared/components/modal/lock-upload-modal.component';
 import { BsModalModule } from 'ng2-bs3-modal';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
+import { DriveStoreModule } from './shared/store';
+import { NotificationEventService } from '@shared/services/notification';
 
 @NgModule({
   imports: [
@@ -46,6 +48,7 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
     }),
     WDriveUploadDockModule,
     PipeModule,
+    DriveStoreModule,
     BsModalModule
   ],
   declarations: [
@@ -68,8 +71,8 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
     PageVisibilityService,
     WebsocketService,
     WHttpClientService,
-    WTHEmojiService
-    ,
+    WTHEmojiService,
+    NotificationEventService,
     ConnectionNotificationService,
     WMessageService],
 

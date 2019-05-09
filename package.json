@@ -36,6 +36,7 @@
     "stats-contact": "ng build contact --stats-json && webpack-bundle-analyzer dist/contact/stats.json",
     "stats-note": "ng build note --stats-json && webpack-bundle-analyzer dist/note/stats.json",
     "stats-chat": "ng build chat --stats-json && webpack-bundle-analyzer dist/chat/stats.json",
+    "stats-drive": "ng build drive --stats-json && webpack-bundle-analyzer dist/drive/stats.json",
     "build-portal": "ng build --prod portal && http-server -p 3000 dist/portal",
     "build-deploy-portal": "ng build --prod portal && cp -R dist/portal/* ~/deployment/fe-portal",
     "build-account": "ng build --prod my-account && http-server -p 3005 dist/my-account",
