@@ -16,7 +16,7 @@
                 <div class="item-actions">
                     <i (mouseover)="container.selectMode = true" class="form-checkbox"></i>
                 </div>
-                <div (mouseover)="container.selectMode = false" class="item-select"></div>
+                <div (mouseover)="container.selectMode = false" class="item-select" (dblclick)="dblClick.emit(item)"></div>
                 <ng-template [ngTemplateOutlet]="viewBodyTmpl" [ngTemplateOutletContext]="{$implicit: item}">
                 </ng-template>
             </div>

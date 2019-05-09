@@ -4,7 +4,7 @@
     <z-drive-shared-breadcrumb [model]="breadcrumbs" (breadcrumbEvent)="onBreadcrumbEvent($event)">
     </z-drive-shared-breadcrumb>
   </w-dataView-nav>
-  <ng-container *ngIf="objects as list; else templateloading">
+  <ng-container *ngIf="(data$ | async) as list; else templateloading">
     <ng-container *ngIf="list?.length > 0; else templateNodata">
       <w-dataView-selected *ngIf="dataView.selectedDocuments?.length" [selectedObjects]="dataView.selectedDocuments"
         (clear)="dataView.container.clearSelection()">
@@ -29,7 +29,7 @@
           </li>
         </ul>
       </w-dataView-selected>
-      <w-dataView [data]="list" (loadMoreObjects)="loadMoreObjects($event)" (selectCompleted)="onSelectCompleted()" viewMode="grid" sliderView="3"
+      <w-dataView [data]="list" (loadMoreObjects)="loadMoreObjects($event)" (selectCompleted)="onSelectCompleted()" (dblClick)="onView($event)" viewMode="grid" sliderView="3"
         #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">

@@ -1,3 +1,4 @@
+import { DriveService } from './shared/services/drive.service';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -36,6 +37,7 @@ import { DriveStoreModule } from './shared/store';
 import { NotificationEventService } from '@shared/services/notification';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 @NgModule({
   imports: [
@@ -48,6 +50,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HeaderModule,
     HeaderModule,
     WDriveHeaderModule,
+    LocalStorageModule.forRoot({
+      prefix: 'my-app',
+      storageType: 'localStorage'
+    }),
     ServiceWorkerModule.register('/ngsw-worker.js', {
       enabled: false
     }),
@@ -58,6 +64,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   declarations: [AppComponent, LockUploadModalComponent],
   providers: [
+    DriveService,
     CommonEventService,
     FileDriveUploadService,
     AuthService,

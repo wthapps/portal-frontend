@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, from } from 'rxjs';
-import { tap, map, distinctUntilChanged, catchError } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { LocalStorageService } from 'angular-2-local-storage';
-import { DatePipe } from '@angular/common';
-import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { ApiBaseService } from '@shared/services';
 import DriveFile from '@shared/modules/drive/models/drive-file.model';
 import DriveFileList from '@shared/modules/drive/models/functions/drive-file-list';
+import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 
 @Injectable()
 export class DriveService {
   viewMode$: Observable<string>;
   private viewModeSubject: BehaviorSubject<string> = new BehaviorSubject<string>('grid');
 
+  readonly apiUrl = 'drive/drive';
 
-  apiUrl = 'note/mixed_entities';
+  data$: Observable<Array<DriveFolder | DriveFile>>;
+  private dataSubject: BehaviorSubject<Array<DriveFolder | DriveFile>> = new BehaviorSubject<Array<DriveFolder | DriveFile>>(null);
 
-  data$: Observable<any[]>;
-  private dataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
+  private nextUrl = '';
 
   constructor(public localStorageService: LocalStorageService,
-    private datePipe: DatePipe,
     private apiBaseService: ApiBaseService) {
     this.viewMode$ = this.viewModeSubject.asObservable().pipe(distinctUntilChanged());
     this.viewModeSubject.next(this.localStorageService.get('media_view_mode') || 'grid');
@@ -33,23 +32,31 @@ export class DriveService {
     this.localStorageService.set('media_view_mode', view);
   }
 
-  getData(link?: any): Observable<any> {
-    console.log(link);
+  set data(data: Array<DriveFolder | DriveFile>) {
+    this.dataSubject.next(DriveFileList.map(data));
+  }
 
-    return this.apiBaseService.get(link).pipe(
-      map((res: ResponseMetaData) => {
+  appendData(data: Array<DriveFolder | DriveFile>): void {
+    this.dataSubject.next([...DriveFileList.map(data), ...this.dataSubject.getValue()]);
+  }
 
-        let data = DriveFileList.map(res.data);
-        this.dataSubject.next(data);
-        return data;
-      }),
-      catchError(
-        (err: any) => {
-          console.warn('error: ', err);
-          this.dataSubject.next([]);
-          return from(null);
-        }
-      )
-    );
+  prependData(data: Array<DriveFolder | DriveFile>): void {
+    this.dataSubject.next([...this.dataSubject.getValue(), ...DriveFileList.map(data)]);
+  }
+
+  loadObjects(url: string) {
+    this.apiBaseService.get(url).toPromise().then(res => {
+      this.data = res.data;
+      this.nextUrl = res.meta.links.next;
+    });
+  }
+
+  loadMoreObjects() {
+    if (this.nextUrl) {
+      this.apiBaseService.get(this.nextUrl).toPromise().then(res => {
+        this.prependData(res.data);
+        this.nextUrl = res.meta.links.next;
+      });
+    }
   }
 }

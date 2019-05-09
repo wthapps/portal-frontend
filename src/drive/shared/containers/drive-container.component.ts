@@ -1,14 +1,14 @@
-import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild, Input } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
 import { Constants } from '@shared/constant';
 import { DriveService } from 'drive/shared/services/drive.service';
-import { ApiBaseService, CommonEventService } from '@shared/services';
-import DriveFileList from '@shared/modules/drive/models/functions/drive-file-list';
+import { ApiBaseService } from '@shared/services';
 import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 import { WDataViewComponent } from 'drive/shared/components/w-dataView/w-dataView.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,9 +17,9 @@ import { WDataViewComponent } from 'drive/shared/components/w-dataView/w-dataVie
   styleUrls: ['./drive-container.component.scss']
 })
 export class DriveContainerComponent implements OnInit {
-  // @HostBinding('class') class = 'main-page-body';
-
   @ViewChild('dataView') dataView: WDataViewComponent;
+  @Input() breadcrumbs: Array<DriveBreadcrumb> = [{ name: "My Drive", label: "My Drive" }];
+  @Input() next: string;
 
   readonly tooltip: any = Constants.tooltip;
   readonly OBJECT_TYPE = {
@@ -27,10 +27,8 @@ export class DriveContainerComponent implements OnInit {
     FOLDER: 'Drive::Folder'
   };
   data$: Observable<any>;
-  objects: any;
   files: any = [];
-  next: string;
-  breadcrumbs: Array<DriveBreadcrumb> = [{ name: "My Drive", label: "My Drive" }]
+
   menuActions = [
     {
       active: true,
@@ -70,34 +68,29 @@ export class DriveContainerComponent implements OnInit {
   constructor(
     private dataService: DriveService,
     private apiBaseService: ApiBaseService,
+    private router: Router,
     private fileDriveUploadService: FileDriveUploadService,
   ) {
     this.data$ = this.dataService.data$;
   }
 
-  ngOnInit(): void {
-    this.loadObjects();
-    this.fileDriveUploadService.onDone.subscribe(res => {
-      this.objects = [...DriveFileList.map([res]), ...this.objects];
-    });
-    this.fileDriveUploadService.onChange.subscribe(event => {
-      this.fileDriveUploadService.upload(event.target.files);
-    });
+  ngOnInit() {
+
   }
 
-  loadObjects() {
-    this.apiBaseService.get('drive/drive').subscribe(res => {
-      this.objects = DriveFileList.map(res.data);
-      this.next = res.meta.links.next;
-    });
-  }
 
   loadMoreObjects(event: any) {
-    if (this.next) {
-      this.apiBaseService.get(this.next).subscribe(res => {
-        this.objects = [...this.objects, ...DriveFileList.map(res.data)];
-        this.next = res.meta.links.next;
-      });
+    this.dataService.loadMoreObjects();
+  }
+
+  onView(item) {
+    console.log('on View: ', item);
+
+    if (item.model === this.OBJECT_TYPE.FILE) {
+// TODO: Preview file
+    }
+    if (item.model === this.OBJECT_TYPE.FOLDER) {
+      this.router.navigate(['folder', item.id]);
     }
   }
 

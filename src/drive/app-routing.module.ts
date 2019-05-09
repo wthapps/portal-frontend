@@ -13,8 +13,8 @@ const routes: Routes = [
     loadChildren: './my-drive/my-drive.module#MyDriveModule'
   },
   {
-    path: 'folder/:id',
-    loadChildren: './folders/folder.module#DriveFolderModule'
+    path: 'folder',
+    loadChildren: './folders/folders.module#DriveFolderModule'
   }
 ];
 
