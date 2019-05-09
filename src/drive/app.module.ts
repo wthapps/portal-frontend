@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SampleSharedModule } from './shared/shared.module';
+import { DriveSharedModule } from './shared/shared.module';
 import { CookieModule } from 'ngx-cookie';
 import { WDriveUploadDockModule } from './shared/components/drive-upload-dock/drive-upload-dock.module';
 import {
@@ -34,10 +34,15 @@ import { BsModalModule } from 'ng2-bs3-modal';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { DriveStoreModule } from './shared/store';
 import { NotificationEventService } from '@shared/services/notification';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
-    SampleSharedModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+
+    DriveSharedModule,
     CookieModule.forRoot(),
     AppRoutingModule,
     HeaderModule,
@@ -51,11 +56,9 @@ import { NotificationEventService } from '@shared/services/notification';
     DriveStoreModule,
     BsModalModule
   ],
-  declarations: [
-    AppComponent,
-    LockUploadModalComponent
-  ],
-  providers: [CommonEventService,
+  declarations: [AppComponent, LockUploadModalComponent],
+  providers: [
+    CommonEventService,
     FileDriveUploadService,
     AuthService,
     WindowService,
@@ -74,10 +77,9 @@ import { NotificationEventService } from '@shared/services/notification';
     WTHEmojiService,
     NotificationEventService,
     ConnectionNotificationService,
-    WMessageService],
-
+    WMessageService
+  ],
 
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}

@@ -29,6 +29,7 @@
     "start-note": "ng serve note --port 3030 --open",
     "start-note-nr": "ng serve note --port 3030 --live-reload false --open",
     "start-drive": "ng serve drive --port 3035 --open",
+    "start-drive-nr": "ng serve drive --port 3035 --live-reload false --open",
     "prettier": "prettier {src,e2e}/**/**/*.{ts,scss} --write",
     "anl-social": "webpack-bundle-analyzer dist/social/stats.json",
     "stats-social": "ng build social --stats-json && webpack-bundle-analyzer dist/social/stats.json",

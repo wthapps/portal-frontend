@@ -9,13 +9,14 @@ import { CheckboxModule } from 'primeng/primeng';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonEventService } from '@shared/services';
 import { DrivePipeModule } from './pipes/pipe.module';
+import { WDriveLeftMenuModule } from './components/left-menu/left-menu.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
-  imports: [CommonModule, DrivePipeModule],
+  imports: [CommonModule, WDriveLeftMenuModule, DrivePipeModule],
   declarations: [],
   exports: [
     BrowserAnimationsModule,
@@ -32,13 +33,16 @@ import { DrivePipeModule } from './pipes/pipe.module';
     DirectiveModule,
 
     // Pipe
-    DrivePipeModule
+    DrivePipeModule,
+
+    // Custom
+    WDriveLeftMenuModule
   ]
 })
-export class SampleSharedModule {
+export class DriveSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: SampleSharedModule,
+      ngModule: DriveSharedModule,
       providers: [CommonEventService]
     };
   }

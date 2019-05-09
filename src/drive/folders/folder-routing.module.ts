@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MyDriveComponent } from './my-drive.component';
+import { DriveFolderListComponent } from './folder.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'my-drive', pathMatch: 'full' },
   {
     path: '',
-    component: MyDriveComponent
+    component: DriveFolderListComponent
   }
 ];
 
