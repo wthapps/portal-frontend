@@ -48,7 +48,7 @@ export class InviteContactComponent implements OnInit {
     });
     this.createModal.open({ data: data, back: true });
     this.createModal.event.pipe(take(1)).subscribe(data => {
-      if (data.action == 'back') {
+      if (data.action === 'back') {
         this.onBack();
         this.selectedUsers = tmp;
       }
@@ -63,7 +63,7 @@ export class InviteContactComponent implements OnInit {
   selectUser(e: any) {
     e.selected = true;
     this.contacts = this.contacts.map(c => {
-      if (c.id == e.id) {
+      if (c.id === e.id) {
         return e;
       }
       return c;
@@ -73,7 +73,7 @@ export class InviteContactComponent implements OnInit {
   deselectUser(e: any) {
     e.selected = false;
     this.contacts = this.contacts.map(c => {
-      if (c.id == e.id) {
+      if (c.id === e.id) {
         return e;
       }
       return c;
@@ -81,6 +81,7 @@ export class InviteContactComponent implements OnInit {
   }
 
   onCheckboxChange(user) {
+    user.selected = !user.selected;
     if (user.selected) {
       this.selectedUsers.push(user);
     } else {

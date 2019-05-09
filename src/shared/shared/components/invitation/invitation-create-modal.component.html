@@ -26,9 +26,7 @@
       <div formArrayName="items">
         <div *ngFor="let item of getFormControls(); let i=index" class="media mt0">
           <div *ngIf="item" class="media-body" [formGroupName]="i">
-
             <div class="row row-12">
-
               <div class="col-sm-3">
                 <div class="form-group no-label" [ngClass]="{
                     'has-error': (!item['controls']?.firstName.valid
@@ -70,7 +68,8 @@
                     'has-error': (!item['controls']?.email?.valid && item['controls']?.email.touched),
                     'has-success': (item['controls']?.email?.valid
                                 && form.value.items[i].email.length > 0)}">
-                  <input type="email" email class="form-control" formControlName="email" placeholder="recipient-name@example.com">
+                  <input type="email" email class="form-control" formControlName="email"
+                    placeholder="recipient-name@example.com">
                   <div *ngIf="!item['controls']?.email?.valid && item['controls']?.email.touched">
                     <span class="help-block text-danger">
                       Email is not valid
@@ -79,7 +78,8 @@
                 </div>
               </div>
               <div class="col-sm-1">
-                <button *ngIf="this.form.value.items.length > 1" type="button" class="btn btn-default" (click)="remove(i, item.controls)">
+                <button *ngIf="this.form.value.items.length > 1" type="button" class="btn btn-default"
+                  (click)="remove(i, item.controls)">
                   <i class="fa fa-trash-o"></i>
                 </button>
               </div>
@@ -94,9 +94,12 @@
 
     <bs-modal-footer>
       <div>
-        <button *ngIf="back" type="button" class="btn btn-default pull-left" data-dismiss="modal" (click)="onBack()"> <i class="fa fa-arrow-left"></i></button>
-        <button type="button" class="btn btn-outline-default btn-min" (click)="doEvent({action: 'cancel'})">Cancel</button>
-        <button [disabled]="!validItems()" type="submit" class="btn btn-outline-primary btn-min pull-right" (click)="doEvent({action: 'invitation:send_to_recipients'})">Send Invitations
+        <button *ngIf="back" type="button" class="btn btn-default pull-left" data-dismiss="modal" (click)="onBack()"> <i
+            class="fa fa-arrow-left"></i></button>
+        <button type="button" class="btn btn-outline-default btn-min"
+          (click)="doEvent({action: 'cancel'})">Cancel</button>
+        <button [disabled]="!validItems()" type="submit" class="btn btn-outline-primary btn-min pull-right"
+          (click)="doEvent({action: 'invitation:send_to_recipients'})">Send Invitations
         </button>
       </div>
     </bs-modal-footer>

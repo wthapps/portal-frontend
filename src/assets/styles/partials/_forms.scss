@@ -78,6 +78,9 @@
       content: "\f058";
       color: $alert-success-text;
     }
+    .form-control {
+      border-color: $input-border;
+    }
   }
   .hideShowPassword-toggle {
     cursor: pointer;

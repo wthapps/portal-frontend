@@ -10,6 +10,7 @@ declare var _: any;
 
 @Component({
   selector: 'invitation-create-modal',
+  styleUrls: ['invitation-create-modal.component.scss'],
   templateUrl: 'invitation-create-modal.component.html'
 })
 
@@ -97,7 +98,7 @@ export class InvitationCreateModalComponent implements OnInit {
   }
 
   onBack() {
-    this.event.emit({action: 'back'});
+    this.event.emit({ action: 'back' });
     let control = <FormArray>this.form.get(this.type);
     this.removeAll();
   }
@@ -164,7 +165,7 @@ export class InvitationCreateModalComponent implements OnInit {
       .create({ recipients: data })
       .toPromise().then((response: any) => {
         // this.invitationModal.close();
-        this.event.emit({action: 'invitation:send_successfully', payload: response.data});
+        this.event.emit({ action: 'invitation:send_successfully', payload: response.data });
         this.toaster.success(
           'You have just sent invitation(s) successfully!'
         );

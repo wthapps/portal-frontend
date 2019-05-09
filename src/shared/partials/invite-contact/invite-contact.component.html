@@ -2,7 +2,8 @@
   <ng-content></ng-content>
 </span>
 
-<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" [cssClass]="'modal-contact-list modal-full-height'">
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'"
+  [cssClass]="'modal-contact-list modal-full-height'">
   <bs-modal-header [showDismiss]="true">
     <h4 class="modal-title"> Select Contact </h4>
   </bs-modal-header>
@@ -13,9 +14,8 @@
     </p>
     <div class="form-group">
       <p-autoComplete #auto placeholder="Enter name or email" [multiple]="true" [minLength]="1" field="name"
-                      [(ngModel)]="selectedUsers"
-                      [suggestions]="suggestedUsers" (onSelect)="selectUser($event)" (onUnselect)="deselectUser($event)"
-                      (completeMethod)="onSearch($event)">
+        [(ngModel)]="selectedUsers" [suggestions]="suggestedUsers" (onSelect)="selectUser($event)"
+        (onUnselect)="deselectUser($event)" (completeMethod)="onSearch($event)">
         <ng-template let-user pTemplate="item">
           <div class="ui-help-clearfix user-row">
             <div class="avatar">
@@ -50,8 +50,12 @@
                 </div>
               </div>
               <div class="media-right no-wrap">
-                <p-checkbox name="groupname" [(ngModel)]="user.selected" binary="true"
-                            (onChange)="onCheckboxChange(user)"></p-checkbox>
+                <!-- <p-checkbox name="groupname" [(ngModel)]="user.selected" binary="true"
+                            (onChange)="onCheckboxChange(user)"></p-checkbox> -->
+                <!-- <i class="form-checkbox active"></i> -->
+                <div class="can-click" (click)="onCheckboxChange(user)">
+                  <i [ngClass]="user.selected ? 'form-checkbox active' : 'form-checkbox'"></i>
+                </div>
               </div>
             </div>
           </div>
