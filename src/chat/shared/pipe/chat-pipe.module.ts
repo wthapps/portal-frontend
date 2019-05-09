@@ -13,6 +13,7 @@ import { ChatGroupRecentPipe } from './chat-group-recent.pipe';
 import { ChatGroupFavoritePipe } from './chat-group-favorite.pipe';
 import { ChatGroupHistoryPipe } from './chat-group-history.pipe';
 import { MessageDisplayPipe } from '@chat/shared/pipe/message-display.pipe';
+import { MessageNotificationPipe } from '@chat/shared/pipe/message-notification.pipe';
 
 @NgModule({
   imports: [CommonModule],
@@ -29,6 +30,7 @@ import { MessageDisplayPipe } from '@chat/shared/pipe/message-display.pipe';
     ChatGroupFavoritePipe,
     ChatGroupHistoryPipe,
     MessageDisplayPipe,
+    MessageNotificationPipe
   ],
   exports: [
     CommonModule,
@@ -45,6 +47,7 @@ import { MessageDisplayPipe } from '@chat/shared/pipe/message-display.pipe';
     ChatGroupFavoritePipe,
     ChatGroupHistoryPipe,
     MessageDisplayPipe,
+    MessageNotificationPipe
   ],
   providers: []
 })

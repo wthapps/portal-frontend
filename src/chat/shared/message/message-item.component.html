@@ -236,50 +236,12 @@
   </ul>
 </ng-template>
 
-<!--Request contact message-->
-<ng-template #messageItemContentRequest>
-  <div class="message-item-content-contact-sharing" style="width: 100%; text-align: left">
-    <span class="avatar-xs pull-left" style="margin-right: 5px">
-      <img [src]="message.receiver?.profile_image" alt="">
-    </span>
-    <span>
-      {{message.receiver?.name}}
-    </span>
-    <div>
-      <small class="text-fade">Requested</small>
-    </div>
-  </div>
-</ng-template>
-
-<div *ngIf="['notification', 'request'].includes(message.message_type)" class="p20 text-center">
-  <div *ngIf="message.message_type === 'notification'">
-
-    <ng-container *ngIf="message.message.indexOf('added into') !== -1">
-      <span class="text-bold"> {{ byMe ? 'You' : message.user?.name }} </span> added
-      <span class="text-bold">{{ message.receiver?.name }}</span> into this conversation
-    </ng-container>
-
-    <ng-container *ngIf="message.message.indexOf('removed from') !== -1">
-      <span class="text-bold"> {{ byMe ? 'You' : message.user?.name }} </span> removed
-      <span class="text-bold"> {{ message.receiver?.name }}</span> from this conversation
-    </ng-container>
-
-    <ng-container *ngIf="(message.message.indexOf('added into') === -1) && (message.message.indexOf('removed from') === -1)">
-      <span class="text-bold"> {{ byMe ? 'You' : message.user?.name }} </span> {{ message.message }}
-    </ng-container>
-    <div class="text-fade">
-      <small>{{ message.created_at | timeFormat: "time_only" }}</small>
-    </div>
-  </div>
-
-  <div *ngIf="message.message_type === 'request'">
-    <!-- <box-no-data [title]="'Welcome to a new conversation'" [subTitle]="'Let start sharing your messages'"></box-no-data>
-    You connected with -->
-    <!-- <span class="text-bold"> {{ byMe ? message?.receiver?.name : message.user?.name }}</span> on WTH!Chat -->
+<div *ngIf="['notification', 'request'].includes(message.message_type)" class="text-center message-notification-padding">
+  <div class="message-item" *ngIf="message.message_type === 'request'">
     <h5 class="text-fade"> This is the beginning of this conversation </h5>
-
+    <ng-container *ngIf="message.message.indexOf('created this conversation') !== -1">
+      <div class="message-item-date"><span> {{ message.created_at | timeFormat: 'day' }} </span></div>
+    </ng-container>
   </div>
-  <!-- <div class="text-fade">
-    <small>{{ message.created_at | timeFormat: "time_only" }}</small>
-  </div> -->
+  <div [innerHtml]="message | messageNotification : byMe"></div>
 </div>

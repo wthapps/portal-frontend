@@ -38,6 +38,7 @@ import { ChannelEvents } from '@shared/channels';
 import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 import { UserEventService } from '@shared/user/event';
 import { NotificationEventService } from '@shared/services/notification';
+import { MessageActions } from '@chat/store/message';
 
 
 @Component({
@@ -71,7 +72,6 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   searched = false;
 
   channel = 'CONVERSATION_ACTIONS';
-  userChannel: any;
 
   constructor(
     public chatService: ChatService,
@@ -211,19 +211,19 @@ export class ZChatSidebarComponent extends CommonEventHandler implements OnInit,
   }
 
   createConversationCallback(conversation: any) {
-    console.log('CREATED CONVERSATION:::', conversation);
+    // console.log('CREATED CONVERSATION:::', conversation);
     this.store$.dispatch(new ConversationActions.UpsertSuccess({conversation: conversation}));
-    // Redirect to created conversation just in creator side
-    // if ((this.authService.user.id === conversation.creator_id) && ['sent_request', 'accepted'].includes(conversation.status)) {
-    //   this.redirectToConversationDetails(conversation.uuid);
-    // }
+    // update cursor if current user is conversation owner
+    if (this.authService.user.id === conversation.creator_id) {
+      this.store$.dispatch(new MessageActions.SetState({ cursor: conversation.latest_message.cursor + 1}));
+    }
     if (conversation.notification_count > 0) {
       this.notificationEventService.updateNotificationCount({count: conversation.notification_count, type: 'add'});
     }
   }
 
   upsertConversationCallback(conversation: any) {
-    console.log('UPSERTED CONVERSATION:::', conversation);
+    // console.log('UPSERTED CONVERSATION:::', conversation);
     // if currentUser is a member then add to conversation list
     this.store$.dispatch(new ConversationActions.UpsertSuccess({conversation: conversation}));
 
