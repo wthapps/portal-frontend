@@ -56,6 +56,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
 
     // Get all actions
     case ActionTypes.GET_ITEMS: {
+      console.log('queryParams:::', action.payload.queryParams, state.cursor, state.currentCursor);
       if (action.payload.queryParams.cursor === 0) {
         action.payload.queryParams.cursor = state.cursor;
       }
@@ -279,7 +280,7 @@ export function reducer(state = initialMessageState, action: Actions): MessageSt
     }
 
     case ActionTypes.SET_STATE: {
-      // console.log('UPDATE STATE:::', action.payload);
+      console.log('UPDATE STATE:::', action.payload);
       return {
         ...state,
         ...action.payload,

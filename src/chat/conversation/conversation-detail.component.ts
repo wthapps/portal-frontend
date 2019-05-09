@@ -93,7 +93,7 @@ export class ConversationDetailComponent extends CommonEventHandler implements O
         }
         const cursor = conversation.latest_message.cursor + 1;
         this.conversation = conversation;
-        console.log('SELECTED CONVERSATION:::', conversation.uuid, this.conversation);
+        console.log('SELECTED CONVERSATION:::', conversation.latest_message.cursor, conversation.uuid, this.conversation);
         // update message cursor for joined conversation
         this.store$.dispatch(new MessageActions.SetState({ cursor: cursor}));
         this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversation.uuid}));
