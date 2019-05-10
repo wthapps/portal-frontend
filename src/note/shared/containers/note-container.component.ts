@@ -1,4 +1,4 @@
-import { ApiBaseService } from './../../../shared/services/apibase.service';
+import { ApiBaseService } from '@shared/services';
 import { Component, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
 import { ZNoteService } from '../services/note.service';
 import { Store } from '@ngrx/store';
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { WDataViewComponent } from '../../../shared/components/w-dataView/w-dataView.component';
+import { WDataViewComponent } from '@shared/components/w-dataView/w-dataView.component';
 import { Constants } from '@shared/constant';
 import { noteConstants } from '../config/constants';
 import * as note from '../actions/note';
@@ -233,6 +233,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
   }
 
   onDblClick(event) {
+    this.dataView.container.clearSelection();
     switch (event.object_type) {
       case OBJECT_TYPE.NOTE: {
         this.noteService.modalEvent({

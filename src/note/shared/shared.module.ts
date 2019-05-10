@@ -103,6 +103,7 @@ import { WModalsModule } from "../../sample/shared/components/modals/modals.modu
     WthCommonModule,
 
     // custom component
+    WDataViewModule,
     ModalDockModule,
     ModalModule,
     PartialModule,
