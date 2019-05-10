@@ -1,46 +1,77 @@
-<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="PAGE_TYPE" [viewMode]="(context$ | async)?.viewMode">
-  <div class="btn-group">
-    <button type="button" class="btn btn-primary btn-min dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-      New
-    </button>
-    <ul class="dropdown-menu dropdown-menu-sm">
-      <li><a (click)="onNewNote()" href="javascript:;"><i class="icon-zone-note"></i> New note</a></li>
-      <li><a (click)="onFolder()" href="javascript:;"><i class="fa fa-folder-o"></i> New folder</a></li>
-    </ul>
-  </div>
+<div class="objects-main">
+  <w-dataView-nav [showViewMode]="true"
+                  (sortComplete)="onSortComplete($event)"
+                  (viewComplete)="onViewComplete($event)">
+    <h4 class="title">
+      Trash
+    </h4>
+  </w-dataView-nav>
 
-
-  <span class="btn-text ml15">
-    Trash
-  </span>
-</z-note-shared-toolbar>
-<div class="page-body-content has-page-body-control gray-light">
-  <ng-container *ngIf="!(loading$ | async); else loadingBlock">
-    <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
-      <note-list [noteItems]="noteItems$ | async"
-                 [folderItems]="folderItems$ | async"
-                 [allItems]="allItems$ | async"
-                 [viewOption]="(context$ | async)?.viewMode"
-                 [sortOption]="(context$ | async)?.sort"
-                 [groupBy]="(context$ | async)?.groupBy"
-                 [page]="(context$ | async)?.page"
-                 [isSelectAll]="isSelectAll$ | async">
-
-      </note-list>
-
+  <ng-container *ngIf="data$ | async as list; else templateloading">
+    <ng-container *ngIf="list?.length > 0; else templateNodata">
+      <w-dataView [data]="list"
+                  (loadMoreCompleted)="onLoadMoreCompleted($event)"
+                  (selectCompleted)="onSelectCompleted()"
+                  (dblClick)="onDblClick($event)"
+                  #dataView>
+        <ng-template #viewHeader>
+          <div class="item-media-name">
+            <span class="can-click" (click)="onSortComplete({sortBy: 'Name', orderBy: 'desc'})">Name</span>
+          </div>
+          <div class="item-note-owner">Owner</div>
+          <div class="item-note-date">Last Modified</div>
+        </ng-template>
+        <ng-template #viewBody let-item>
+          <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === 'Note::Note'}">
+            <i *ngIf="item.object_type === 'Note::Folder'" class="fa fa-folder"></i>
+            <ng-container *ngIf="item.object_type === 'Note::Note'">
+              <i class="fa fa-sticky-note"></i><span [innerHTML]="item?.content | safeHtml"></span>
+            </ng-container>
+          </div>
+          <div class="item-media-name">
+            <span>{{ item.name || 'Untitled' }}</span>
+          </div>
+          <div class="item-note-owner">
+            {{ item.user.name }}
+          </div>
+          <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
+        </ng-template>
+      </w-dataView>
+      <w-dataView-selected *ngIf="dataView.selectedDocuments?.length"
+                           [selectedObjects]="dataView.selectedDocuments"
+                           (clear)="dataView.container.clearSelection()">
+        <ul class="nav-selection-actions">
+          <ng-container *ngFor="let menu of menuActions | objectValues">
+            <li *ngIf="menu.active">
+              <button (click)="onMenuAction(menu.action)" class="btn btn-icon" type="button"><i [class]="menu.icon"></i>
+              </button>
+            </li>
+          </ng-container>
+          <li class="dropdown" *ngIf="!noOtherActions">
+            <button class="btn btn-icon" type="button" data-toggle="dropdown">
+              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <ng-container *ngFor="let menu of otherActions | objectValues">
+                <li *ngIf="menu.active && !menu.divider">
+                  <a (click)="onMenuAction(menu.action)" href="#"><i [class]="menu.icon"></i> {{ menu.text }}</a>
+                </li>
+                <li *ngIf="menu.active && menu.divider" class="divider"></li>
+              </ng-container>
+            </ul>
+          </li>
+        </ul>
+      </w-dataView-selected>
     </ng-container>
+    <ng-template #templateNodata>
+      <div class="text-center">
+        <box-no-data [icon]="'fa fa-sticky-note'" [subTitle]="'There is no note'"></box-no-data>
+      </div>
+    </ng-template>
   </ng-container>
-
-
-  <ng-template #loadingBlock>
-    <box-loading></box-loading>
-  </ng-template>
-  <ng-template #noDataBlock>
-    <box-no-data
-      [icon]="'fa fa-trash-o'"
-      [title]="'There is no note or folder in Trash'"
-      [subTitle]="'Move files you don\'t need to Trash. Click on'">
-    </box-no-data>
+  <ng-template #templateloading>
+    <div class="text-center">
+      <box-loading></box-loading>
+    </div>
   </ng-template>
 </div>
