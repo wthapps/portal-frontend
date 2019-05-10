@@ -25,6 +25,8 @@ export class ShortMessagePipe implements PipeTransform {
         result = 'Member left';
       } else if (message_type === 'notification' && message.indexOf('renamed the conversation') > - 1) {
         result = 'Renamed conversation';
+      } else if (message_type === 'request' && message.indexOf('connected on') > - 1) {
+        result = '';
       } else if (message_type === 'file') {
         result = 'Shared a file';
       } else if (message_type === 'message_deleted') {
