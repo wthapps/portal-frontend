@@ -49,7 +49,7 @@ export class FileDriveUploadService {
     this.beforeUpload(files);
     this.onStart.emit(this.files);
     this.files.forEach(f => {
-      const sizePolicy = new SizePolicy(50);
+      const sizePolicy = new SizePolicy(500);
       sizePolicy.validate(f.data);
     });
     const filesNotAllow = this.files.map(f => f.data).filter(f => {
