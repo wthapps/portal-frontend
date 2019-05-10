@@ -8,7 +8,6 @@ import { LocalStorageModule } from 'angular-2-local-storage';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
-
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
 import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-confirm.module';
@@ -29,7 +28,7 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
     FormsModule,
     NoteRoutingModule,
     WDataViewModule,
-    LocalStorageModule.withConfig({
+    LocalStorageModule.forRoot({
       prefix: 'my-app',
       storageType: 'localStorage'
     }),
@@ -41,21 +40,8 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
     WModalsModule,
     PipeModule
   ],
-  declarations: [
-    NNoteListComponent,
-    NoteComponent
-  ],
-  exports: [
-    NNoteListComponent,
-    NoteComponent
-  ],
-  providers: [
-    ApiBaseService,
-    DatePipe,
-    MessageService,
-
-    NoteService
-  ]
+  declarations: [NNoteListComponent, NoteComponent],
+  exports: [NNoteListComponent, NoteComponent],
+  providers: [ApiBaseService, DatePipe, MessageService, NoteService]
 })
-export class NoteModule {
-}
+export class NoteModule {}

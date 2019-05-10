@@ -9,7 +9,6 @@ import { LocalStorageModule } from 'angular-2-local-storage';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
-
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
 import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-confirm.module';
@@ -31,7 +30,7 @@ import { MMediaService } from './shared/media.service';
     FormsModule,
     MediaRoutingModule,
     WDataViewModule,
-    LocalStorageModule.withConfig({
+    LocalStorageModule.forRoot({
       prefix: 'my-app',
       storageType: 'localStorage'
     }),
@@ -42,14 +41,8 @@ import { MMediaService } from './shared/media.service';
     ToastModule,
     WModalsModule
   ],
-  declarations: [
-    MediaComponent,
-    MPhotosComponent
-  ],
-  exports: [
-    MediaComponent,
-    MPhotosComponent
-  ],
+  declarations: [MediaComponent, MPhotosComponent],
+  exports: [MediaComponent, MPhotosComponent],
   providers: [
     ApiBaseService,
     MMediaService,
@@ -59,5 +52,4 @@ import { MMediaService } from './shared/media.service';
     MessageService
   ]
 })
-export class MediaModule {
-}
+export class MediaModule {}

@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 import { Constants } from '@shared/constant';
 
-import { WDataViewComponent } from '../../shared/components/w-dataView/w-dataView.component';
 import { NoteService } from '../shared/note.service';
+import { WDataViewComponent } from '@shared/components/w-dataView/w-dataView.component';
 
 @Component({
   selector: 'n-list',
@@ -85,7 +85,7 @@ export class NNoteListComponent implements OnInit {
     this.dataView.viewMode = event;
     // this.dataView.container.ngOnDestroy();
     this.dataView.container.update();
-    this.dataView.updateSelect();
+    // this.dataView.updateSelect();
   }
 
   onSelectCompleted() {

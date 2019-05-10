@@ -1,7 +1,6 @@
-import DriveFile from '../drive-file.model';
-import ItemsList from '@shared/models/items-list.model';
-import DriveFolder from '../drive-folder.model';
 import { driveConstants } from 'drive/shared/config/drive-constants';
+import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
+import DriveFile from '@shared/modules/drive/models/drive-file.model';
 
 export interface DriveState {
   folderIds: Array<number>;
@@ -21,17 +20,10 @@ export const isFolder = item =>
   item.object_type === driveConstants.OBJECT_TYPE.FOLDER;
 export const isFile = item =>
   item.object_type === driveConstants.OBJECT_TYPE.FILE;
-export default class DriveFileList extends ItemsList {
-  static map(array: Array<any>): Array<any> {
-    return array.map(element => {
-      return element.model === 'Common::GenericFile'
-        ? new DriveFile(element)
-        : new DriveFolder(element);
-    });
-  }
 
+export default class DriveUtils {
   static parse(data: Array<any>): DriveState {
-    const rs = initDriveState;
+    const rs = _.cloneDeep(initDriveState);
     data.forEach(item => {
       if (isFolder(item)) {
         rs.folderIds.push(item.id);
@@ -39,7 +31,7 @@ export default class DriveFileList extends ItemsList {
       }
       if (isFile(item)) {
         rs.fileIds.push(item.id);
-        rs.foldersMap[item.id] = item;
+        rs.filesMap[item.id] = item;
       }
     });
 

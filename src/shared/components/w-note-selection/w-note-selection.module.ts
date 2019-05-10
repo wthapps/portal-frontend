@@ -20,7 +20,7 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     BsModalModule,
     WObjectListModule,
     PipeModule,
-    LocalStorageModule.withConfig({
+    LocalStorageModule.forRoot({
       prefix: 'my-app',
       storageType: 'localStorage'
     }),
@@ -30,16 +30,8 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     WNavTabModule,
     WDataViewModule
   ],
-  declarations: [
-    WNoteSelectionComponent
-  ],
-  exports: [
-    WNoteSelectionComponent
-  ],
-  providers: [
-    DatePipe,
-    WNoteSelectionService
-  ]
+  declarations: [WNoteSelectionComponent],
+  exports: [WNoteSelectionComponent],
+  providers: [DatePipe, WNoteSelectionService]
 })
-export class WNoteSelectionModule {
-}
+export class WNoteSelectionModule {}

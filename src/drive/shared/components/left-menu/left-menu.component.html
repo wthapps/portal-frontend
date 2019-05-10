@@ -1,40 +1,3 @@
-<!-- <div class="menuleft-logo">
-  <img src="/assets/images_new/logo-note.png" alt="">
-</div>
-<div class="menuleft-item" [routerLinkActive]="['active']">
-  <span *ngIf="noteFoldersTree.length > 0" (click)="showFolderTree = !showFolderTree"
-    class="can-click menuleft-item-open">
-    <i class="fa" [ngClass]="{'fa-chevron-right': !showFolderTree, 'fa-chevron-down' : showFolderTree}"></i>
-  </span>
-  <a [routerLink]="[myNoteMenu?.link]" [routerLinkActive]="['active']" (click)="onCloseMenu()"
-    href="javascript:void(0);">
-    <i class="{{ myNoteMenu?.icon }}"></i> {{ myNoteMenu?.name }}
-  </a>
-</div>
-
-<div class="well-folder-tree" [ngClass]="{'active': showFolderTree}">
-  <p-panelMenu [(model)]="noteFoldersTree"></p-panelMenu>
-</div>
-
-<ng-container *ngFor="let note of noteMenu;let i = index;">
-  <div class="menuleft-item" *ngIf="note.name != ''" [routerLinkActive]="['active']"
-    [ngClass]="{'hidden': note.link == '/search'}">
-    <a *ngIf="note.link != '#'" [routerLink]="[note.link]" [queryParams]="{}" (click)="onCloseMenu()"
-      href="javascript:;">
-      <i class="{{ note.icon }}"></i> {{ note.name }}
-    </a>
-    <a *ngIf="note.link == '#'" (click)="doEvent({action: note.action}); onCloseMenu()" href="javascript:;">
-      <i class="{{ note.icon }}"></i> {{ note.name }}
-    </a>
-  </div>
-</ng-container>
-
-<div class="menuleft-item">
-  <a (click)="setting.open()" href="javascript:void(0);">
-    <i class="{{ settingMenu?.icon }}"></i> {{ settingMenu?.name }}
-  </a>
-</div> -->
-
 <div class="main-left-menu">
   <div class="menuleft-container">
     <div class="menuleft-content">
@@ -45,19 +8,6 @@
           <span class="hidden-xs"> New</span>
         </a>
         <ul class="dropdown-menu">
-          <!-- <li>
-            <a href="#" (click)="upload(['image/*', 'video/mp4', 'video/x-m4v', 'video/*'])">
-              <span class="fileinput-button">
-                <i class="fa fa-image"></i> Upload Item
-              </span>
-            </a>
-          </li>
-
-          <li>
-            <a href="#" (click)="openCreateAlbumModal(selectedObjects)">
-              <i class="fa fa-plus-circle"></i> Create Album
-            </a>
-          </li> -->
           <li>
             <a href="javascript:;">
               <i class="fa fa-folder-o"></i> New folder

@@ -6,6 +6,7 @@ import { ApiBaseService } from '@shared/services';
 import DriveFile from '@shared/modules/drive/models/drive-file.model';
 import DriveFileList from '@shared/modules/drive/models/functions/drive-file-list';
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
+import { DriveStorageService } from './drive-storage.service';
 
 @Injectable()
 export class DriveService {
@@ -15,16 +16,16 @@ export class DriveService {
   readonly apiUrl = 'drive/drive';
 
   data$: Observable<Array<DriveFolder | DriveFile>>;
-  private dataSubject: BehaviorSubject<Array<DriveFolder | DriveFile>> = new BehaviorSubject<Array<DriveFolder | DriveFile>>(null);
 
   private nextUrl = '';
 
   constructor(public localStorageService: LocalStorageService,
+    private dataStorage: DriveStorageService,
     private apiBaseService: ApiBaseService) {
     this.viewMode$ = this.viewModeSubject.asObservable().pipe(distinctUntilChanged());
     this.viewModeSubject.next(this.localStorageService.get('media_view_mode') || 'grid');
 
-    this.data$ = this.dataSubject.asObservable().pipe(distinctUntilChanged());
+    this.data$ = this.dataStorage.data$;
   }
 
   changeView(view: string) {
@@ -33,20 +34,20 @@ export class DriveService {
   }
 
   set data(data: Array<DriveFolder | DriveFile>) {
-    this.dataSubject.next(DriveFileList.map(data));
+    this.dataStorage.data = data;
   }
 
   appendData(data: Array<DriveFolder | DriveFile>): void {
-    this.dataSubject.next([...DriveFileList.map(data), ...this.dataSubject.getValue()]);
+    this.dataStorage.appendData(data);
   }
 
   prependData(data: Array<DriveFolder | DriveFile>): void {
-    this.dataSubject.next([...this.dataSubject.getValue(), ...DriveFileList.map(data)]);
+    this.dataStorage.prependData(data);
   }
 
   loadObjects(url: string) {
     this.apiBaseService.get(url).toPromise().then(res => {
-      this.data = res.data;
+      this.dataStorage.data = res.data;
       this.nextUrl = res.meta.links.next;
     });
   }

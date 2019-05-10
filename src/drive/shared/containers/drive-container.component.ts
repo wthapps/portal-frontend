@@ -1,5 +1,6 @@
-import { Component, HostBinding, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { Constants } from '@shared/constant';
@@ -8,7 +9,8 @@ import { ApiBaseService } from '@shared/services';
 import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 import { WDataViewComponent } from 'drive/shared/components/w-dataView/w-dataView.component';
-import { Router } from '@angular/router';
+import { driveConstants } from './../config/drive-constants';
+
 
 
 @Component({
@@ -22,10 +24,7 @@ export class DriveContainerComponent implements OnInit {
   @Input() next: string;
 
   readonly tooltip: any = Constants.tooltip;
-  readonly OBJECT_TYPE = {
-    FILE: 'Common::GenericFile',
-    FOLDER: 'Drive::Folder'
-  };
+  readonly OBJECT_TYPE = driveConstants.OBJECT_TYPE;
   data$: Observable<any>;
   files: any = [];
 
