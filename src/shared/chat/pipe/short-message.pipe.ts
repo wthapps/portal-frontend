@@ -13,19 +13,21 @@ export class ShortMessagePipe implements PipeTransform {
         result = 'Sent you a request';
       }
     } else {
-      const { message, message_type } = latest_message;
+      const { message, message_type, message_sub_type } = latest_message;
 
       if (message_type === 'share_contact_message') {
         result = 'Shared a contact';
-      } else if (message_type === 'notification' && message.indexOf('added into conversation') > -1) {
+      } else if (message_type === 'notification' && message_sub_type === 'conversation_member_add') {
         result = 'Added member';
-      } else if (message_type === 'notification' && message.indexOf('removed from conversation') > -1) {
+      } else if (message_type === 'notification' && message_sub_type === 'conversation_member_remove') {
         result = 'Removed member';
-      } else if (message_type === 'notification' && message.indexOf('left this conversation') > - 1) {
+      } else if (message_type === 'notification' && message_sub_type === 'conversation_member_leave') {
         result = 'Member left';
-      } else if (message_type === 'notification' && message.indexOf('renamed the conversation') > - 1) {
+      } else if (message_type === 'notification' && message_sub_type === 'conversation_rename') {
         result = 'Renamed conversation';
-      } else if (message_type === 'request' && message.indexOf('connected on') > - 1) {
+      } else if (message_type === 'request' && message_sub_type === 'conversation_create') {
+        result = 'Created conversation';
+      } else if (message_type === 'request' && message_sub_type === 'conversation_connect') {
         result = '';
       } else if (message_type === 'file') {
         result = 'Shared a file';
