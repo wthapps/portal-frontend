@@ -39,18 +39,11 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     },
     {
       name: 'Favourites',
-      link: 'parent_id=null&favourites=true',
+      link: 'parent_id=null&favourite=true&owner=true',
       icon: 'fa fa-star',
       number: null,
       type: 'tab'
-    },
-    // {
-    //   name: 'Shared with me',
-    //   link: 'parent_id=null&shared_with_me=true',
-    //   icon: 'fw fw-shared-with-me',
-    //   number: null,
-    //   type: 'tab'
-    // }
+    }
   ];
 
   currentTab = this.tabs[0].link;
