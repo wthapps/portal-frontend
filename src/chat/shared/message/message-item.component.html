@@ -238,10 +238,10 @@
 
 <div *ngIf="['notification', 'request'].includes(message.message_type)" class="text-center message-notification-padding">
   <div class="message-item" *ngIf="message.message_type === 'request'">
-    <h5 class="text-fade"> This is the beginning of this conversation </h5>
+    <h4 class="text-fade"> This is the beginning of this conversation </h4>
     <ng-container *ngIf="message.message.indexOf('created this conversation') !== -1">
       <div class="message-item-date"><span> {{ message.created_at | timeFormat: 'day' }} </span></div>
     </ng-container>
   </div>
-  <div [innerHtml]="message | messageNotification : byMe"></div>
+  <div class="message-notification-content" [innerHtml]="message | messageNotification : byMe"></div>
 </div>

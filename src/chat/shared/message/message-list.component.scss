@@ -27,6 +27,8 @@ $message-item-content-card-right-xs: 25px;
     position: relative;
     padding: 10px 0 20px 0;
     text-align: center;
+    color: $text-color-light;
+    font-size: 12px;
     &:after {
       content: "";
       height: 1px;
@@ -266,8 +268,6 @@ $message-item-content-card-right-xs: 25px;
     }
   }
   &.message-item-right {
-    padding-left: 50px;
-
     .message-item-content {
       @include border-right-radius(0);
       @include border-left-radius(8px);
