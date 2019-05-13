@@ -13,6 +13,7 @@ import { PageVisibilityService } from './../shared/services/page-visibility.serv
 
 declare let ga: Function;
 
+const CURRENT_MODULE = 'photos';
 /**
  * This class represents the main application component.
  */
@@ -50,7 +51,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
 
-        ga('set', 'page', event.urlAfterRedirects);
+        ga('set', 'page', `/${CURRENT_MODULE}${event.urlAfterRedirects}`);
         ga('send', 'pageview');
       });
     // fix scroll to top after changing route

@@ -377,7 +377,7 @@ custom method please overwirte any method*/
         inDropDown: true, // Outside dropdown list
         action: () => {
           this.downloadMedia(this.selectedObjects);
-          this.googleAnalytics.eventEmitter('photoList', 'download');
+          this.googleAnalytics.eventEmitter('photos', 'download');
         },
         class: '',
         liclass: '',

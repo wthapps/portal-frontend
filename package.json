@@ -107,8 +107,6 @@
     "@uppy/aws-s3-multipart": "^0.30.3",
     "@uppy/companion": "^0.17.3",
     "actioncable": "5.1.2",
-    "adyen-cse-js": "git+https://github.com/Adyen/adyen-cse-web.git#0_1_23",
-    "adyen-cse-web": "git+https://github.com/Adyen/adyen-cse-web.git#0_1_23",
     "angular-2-local-storage": "^3.0.2",
     "angular2-hotkeys": "2.0.3",
     "angular2-recaptcha": "1.1.0",
