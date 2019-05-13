@@ -31,7 +31,7 @@ import { MMediaService } from './shared/media.service';
     FormsModule,
     MediaRoutingModule,
     WDataViewModule,
-    LocalStorageModule.withConfig({
+    LocalStorageModule.forRoot({
       prefix: 'my-app',
       storageType: 'localStorage'
     }),

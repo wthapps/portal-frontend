@@ -102,7 +102,7 @@
     "@types/jquery": "^3.3.22",
     "@types/lodash": "^4.14.118",
     "actioncable": "5.1.2",
-    "angular-2-local-storage": "^2.0.0",
+    "angular-2-local-storage": "^3.0.2",
     "angular2-hotkeys": "2.0.3",
     "angular2-recaptcha": "1.1.0",
     "boom": "^7.2.2",

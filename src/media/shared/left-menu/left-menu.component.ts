@@ -68,7 +68,7 @@ export class ZMediaSharedLeftMenuComponent extends CommonEventHandler implements
       );
     });
 
-    this.googleAnalytics.eventEmitter('leftMenu', 'uploadItem');
+    this.googleAnalytics.eventEmitter('photos', 'uploadItem');
   }
 
   /* AlbumCreateMixin This is album create methods, to

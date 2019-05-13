@@ -49,7 +49,7 @@ import { GoogleAnalyticsService } from '@shared/services/analytics/google-analyt
 
 @NgModule({
   imports: [
-    LocalStorageModule.withConfig({
+    LocalStorageModule.forRoot({
       prefix: 'my-app',
       storageType: 'localStorage'
     }),

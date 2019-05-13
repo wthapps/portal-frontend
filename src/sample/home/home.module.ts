@@ -22,7 +22,7 @@ import { WNoteSelectionModule } from '@shared/components/w-note-selection/w-note
     FormsModule,
     HomeRoutingModule,
     WDataViewModule,
-    LocalStorageModule.withConfig({
+    LocalStorageModule.forRoot({
       prefix: 'my-app',
       storageType: 'localStorage'
     }),

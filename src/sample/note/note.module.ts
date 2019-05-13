@@ -29,7 +29,7 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
     FormsModule,
     NoteRoutingModule,
     WDataViewModule,
-    LocalStorageModule.withConfig({
+    LocalStorageModule.forRoot({
       prefix: 'my-app',
       storageType: 'localStorage'
     }),
