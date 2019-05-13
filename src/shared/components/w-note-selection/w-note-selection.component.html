@@ -92,8 +92,8 @@
         <ng-template #templateNodata>
           <ng-container *ngIf="!searchShow">
             <div class="align-self-center" [ngSwitch]="currentTab">
-              <box-no-data *ngSwitchCase="'my_note'" [icon]="'fa fa-photo'" [title]="'There is no photo!'"
-                           [subTitle]="'There is no photo.'">
+              <box-no-data *ngSwitchCase="'my_note'" [icon]="'fa fa-sticky-note'" [title]="'There is no note!'"
+                           [subTitle]="'There is no note.'">
               </box-no-data>
 
               <box-no-data *ngSwitchCase="'favourites'" [icon]="'fa fa-star'" [title]="'There is no favourite!'"
