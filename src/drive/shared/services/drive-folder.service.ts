@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
 import { ApiBaseService, BaseEntityService } from '@shared/services';
 
 @Injectable()
@@ -8,8 +10,10 @@ export class DriveFolderService extends BaseEntityService<any> {
   constructor(
     protected apiBaseService: ApiBaseService) {
       super(apiBaseService);
-      // this.url = 'drive/folders';
   }
 
+  getFolderPath(body): Observable<any> {
+    return this.apiBaseService.post(`${this.url}/get_folder_path/`, body);
+  }
 
 }

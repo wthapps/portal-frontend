@@ -4,10 +4,12 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { ApiBaseService } from '@shared/services';
 import DriveFile from '@shared/modules/drive/models/drive-file.model';
-import DriveFileList from '@shared/modules/drive/models/functions/drive-file-list';
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 import { DriveStorageService } from './drive-storage.service';
+import { DriveModalService } from './drive-modal.service';
 
+
+export type DriveType = DriveFile | DriveFolder;
 @Injectable()
 export class DriveService {
   viewMode$: Observable<string>;
@@ -15,12 +17,13 @@ export class DriveService {
 
   readonly apiUrl = 'drive/drive';
 
-  data$: Observable<Array<DriveFolder | DriveFile>>;
+  data$: Observable<Array<DriveType>>;
 
   private nextUrl = '';
 
   constructor(public localStorageService: LocalStorageService,
     private dataStorage: DriveStorageService,
+    private modalService: DriveModalService,
     private apiBaseService: ApiBaseService) {
     this.viewMode$ = this.viewModeSubject.asObservable().pipe(distinctUntilChanged());
     this.viewModeSubject.next(this.localStorageService.get('media_view_mode') || 'grid');
@@ -33,16 +36,24 @@ export class DriveService {
     this.localStorageService.set('media_view_mode', view);
   }
 
-  set data(data: Array<DriveFolder | DriveFile>) {
+  set data(data: Array<DriveType>) {
     this.dataStorage.data = data;
   }
 
-  appendData(data: Array<DriveFolder | DriveFile>): void {
+  appendData(data: Array<DriveType>): void {
     this.dataStorage.appendData(data);
   }
 
-  prependData(data: Array<DriveFolder | DriveFile>): void {
+  prependData(data: Array<DriveType>): void {
     this.dataStorage.prependData(data);
+  }
+
+  updateData(data: Array<DriveType>): void {
+    this.dataStorage.updateData(data);
+  }
+
+  modalEvent(event) {
+    this.modalService.next(event);
   }
 
   loadObjects(url: string) {

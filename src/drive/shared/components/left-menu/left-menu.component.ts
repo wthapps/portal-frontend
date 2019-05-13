@@ -8,6 +8,7 @@ import { FileDriveUploadService } from '@shared/services/file-drive-upload.servi
 import { DriveFolderService } from 'drive/shared/services/drive-folder.service';
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 import { MenuItem } from 'primeng/api';
+import { DriveService } from 'drive/shared/services/drive.service';
 
 declare let $: any;
 declare let _: any;
@@ -28,6 +29,7 @@ export class ZDriveSharedLeftMenuComponent implements OnInit {
 
   constructor(
     private apiBaseService: ApiBaseService,
+    private driveServive: DriveService,
     private folderService: DriveFolderService,
     private fileDriveUploadService: FileDriveUploadService,
     private commonEventService: CommonEventService,
@@ -48,6 +50,11 @@ export class ZDriveSharedLeftMenuComponent implements OnInit {
 
   onpenFileUpload() {
     this.fileDriveUploadService.open();
+  }
+
+
+  onFolder() {
+    this.driveServive.modalEvent({action: 'drive:folder:create'});
   }
 
   private mapToMenuItem(folders: DriveFolder[]): MenuItem[] {

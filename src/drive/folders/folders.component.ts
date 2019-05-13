@@ -3,13 +3,19 @@ import { UrlService } from './../../shared/services/url.service';
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
+import { DriveFolderService } from 'drive/shared/services/drive-folder.service';
 
+const PAGES = {
+  MY_NOTE: 'MY_NOTE',
+  SHARED_WITH_ME: 'SHARED_WITH_ME',
+  SHARED_BY_ME: 'SHARED_BY_ME'
+};
 @Component({
   selector: 'drive-folder',
   templateUrl: './folders.component.html'
 })
 export class DriveFolderListComponent implements OnInit {
-  currentPath: any;
+  currentPath: string;
   breadcrumbs: DriveBreadcrumb[] = [];
   initRoute = '/';
   currentUrl = '';
@@ -24,6 +30,7 @@ export class DriveFolderListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private driveService: DriveService,
+    private folderService: DriveFolderService,
     private urlService: UrlService,
     ) {}
 
@@ -33,8 +40,8 @@ export class DriveFolderListComponent implements OnInit {
       const id = params['id'];
       switch (urlData.paths[0]) {
         case 'shared-by-me': {
-          // this.currentPath = noteConstants.PAGE_SHARED_BY_ME;
-          // this.initRoute = '/shared-by-me';
+          this.currentPath = PAGES.SHARED_BY_ME;
+          this.initRoute = '/shared-by-me';
           this.currentUrl = `drive/shared-by-me/folders/${id}`;
           this.breadcrumbsInit = {
             id: null,
@@ -45,8 +52,8 @@ export class DriveFolderListComponent implements OnInit {
         }
         break;
         case 'shared-with-me': {
-          // this.currentPath = noteConstants.PAGE_SHARED_WITH_ME;
-          // this.initRoute = '/shared-with-me';
+          this.currentPath = PAGES.SHARED_WITH_ME;
+          this.initRoute = '/shared-with-me';
           this.currentUrl = `drive/shared-with-me/folders/${id}`;
           this.breadcrumbsInit = {
             id: null,
@@ -57,8 +64,8 @@ export class DriveFolderListComponent implements OnInit {
         }
         break;
         default: {
-          // this.currentPath = noteConstants.PAGE_MY_NOTE;
-          // this.initRoute = '';
+          this.currentPath = PAGES.MY_NOTE;
+          this.initRoute = '';
           this.currentUrl = `drive/drive?parent_id=${id}`;
           this.breadcrumbsInit = {
             id: null,
@@ -70,6 +77,13 @@ export class DriveFolderListComponent implements OnInit {
       }
 
       this.driveService.loadObjects(this.currentUrl);
+      this.getFolderPath({id, page: this.currentPath});
     });
     }
+
+  private async getFolderPath(options) {
+    const res = await this.folderService.getFolderPath(options).toPromise();
+    this.breadcrumbs = [this.breadcrumbsInit, ...res.data.map(f => ({name: f.name, label: f.name,
+      routerLink: this.initRoute + '/folders/' + f.id}))];
+  }
 }

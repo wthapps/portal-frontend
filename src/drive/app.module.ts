@@ -40,6 +40,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { DriveFolderService } from './shared/services/drive-folder.service';
 import { DriveStorageService } from './shared/services/drive-storage.service';
+import { DriveModalService } from './shared/services/drive-modal.service';
 
 @NgModule({
   imports: [
@@ -67,6 +68,7 @@ import { DriveStorageService } from './shared/services/drive-storage.service';
   declarations: [AppComponent, LockUploadModalComponent],
   providers: [
     DriveService,
+    DriveModalService,
     DriveStorageService,
     DriveFolderService,
     CommonEventService,

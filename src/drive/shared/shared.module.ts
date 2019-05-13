@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonEventService } from '@shared/services';
 import { DrivePipeModule } from './pipes/pipe.module';
 import { WDriveLeftMenuModule } from './components/left-menu/left-menu.module';
+import { DriveSharedModalModule } from './modals/shared-modals.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -36,7 +37,8 @@ import { WDriveLeftMenuModule } from './components/left-menu/left-menu.module';
     DrivePipeModule,
 
     // Custom
-    WDriveLeftMenuModule
+    WDriveLeftMenuModule,
+    DriveSharedModalModule
   ]
 })
 export class DriveSharedModule {
