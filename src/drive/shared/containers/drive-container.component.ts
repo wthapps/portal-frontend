@@ -65,12 +65,11 @@ export class DriveContainerComponent implements OnInit {
   ];
 
   constructor(
-    private dataService: DriveService,
-    private apiBaseService: ApiBaseService,
+    private driveService: DriveService,
     private router: Router,
     private fileDriveUploadService: FileDriveUploadService,
   ) {
-    this.data$ = this.dataService.data$;
+    this.data$ = this.driveService.data$;
   }
 
   ngOnInit() {
@@ -79,7 +78,7 @@ export class DriveContainerComponent implements OnInit {
 
 
   loadMoreObjects(event: any) {
-    this.dataService.loadMoreObjects();
+    this.driveService.loadMoreObjects();
   }
 
   onView(item) {
@@ -105,7 +104,64 @@ export class DriveContainerComponent implements OnInit {
 
   }
 
-  onBreadcrumbEvent(event: any) {
-    this.fileDriveUploadService.open();
+  onMenuAction(action) {
+    switch (action) {
+      case 'share': {
+
+      }
+      break;
+      case 'favorite': {
+
+      }
+      break;
+      case 'delete': {
+        this.driveService.deleteMany(this.selectedObjects);
+      }
+      break;
+      case 'edit': {
+
+      }
+      break;
+      case 'move_to_folder': {
+
+      }
+      break;
+      default: {
+
+      };
+    }
   }
+
+  onBreadcrumbEvent(event: any) {
+    const {action, payload} = event;
+    switch (action) {
+      case 'drive:open_drive_add_modal': {
+        this.fileDriveUploadService.open();
+      }
+      break;
+      case 'drive:mixed_entity:delete': {
+        this.driveService.deleteMany(this.selectedObjects);
+      }
+      break;
+      case 'drive:folder:create': {
+        this.driveService.modalEvent({action: 'drive:folder:create', payload});
+      }
+      break;
+      case 'drive:folder:edit': {
+      }
+      break;
+      case 'drive:mixed_entity:open_sharing_modal': {
+      }
+      break;
+      case 'drive:mixed_entity:open_move_to_folder_modal': {
+      }
+      break;
+      default: {
+        console.warn('unhandled action: ', action);
+      }
+      break;
+    }
+  }
+
+  private get selectedObjects() { return this.dataView.selectedDocuments} ;
 }

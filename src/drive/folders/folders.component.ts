@@ -32,7 +32,9 @@ export class DriveFolderListComponent implements OnInit {
     private driveService: DriveService,
     private folderService: DriveFolderService,
     private urlService: UrlService,
-    ) {}
+    ) {
+      this.breadcrumbs = [this.breadcrumbsInit];
+    }
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
@@ -77,13 +79,16 @@ export class DriveFolderListComponent implements OnInit {
       }
 
       this.driveService.loadObjects(this.currentUrl);
-      this.getFolderPath({id, page: this.currentPath});
+      ( async() => {
+        await this.getFolderPath({id, page: this.currentPath});
+        this.driveService.currentFolder = [...this.breadcrumbs].pop();
+      }) ();
     });
     }
 
   private async getFolderPath(options) {
     const res = await this.folderService.getFolderPath(options).toPromise();
-    this.breadcrumbs = [this.breadcrumbsInit, ...res.data.map(f => ({name: f.name, label: f.name,
-      routerLink: this.initRoute + '/folders/' + f.id}))];
+    this.breadcrumbs = res.data ? [this.breadcrumbsInit, ...res.data.map(f => ({name: f.name, label: f.name, id: f.id,
+      routerLink: this.initRoute + '/folders/' + f.id}))] : [this.breadcrumbsInit];
   }
 }

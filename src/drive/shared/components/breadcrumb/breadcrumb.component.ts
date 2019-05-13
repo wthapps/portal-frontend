@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class ZDriveharedBreadcrumbComponent implements OnInit, OnDestroy {
 
-  @Input() model: Array<DriveBreadcrumb>;
+  @Input() model: Array<DriveBreadcrumb> = [];
 
   @Input() style: any;
 
@@ -54,7 +54,7 @@ export class ZDriveharedBreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.model) {
+    if (this.model && this.model.length > 0) {
       for (const item of this.model) {
         if (item.eventEmitter) {
           item.eventEmitter.unsubscribe();

@@ -1,3 +1,4 @@
+import { DriveApiService } from './drive-api.service';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -7,6 +8,7 @@ import DriveFile from '@shared/modules/drive/models/drive-file.model';
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 import { DriveStorageService } from './drive-storage.service';
 import { DriveModalService } from './drive-modal.service';
+import { DriveFolderService } from './drive-folder.service';
 
 
 export type DriveType = DriveFile | DriveFolder;
@@ -24,6 +26,8 @@ export class DriveService {
   constructor(public localStorageService: LocalStorageService,
     private dataStorage: DriveStorageService,
     private modalService: DriveModalService,
+    private folderService: DriveFolderService,
+    private driveApi: DriveApiService,
     private apiBaseService: ApiBaseService) {
     this.viewMode$ = this.viewModeSubject.asObservable().pipe(distinctUntilChanged());
     this.viewModeSubject.next(this.localStorageService.get('media_view_mode') || 'grid');
@@ -38,6 +42,10 @@ export class DriveService {
 
   set data(data: Array<DriveType>) {
     this.dataStorage.data = data;
+  }
+
+  set currentFolder(folder) {
+    this.dataStorage.currentFolder = folder;
   }
 
   appendData(data: Array<DriveType>): void {
@@ -56,11 +64,27 @@ export class DriveService {
     this.modalService.next(event);
   }
 
+  async deleteMany(payload: DriveType[]) {
+    const res = await this.driveApi.deleteMany(payload).toPromise();
+    this.dataStorage.deleteData(payload);
+  }
+
   loadObjects(url: string) {
     this.apiBaseService.get(url).toPromise().then(res => {
       this.dataStorage.data = res.data;
       this.nextUrl = res.meta.links.next;
     });
+  }
+
+  async createFolder(payload) {
+    const parent = this.dataStorage.currentFolder ? {parent_id: this.dataStorage.currentFolder.id} : {};
+    const res = await this.folderService.create({...payload, ...parent}).toPromise();
+    this.prependData([res.data]);
+  }
+
+  async updateFolder(payload) {
+    const res = await this.folderService.update(payload).toPromise();
+    this.updateData([res.data]);
   }
 
   loadMoreObjects() {

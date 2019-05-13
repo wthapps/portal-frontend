@@ -33,11 +33,8 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
   mode = 'add';
 
   constructor(private fb: FormBuilder,
-    private folderService: DriveFolderService,
     private driveService: DriveService,
-    private modalService: DriveModalService,
-    private commonEventService: CommonEventService,
-    private apiBaseService: ApiBaseService, private store: Store<any>) {
+    private modalService: DriveModalService) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
     });
@@ -59,6 +56,7 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
 
   open(options?: any) {
     this.mode = options.mode;
+    this.currentFolder = options.currentFolder;
     if (this.mode === 'add') {
       this.titleModal = 'Add Folder';
     } else if (this.mode === 'edit') {
@@ -69,28 +67,22 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
     this.modal.open();
   }
 
-  onSubmit(value: any) {
+  async onSubmit(value: any) {
     this.folder.name = value.name;
     if (this.folder.id) {
-      this.folderService.update(this.folder).toPromise()
-      .then(res => {
-        this.driveService.updateData([res.data]);
-        // TODO: Update left menu
-      //   this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [res.data]});
-        this.modal.close();
-
-      });
+      await this.driveService.updateFolder(this.folder);
+      // this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [res.data]});
+      this.form.reset();
+      this.modal.close();
     } else {
       if (this.currentFolder) {
         this.folder.parent_id = this.currentFolder.id;
       }
 
-      this.folderService.create(this.folder).toPromise().then(res => {
-        this.driveService.prependData([res.data]);
-        // TODO: Update left menu
-        //     this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [combine.res.data]});
-          this.modal.close();
-      });
+      await this.driveService.createFolder(this.folder);
+      // this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [combine.res.data]});
+      this.form.reset();
+      this.modal.close();
     }
   }
 }

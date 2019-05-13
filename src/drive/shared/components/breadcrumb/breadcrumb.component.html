@@ -1,5 +1,5 @@
 <div class="breadcrumb-wrap">
-    <ol class="breadcrumb m0 p0">
+    <ol class="breadcrumb m0 p0">      
       <ng-container *ngFor="let item of model; let i = index; let last = last" [ngClass]="{'active': last}">
         <li *ngIf="last">
           <div class="btn-group">
@@ -8,33 +8,33 @@
             </span>
             <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
               <li>
-                <a (click)="onMenu({action: 'note:open_note_add_modal', payload: {parent_id: item.id}})" href="javascript:;">
-                  <i class="icon-zone-note"></i> New note
+                <a (click)="onMenu({action: 'drive:open_drive_add_modal', payload: {parent_id: item.id}})" href="javascript:;">
+                  <i class="icon-zone-note"></i> New file
                 </a>
               </li>
               <li>
-                <a (click)="onMenu({action: 'note:folder:create'})" href="javascript:;">
+                <a (click)="onMenu({action: 'drive:folder:create'})" href="javascript:;">
                   <i class="fa fa-folder-o"></i> New folder
                 </a>
               </li>
               <li role="separator" class="divider"></li>
               <li>
-                <a (click)="onMenu({action: 'note:folder:edit', payload: item})" href="javascript:;">
+                <a (click)="onMenu({action: 'drive:folder:edit', payload: item})" href="javascript:;">
                   <i class="fa fa-pencil"></i> Edit folder
                 </a>
               </li>
               <li>
-                <a (click)="onMenu({action: 'note:mixed_entity:open_sharing_modal', payload: [item]})" href="javascript:void(0);">
+                <a (click)="onMenu({action: 'drive:mixed_entity:open_sharing_modal', payload: [item]})" href="javascript:void(0);">
                   <i class="fa fa-share-alt"></i> Sharing
                 </a>
               </li>
               <li>
-                <a (click)="onMenu({action: 'note:mixed_entity:delete', payload: [item]})" href="javascript:void(0);">
+                <a (click)="onMenu({action: 'drive:mixed_entity:delete', payload: [item]})" href="javascript:void(0);">
                   <i class="fa fa-trash-o"></i> Delete</a>
               </li>
               <li role="separator" class="divider"></li>
               <li>
-                <a (click)="onMenu({action: 'note:mixed_entity:open_move_to_folder_modal', payload: [item]})" href="javascript:;">Move
+                <a (click)="onMenu({action: 'drive:mixed_entity:open_move_to_folder_modal', payload: [item]})" href="javascript:;">Move
                   to folder</a>
               </li>
             </ul>
