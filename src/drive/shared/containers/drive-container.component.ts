@@ -59,8 +59,8 @@ export class DriveContainerComponent implements OnInit {
     {
       active: true,
       icon: 'fa fa-download',
-      text: 'Move to folder',
-      action: 'move_to_folder'
+      text: 'Download',
+      action: 'download'
     }
   ];
 
@@ -85,7 +85,7 @@ export class DriveContainerComponent implements OnInit {
     console.log('on View: ', item);
 
     if (item.model === this.OBJECT_TYPE.FILE) {
-// TODO: Preview file
+      // TODO: Preview file
     }
     if (item.model === this.OBJECT_TYPE.FOLDER) {
       this.router.navigate(['folder', item.id]);
@@ -109,23 +109,29 @@ export class DriveContainerComponent implements OnInit {
       case 'share': {
 
       }
-      break;
+        break;
       case 'favorite': {
 
       }
-      break;
+        break;
       case 'delete': {
         this.driveService.deleteMany(this.selectedObjects);
       }
-      break;
+        break;
       case 'edit': {
 
       }
-      break;
+        break;
       case 'move_to_folder': {
 
       }
-      break;
+        break;
+      case 'download': {
+        this.dataView.selectedDocuments.forEach(f => {
+          this.fileDriveUploadService.download(f);
+        });
+      }
+        break;
       default: {
 
       };
@@ -133,35 +139,39 @@ export class DriveContainerComponent implements OnInit {
   }
 
   onBreadcrumbEvent(event: any) {
-    const {action, payload} = event;
+    const { action, payload } = event;
     switch (action) {
       case 'drive:open_drive_add_modal': {
         this.fileDriveUploadService.open();
       }
-      break;
+        break;
       case 'drive:mixed_entity:delete': {
         this.driveService.deleteMany(this.selectedObjects);
       }
-      break;
+        break;
       case 'drive:folder:create': {
-        this.driveService.modalEvent({action: 'drive:folder:create', payload});
+        this.driveService.modalEvent({ action: 'drive:folder:create', payload });
       }
-      break;
+        break;
       case 'drive:folder:edit': {
       }
-      break;
+        break;
       case 'drive:mixed_entity:open_sharing_modal': {
       }
-      break;
+        break;
       case 'drive:mixed_entity:open_move_to_folder_modal': {
       }
-      break;
+        break;
       default: {
         console.warn('unhandled action: ', action);
       }
-      break;
+        break;
     }
   }
 
-  private get selectedObjects() { return this.dataView.selectedDocuments} ;
+  download(file: any) {
+    // this.fileDriveUploadService.download({});
+  }
+
+  private get selectedObjects() { return this.dataView.selectedDocuments };
 }

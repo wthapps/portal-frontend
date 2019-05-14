@@ -32,6 +32,7 @@ export const ConfigByEnv: EnvConfig = {
   ENV: 'DEV',
   CLOUDFRONT: 'https://d9njqd2jjuvpj.cloudfront.net/fit-in',
   DOMAIN: 'localhost',
+  S3BUCKET: 'development-oregon',
   SUB_DOMAIN: {
     APP: 'http://localhost:3000',
     MYACCOUNT: 'http://localhost:3005',

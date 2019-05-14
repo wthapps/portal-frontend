@@ -28,6 +28,7 @@ export const ConfigByEnv: EnvConfig = {
   ENV: 'STAG',
   CLOUDFRONT: '',
   DOMAIN: `${domain}`,
+  S3BUCKET: 'staging-oregon',
   SUB_DOMAIN: {
     APP: `${protocol}://${fullDomain}`,
     MYACCOUNT: `${protocol}://myaccount-${fullDomain}`,

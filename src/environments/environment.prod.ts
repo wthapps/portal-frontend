@@ -26,6 +26,7 @@ export const ConfigByEnv: EnvConfig = {
   ENV: 'PROD',
   CLOUDFRONT: '',
   DOMAIN: `${domain}`,
+  S3BUCKET: 'production-oregon',
   SUB_DOMAIN: {
     APP: `${protocol}://www${fullDomain}`,
     MYACCOUNT: `${protocol}://myaccount${fullDomain}`,

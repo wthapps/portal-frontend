@@ -17,6 +17,7 @@ export class ConstantsBase {
   currentVersion = '2018 WTHApps - v1.12.0';
   env: any = Config.ENV;
   cloudfront = Config.CLOUDFRONT;
+  s3Bucket = Config.S3BUCKET;
   useDefaultPage: any = true;
   flagsRelease: any = false;
 

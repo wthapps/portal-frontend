@@ -263,4 +263,32 @@ export class FileDriveUploadService {
       }
     ));
   }
+
+  download(file: any) {
+    const doDownload = (s3Params: any) => {
+      this.s3.getObject(s3Params, function (err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else console.log(data);           // successful response
+        const blob = new Blob([new Uint8Array(data.Body)], { type: file.content_type });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = file.full_name;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
+    };
+    const params = {
+      Bucket: Constants.s3Bucket,
+      Key: file.file_upload_id
+    };
+    if (!this.s3) {
+      this.apiBaseService.get('drive/s3/info').subscribe(res => {
+        this.createS3instane(res);
+        doDownload(params);
+      });
+    } else {
+      doDownload(params);
+    }
+  }
 }

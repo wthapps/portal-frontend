@@ -13,6 +13,7 @@ export interface EnvConfigSubDomain {
 export interface EnvConfig {
   CDN?: string;
   API?: string;
+  S3BUCKET?: string;
   SOCKET_API?: string;
   GOOGLE_ANALYTICS_ID?: string;
   ENV?: string;

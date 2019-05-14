@@ -19,8 +19,8 @@ export class MyDriveComponent implements OnInit {
 
   constructor(
     private dataService: DriveService,
-    private fileDriveUploadService: FileDriveUploadService,) {
-      this.data$ = dataService.data$;
+    private fileDriveUploadService: FileDriveUploadService, ) {
+    this.data$ = dataService.data$;
   }
 
   ngOnInit(): void {
@@ -36,6 +36,4 @@ export class MyDriveComponent implements OnInit {
   loadObjects() {
     this.dataService.loadObjects('drive/drive');
   }
-
-
 }
