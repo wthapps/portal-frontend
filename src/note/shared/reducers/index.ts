@@ -48,10 +48,6 @@ export const getOrderDesc = createSelector(
   getNotesState,
   fromNote.getOrderDesc
 );
-export const getSortOption = createSelector(
-  getNotesState,
-  fromNote.getSortOption
-);
 // export const getSortedNotes = createSelector(getNotesState, fromNote.getSortedNotes);
 export const getFolderEntities = createSelector(
   getNotesState,

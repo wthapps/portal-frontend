@@ -32,7 +32,6 @@ export interface State {
   folders: { [id: number]: Folder }; //{1 :{id: 1, name: "abc"}, 2 :{id: 2, name: "sdfsdf"}  }
   pageNo: number;
   orderDesc: boolean;
-  sortOption: { field: string, desc: boolean };
   group: string;
   selectedObjects: { id: string, object_type: string, parent_id: number }[];
   selectAll: boolean;
@@ -48,7 +47,6 @@ export const noteInitialState: State = {
   folders: {},
   pageNo: 0,
   orderDesc: true,
-  sortOption: { field: 'name', desc: true },
   group: GROUP_TYPE.date,
   selectedObjects: [],
   selectAll: false,
@@ -197,7 +195,6 @@ export function reducer(
         folders: hFolders,
         selectedObjects: hSelected,
         selectAll: noteInitialState.selectAll,
-        sortOption: noteInitialState.sortOption,
         loading: false,
         loaded: true
       });
@@ -241,19 +238,6 @@ export function reducer(
         selectedObjects: noteInitialState.selectedObjects,
         selectAll: noteInitialState.selectAll
       };
-    }
-    case note.CHANGE_SORT_ORDER: {
-      let sortOption: any = { ...state.sortOption };
-      if (sortOption.field === action['payload'].name) {
-        sortOption.desc = !sortOption.desc;
-      } else {
-        sortOption = {
-          field: action['payload'],
-          desc: noteInitialState.sortOption.desc
-        };
-      }
-
-      return { ...state, sortOption: sortOption };
     }
     case note.SELECT: {
       const selected: any = action['payload'];
@@ -363,7 +347,6 @@ export function reducer(
 export const getNotes = (state: State) => state.notes;
 export const getPageNo = (state: State) => state.pageNo;
 export const getOrderDesc = (state: State) => state.orderDesc;
-export const getSortOption = (state: State) => state.sortOption;
 export const getFolders = (state: State) => state.folders;
 export const getSelectAll = (state: State) => state.selectAll;
 export const getSelectedObjects = (state: State) => state.selectedObjects;

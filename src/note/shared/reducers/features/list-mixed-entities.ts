@@ -6,6 +6,7 @@ import { AppState } from '@notes/shared/reducers/state';
 import { _wu } from '@wth/shared/shared/utils/utils';
 import { Note } from '@shared/shared/models/note.model';
 import { Folder } from '../folder';
+import { SortOption } from '@notes/shared/models/context.model';
 
 export const getNotesState = (state: AppState) => state.notes;
 export const getFoldersState = (state: AppState) => state.folders;
@@ -24,7 +25,7 @@ const FIELD_MAP = { owner: 'user.name' };
 export const getNotes = createSelector(
   getNotesEntities,
   context.getSortOptionContext,
-  (notes: { [id: number]: Note }, sort: any) => {
+  (notes: { [id: number]: Note }, sort: SortOption) => {
     let sortField = ['name', 'title'].includes(sort.field)
       ? 'name'
       : sort.field;
@@ -38,7 +39,7 @@ export const getNotes = createSelector(
 export const getFolders = createSelector(
   getFolderEntities,
   context.getSortOptionContext,
-  (notes: { [id: number]: Folder }, sort: any) => {
+  (notes: { [id: number]: Folder }, sort: SortOption) => {
     let sortField = ['name', 'title'].includes(sort.field)
       ? 'name'
       : sort.field;
@@ -50,16 +51,9 @@ export const getFolders = createSelector(
 );
 
 export const getAllItems = createSelector(
-  getNotesEntities,
-  getFolderEntities,
-  context.getSortOptionContext,
-  (notes: any, folders: any, sort: any) => {
-    const noteArr: any[] = Object.values(notes).sort((a: any, b: any) =>
-      _wu.compareBy(a, b, sort.desc, 'created_at')
-    );
-    const folderArr: any[] = Object.values(folders).sort((a: any, b: any) =>
-      _wu.compareBy(a, b, sort.desc, 'created_at')
-    );
-    return [...folderArr, ...noteArr];
+  getFolders,
+  getNotes,
+  (folders: any[], notes: any[]) => {
+    return folders.concat(notes);
   }
 );

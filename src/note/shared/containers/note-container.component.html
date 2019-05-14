@@ -1,5 +1,6 @@
 <div class="objects-main">
   <w-dataView-nav [showViewMode]="true"
+                  [enableSort]="enableSort"
                   (sortComplete)="onSortComplete($event)"
                   (viewComplete)="onViewComplete($event)">
     <div *ngIf="breadcrumbs && breadcrumbs.length > 0" class="breadcrumb-wrap">
