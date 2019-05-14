@@ -16,23 +16,23 @@ export class ShortMessagePipe implements PipeTransform {
       const { message, message_type, message_sub_type } = latest_message;
 
       if (message_type === 'share_contact_message') {
-        result = 'Shared a contact';
+        result = 'Contact shared';
       } else if (message_type === 'notification' && message_sub_type === 'conversation_member_add') {
-        result = 'Added member';
+        result = 'Member added';
       } else if (message_type === 'notification' && message_sub_type === 'conversation_member_remove') {
-        result = 'Removed member';
+        result = 'Member removed';
       } else if (message_type === 'notification' && message_sub_type === 'conversation_member_leave') {
         result = 'Member left';
       } else if (message_type === 'notification' && message_sub_type === 'conversation_rename') {
-        result = 'Renamed conversation';
+        result = 'Conversation renamed';
       } else if (message_type === 'request' && message_sub_type === 'conversation_create') {
-        result = 'Created conversation';
+        result = 'New conversation';
       } else if (message_type === 'request' && message_sub_type === 'conversation_connect') {
         result = '';
       } else if (message_type === 'file') {
-        result = 'Shared a file';
+        result = 'File shared';
       } else if (message_type === 'message_deleted') {
-        result = 'Deleted message';
+        result = 'Message deleted';
       } else if (message_type === 'text') {
         result = message;
       } else {

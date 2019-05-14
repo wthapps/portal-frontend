@@ -36,7 +36,6 @@ export class MessageItemComponent implements OnInit {
   readonly noteUrl: any = Constants.baseUrls.note;
   readonly socialUrl: any = Constants.baseUrls.social;
   readonly actions = CHAT_ACTIONS;
-  readonly profileUrl: any = ChatConstant.profileUrl;
   readonly NO_ACTION_MESSAGES = ['message_deleted', 'message_cancel', 'request', 'request_accepted'];
 
   private modifiedMessage: any;
@@ -47,9 +46,7 @@ export class MessageItemComponent implements OnInit {
     private storageService: StorageService,
     private pubSubEventService: CommonEventService,
     private messageEventService: MessageEventService,
-  ) {
-    // this.profileUrl = this.chatService.constant.profileUrl;
-  }
+  ) { }
 
   ngOnInit() {
     // console.log(this.message);
