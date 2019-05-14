@@ -24,10 +24,12 @@
             </ng-template>
           </div>
           <div class="visible-xs-block">
-            <h4 *ngIf="note.permission !== 'view'" class="can-click" (click)="modalEditName.modal.open()">
+            <h4 *ngIf="note.permission !== 'view'" class="can-click"
+                (click)="modalEditName.open(form.value.name, note.permission)">
               <span>{{note.name || 'Untitled Note'}}</span>
             </h4>
-            <h4 *ngIf="note.permission == 'view'" class="can-click" (click)="modalEditName.modal.open()">
+            <h4 *ngIf="note.permission == 'view'" class="can-click"
+                (click)="modalEditName.open(form.value.name, note.permission)">
               {{note.name}}</h4>
           </div>
         </div>
@@ -496,9 +498,4 @@
 </form>
 
 <lock-upload-modal></lock-upload-modal>
-<z-note-shared-modal-edit-name
-  #modalEditName
-  [name]="form.value.name"
-  [permission]="note.permission"
-  (eventEmitter)="onSaveName($event)">
-</z-note-shared-modal-edit-name>
+<z-note-shared-modal-edit-name #modalEditName (eventEmitter)="onSaveName($event)"></z-note-shared-modal-edit-name>
