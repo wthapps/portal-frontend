@@ -13,6 +13,7 @@ export class WDataViewNavComponent {
   @HostBinding('class') class = 'objects-main-nav';
   @Input() sliderView;
   @Input() showViewMode;
+  @Input() enableSort = true;
   @Output() sliderViewCompleted: EventEmitter<number> = new EventEmitter<number>();
   @Output() sortComplete: EventEmitter<SortDataView> = new EventEmitter<SortDataView>(null);
   @Output() viewComplete: EventEmitter<string> = new EventEmitter<string>(null);

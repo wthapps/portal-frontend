@@ -1,11 +1,12 @@
-import { Context } from "@shared/shared/models/context.model";
+import { Context } from '@shared/shared/models/context.model';
 
+export interface SortOption { field: string; desc: boolean; }
 export class NoteContext extends Context {
-  viewMode: string = 'list';
-  loading: boolean = false;
-  sort: any = {
-    field: "name",
+  viewMode = 'list';
+  loading = false;
+  sort: SortOption = {
+    field: 'name',
     desc: true
   };
-  groupBy: string = 'date'
+  groupBy = 'date';
 }

@@ -1,3 +1,5 @@
+import { reducers } from './../reducers/index';
+import { SortOption } from './../reducers/note';
 import { ApiBaseService } from '@shared/services';
 import { Component, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { ZNoteService } from '../services/note.service';
@@ -12,6 +14,7 @@ import { WDataViewComponent } from '@shared/components/w-dataView/w-dataView.com
 import { Constants } from '@shared/constant';
 import { noteConstants } from '../config/constants';
 import * as note from '../actions/note';
+import * as contextReducer from '../reducers/context';
 import { CommonEventService } from '@shared/services';
 
 declare var _: any;
@@ -25,6 +28,7 @@ const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
 })
 export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() breadcrumbs: any = null;
+  @Input() enableSort = true;
   @HostBinding('class') class = 'main-page-body';
   @ViewChild('dataView') dataView: WDataViewComponent;
 
@@ -419,9 +423,14 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async onSortComplete(event: any) {
-    // console.log(event);
-    // const data = await this.dataService.sort(event).toPromise();
-    // this.next = data.meta.links.next;
+    if (!this.enableSort) return;
+    const sortOption: SortOption = {field: event.sortBy.toLowerCase(), desc: event.orderBy === 'desc'};
+    this.store.dispatch({
+      type: contextReducer.SET_CONTEXT,
+      payload: {
+        sort: sortOption
+      }
+    });
   }
 
   onViewComplete(event: any) {

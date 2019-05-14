@@ -156,14 +156,6 @@ export class SelectAll implements Action {
   readonly type = SELECT_ALL;
 }
 
-export class ChangeSortOrder implements Action {
-  readonly type = CHANGE_SORT_ORDER;
-
-  constructor(public payload: string) {
-
-  }
-}
-
 export class InitLoad implements Action {
   readonly type = INIT_LOAD;
 }
