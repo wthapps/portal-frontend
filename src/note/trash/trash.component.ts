@@ -185,6 +185,15 @@ export class ZNoteTrashComponent implements OnInit {
     }
   }
 
+  async onSortComplete(event: any) {
+  }
+
+  onViewComplete(event: any) {
+    this.dataView.viewMode = event;
+    this.dataView.container.update();
+    this.dataView.updateView();
+  }
+
   private isOnlyNote(selectedObjects): boolean {
     let result = true;
     _.forEach(selectedObjects, (item: any) => {
