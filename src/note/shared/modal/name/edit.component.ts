@@ -8,16 +8,15 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 })
 export class ZNoteSharedModalEditNameComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
-  @Input() name: string;
-  @Input() permission: string;
   @Output() eventEmitter: EventEmitter<any> = new EventEmitter<any>();
+
+  nameNote: string;
+  permission: string;
 
   constructor() {
   }
 
-
   ngOnInit() {
-
   }
 
   ngOnDestroy() {
@@ -25,6 +24,12 @@ export class ZNoteSharedModalEditNameComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
-    this.eventEmitter.emit(this.name);
+    this.eventEmitter.emit(this.nameNote);
+  }
+
+  open(name: string, permission: string) {
+    this.nameNote = name ? name : 'Untitled Note';
+    this.permission = permission;
+    this.modal.open();
   }
 }
