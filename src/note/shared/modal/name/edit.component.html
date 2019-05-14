@@ -4,15 +4,12 @@
     <h4 *ngIf="permission !== 'view'" class="modal-title">Rename</h4>
   </bs-modal-header>
   <bs-modal-body>
-    <input *ngIf="permission !== 'view';else templateView"
-           tabindex="1" autofocus
+    <span *ngIf="permission == 'view'">{{ name }}</span>
+    <input tabindex="1" autofocus
            [(ngModel)]="nameNote"
-           type="text"
+           [type]="permission == 'view' ? 'hidden' : 'text'"
            class="form-control"
            placeholder="Title">
-    <ng-template #templateView>
-      <span>{{ name }}</span>
-    </ng-template>
   </bs-modal-body>
   <bs-modal-footer>
     <button type="submit" class="btn btn-outline-primary btn-min" (click)="onSave();modal.close()">Ok</button>

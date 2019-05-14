@@ -7,21 +7,17 @@
       <div class="d-flex">
         <div class="body">
           <div class="hidden-xs">
-            <ng-container *ngIf="note.permission !== 'view';else templateName">
-              <input (click)="disabled = true"
-                     (clickElseWhere)="disabled = false"
-                     type="text"
-                     tabindex="1"
-                     autofocus
-                     (keypress)="onToEditor($event)"
-                     [formControl]="name"
-                     class="form-control"
-                     [ngClass]="{'has-no-edit': !disabled}"
-                     placeholder="Title">
-            </ng-container>
-            <ng-template #templateName>
-              <h4 class="ml5">{{note.name}}</h4>
-            </ng-template>
+            <h4 *ngIf="note.permission == 'view'" class="ml5">{{note.name}}</h4>
+            <input (click)="disabled = true"
+                   (clickElseWhere)="disabled = false"
+                   [type]="note.permission == 'view' ? 'hidden' :  'text'"
+                   tabindex="1"
+                   autofocus
+                   (keypress)="onToEditor($event)"
+                   [formControl]="name"
+                   class="form-control"
+                   [ngClass]="{'has-no-edit': !disabled}"
+                   placeholder="Title">
           </div>
           <div class="visible-xs-block">
             <h4 *ngIf="note.permission !== 'view'" class="can-click"
