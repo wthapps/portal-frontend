@@ -1,9 +1,9 @@
 import { ApiBaseService } from '@shared/services';
-import { Component, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { ZNoteService } from '../services/note.service';
 import { Store } from '@ngrx/store';
 import * as listReducer from '../reducers/features/list-mixed-entities';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +23,7 @@ const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
   styleUrls: ['note-container.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZNoteContainerComponent implements OnInit, OnChanges {
+export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() breadcrumbs: any = null;
   @HostBinding('class') class = 'main-page-body';
   @ViewChild('dataView') dataView: WDataViewComponent;
@@ -98,6 +98,8 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
   };
   noOtherActions = false;
 
+  private destroySubject: Subject<any> = new Subject<any>();
+
   constructor(
     private noteService: ZNoteService,
     private route: ActivatedRoute,
@@ -136,11 +138,16 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
   }
 
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
+  }
+
   validatePermission() {
     if (!this.dataView) {
       return;
     }
-    const objects: any[] = this.dataView.selectedDocuments;
+    const objects: any[] = this.selectedObjects;
     const path = this.router.url;
 
     /*====================================
@@ -253,12 +260,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
   }
 
   onMenuAction(action: string) {
-    const selectedObjects = this.dataView.selectedDocuments;
-    const objects = this.dataView.selectedDocuments.map(({ id, object_type, favourite }) => ({
-      id,
-      object_type,
-      favourite
-    }));
+    const selectedObjects = this.selectedObjects;
     switch (action) {
       case 'share': {
         if (selectedObjects.length > 0) {
@@ -272,11 +274,10 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
       }
       case 'favorite': {
         this.apiBaseService
-          .post('note/mixed_entities/favourites', { objects: objects })
+          .post('note/mixed_entities/favourites', { objects: selectedObjects })
           .subscribe((res: any) => {
-            // this.selectedObjects = res.data;
-            // this.validatePermission(this.selectedObjects);
             this.store.dispatch(new note.MultiNotesUpdated(res.data));
+            this.updateMenuFavorite(_.every(res.data, 'favorite'));
           });
         break;
       }
@@ -311,14 +312,15 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
       case 'edit': {
         if (selectedObjects.length > 0) {
           const selectedObject = selectedObjects[0];
+          this.dataView.clearSelection();
           switch (selectedObject.object_type) {
-            case 'Note::Note':
+            case OBJECT_TYPE.NOTE:
               this.noteService.modalEvent({
                 action: 'note:open_note_edit_modal',
                 payload: selectedObject
               });
               break;
-            case 'Note::Folder':
+            case OBJECT_TYPE.FOLDER:
               this.commonEventService.broadcast({
                 channel: 'noteActionsBar',
                 action: 'note:folder:edit',
@@ -404,13 +406,6 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
     }
   }
 
-  // constructor(private dataService: NoteService) {
-  //   this.data$ = this.dataService.data$;
-  // }
-
-  // ngOnInit(): void {
-  //   this.getDataAsync().then();
-  // }
 
   async getDataAsync() {
     // const data = await this.dataService.getData(this.next).toPromise();
@@ -438,10 +433,17 @@ export class ZNoteContainerComponent implements OnInit, OnChanges {
   onSelectCompleted() {
 
     // update icon favorite
-    this.updateMenuFavorite(_.every(this.dataView.selectedDocuments, 'favorite'));
+    this.updateMenuFavorite(_.every(this.selectedObjects, 'favorite'));
 
     // check menu view
     this.validatePermission();
+  }
+
+  private get selectedObjects() {
+    if (this.dataView) {
+      return this.dataView.selectedObjects;
+    }
+    return [];
   }
 
   private updateMenuFavorite(isFavorite: boolean) {

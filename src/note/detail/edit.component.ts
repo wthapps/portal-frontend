@@ -25,9 +25,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
-// import * as Delta from 'quill-delta/lib/delta';
-import Delta, { AttributeMap } from 'quill-delta';
-import Parchment from 'parchment';
+import Delta from 'quill-delta';
 import DeltaOp from 'quill-delta/lib/op';
 import { CommonEventService, UserService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
@@ -116,7 +114,6 @@ export class ZNoteDetailEditComponent
   private initRetry = 0; // number of times this component will try to init Quill editor, default max tries is 3
   resize: any;
   context$: any;
-  // profile$: Observable<User>;
   profile: User;
   setting$: Observable<NoteSetting>;
   setting: NoteSetting;
@@ -153,10 +150,10 @@ export class ZNoteDetailEditComponent
 
     const getOs: any = this.clientDetectorService.getOs();
     this.buttonControl = getOs.name === 7 ? '⌘' : 'ctrl';
+    this.initForm();
   }
 
   ngOnInit() {
-    this.assignFormValue(null);
     this.context$ = this.store.select('context');
     this.commonEventService
       .filter((e: any) => e.channel === 'noteActionsBar')
@@ -189,7 +186,7 @@ export class ZNoteDetailEditComponent
         return;
       }
       const { user_uuid, user_name } = user;
-      if (user_uuid !== this.userService.getSyncProfile().uuid) {
+      if (user_uuid !== this.profile.uuid) {
         this.enable(false);
       }
 
@@ -223,24 +220,6 @@ export class ZNoteDetailEditComponent
       }
       _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400);
     });
-  }
-
-  handleActionEvents(event) {
-    const { action } = event;
-
-    switch (action) {
-      case 'showComments': {
-        this.visibleTab = (this.visibleTab === 'comment') ? undefined : 'comment';
-        break;
-      }
-      case 'openAttactments': {
-        this.visibleTab = (this.visibleTab === 'attachment') ? undefined : 'attachment';
-        break;
-      }
-      default: {
-
-      }
-    }
   }
 
   ngAfterViewInit() {
@@ -331,6 +310,24 @@ export class ZNoteDetailEditComponent
 
     // Unsubscribe user from this note channel
     this.noteChannel.unsubscribe(this.note.uuid);
+  }
+
+  handleActionEvents(event) {
+    const { action } = event;
+
+    switch (action) {
+      case 'showComments': {
+        this.visibleTab = (this.visibleTab === 'comment') ? undefined : 'comment';
+        break;
+      }
+      case 'openAttactments': {
+        this.visibleTab = (this.visibleTab === 'attachment') ? undefined : 'attachment';
+        break;
+      }
+      default: {
+
+      }
+    }
   }
 
   broadcastViewing() {
@@ -1000,10 +997,6 @@ export class ZNoteDetailEditComponent
         this.customEditor.formatLine(sIndex, sLength, this.copiedFormat);
         this.copiedFormat = {};
         this.isCopied = false;
-      } else {
-        // const curFormat = this.customEditor.getFormat();
-        // if (!curFormat.font) { this.customEditor.format('font', this.setting.font); }
-        // if (!curFormat.size) { this.customEditor.format('size', this.setting.font_size); }
       }
     });
   }
@@ -1033,22 +1026,6 @@ export class ZNoteDetailEditComponent
     }
   }
 
-  open(
-    options: any = {
-      mode: Constants.modal.add,
-      note: undefined,
-      parent_id: undefined
-    }
-  ) {
-    this.assignFormValue(this.note);
-    this.parentId = _.get(options, 'parent_id');
-    this.modal.open();
-    this.noSaveSubject.next('');
-    this.editMode = options.mode;
-
-    this.updateCurrentNote();
-  }
-
   updateCurrentNote(): void {
     this.store
       .select(fromRoot.getCurrentNote)
@@ -1060,30 +1037,21 @@ export class ZNoteDetailEditComponent
       });
   }
 
-  assignFormValue(data?: Note) {
+  initForm(data?: Note) {
     this.form = this.fb.group({
       name: [_.get(data, 'name', '')],
-      // 'content': [_.get(data, 'content', ''), Validators.compose([Validators.required])],
       tags: [_.get(data, 'tags', [])],
       attachments: [_.get(data, 'attachments', [])]
     });
 
     this.name = this.form.controls['name'];
-    // this.content = this.form.get('content');
     this.tags = this.form.controls['tags'];
     this.attachments = this.form.controls['attachments'];
-    this.note = Object.assign({}, new Note(), data);
   }
 
   updateFormValue(data: Note) {
-    this.form.controls['name'].setValue(_.get(data, 'name', ''));
-    this.form.controls['tags'].setValue(_.get(data, 'tags', []));
-    this.form.controls['attachments'].setValue(_.get(data, 'attachments', []));
+    this.form.patchValue(data);
 
-    this.name = this.form.controls['name'];
-    // this.content = this.form.get('content');
-    this.tags = this.form.controls['tags'];
-    this.attachments = this.form.controls['attachments'];
     this.note = Object.assign({}, new Note(), data);
   }
 
@@ -1185,24 +1153,10 @@ export class ZNoteDetailEditComponent
       if (this.editMode === Constants.modal.add) {
         if (this.note.permission !== 'view') {
           this.onFirstSave();
-          // this.store.dispatch(
-          //   new note.Add({
-          //     ...value,
-          //     parent_id: this.parentId,
-          //     content: this.editorElement.innerHTML
-          //   })
-          // );
         }
       } else {
         if (this.note.permission !== 'view') {
           this.updateNote();
-          // this.store.dispatch(
-          //   new note.Update({
-          //     ...value,
-          //     id: this.note.id,
-          //     content: this.editorElement.innerHTML
-          //   })
-          // );
         }
       }
     }
@@ -1337,7 +1291,6 @@ export class ZNoteDetailEditComponent
     }
 
     this.timeout = setTimeout(() => {
-      console.log('Goes idle now for note channel: ', this.note.uuid);
       this.noteChannel.idle(this.note.uuid);
     }, DEBOUNCE_MS);
   }
