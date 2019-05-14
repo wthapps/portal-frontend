@@ -10,6 +10,7 @@ import { WDataViewComponent } from './w-dataView.component';
 import { WDataViewSelectedComponent } from './w-dataView-selected.component';
 import { WDataViewNavComponent } from './w-dataView-nav.component';
 import { DirectiveModule } from '@shared/shared/directive/directive.module';
+import { PipeModule } from '@shared/shared/pipe/pipe.module';
 
 @NgModule({
   imports: [
@@ -18,10 +19,18 @@ import { DirectiveModule } from '@shared/shared/directive/directive.module';
     FormsModule,
     InfiniteScrollModule,
     DragToSelectModule.forRoot(),
+    PipeModule,
     DirectiveModule
   ],
-  declarations: [WDataViewComponent, WDataViewSelectedComponent, WDataViewNavComponent],
-  exports: [WDataViewComponent, WDataViewSelectedComponent, WDataViewNavComponent]
+  declarations: [
+    WDataViewComponent,
+    WDataViewSelectedComponent,
+    WDataViewNavComponent
+  ],
+  exports: [
+    WDataViewComponent,
+    WDataViewSelectedComponent,
+    WDataViewNavComponent
+  ]
 })
-export class WDataViewModule {
-}
+export class WDataViewModule {}

@@ -40,7 +40,6 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     this.sub = this.store
       .select(fromRoot.getFoldersTree)
       .subscribe((folders: any) => {
-        console.log('folder tree get updated');
         if (this.noteFoldersTree.length !== 0) {
           return;
         }
