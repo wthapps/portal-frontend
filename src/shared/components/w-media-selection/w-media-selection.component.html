@@ -19,12 +19,7 @@
       currentTab === 'albums_detail' ||
       currentTab === 'favourites' ||
       currentTab === 'favourites_detail' ||
-      currentTab === 'shared_with_me' ||
-      currentTab === 'videos' ||
-      currentTab === 'playlists' ||
-      currentTab === 'playlist_detail' ||
-      currentTab === 'search_detail' ||
-      currentTab === 'shared_with_me_detail'">
+      currentTab === 'search_detail'">
       <button (click)="onInsert()" class="btn btn-outline-default" type="button">Insert</button>
     </w-object-toolbar-selected>
   </bs-modal-header>
@@ -58,9 +53,7 @@
       <div class="modal-selection-toolbar">
         <div *ngIf="currentTab === 'albums_detail' ||
         currentTab === 'favourites_detail' ||
-        currentTab === 'playlist_detail' ||
-        currentTab === 'search_detail' ||
-        currentTab === 'shared_with_me_detail'"
+        currentTab === 'search_detail'"
           class="modal-selection-toolbar-left pull-left">
           <ul class="list-unstyled">
             <li class="divider">
@@ -106,7 +99,7 @@
             
             <ng-template #columnBox let-item>
                 <!-- ------------ Album view ------------- -->
-              <ng-container *ngIf="item.model === 'Media::Album' || item.model === 'Media::Playlist' || item.model === 'Common::Sharing'">
+              <ng-container *ngIf="item.model === 'Media::Album' || item.model === 'Common::Sharing'">
                   <div class="wobject-box-img">
                     <img [src]="item.thumbnail_url" alt="">
 
@@ -145,9 +138,6 @@
         </ng-container>
         <ng-template #templateNodata>
           <div *ngIf="mediaParent; else templateNodataDetail" class="media-selection-content bg-white">
-            <box-no-data *ngIf="mediaParent.model === 'Media::Playlist' || (mediaParent.model === 'Common::Sharing' && mediaParent.sharing_type === 'Media::Video')"
-              [icon]="'fa fa-picture-o'" [title]="'There is no video!'" [subTitle]="'There is no video.'">
-            </box-no-data>
             <box-no-data *ngIf="mediaParent.model === 'Media::Album' || (mediaParent.model === 'Common::Sharing' && mediaParent.object_type === 'Media::Photo')"
               [icon]="'fa fa-picture-o'" [title]="'There is no photo!'" [subTitle]="'There is no photo.'">
             </box-no-data>
@@ -160,17 +150,8 @@
                 <box-no-data *ngSwitchCase="'albums'" [icon]="'fa fa-file-photo-o'" [title]="'There is no album!'"
                   [subTitle]="'There is no album.'">
                 </box-no-data>
-                <box-no-data *ngSwitchCase="'videos'" [icon]="'fa fa-video-camera'" [title]="'There is no video!'"
-                  [subTitle]="'There is no video.'">
-                </box-no-data>
-                <box-no-data *ngSwitchCase="'playlists'" [icon]="'fa fa-file-video-o'" [title]="'There is no playlist!'"
-                  [subTitle]="'There is no playlist.'">
-                </box-no-data>
                 <box-no-data *ngSwitchCase="'favourites'" [icon]="'fa fa-star'" [title]="'There is no favourite!'"
                   [subTitle]="'There is no favourite.'">
-                </box-no-data>
-                <box-no-data *ngSwitchCase="'shared_with_me'" [icon]="'fw fw-shared-with-me'" [title]="'There is no shared with me!'"
-                  [subTitle]="'There is no shared with me.'">
                 </box-no-data>
               </div>
             </div>

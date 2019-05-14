@@ -50,30 +50,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       type: 'tab'
     },
     {
-      name: 'Videos',
-      link: 'videos',
-      icon: 'fa fa-video-camera',
-      number: null,
-      type: 'tab'
-    },
-    {
-      name: 'Playlists',
-      link: 'playlists',
-      icon: 'fa fa-file-video-o',
-      number: null,
-      type: 'tab'
-    },
-    {
       name: 'Favourites',
       link: 'favourites',
       icon: 'fa fa-star',
-      number: null,
-      type: 'tab'
-    },
-    {
-      name: 'Shared with me',
-      link: 'shared_with_me',
-      icon: 'fw fw-shared-with-me',
       number: null,
       type: 'tab'
     }
@@ -89,13 +68,12 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   sortName = 'created_at';
   sortDirection = 'desc';
 
-  currentTab: string; // upload, photos, albums, albums_detail, favourites, shared_with_me
+  currentTab: string; // upload, photos, albums, albums_detail, favourites
   readonly tabNameMap = {
     photos: 'Photos',
     albums: 'Albums',
     albums_detail: '',
-    favourites: 'Favourites',
-    shared_with_me: 'Shared with me'
+    favourites: 'Favourites'
   };
 
   nextLink: string;
@@ -247,10 +225,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       const objects = await this.getObjects(true);
       console.log('objects: ', objects);
 
-      if (this.currentTab === 'albums' || this.currentTab === 'playlists'
-        || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me'
-        || this.currentTab === 'search') {
-        this.objectListService.setObjectsDisabled(['album', 'Media::Playlist', 'Common::Sharing']);
+      if (this.currentTab === 'albums' || this.currentTab === 'favourites' || this.currentTab === 'search') {
+        this.objectListService.setObjectsDisabled(['album', 'Common::Sharing']);
       } else {
         this.objectListService.setObjectsDisabled([]);
       }
@@ -258,7 +234,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   onTabBack() {
-    const all = ['album', 'Common::Sharing', 'Media::Playlist'];
+    const all = ['album', 'Common::Sharing'];
     if (this.currentTab === 'albums_detail') {
       this.currentTab = 'albums';
       this.objectListService.setObjectsDisabled(all);
@@ -266,15 +242,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.currentTab = 'favourites';
       // this.subFilter = 'photo';
       this.objectListService.setObjectsDisabled(all);
-    } else if (this.currentTab === 'shared_with_me_detail') {
-      this.currentTab = 'shared_with_me';
-      // this.subFilter = 'photo';
-      this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'search') {
       this.currentTab = 'photos';
-    } else if (this.currentTab === 'playlist_detail') {
-      this.currentTab = 'playlists';
-      this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'search_detail') {
       this.currentTab = 'search';
       this.objectListService.setObjectsDisabled(all);
@@ -298,15 +267,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   onCompleteDoubleClick(item: Media) {
-    if (item.object_type === 'Media::Album' || item.object_type === 'Media::Playlist' || item.model === 'Common::Sharing') {
+    if (item.object_type === 'Media::Album' || item.model === 'Common::Sharing') {
       if (this.currentTab === 'albums') {
         this.currentTab = 'albums_detail';
       } else if (this.currentTab === 'favourites') {
         this.currentTab = 'favourites_detail';
-      } else if (this.currentTab === 'playlists') {
-        this.currentTab = 'playlist_detail';
-      } else if (this.currentTab === 'shared_with_me') {
-        this.currentTab = 'shared_with_me_detail';
       } else if (this.currentTab === 'search') {
         this.currentTab = 'search_detail';
       }
@@ -418,15 +383,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       case 'albums':
         urlAPI = `media/albums?active=1`;
         break;
-      case 'videos':
-        urlAPI = `media/videos?active=1`;
-        break;
-      case 'playlists':
-        urlAPI = `media/playlists?active=1`;
-        break;
-      case 'playlist_detail':
-        urlAPI = `media/playlists/${this.mediaParent.id}/videos?active=1`;
-        break;
       case 'albums_detail':
         urlAPI = this.filter === 'all' ? `media/albums/${this.mediaParent.uuid}/objects?model=Media::Album` :
           `media/photos?active=1&album=${this.mediaParent.id}`;
@@ -456,9 +412,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         break;
       case 'favourites_detail':
         switch (this.mediaParent.model) {
-          case 'Media::Playlist':
-            urlAPI = `media/playlists/${this.mediaParent.uuid}/videos`;
-            break;
           case 'Media::Album':
             urlAPI = `media/albums/${this.mediaParent.uuid}/objects?model=Media::Album`;
             break;
@@ -470,28 +423,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
             break;
         }
         break;
-      case 'shared_with_me':
-        if (this.filter === 'all') { urlAPI = `media/sharings/shared_with_me?active=1&disallowReshare=true`; }
-        if (this.filter === 'photo') {
-          urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Album
-        &disallowReshare=true`;
-        }
-        if (this.filter === 'video') {
-          urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist
-        &disallowReshare=true`;
-        }
-        break;
-      case 'shared_with_me_detail':
-        urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;
-        break;
       case 'search':
         urlAPI = `media/search?active=1&q=${this.searchText}&filter=${this.filter}`;
         break;
       case 'search_detail':
         switch (this.mediaParent.model) {
-          case 'Media::Playlist':
-            urlAPI = `media/playlists/${this.mediaParent.uuid}/videos`;
-            break;
           case 'Media::Album':
             urlAPI = `media/media/${this.mediaParent.uuid}/objects?model=Media::Album`;
             break;
