@@ -27,7 +27,7 @@ export class InviteContactComponent implements OnInit {
 
   openModal() {
     this.apiBaseService.get(`contact/wcontacts/contacts_not_wthuser`, { sort_name: 'name', sort: 'asc' }).subscribe(res => {
-      this.contacts = res.data.filter(e => !e.wthapps_user);
+      this.contacts = res.data;
     });
     this.modal.open();
   }
@@ -40,10 +40,10 @@ export class InviteContactComponent implements OnInit {
     this.contacts.filter(c => c.selected).forEach(c => {
       if (c.emails && c.emails.length > 0) {
         c.emails.forEach(e => {
-          data.push({ fullName: c.name, contactId: c.id, email: e.value });
+          data.push({ firstName: c.name, lastName: c.family_name, contactId: c.id, email: e.value });
         });
       } else {
-        data.push({ fullName: c.name, contactId: c.id, email: '' });
+        data.push({ firstName: c.name, lastName: c.family_name, contactId: c.id, email: '' });
       }
     });
     this.createModal.open({ data: data, back: true });
