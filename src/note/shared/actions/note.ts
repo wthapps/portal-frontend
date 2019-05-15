@@ -164,13 +164,6 @@ export class InitLoadDone implements Action {
   readonly type = INIT_LOAD_DONE;
 }
 
-export class ChangeViewMode implements Action {
-  readonly type = CHANGE_VIEW_MODE;
-
-  constructor(public payload: string) {
-  }
-}
-
 export class Undo implements Action {
   readonly type = UNDO;
 }

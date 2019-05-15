@@ -2,8 +2,6 @@ import * as note from '../actions/note';
 import { Note } from '@shared/shared/models/note.model';
 import { Folder } from './folder';
 
-// declare let _: any;
-
 // Constants
 export const ITEM_TYPE = {
   NOTE: 'Note::Note',
@@ -21,21 +19,15 @@ export const GROUP_TYPE = {
 };
 
 // State
-export interface Filters {
-  folder: string;
-}
-
 export interface State {
   notes: { [id: number]: Note };
   currentNote: Note | null;
   noteHistory: { id: number | string, stackId: number, stack: Note[] }; // Lastest note is at index 0 in Note Undo stack
-  folders: { [id: number]: Folder }; //{1 :{id: 1, name: "abc"}, 2 :{id: 2, name: "sdfsdf"}  }
+  folders: { [id: number]: Folder }; // {1 :{id: 1, name: "abc"}, 2 :{id: 2, name: "sdfsdf"}  }
   pageNo: number;
-  orderDesc: boolean;
   group: string;
   selectedObjects: { id: string, object_type: string, parent_id: number }[];
   selectAll: boolean;
-  viewMode: string;
   loading: boolean;
   loaded: boolean;
 }
@@ -46,11 +38,9 @@ export const noteInitialState: State = {
   noteHistory: { id: '', stackId: -1, stack: [] },
   folders: {},
   pageNo: 0,
-  orderDesc: true,
   group: GROUP_TYPE.date,
   selectedObjects: [],
   selectAll: false,
-  viewMode: VIEW_MODE.LIST,
   loading: false,
   loaded: false
 };
@@ -60,7 +50,6 @@ export function reducer(
   state: State = noteInitialState,
   action: note.NoteActions
 ): State {
-  // let stateClone = _.clone(state);
   switch (action.type) {
     case note.NOTE_ADDED: {
       const hNote: any = {};
@@ -133,8 +122,6 @@ export function reducer(
     case note.NOTE_UPDATED: {
       const existed: boolean = state.notes[action.payload.id] !== undefined;
       const hNote: any = {};
-      // hNote[action.payload.id] = action.payload;
-      // const notes4: any = (existed) ? {...state.notes, ...hNote}: {...state.notes};
 
       hNote[action.payload.id] = {
         ...state.notes[action.payload.id],
@@ -319,11 +306,7 @@ export function reducer(
     }
 
     case note.MOVE_TO_FOLDER: {
-      // return Object.assign({}, state, {selectedObjects: selectedObjects, selectAll: selectAll, notes: inotes, folders: folders});
       return { ...state };
-    }
-    case note.CHANGE_VIEW_MODE: {
-      return { ...state, viewMode: action.payload };
     }
     case note.REMOVED_SHARE_WITH_ME: {
       const foldersDeleted = action.payload.filter((f: any) => {
@@ -346,27 +329,9 @@ export function reducer(
 
 export const getNotes = (state: State) => state.notes;
 export const getPageNo = (state: State) => state.pageNo;
-export const getOrderDesc = (state: State) => state.orderDesc;
 export const getFolders = (state: State) => state.folders;
 export const getSelectAll = (state: State) => state.selectAll;
 export const getSelectedObjects = (state: State) => state.selectedObjects;
-export const getViewMode = (state: State) => state.viewMode;
 export const getCurrentNote = (state: State) => state.currentNote;
 export const getLoading = (state: State) => state.loading;
 export const getLoaded = (state: State) => state.loaded;
-
-export const getFirstSelectedObject = (state: State) => {
-  const obj: any = state.selectedObjects[0] || {};
-
-  // TODO: Testing
-  switch (obj['object_type']) {
-    case ITEM_TYPE.NOTE: {
-      return state.notes[obj.id];
-    }
-    case ITEM_TYPE.FOLDER: {
-      return state.folders[obj.id];
-    }
-    default:
-      return {};
-  }
-};
