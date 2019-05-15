@@ -48,6 +48,10 @@ export class DriveService {
     this.dataStorage.currentFolder = folder;
   }
 
+  resetCurrentFolder() {
+    this.currentFolder = null;
+  }
+
   appendData(data: Array<DriveType>): void {
     this.dataStorage.appendData(data);
   }

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class ZDriveharedBreadcrumbComponent implements OnInit, OnDestroy {
 
-  @Input() model: Array<DriveBreadcrumb> = [];
+  @Input() model: Array<DriveBreadcrumb>;
 
   @Input() style: any;
 
@@ -43,10 +43,6 @@ export class ZDriveharedBreadcrumbComponent implements OnInit, OnDestroy {
     if (item.routerLink) {
       this.router.navigate(item.routerLink);
     }
-  }
-
-  onClick(item: any) {
-    if (item) { this.router.navigate([item.routerLink]); }
   }
 
   onMenu(event: string) {

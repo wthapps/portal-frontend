@@ -88,7 +88,7 @@ export class DriveContainerComponent implements OnInit {
       // TODO: Preview file
     }
     if (item.model === this.OBJECT_TYPE.FOLDER) {
-      this.router.navigate(['folder', item.id]);
+      this.router.navigate(['folders', item.id]);
     }
   }
 
@@ -128,7 +128,7 @@ export class DriveContainerComponent implements OnInit {
         break;
       case 'download': {
         this.dataView.selectedDocuments.forEach(f => {
-          this.fileDriveUploadService.download(f);
+          // this.fileDriveUploadService.download(f);
         });
       }
         break;

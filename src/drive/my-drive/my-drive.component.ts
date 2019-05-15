@@ -18,15 +18,16 @@ export class MyDriveComponent implements OnInit {
   next: string;
 
   constructor(
-    private dataService: DriveService,
+    private driveService: DriveService,
     private fileDriveUploadService: FileDriveUploadService, ) {
-    this.data$ = dataService.data$;
+    this.data$ = driveService.data$;
   }
 
   ngOnInit(): void {
+    this.driveService.resetCurrentFolder();
     this.loadObjects();
     this.fileDriveUploadService.onDone.subscribe(res => {
-      this.dataService.appendData([DriveFile.from(res)]);
+      this.driveService.appendData([DriveFile.from(res)]);
     });
     this.fileDriveUploadService.onChange.subscribe(event => {
       this.fileDriveUploadService.upload(event.target.files);
@@ -34,6 +35,6 @@ export class MyDriveComponent implements OnInit {
   }
 
   loadObjects() {
-    this.dataService.loadObjects('drive/drive');
+    this.driveService.loadObjects('drive/drive');
   }
 }
