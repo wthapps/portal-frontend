@@ -1,5 +1,3 @@
-import { reducers } from './../reducers/index';
-import { SortOption } from './../reducers/note';
 import { ApiBaseService } from '@shared/services';
 import { Component, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { ZNoteService } from '../services/note.service';
@@ -16,6 +14,8 @@ import { noteConstants } from '../config/constants';
 import * as note from '../actions/note';
 import * as contextReducer from '../reducers/context';
 import { CommonEventService } from '@shared/services';
+import { SortOption } from '../models/context.model';
+import { takeUntil } from 'rxjs/operators';
 
 declare var _: any;
 const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
@@ -34,7 +34,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
 
   readonly tooltip: any = Constants.tooltip;
   data$: Observable<any[]>;
-  context$: Observable<any>;
+  context;
   next: string;
   menuActions = {
     share: {
@@ -115,7 +115,8 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     private store: Store<any>
   ) {
     this.data$ = this.store.select(listReducer.getAllItems);
-    this.context$ = this.store.select('context');
+    this.store.select('context').pipe(takeUntil(this.destroySubject))
+    .subscribe(context => this.context = context);
   }
 
   ngOnInit() {
@@ -434,7 +435,13 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onViewComplete(event: any) {
-    this.dataView.viewMode = event;
+    // this.dataView.viewMode = event;
+    this.store.dispatch({
+      type: contextReducer.SET_CONTEXT,
+      payload: {
+        viewMode: event
+      }
+    })
     this.dataView.container.update();
     this.dataView.updateView();
   }

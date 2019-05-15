@@ -14,6 +14,7 @@ export class WDataViewNavComponent {
   @Input() sliderView;
   @Input() showViewMode;
   @Input() enableSort = true;
+  @Input() viewBy = 'grid';
   @Output() sliderViewCompleted: EventEmitter<number> = new EventEmitter<number>();
   @Output() sortComplete: EventEmitter<SortDataView> = new EventEmitter<SortDataView>(null);
   @Output() viewComplete: EventEmitter<string> = new EventEmitter<string>(null);
@@ -45,7 +46,6 @@ export class WDataViewNavComponent {
   sortBy = 'Name';
   orderBy = 'asc';
 
-  viewBy = 'grid';
 
   onSlideChange(event: any) {
     this.sliderViewCompleted.emit(event.value);

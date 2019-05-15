@@ -27,6 +27,7 @@ export class ZNoteRecentComponent implements OnInit {
         pathTitle: 'Recent',
         permissions: this.noteConstants.PAGE_PERMISSIONS.RECENT,
         noData: this.noteConstants.NO_DATA.RECENT,
+        viewMode: 'list',
         sort: {
           field: 'accessed_date',
           desc: false
