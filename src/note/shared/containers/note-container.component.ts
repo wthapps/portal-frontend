@@ -435,7 +435,6 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onViewComplete(event: any) {
-    // this.dataView.viewMode = event;
     this.store.dispatch({
       type: contextReducer.SET_CONTEXT,
       payload: {
