@@ -44,8 +44,6 @@ import { NoteStoreModule } from '@notes/store';
     ZNoteSharedByMeModule,
     ZNoteSearchModule,
     ZNoteSharedWithMeModule,
-    // ZNoteMyProfileModule,
-    // ZNoteSettingsModule,
     ZNoteTrashModule,
     ZNotePhotoModule,
     ModalModule,
@@ -57,12 +55,7 @@ import { NoteStoreModule } from '@notes/store';
     ZNoteSharedModule.forRoot(),
 
     StoreModule.forRoot(AppStore),
-
-    // StoreDevtoolsModule.instrument({ maxAge: 50 }),
-
     EffectsModule.forRoot(AppEffects),
-
-    // StoreDevtoolsModule.instrumentOnlyWithExtension(),
 
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })

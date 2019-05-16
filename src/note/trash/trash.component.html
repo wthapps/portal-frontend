@@ -7,7 +7,7 @@
     </h4>
   </w-dataView-nav>
 
-  <ng-container *ngIf="data$ | async as list; else templateloading">
+  <ng-container *ngIf="!(context$ | async)?.loading && (data$ | async) as list; else templateloading">
     <ng-container *ngIf="list?.length > 0; else templateNodata">
       <w-dataView [data]="list"
                   (loadMoreCompleted)="onLoadMoreCompleted($event)"

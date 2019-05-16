@@ -22,27 +22,19 @@ export const GROUP_TYPE = {
 export interface State {
   notes: { [id: number]: Note };
   currentNote: Note | null;
-  noteHistory: { id: number | string, stackId: number, stack: Note[] }; // Lastest note is at index 0 in Note Undo stack
   folders: { [id: number]: Folder }; // {1 :{id: 1, name: "abc"}, 2 :{id: 2, name: "sdfsdf"}  }
-  pageNo: number;
   group: string;
   selectedObjects: { id: string, object_type: string, parent_id: number }[];
   selectAll: boolean;
-  loading: boolean;
-  loaded: boolean;
 }
 
 export const noteInitialState: State = {
   notes: {},
   currentNote: null,
-  noteHistory: { id: '', stackId: -1, stack: [] },
   folders: {},
-  pageNo: 0,
   group: GROUP_TYPE.date,
   selectedObjects: [],
-  selectAll: false,
-  loading: false,
-  loaded: false
+  selectAll: false
 };
 
 // Reducer
@@ -138,23 +130,14 @@ export function reducer(
       const currentNote = idx ? state.notes[idx] : new Note();
       return {
         ...state,
-        currentNote: currentNote,
-        noteHistory: { id: idx, stackId: 0, stack: [currentNote] }
+        currentNote: currentNote
       };
     }
     case note.RESET_CURRENT_NOTE: {
       return {
         ...state,
-        currentNote: new Note(),
-        noteHistory: { id: null, stackId: 0, stack: [] }
+        currentNote: new Note()
       };
-    }
-
-    case note.LOAD: {
-      return { ...state, loading: true };
-    }
-    case note.TRASH_LOAD: {
-      return { ...state, loading: true };
     }
     case note.LOAD_SUCCESS: {
       const [hNotes, hFolders, hSelected] = [{}, {}, []];
@@ -328,10 +311,7 @@ export function reducer(
 }
 
 export const getNotes = (state: State) => state.notes;
-export const getPageNo = (state: State) => state.pageNo;
 export const getFolders = (state: State) => state.folders;
 export const getSelectAll = (state: State) => state.selectAll;
 export const getSelectedObjects = (state: State) => state.selectedObjects;
 export const getCurrentNote = (state: State) => state.currentNote;
-export const getLoading = (state: State) => state.loading;
-export const getLoaded = (state: State) => state.loaded;
