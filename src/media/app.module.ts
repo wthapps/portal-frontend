@@ -82,7 +82,7 @@ import { GoogleAnalyticsService } from '@shared/services/analytics/google-analyt
     StoreModule.forRoot(appStore),
     EffectsModule.forRoot(appEffects),
     ServiceWorkerModule.register('/ngsw-worker.js', {
-      enabled: false
+      enabled: true
     }),
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
@@ -110,4 +110,4 @@ import { GoogleAnalyticsService } from '@shared/services/analytics/google-analyt
     SharingDetailInfoComponent
   ]
 })
-export class AppModule {}
+export class AppModule { }

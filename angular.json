@@ -366,7 +366,8 @@
                 "glob": "**/*",
                 "input": "src/assets/",
                 "output": "/assets/"
-              }
+              },
+              "src/media/manifest.json"
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",
@@ -393,6 +394,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/media/../environments/environment.ts",
@@ -410,6 +412,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/media/../environments/environment.ts",
@@ -427,6 +430,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "serviceWorker": true,
               "fileReplacements": [
                 {
                   "replace": "src/media/../environments/environment.ts",
@@ -479,7 +483,9 @@
               "node_modules/primeng/resources/primeng.min.css",
               "src/media/styles/media.scss"
             ],
-            "assets": []
+            "assets": [
+              "src/media/manifest.json"
+            ]
           }
         },
         "lint": {
