@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { of,  EMPTY } from 'rxjs';
 import { ZNoteService } from '../services/note.service';
-import { map, switchMap, withLatestFrom, catchError, concatMap, mergeMap } from 'rxjs/operators';
+import { map, withLatestFrom, catchError, concatMap } from 'rxjs/operators';
 
 
 import * as note from '../actions/note';
 import * as context from '../reducers/context';
-import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { noteConstants } from '@notes/shared/config/constants';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -22,7 +21,6 @@ import { FORBIDDEN } from 'http-status-codes';
 export class NoteEffects {
 
   constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
-              private toastsService: ToastsService,
               private wthConfirmService: WthConfirmService,
               private router: Router,
               private store: Store<any>) {
@@ -49,7 +47,6 @@ export class NoteEffects {
       return this.noteService.update(action['payload'])
       .pipe(
         map((res: any) => {
-          // this.toastsService.success('Note updated successfully, yay');
           return ({type: note.NOTE_UPDATED, payload: res['data']});
         } ),
         catchError((err: HttpErrorResponse) => {
@@ -129,11 +126,19 @@ export class NoteEffects {
 
   @Effect() trashLoad = this.actions.pipe(
     ofType(note.TRASH_LOAD),
-    concatMap(() => this.apiBaseService.get(`note/trashs`)),
+    concatMap(() => {
+      this.store.dispatch({type: context.SET_CONTEXT, payload: {loading: true}})
+      return this.apiBaseService.get(`note/trashs`);
+    }),
     concatMap((res: any) => { return [
       {type: note.LOAD_SUCCESS, payload: res.data},
+      {type: context.SET_CONTEXT, payload: {loading: false}},
       {type: note.SET_LIST_PERMISSION, payload: {canAdd: false}}]; }),
-    catchError(() => of({type: note.LOAD_SUCCESS, payload: []}))
+    catchError(() => of([
+      {type: note.LOAD_SUCCESS, payload: []},
+      {type: context.SET_CONTEXT, payload: {loading: false}}
+    ]
+    ))
   );
 
   @Effect() restore = this.actions.pipe(
@@ -165,8 +170,8 @@ export class NoteEffects {
       map((action: any) => action['payload']),
       concatMap((payload: any) => {
         return this.apiBaseService.post(`note/sharings/remove_share_with_me`,
-          {objects: payload.map((i: any) => {
-            return {id: i.id, object_type: i.object_type};
+          {objects: payload.map(({id, object_type}) => {
+            return {id, object_type};
           })
         });
       }),

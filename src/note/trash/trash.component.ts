@@ -75,7 +75,6 @@ export class ZNoteTrashComponent implements OnInit {
     this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.context$ = this.store.select(context.getContext);
     this.currentFolder$ = this.store.select(fromRoot.getCurrentFolder);
-    this.loading$ = this.store.select(fromRoot.getLoading);
 
     this.store.dispatch({
       type: context.SET_CONTEXT,

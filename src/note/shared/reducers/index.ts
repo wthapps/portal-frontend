@@ -38,8 +38,6 @@ export const getCurrentNote = createSelector(
   getNotesState,
   fromNote.getCurrentNote
 );
-export const getLoading = createSelector(getNotesState, fromNote.getLoading);
-export const getLoaded = createSelector(getNotesState, fromNote.getLoaded);
 
 export const getNoteMixEntities = createSelector(
   getNotesEntities,
