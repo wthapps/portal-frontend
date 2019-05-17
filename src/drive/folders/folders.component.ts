@@ -1,9 +1,14 @@
+import { Component, HostBinding, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
+
 import { DriveService } from './../shared/services/drive.service';
 import { UrlService } from './../../shared/services/url.service';
-import { Component, HostBinding, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
 import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 import { DriveFolderService } from 'drive/shared/services/drive-folder.service';
+import { DriveStorageService } from 'drive/shared/services/drive-storage.service';
+import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 
 const PAGES = {
   MY_NOTE: 'MY_NOTE',
@@ -14,7 +19,7 @@ const PAGES = {
   selector: 'drive-folder',
   templateUrl: './folders.component.html'
 })
-export class DriveFolderListComponent implements OnInit {
+export class DriveFolderListComponent implements OnInit, OnDestroy {
   currentPath: string;
   breadcrumbs: DriveBreadcrumb[] = [];
   initRoute = '/';
@@ -27,9 +32,12 @@ export class DriveFolderListComponent implements OnInit {
   };
   @HostBinding('class') class = 'main-page-body';
 
+  private destroySubject: Subject<any> = new Subject();
+
   constructor(
     private route: ActivatedRoute,
     private driveService: DriveService,
+    private driveStorage: DriveStorageService,
     private folderService: DriveFolderService,
     private urlService: UrlService,
     ) {
@@ -37,6 +45,16 @@ export class DriveFolderListComponent implements OnInit {
     }
 
   ngOnInit() {
+    // Update breadcrumbs in case current folder get updated
+    this.driveStorage.currentFolder$.pipe(
+      filter(f => !!f ),
+      takeUntil(this.destroySubject))
+    .subscribe((folder: DriveFolder) => {
+      this.breadcrumbs.pop();
+      this.breadcrumbs.push(this.mapBreadcrumbItem(folder));
+    }
+    );
+
     this.route.params.forEach((params: Params) => {
       const urlData = this.urlService.parse();
       const id = params['id'];
@@ -78,17 +96,25 @@ export class DriveFolderListComponent implements OnInit {
         }
       }
 
-      this.driveService.loadObjects(this.currentUrl);
       ( async() => {
-        await this.getFolderPath({id, page: this.currentPath});
-        this.driveService.currentFolder = [...this.breadcrumbs].pop();
+        await this.driveService.loadObjects(this.currentUrl);
+        const folderPath = await this.getFolderPath({id, page: this.currentPath});
+        this.driveService.currentFolder = [...folderPath].pop();
       }) ();
     });
     }
 
+  ngOnDestroy() {
+    this.destroySubject.next();
+    this.destroySubject.complete();
+  }
+
   private async getFolderPath(options) {
     const res = await this.folderService.getFolderPath(options).toPromise();
-    this.breadcrumbs = res.data ? [this.breadcrumbsInit, ...res.data.map(f => ({name: f.name, label: f.name, id: f.id,
-      routerLink: this.initRoute + '/folders/' + f.id}))] : [this.breadcrumbsInit];
+    this.breadcrumbs = res.data ? [this.breadcrumbsInit, ...res.data.map((f) => this.mapBreadcrumbItem(f))] : [this.breadcrumbsInit];
+    return res.data;
   }
+
+  private mapBreadcrumbItem = f => ({name: f.name, label: f.name, id: f.id,
+    routerLink: this.initRoute + '/folders/' + f.id});
 }

@@ -28,7 +28,7 @@
       </div>
       <div class="menuleft-item-divider">
         <div class="menuleft-item">
-          <a href="#"><i class="fa fa-folder" aria-hidden="true"></i> My Drive</a>
+          <a [routerLink]="['/my-drive']" routerLinkActive="active" (click)="showFolderTree = !showFolderTree"><i class="fa fa-folder" aria-hidden="true"></i> My Drive</a>
         </div>
         <div class="well-folder-tree" [ngClass]="{'active': showFolderTree}">
             <p-panelMenu [(model)]="noteFoldersTree"></p-panelMenu>

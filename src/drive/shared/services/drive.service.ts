@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { LocalStorageService } from 'angular-2-local-storage';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import DriveFile from '@shared/modules/drive/models/drive-file.model';
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 import { DriveStorageService } from './drive-storage.service';
@@ -27,6 +27,7 @@ export class DriveService {
     private dataStorage: DriveStorageService,
     private modalService: DriveModalService,
     private folderService: DriveFolderService,
+    private commonEventService: CommonEventService,
     private driveApi: DriveApiService,
     private apiBaseService: ApiBaseService) {
     this.viewMode$ = this.viewModeSubject.asObservable().pipe(distinctUntilChanged());
@@ -60,8 +61,12 @@ export class DriveService {
     this.dataStorage.prependData(data);
   }
 
-  updateData(data: Array<DriveType>): void {
-    this.dataStorage.updateData(data);
+  updateMany(data: Array<DriveType>): void {
+    this.dataStorage.updateMany(data);
+  }
+
+  updateOne(data: DriveType): void {
+    this.dataStorage.updateOne(data);
   }
 
   modalEvent(event) {
@@ -71,13 +76,17 @@ export class DriveService {
   async deleteMany(payload: DriveType[]) {
     const res = await this.driveApi.deleteMany(payload).toPromise();
     this.dataStorage.deleteData(payload);
+    this.commonEventService.broadcast({
+      action: 'destroy',
+      channel: 'driveLeftMenu',
+      payload: res.data
+    });
   }
 
-  loadObjects(url: string) {
-    this.apiBaseService.get(url).toPromise().then(res => {
-      this.dataStorage.data = res.data;
-      this.nextUrl = res.meta.links.next;
-    });
+  async loadObjects(url: string) {
+    const res = await this.apiBaseService.get(url).toPromise();
+    this.dataStorage.data = res.data;
+    this.nextUrl = res.meta.links.next;
   }
 
   async createFolder(payload) {
@@ -88,7 +97,7 @@ export class DriveService {
 
   async updateFolder(payload) {
     const res = await this.folderService.update(payload).toPromise();
-    this.updateData([res.data]);
+    this.updateOne(res.data);
   }
 
   loadMoreObjects() {

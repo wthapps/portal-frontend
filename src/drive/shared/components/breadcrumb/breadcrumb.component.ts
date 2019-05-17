@@ -23,7 +23,6 @@ export class ZDriveharedBreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.context$ = this.store.select(context.getContext);
   }
 
   itemClick(event: any, item: DriveBreadcrumb) {

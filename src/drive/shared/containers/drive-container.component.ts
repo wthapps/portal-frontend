@@ -150,10 +150,13 @@ export class DriveContainerComponent implements OnInit {
       }
         break;
       case 'drive:folder:create': {
-        this.driveService.modalEvent({ action: 'drive:folder:create', payload });
+        this.driveService.modalEvent({ action: 'drive:folder:edit', payload: {...payload, mode: 'add'} });
       }
         break;
       case 'drive:folder:edit': {
+        const {id, name} = payload;
+        const folder = {id, name};
+        this.driveService.modalEvent({ action: 'drive:folder:edit', payload: {...payload, folder, mode: 'edit'}});
       }
         break;
       case 'drive:mixed_entity:open_sharing_modal': {

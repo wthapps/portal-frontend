@@ -29,7 +29,7 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
   name: AbstractControl;
   folder: any = {};
   currentFolder: any = {};
-  breadcrumb = false;
+  // breadcrumb = false;
   mode = 'add';
 
   constructor(private fb: FormBuilder,
@@ -43,14 +43,14 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
 
     // TODO: Move this code to ModalMasterComponent
     this.modalService.modalEvent$.pipe(
-      filter(event => event.action === 'drive:folder:create')
-    ).subscribe(() => {
-      this.modal.open();
-    })
+      filter(event => event.action === 'drive:folder:edit')
+    ).subscribe(({payload}) => {
+      this.open(payload);
+    });
   }
 
   ngOnInit(): void {
-    this.name.setValue(this.folder.name);
+    // this.name.setValue(this.folder.name);
   }
 
 
@@ -61,8 +61,8 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
       this.titleModal = 'Add Folder';
     } else if (this.mode === 'edit') {
       this.titleModal = 'Edit Folder';
+      this.name.setValue(options.name);
       this.folder = options.folder;
-      this.breadcrumb = options.breadcrumb;
     }
     this.modal.open();
   }
@@ -71,7 +71,7 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
     this.folder.name = value.name;
     if (this.folder.id) {
       await this.driveService.updateFolder(this.folder);
-      // this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [res.data]});
+      // this.commonEventService.broadcast({action: 'update', channel: 'driveLeftMenu', payload: [res.data]});
       this.form.reset();
       this.modal.close();
     } else {
@@ -80,7 +80,7 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
       }
 
       await this.driveService.createFolder(this.folder);
-      // this.commonEventService.broadcast({action: 'update', channel: 'noteLeftMenu', payload: [combine.res.data]});
+      // this.commonEventService.broadcast({action: 'update', channel: 'driveLeftMenu', payload: [combine.res.data]});
       this.form.reset();
       this.modal.close();
     }

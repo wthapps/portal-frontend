@@ -14,8 +14,9 @@ export class DriveStorageService {
   readonly OBJECT_TYPE = driveConstants.OBJECT_TYPE;
 
   data$: Observable<Array<DriveType>>;
+  currentFolder$: Observable<DriveFolder>;
   private driveStateSubject: BehaviorSubject<DriveState> = new BehaviorSubject(initDriveState);
-  private _currentFolder;
+  private _currentFolder: BehaviorSubject<DriveFolder> = new BehaviorSubject(null);
 
   constructor(
     ) {
@@ -28,19 +29,20 @@ export class DriveStorageService {
       }),
       distinctUntilChanged()
     );
+    this.currentFolder$ = this._currentFolder.asObservable();
   }
 
   set data(data: Array<any>) {
     this.setState(DriveUtils.parse(data));
   }
 
-  set currentFolder(folder) {
+  set currentFolder(folder: DriveFolder) {
     console.log('set current folder: ', folder);
-    this._currentFolder = folder;
+    this._currentFolder.next(folder);
   }
 
-  get currentFolder() {
-    return this._currentFolder;
+  get currentFolder(): DriveFolder {
+    return this._currentFolder.getValue();
   }
 
   appendData(data: any[]): void {
@@ -51,8 +53,24 @@ export class DriveStorageService {
     this.setState(this.concatState(this.parsedDriveData(data), this.currentState));
   }
 
-  updateData(data: Array<DriveType>): void {
+  updateMany(data: Array<DriveType>): void {
     this.setState(this.mergeState(this.parsedDriveData(data), this.currentState));
+  }
+
+  updateOne(data: DriveType): void {
+    const { filesMap, foldersMap } = this.currentState;
+    const { id, object_type } = data;
+    if (object_type === DriveFolder.model_const) {
+      if (foldersMap[id]) {
+        foldersMap[id] = data;
+      } else {
+      this.currentFolder = data;
+    }
+    }
+    if (object_type === DriveFile.model_const && filesMap[id] ) {
+      filesMap[id] = data;
+    }
+    this.setState({...this.currentState, filesMap, foldersMap});
   }
 
   deleteData(data: Array<DriveType>): void {
@@ -84,7 +102,7 @@ export class DriveStorageService {
     const mergedState: DriveState = {...currentState};
     mergedState.filesMap = {...newState.filesMap, ...currentState.filesMap};
     mergedState.foldersMap = {...newState.foldersMap, ...currentState.foldersMap};
+
     return mergedState;
   }
-
 }
