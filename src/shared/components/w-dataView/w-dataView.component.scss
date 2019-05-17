@@ -232,8 +232,11 @@ $i_content-grid: 4;
     .item-media {
       @include flexbox;
       @include align-items(center);
-      padding: 10px 30px;
+      padding: 10px 15px;
       border-bottom: 1px solid $line;
+      @media (min-width: $screen-sm-min) {
+        padding: 10px 30px;
+      }
     }
   }
   .content-item-header {
