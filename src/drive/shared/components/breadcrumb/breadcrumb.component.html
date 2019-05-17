@@ -8,12 +8,12 @@
                 {{ item.label }} <span class="caret"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-sm">
-                  <li>
+                  <!-- <li>
                       <a (click)="onMenu({action: 'drive:open_drive_add_modal', payload: {parent_id: item?.id}})"
                         href="javascript:;">
-                        <i class="icon-zone-note"></i> New file
+                        <i class="icon-zone-note"></i> Upload files
                       </a>
-                    </li>
+                    </li> -->
                     <li>
                       <a (click)="onMenu({action: 'drive:folder:create'})" href="javascript:;">
                         <i class="fa fa-folder-o"></i> New folder
@@ -21,10 +21,17 @@
                     </li>
                     <li role="separator" class="divider"></li>
                     <li>
-                      <a (click)="onMenu({action: 'drive:folder:edit', payload: item})" href="javascript:;">
-                        <i class="fa fa-pencil"></i> Edit folder
+                      <a href="javascript:;">
+                        <i class="fa fa-folder-o"></i> Upload files
                       </a>
                     </li>
+                    <li>
+                      <a href="javascript:;">
+                        <i class="fa fa-folder-o"></i> Upload folder
+                      </a>
+                    </li>
+                          
+                    <li role="separator" class="divider"></li>
                     <li>
                       <a (click)="onMenu({action: 'drive:mixed_entity:open_sharing_modal', payload: [item]})"
                         href="javascript:void(0);">
@@ -35,11 +42,20 @@
                       <a (click)="onMenu({action: 'drive:mixed_entity:delete', payload: [item]})" href="javascript:void(0);">
                         <i class="fa fa-trash-o"></i> Delete</a>
                     </li>
-                    <li role="separator" class="divider"></li>
+                    <li>
+                      <a (click)="onMenu({action: 'drive:folder:edit', payload: item})" href="javascript:;">
+                        <i class="fa fa-pencil"></i> Rename
+                      </a>
+                    </li>
                     <li>
                       <a (click)="onMenu({action: 'drive:mixed_entity:open_move_to_folder_modal', payload: [item]})"
                         href="javascript:;">Move
                         to folder</a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                      <a href="javascript:;">
+                        <i class="fa fa-download"></i> Download</a>
                     </li>
               </ul>
             </div>

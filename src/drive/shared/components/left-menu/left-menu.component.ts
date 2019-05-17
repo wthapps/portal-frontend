@@ -137,7 +137,7 @@ export class ZDriveSharedLeftMenuComponent implements OnInit, OnDestroy {
 
 
   onFolder() {
-    this.driveServive.modalEvent({action: 'drive:folder:create'});
+    this.driveServive.modalEvent({action: 'drive:folder:edit', payload: {mode: 'add'}});
   }
 
   loadMenu(event: any) {
