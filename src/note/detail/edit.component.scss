@@ -1,4 +1,5 @@
 @import '../../assets/styles/global';
+@import '../../assets/fonts/helvetica/style.css';
 
 $note-editor-aside-w: 400px;
 
@@ -237,7 +238,7 @@ $note-editor-aside-w: 400px;
     }
 
     #quill-toolbar .ql-font span[data-value="helvetica"]::before, .ql-font-helvetica {
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: "Helvetica", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     #quill-toolbar .ql-font span[data-value="lato"]::before, .ql-font-lato {

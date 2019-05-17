@@ -11,6 +11,7 @@
     border-color: transparent;
     @include box-shadow(none);
     cursor: pointer;
+    @include text-overflow;
   }
 }
 
