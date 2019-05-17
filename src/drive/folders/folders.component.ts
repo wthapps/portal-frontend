@@ -11,7 +11,7 @@ import { DriveStorageService } from 'drive/shared/services/drive-storage.service
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 
 const PAGES = {
-  MY_NOTE: 'MY_NOTE',
+  MY_DRIVE: 'MY_DRIVE',
   SHARED_WITH_ME: 'SHARED_WITH_ME',
   SHARED_BY_ME: 'SHARED_BY_ME'
 };
@@ -84,7 +84,7 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
         }
         break;
         default: {
-          this.currentPath = PAGES.MY_NOTE;
+          this.currentPath = PAGES.MY_DRIVE;
           this.initRoute = '';
           this.currentUrl = `drive/drive?parent_id=${id}`;
           this.breadcrumbsInit = {
