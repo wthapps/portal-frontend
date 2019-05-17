@@ -5,13 +5,13 @@ import {
   AfterViewInit,
   OnDestroy
 } from '@angular/core';
-import {  Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import {
-  takeUntil,
+  takeUntil
 } from 'rxjs/operators';
 
 import { Constants } from '@shared/constant/config/constants';
-import { UserService } from './../../shared/services/user.service';
+import { UserService } from '@shared/services';
 
 import { Router } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
@@ -42,7 +42,8 @@ export class ZNotePublicViewComponent implements OnInit, AfterViewInit, OnDestro
     private router: Router,
     private userService: UserService,
     private noteSetting: ZNoteSharedSettingsService,
-    private urlService: UrlService) {}
+    private urlService: UrlService) {
+  }
 
   ngOnInit() {
     this.profile = this.userService.getSyncProfile();
