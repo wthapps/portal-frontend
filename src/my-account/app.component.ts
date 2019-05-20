@@ -197,20 +197,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private loadDynamicScripts() {
-    // Load payment gateway scripts
-    // <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/2.4.2/adyen.js"></script>
-    if (environment.production) {
-      document.write(`
-        <script type="text/javascript" src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/2.4.2/adyen.js">
-        </script>`
-      );
-      enableProdMode();
 
-    } else {
-      document.write(`
-        <script type="text/javascript" src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/2.4.2/adyen.js">
-        </script>`
-      );
-    }
   }
 }
