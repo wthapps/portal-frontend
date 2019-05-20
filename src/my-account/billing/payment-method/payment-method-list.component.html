@@ -13,16 +13,16 @@
         <div class="card-body">
           <div class="media media-center">
             <div class="media-left">
-              <img [src]="'assets/images/card/' + paymentMethod?.method_type_id + '.png'">
+              <img [src]="'assets/images/card/' + paymentMethod?.pm_json?.image">
             </div>
             <div class="media-body">
-              <h4 class="media-heading">Ending in {{ paymentMethod?.object_json?.last4Number }}</h4>
-              <p class="text-muted">Expires {{ paymentMethod?.object_json?.expiryDate }}</p>
+              <h4 class="media-heading">Ending in {{ paymentMethod?.pm_json?.last_4 }}</h4>
+              <p class="text-muted"> {{ paymentMethod?.pm_json?.expiration_month }}/{{ paymentMethod?.pm_json?.expiration_year }} </p>
             </div>
           </div>
         </div>
       </div>
-      <button (click)="openModal(paymentMethod)" class="btn btn-outline-primary" type="button">
+      <button (click)="openModal()" class="btn btn-outline-primary" type="button">
         Change payment method
       </button>
     </ng-container>

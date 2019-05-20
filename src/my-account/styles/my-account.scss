@@ -1,20 +1,15 @@
 @import '../../assets/styles/wth-style';
 
-/* override adyen style */
-.adyen-checkout__label__text {
-  font-size: 14px !important;
-  font-weight: bold !important;
-  color: $text-color
+div[data-braintree-id="number-field-group"] label {
+  width: 100%;
 }
 
-.adyen-checkout-input__inline-validation--valid{
-  color: $state-success-icon;
+/* Hide initial dropin ui */
+.braintree-methods braintree-methods-initial {
+  display: none;
 }
 
-.adyen-checkout__input--valid{
-  border-color: $state-success-icon !important;
-}
-
-.adyen-checkout__input--text{
-  font-weight: normal !important;
+.braintree-show-methods .braintree-sheet--active .braintree-sheet {
+  border-color: #b5b5b5;
+  border-width: 1px;
 }

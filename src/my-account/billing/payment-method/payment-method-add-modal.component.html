@@ -8,20 +8,23 @@
       <button aria-label="Close" class="close" (click)="close()">
         <span aria-hidden="true">×</span>
       </button>
-      <h4 class="modal-title">{{title}} Credit Card</h4>
+      <h4 class="modal-title"> {{ title }} Payment Method</h4>
     </bs-modal-header>
     <bs-modal-body>
 
-      <!-- secured card form from Adyen -->
+      <!-- secure input payment method form is from payment gateway -->
       <div id="card-container"></div>
-
+<!--      <ng-container *ngIf="loading">-->
+<!--        <box-loading iconClass="fa-2x"></box-loading>-->
+<!--      </ng-container>-->
     </bs-modal-body>
 
     <bs-modal-footer>
       <div>
         <button class="btn btn-outline-default btn-min" (click)="close()">Cancel</button>
-        <button class="btn btn-outline-primary btn-min pull-right"
-                (click)="save()"> {{ (options?.mode === 'add') ? 'Add' : 'Update' }}</button>
+        <button class="btn btn-outline-primary btn-min pull-right" id="submit-payment-method" type="submit">
+          {{ (mode === 'add') ? 'Add' : 'Update' }}
+        </button>
       </div>
     </bs-modal-footer>
   </bs-modal>
