@@ -24,20 +24,23 @@ export class WDataViewComponent implements OnChanges {
   @Input() scrollWindow: false;
   @Input() sliderView = 3;
   @Input() viewMode = 'grid';
+  @Input() disableDrag = false;
+  @Input() selectOnDrag = false;
   @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
-  @Output() loadMoreObjects: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() dblClick = new EventEmitter<any>();
+  @Output() loadMoreCompleted: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() dblClick: EventEmitter<any> = new EventEmitter<any>();
   @ContentChild('viewBody') viewBodyTmpl: TemplateRef<any>;
   @ContentChild('viewHeader') viewHeaderTmpl: TemplateRef<any>;
   @ViewChild('container') container: SelectContainerComponent;
 
   selectedDocuments: any;
+  isUpdatedView: boolean;
 
   constructor() {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+    console.log('ngOnChanges:', changes);
   }
 
   onSelect(e: any) {
@@ -45,11 +48,20 @@ export class WDataViewComponent implements OnChanges {
   }
 
   onLoadMore() {
-    this.loadMoreObjects.emit(true);
-    this.updateSelect();
+    this.loadMoreCompleted.emit(true);
+    this.container.update();
   }
 
-  updateSelect() {
-    this.container.update();
+  updateView() {
+    this.isUpdatedView = true;
+    this.container.clearSelection();
+    setTimeout(() => {
+      this.isUpdatedView = false;
+      this.container.update();
+    }, 200);
+  }
+
+  trackItem(index, item) {
+    return item ? item.id : undefined;
   }
 }

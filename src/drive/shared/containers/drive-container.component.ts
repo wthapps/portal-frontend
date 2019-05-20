@@ -93,7 +93,30 @@ export class DriveContainerComponent implements OnInit {
   }
 
   onSelectCompleted() {
+    // menu favorite
+    console.log(this.dataView.selectedDocuments);
 
+    if (this.dataView.selectedDocuments) {
+      const allFavorite = this.dataView.selectedDocuments.every(ob => {
+        return ob.favorite;
+      });
+      if (allFavorite) {
+        this.menuActions = this.menuActions.map(menu => {
+          if (menu.action === 'favorite') {
+            menu.icon = 'fa fa-star';
+          }
+          return menu;
+        });
+      } else {
+        this.menuActions = this.menuActions.map(menu => {
+          if (menu.action === 'favorite') {
+            menu.icon = 'fa fa-star-o';
+          }
+          return menu;
+        });
+      }
+    }
+    // end menu favorite
   }
 
   onSortComplete(event: any) {
@@ -111,7 +134,9 @@ export class DriveContainerComponent implements OnInit {
       }
         break;
       case 'favorite': {
-
+        this.driveService.toggleFavorite(this.selectedObjects).subscribe(res => {
+          this.driveService.updateMany(res.data);
+        });
       }
         break;
       case 'delete': {
@@ -128,7 +153,7 @@ export class DriveContainerComponent implements OnInit {
         break;
       case 'download': {
         this.dataView.selectedDocuments.forEach(f => {
-          // this.fileDriveUploadService.download(f);
+          this.fileDriveUploadService.download(f);
         });
       }
         break;
@@ -150,13 +175,13 @@ export class DriveContainerComponent implements OnInit {
       }
         break;
       case 'drive:folder:create': {
-        this.driveService.modalEvent({ action: 'drive:folder:edit', payload: {...payload, mode: 'add'} });
+        this.driveService.modalEvent({ action: 'drive:folder:edit', payload: { ...payload, mode: 'add' } });
       }
         break;
       case 'drive:folder:edit': {
-        const {id, name} = payload;
-        const folder = {id, name};
-        this.driveService.modalEvent({ action: 'drive:folder:edit', payload: {...payload, folder, mode: 'edit'}});
+        const { id, name } = payload;
+        const folder = { id, name };
+        this.driveService.modalEvent({ action: 'drive:folder:edit', payload: { ...payload, folder, mode: 'edit' } });
       }
         break;
       case 'drive:mixed_entity:open_sharing_modal': {
@@ -173,7 +198,7 @@ export class DriveContainerComponent implements OnInit {
   }
 
   download(file: any) {
-    // this.fileDriveUploadService.download({});
+    this.fileDriveUploadService.download({});
   }
 
   private get selectedObjects() { return this.dataView.selectedDocuments };

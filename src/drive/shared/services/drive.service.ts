@@ -90,8 +90,8 @@ export class DriveService {
   }
 
   async createFolder(payload) {
-    const parent = this.dataStorage.currentFolder ? {parent_id: this.dataStorage.currentFolder.id} : {};
-    const res = await this.folderService.create({...payload, ...parent}).toPromise();
+    const parent = this.dataStorage.currentFolder ? { parent_id: this.dataStorage.currentFolder.id } : {};
+    const res = await this.folderService.create({ ...payload, ...parent }).toPromise();
     this.prependData([res.data]);
   }
 
@@ -107,5 +107,9 @@ export class DriveService {
         this.nextUrl = res.meta.links.next;
       });
     }
+  }
+
+  toggleFavorite(objects) {
+    return this.apiBaseService.post('drive/favorites/toggle', { objects: objects });
   }
 }

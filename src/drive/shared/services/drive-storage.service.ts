@@ -19,7 +19,7 @@ export class DriveStorageService {
   private _currentFolder: BehaviorSubject<DriveFolder> = new BehaviorSubject(null);
 
   constructor(
-    ) {
+  ) {
     // this.data$ = this.dataSubject.asObservable().pipe(distinctUntilChanged());
     this.data$ = this.driveStateSubject.asObservable().pipe(
       map((state: DriveState) => {
@@ -54,7 +54,7 @@ export class DriveStorageService {
   }
 
   updateMany(data: Array<DriveType>): void {
-    this.setState(this.mergeState(this.parsedDriveData(data), this.currentState));
+    this.setState(this.mergeState(this.currentState, this.parsedDriveData(data)));
   }
 
   updateOne(data: DriveType): void {
@@ -64,18 +64,18 @@ export class DriveStorageService {
       if (foldersMap[id]) {
         foldersMap[id] = data;
       } else {
-      this.currentFolder = data;
+        this.currentFolder = data;
+      }
     }
-    }
-    if (object_type === DriveFile.model_const && filesMap[id] ) {
+    if (object_type === DriveFile.model_const && filesMap[id]) {
       filesMap[id] = data;
     }
-    this.setState({...this.currentState, filesMap, foldersMap});
+    this.setState({ ...this.currentState, filesMap, foldersMap });
   }
 
   deleteData(data: Array<DriveType>): void {
-    const { fileIds, folderIds} = this.parsedDriveData(data);
-    const mergedState = {...this.currentState};
+    const { fileIds, folderIds } = this.parsedDriveData(data);
+    const mergedState = { ...this.currentState };
     mergedState.fileIds = mergedState.fileIds.filter(f => !fileIds.includes(f));
     fileIds.forEach(id => delete mergedState.filesMap[id]);
     mergedState.folderIds = mergedState.folderIds.filter(f => !folderIds.includes(f));
@@ -84,24 +84,24 @@ export class DriveStorageService {
   }
 
   private parsedDriveData(data: Array<DriveType>): DriveState { return DriveUtils.parse(data); };
-  private get currentState() { return this.driveStateSubject.getValue();};
+  private get currentState() { return this.driveStateSubject.getValue(); };
 
   private setState(state: DriveState) {
     this.driveStateSubject.next(state);
   }
   private concatState(currentState: DriveState, newState: DriveState): DriveState {
-    const mergedState: DriveState = {...currentState};
+    const mergedState: DriveState = { ...currentState };
     mergedState.fileIds = [...newState.fileIds, ...currentState.fileIds];
-    mergedState.filesMap = {...newState.filesMap, ...currentState.filesMap};
+    mergedState.filesMap = { ...newState.filesMap, ...currentState.filesMap };
     mergedState.folderIds = [...newState.folderIds, ...currentState.folderIds];
-    mergedState.foldersMap = {...newState.foldersMap, ...currentState.foldersMap};
+    mergedState.foldersMap = { ...newState.foldersMap, ...currentState.foldersMap };
     return mergedState;
   }
 
   private mergeState(currentState: DriveState, newState: DriveState): DriveState {
-    const mergedState: DriveState = {...currentState};
-    mergedState.filesMap = {...newState.filesMap, ...currentState.filesMap};
-    mergedState.foldersMap = {...newState.foldersMap, ...currentState.foldersMap};
+    const mergedState: DriveState = { ...currentState };
+    mergedState.filesMap = { ...newState.filesMap, ...currentState.filesMap };
+    mergedState.foldersMap = { ...newState.foldersMap, ...currentState.foldersMap };
 
     return mergedState;
   }
