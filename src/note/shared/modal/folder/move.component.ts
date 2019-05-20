@@ -21,7 +21,7 @@ declare var _: any;
 export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
 
-  titleModal: string = 'Move to Folder';
+  titleModal = 'Move to Folder';
   menuItems: any = [];
   rootFolder: Note;
   listFolder: Note[] = new Array<Note>();
@@ -35,7 +35,7 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private commonEventService: CommonEventService,
               private apiBaseService: ApiBaseService,
-              private store: Store<fromRoot.State>,) {
+              private store: Store<fromRoot.State>, ) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
     });
@@ -45,8 +45,8 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiBaseService.get(`note/folders`).subscribe((event: any) => {
-      for (let folder of event.data) {
-        if (this.folder && this.folder.id == folder.id) {
+      for (const folder of event.data) {
+        if (this.folder && this.folder.id === folder.id) {
           continue;
         } else {
           folder.label = folder.name;
@@ -78,12 +78,12 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   loadMenu(event: any) {
     event.originalEvent.stopPropagation();
 
-    let htmlTarget: any = event.originalEvent.target;
+    const htmlTarget: any = event.originalEvent.target;
     if ($(htmlTarget).hasClass('fa-caret-right') || $(htmlTarget).hasClass('fa-caret-down')) {
       if (event.item.expanded) {
         this.apiBaseService.get(`note/folders/${event.item.id}`).subscribe((res: any) => {
           event.item.items.length = 0;
-          for (let folder of res.data) {
+          for (const folder of res.data) {
             folder.label = folder.name;
             folder.icon = 'fa-folder-o';
             folder.styleClass = `js-note-folders-tree-${folder.id}`;
@@ -103,8 +103,8 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   }
 
   nextFolder(item: any, setFolder: boolean = true) {
-    if(setFolder) {
-      if(this.selectedObjects[0].parent_id == item.id) {
+    if (setFolder) {
+      if (this.selectedObjects[0].parent_id === item.id) {
         this.folder = null;
       } else {
         this.folder = item;
@@ -118,11 +118,7 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   }
 
   prevFolder(item: any) {
-    if(this.selectedObjects[0].parent_id == item.id) {
-      this.folder = null;
-    } else {
-      this.folder = item;
-    }
+    this.folder = item;
 
     if (item.parent_id) {
       this.apiBaseService.get(`note/folders/${item.parent_id}`).subscribe(
@@ -131,7 +127,11 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
           this.listFolder = res.data;
         });
     } else {
-      this.folder = {id: null}; // my notes
+      if (!this.selectedObjects[0].parent_id) {
+        this.folder = null;
+      } else {
+        this.folder = {id: null}; // my notes
+      }
       this.initialMenu();
     }
   }
@@ -145,7 +145,7 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   }
 
   chooseFolder(item: any) {
-    if(this.selectedObjects[0].parent_id == item.id) {
+    if (this.selectedObjects[0].parent_id === item.id) {
       this.folder = null;
     } else {
       this.folder = item;
