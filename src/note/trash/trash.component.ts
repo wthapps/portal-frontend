@@ -111,24 +111,23 @@ export class ZNoteTrashComponent implements OnInit {
   }
 
   onMenuAction(action: string) {
-    const selectedObjects = this.dataView.selectedDocuments;
-    const objects = this.dataView.selectedDocuments.map(({ id, object_type, favourite }) => ({
+    const objects = this.dataView.selectedObjects.map(({ id, object_type, favourite }) => ({
       id,
       object_type,
       favourite
     }));
     switch (action) {
       case 'restore': {
-        this.store.dispatch({ type: note.RESTORE, payload: selectedObjects });
+        this.store.dispatch({ type: note.RESTORE, payload: objects });
         this.commonEventService.broadcast({
           action: 'update',
           channel: 'noteLeftMenu',
-          payload: selectedObjects
+          payload: objects
         });
         break;
       }
       case 'permanentDelete': {
-        if (selectedObjects.length >= 1) {
+        if (objects.length >= 1) {
           let message = `
                         You are about to delete Folder(s).<br>
                         Once deleted - you cannot Undo deleting.<br>
@@ -136,7 +135,7 @@ export class ZNoteTrashComponent implements OnInit {
           `;
           let header = 'Delete Note and Folder';
 
-          if (this.isOnlyNote(selectedObjects)) {
+          if (this.isOnlyNote(objects)) {
             message = `
                         You are about to delete Note(s).<br> 
                         Once deleted - you cannot Undo deleting.<br>
@@ -145,7 +144,7 @@ export class ZNoteTrashComponent implements OnInit {
             header = 'Delete Note';
           }
 
-          if (this.isOnlyFolder(selectedObjects)) {
+          if (this.isOnlyFolder(objects)) {
             header = 'Delete Folder';
           }
 
@@ -155,7 +154,7 @@ export class ZNoteTrashComponent implements OnInit {
             accept: () => {
               this.store.dispatch({
                 type: note.PERMANENT_DELETE,
-                payload: selectedObjects
+                payload: objects
               });
             }
           });

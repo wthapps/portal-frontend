@@ -8,6 +8,8 @@ import { Constants } from '@shared/constant/config/constants';
 import { Store } from '@ngrx/store';
 import * as fromShareModal from '../../reducers/share-modal';
 import { AutoComplete } from 'primeng/primeng';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 declare var $: any;
 
@@ -47,7 +49,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
   searchSubscription: Subscription;
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
 
-  constructor(private apiBaseService: ApiBaseService, private store: Store<any>) {
+  constructor(private apiBaseService: ApiBaseService, private toastsService: ToastsService, private store: Store<any>) {
     this.subscription = store.select('share').subscribe((state: any) => {
       this.selectedUsers = state.current.selectedContacts;
       this.sharings = state.current.sharedSharings;
@@ -196,6 +198,8 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
         if (this.sharedObjects.length > 1) {
           this.modal.close();
         }
+      }, (errResponse: HttpErrorResponse) => {
+        this.toastsService.danger('Oops, a wild bug appears: ', errResponse.error.error);
       });
     } else {
       // Only update single object

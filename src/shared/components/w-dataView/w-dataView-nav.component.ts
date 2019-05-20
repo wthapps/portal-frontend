@@ -25,7 +25,7 @@ export class WDataViewNavComponent {
       value: 'Name'
     },
     {
-      key: 'created_at',
+      key: 'updated_at',
       value: 'Upload Date'
     }
   ];
