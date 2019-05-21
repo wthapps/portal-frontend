@@ -144,8 +144,18 @@ $active-color: red;
         padding-left: 30px;
       }
     }
+    .ui-panelmenu-content {
+      padding-left: 45px;
+    }
+    .ui-submenu-list {
+      margin-left: 15px;
+    }
     .ui-menuitem {
       .ui-menuitem-link {
+        padding-left: 0;
+      }
+
+      /*.ui-menuitem-link {
         padding-left: 45px;
       }
       .ui-menuitem {
@@ -177,7 +187,7 @@ $active-color: red;
             }
           }
         }
-      }
+      }*/
     }
 
     .fa-caret-right {
