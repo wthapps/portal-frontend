@@ -25,7 +25,7 @@ declare const braintree: any;
 
 export class PaymentMethodAddModalComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
-  @Output() onSaved = new EventEmitter<any>();
+  @Output() onCompleted = new EventEmitter<any>();
   @Output() onClose = new EventEmitter<any>();
 
   mode: string;
@@ -72,7 +72,10 @@ export class PaymentMethodAddModalComponent implements OnInit {
   close(options?: any) {
     this.loading = false;
     this.modal.close(options).then(() => {
-      this.dropin.teardown();
+      // Clear input payment method form
+      if (this.dropin) {
+        this.dropin.teardown();
+      }
     });
   }
 
@@ -89,9 +92,9 @@ export class PaymentMethodAddModalComponent implements OnInit {
       this.loading = false;
       this.submitButton.addEventListener('click', () => {
         dropinInstance.requestPaymentMethod().then(payload => {
-          // Send payload.nonce to your server
-          // this.close();
-          this.upsert(payload);
+          // Send payload to server
+          this.close();
+          this.submitPayload(payload);
         }).catch(error => {
           this.handleUpsertError(error);
         });
@@ -106,9 +109,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
           // nonce right away. Otherwise, we wait for the customer to
           // request the nonce by pressing the submit button once they
           // are finished entering their credit card details
-          // if (event.paymentMethodIsSelected) {
           this.submitButton.removeAttribute('disabled');
-          // }
         });
 
         // dropinInstance.on('paymentOptionSelected', event => {
@@ -122,9 +123,11 @@ export class PaymentMethodAddModalComponent implements OnInit {
   }
 
 
-  private upsert(payload: any) {
+  private submitPayload(payload: any) {
     this.paymentMethodService.create(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
-      this.onSaved.emit(response.data);
+      this.onCompleted.emit({ success: true, data: response.data });
+    }, error => {
+      this.onCompleted.emit({ error: true, data: error });
     });
   }
 
