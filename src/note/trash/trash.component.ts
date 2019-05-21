@@ -111,11 +111,7 @@ export class ZNoteTrashComponent implements OnInit {
   }
 
   onMenuAction(action: string) {
-    const objects = this.dataView.selectedObjects.map(({ id, object_type, favourite }) => ({
-      id,
-      object_type,
-      favourite
-    }));
+    const objects = this.dataView.selectedObjects;
     switch (action) {
       case 'restore': {
         this.store.dispatch({ type: note.RESTORE, payload: objects });

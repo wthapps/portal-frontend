@@ -1,7 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ZNoteSharedToolBarComponent } from './toolbar/toolbar.component';
 import { ZNoteSharedActionBarComponent } from './toolbar/actions-bar.component';
 
 import { ZNoteService } from './services/note.service';
@@ -12,7 +11,6 @@ import { ZNoteSharedModalFolderMoveComponent } from './modal/folder/move.compone
 import { ZNoteSharedModalSharingComponent } from './modal/sharing/sharing.component';
 import { ZFolderService } from './services/folder.service';
 import { MixedEntityService } from './mixed-enity/mixed-entity.service';
-import { ZNoteSharedTrashActionBarComponent } from './toolbar/trash/trash-actions-bar.component';
 import { ZNoteSharedBreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { ZNoteSharedLeftMenuComponent } from './toolbar/left-menu.component';
 import { ZNoteSharedHeaderComponent } from './header/header.component';
@@ -74,13 +72,11 @@ import { WModalsModule } from '../../sample/shared/components/modals/modals.modu
     TooltipModule
   ],
   declarations: [
-    ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
     ZNoteContainerComponent,
 
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
-    ZNoteSharedTrashActionBarComponent,
     ZNoteSharedModalSharingComponent,
     ZNoteSharedBreadcrumbComponent,
     ZNoteSharedHeaderComponent,
@@ -110,14 +106,12 @@ import { WModalsModule } from '../../sample/shared/components/modals/modals.modu
     PanelMenuModule,
     TooltipModule,
 
-    ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
     ZNoteSharedHeaderComponent,
     ZNoteContainerComponent,
 
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
-    ZNoteSharedTrashActionBarComponent,
     ZNoteSharedModalSharingComponent,
     ZNoteSharedBreadcrumbComponent,
     ZNoteShareProgressComponent,

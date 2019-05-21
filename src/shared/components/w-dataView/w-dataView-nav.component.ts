@@ -15,13 +15,15 @@ export class WDataViewNavComponent {
   @Input() showViewMode;
   @Input() enableSort = true;
   @Input() viewBy = 'grid';
+  @Input() sortBy = 'name';
+  @Input() orderBy = 'asc';
   @Output() sliderViewCompleted: EventEmitter<number> = new EventEmitter<number>();
   @Output() sortComplete: EventEmitter<SortDataView> = new EventEmitter<SortDataView>(null);
   @Output() viewComplete: EventEmitter<string> = new EventEmitter<string>(null);
 
   sortState = [
     {
-      key: 'Name',
+      key: 'name',
       value: 'Name'
     },
     {
@@ -43,8 +45,6 @@ export class WDataViewNavComponent {
     }
   ];
 
-  sortBy = 'Name';
-  orderBy = 'asc';
 
 
   onSlideChange(event: any) {
