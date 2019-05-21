@@ -42,12 +42,12 @@ export class PaymentMethodListComponent implements OnInit {
     this.addModal.open({mode: this.mode});
   }
 
-  savePaymentMethod(paymentMethod: any) {
-    if (this.mode === 'add') {
-      this.toastsService.success('You added payment method successfully');
-    } else {
-      this.toastsService.success('You added payment method successfully');
+  savePaymentMethod(response: any) {
+    if (response.success) {
+      this.paymentMethod = response.data;
+      this.toastsService.success(`You ${ this.mode === 'add' ? 'added' : 'changed' } payment method successfully`);
+    } else if (response.error) {
+      this.toastsService.danger(`'Error found after you ${ this.mode === 'add' ? 'added' : 'changed' } payment method'`);
     }
-    this.paymentMethod = paymentMethod;
   }
 }
