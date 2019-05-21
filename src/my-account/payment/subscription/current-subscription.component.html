@@ -1,5 +1,5 @@
 <div class="box-panel">
-  <h3 class="box-panel-title">Current Subscription</h3>
+  <h3 class="box-panel-title">Subscription</h3>
   <div class="box-panel-content">
     <div class="card mb20">
       <div class="card-body">
@@ -17,7 +17,7 @@
             ${{ editing?.accountCount * (editing?.accountPrice | number) + (subscription?.amount | number) }}/month
           </dd>
           <dt>Payment method:</dt>
-          <dd>VISA <a [routerLink]="['/billing/payment_methods']" href="#">Change</a></dd>
+          <dd>VISA <a [routerLink]="['/payment/payment_method']" href="#">Change</a></dd>
           <dt>Next billing date:</dt>
           <dd>{{ subscription?.next_billing_date | date: 'MMM dd yyyy' }}</dd>
         </dl>

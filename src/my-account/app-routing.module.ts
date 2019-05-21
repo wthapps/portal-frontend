@@ -21,15 +21,10 @@ import { RouterModule } from '@angular/router';
         loadChildren:
           './notifications/notifications.module#MyNotificationModule'
       },
-      // {
-      //   path: 'dashboard',
-      //   children: [
-      //     {
-      //       path: '',
-      //       loadChildren: './dashboard/dashboard.module#DashboardModule'
-      //     }
-      //   ]
-      // }
+      {
+        path: 'payment',
+        loadChildren: './payment/payment.module#MyPaymentModule'
+      }
     ])
   ],
   exports: [RouterModule]

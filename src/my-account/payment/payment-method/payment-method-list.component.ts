@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 
-import { CreditCard } from '@wth/shared/shared/models/credit-card.model';
+import { CreditCard } from '@shared/shared/models/credit-card.model';
 
-import { UserService } from '@wth/shared/services/user.service';
-import { ToastsService } from '@wth/shared/shared/components/toast/toast-message.service';
-import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
+import { UserService } from '@shared/services/user.service';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { PaymentMethodAddModalComponent } from './payment-method-add-modal.component';
-import { PaymentMethodService } from '@account/billing/payment-method/payment-method.service';
+import { PaymentMethodService } from '@account/payment/payment-method/payment-method.service';
+import { Constants } from '@shared/constant';
 
 @Component({
   selector: 'payment-method-list',
@@ -21,6 +22,7 @@ export class PaymentMethodListComponent implements OnInit {
   paymentMethod: any;
   loaded = false;
   mode: 'add' | 'edit';
+  termsOfServiceUrl = Constants.baseUrls.app + '/policies/terms';
 
   constructor(public userService: UserService,
               private wthConfirmService: WthConfirmService,

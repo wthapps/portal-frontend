@@ -1,0 +1,148 @@
+<div class="container">
+  <div class="box-panel">
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-1">
+        <h3 class="box-panel-title">Upgrade account</h3>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row pb20">
+    <div class="col-sm-5 col-sm-offset-1">
+      <div class="box-panel">
+        <h4 class="">1. Choose your space</h4>
+<!--        <div class="panel panel-default">-->
+<!--          <ul class="list-group">-->
+<!--            <li class="list-group-item">-->
+<!--              <p class="bold">{{ selected_plan.name }} <br>-->
+<!--                &#36;{{ selected_plan.price }}/month - Charged monthly.</p>-->
+<!--            </li>-->
+<!--            <li class="list-group-item">-->
+<!--              <p>You’ll be charged &#36;{{ selected_plan.price }} monthly including applicable taxes until you cancel your-->
+<!--                membership.-->
+<!--                Previous charges won’t be refunded when you cancel unless it’s legally required. Your payment data is-->
+<!--                encrypted and secure. All amounts shown are in USD.</p>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
+        <div>
+          <div class="list-group-radio">
+            <div class="list-group-radio-item">
+              <p-radioButton name="group1" value="1" label="50 GB - $1/user/month" [(ngModel)]="val1"></p-radioButton>
+            </div>
+            <div class="list-group-radio-item">
+              <p-radioButton name="group1" value="2" label="200 GB - $3/user/month" [(ngModel)]="val1"></p-radioButton>
+            </div>
+            <div class="list-group-radio-item">
+              <p-radioButton name="group1" value="3" label="2 TB - $10/user/month" [(ngModel)]="val1"></p-radioButton>
+            </div>
+          </div>
+        </div>
+
+        <h4>2. Choose payment method</h4>
+        <div class="card">
+          <div class="card-body">
+            <div class="media media-center">
+              <div class="media-left">
+                <img [src]="'assets/images/card/amex.png'">
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">Ending in 123456</h4>
+                <p class="text-muted"> 10/2021 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pt20">
+          <button (click)="openPaymentMethodModal()" type="button" class="btn btn-outline-default">
+            Add/Change method
+          </button>
+        </div>
+
+<!--
+        <form id="paymentForm" class="scale-down" [formGroup]="paymentForm" novalidate>
+          <h3 class="box-panel-title">2.Add Payment Methods</h3>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <h4 class="list-group-item-heading">Payment Method</h4>
+
+              <div class="payment-method-wrap">
+                <label class="radio-inline">
+                  <input type="radio" name="paymentMethod" #paymentMethodCredit value="credit" checked
+                         (change)="changePaymentMethod(paymentMethodCredit)">
+                  <span class="payment-method-credit"></span>
+                </label>
+                <label class="radio-inline">
+                  <input type="radio"
+                         name="paymentMethod" #paymentMethodPaypal value="paypal"
+                         (change)="changePaymentMethod(paymentMethodPaypal)">
+                  <span class="payment-method-paypal"></span>
+                </label>
+              </div>
+
+              <div [style.display]="paymentMethod=='paypal' ? 'none' : 'block'">
+                <div class="form-group">
+                  <label for="card-number">Card Number</label>
+                  <div class="cardinfo-card-number">
+                    <div class="form-control" id="card-number"></div>
+                    <div id="card-image"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="expiration-date">Valid Thru</label>
+                      <div class='form-control' id="expiration-date"></div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="cvv">CVV</label>
+                      <div class='form-control' id="cvv"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </form>
+-->
+      </div>
+    </div>
+
+    <div class="col-sm-5">
+      <div class="card">
+        <div class="card-body">
+          <h3>WTH PRO</h3>
+          <h4>$3.00 per month</h4>
+          <p>Charged monthly</p>
+          <ul class="text-muted">
+            <li>Full access to all WTH!Zone apps and services</li>
+            <li>10 GB of cloud storage and able to add more space</li>
+            <li>Can add and manage Sub Account</li>
+          </ul>
+          <hr class="">
+          <span>
+            You'll be charged $3.00 monthly including application taxes until you cancel your subscription.
+            Previous charges won't be refunded when you canceled unless it's legally required.
+            Your payment data is encrypted and secure. All amounts shown are in USD
+            Not refunds for subscription canceled between billing cycles.
+          </span>
+          <p class="pt10 pb10">
+            <p-checkbox name="agreeUpgrade" value="chat"></p-checkbox>
+            I agree to the WTHApps <a href="#">Terms of Services</a> and the Automatically Renewal terms above
+          </p>
+
+          <button class="btn btn-block btn-primary"> Complete Upgrade </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+

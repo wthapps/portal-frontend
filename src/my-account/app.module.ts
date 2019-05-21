@@ -17,7 +17,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { MyAppsModule } from './apps/apps.module';
-import { MyBillingModule } from './billing/billing.module';
 import { ConfirmationModule } from './confirmation/confirmation.module';
 import { MyMyAppsModule } from './my-apps/my-apps.module';
 import { MyPaymentModule } from './payment/payment.module';
@@ -36,7 +35,6 @@ import { UserModule } from '@account/users';
     AppRoutingModule,
     DashboardModule,
     MyAppsModule,
-    MyBillingModule,
     MyMyAppsModule,
     MyPaymentModule,
     MyPlansModule,

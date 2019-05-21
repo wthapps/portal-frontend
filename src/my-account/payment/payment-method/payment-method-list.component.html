@@ -1,7 +1,7 @@
 <div class="box-panel">
   <h3 class="box-panel-title">Payment method</h3>
-  <p>WTHApps uses Adyen as our secure, encrypted payment service. <br>
-    We do not store your payment information on our servers. </p>
+  <p>Any payment method you saved on WTHApps will be listed here for your convenience. <br>
+    For further information please visit our <a [href]="termsOfServiceUrl" target="_blank">Terms of Service</a>. </p>
   <ng-container *ngIf="!paymentMethod">
     <button (click)="openModal()" class="btn btn-outline-primary" type="button">
       <i class="fa fa-plus"></i> Add payment method

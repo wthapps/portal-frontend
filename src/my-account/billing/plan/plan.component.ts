@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
-
-@Component({
-  moduleId: module.id,
-  selector: 'my-plan',
-  templateUrl: 'plan.component.html'
-})
-
-export class MyPlanComponent {
-}
+// import { Component } from '@angular/core';
+//
+// @Component({
+//   selector: 'my-plan',
+//   templateUrl: 'plan.component.html'
+// })
+//
+// export class MyPlanComponent {
+// }
