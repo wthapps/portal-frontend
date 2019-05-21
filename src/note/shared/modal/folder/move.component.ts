@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
@@ -15,7 +15,8 @@ declare var _: any;
 @Component({
   selector: 'z-note-shared-modal-folder-move',
   templateUrl: 'move.component.html',
-  styleUrls: ['move.component.scss']
+  styleUrls: ['move.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class ZNoteSharedModalFolderMoveComponent implements OnInit {
@@ -24,7 +25,7 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   titleModal = 'Move to Folder';
   menuItems: any = [];
   rootFolder: Note;
-  listFolder: Note[] = new Array<Note>();
+  listFolder: Note[] = null;
 
   form: FormGroup;
   name: AbstractControl;
@@ -35,7 +36,7 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private commonEventService: CommonEventService,
               private apiBaseService: ApiBaseService,
-              private store: Store<fromRoot.State>, ) {
+              private store: Store<fromRoot.State>) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
     });
@@ -130,7 +131,7 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
       if (!this.selectedObjects[0].parent_id) {
         this.folder = null;
       } else {
-        this.folder = {id: null}; // my notes
+        this.folder = { id: null }; // my notes
       }
       this.initialMenu();
     }

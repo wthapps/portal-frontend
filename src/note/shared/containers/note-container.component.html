@@ -105,7 +105,8 @@
       </w-dataView>
       <w-dataView-selected *ngIf="dataView.selectedDocuments?.length"
                            [selectedObjects]="dataView.selectedDocuments"
-                           (clear)="dataView.container.clearSelection()">
+                           (clear)="dataView.container.clearSelection()"
+                           (selectAll)="dataView.container.selectAll()">
         <ul class="nav-selection-actions">
           <ng-container *ngFor="let menu of menuActions | objectValues">
             <li *ngIf="menu.active">
