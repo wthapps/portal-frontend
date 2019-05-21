@@ -1,12 +1,11 @@
 @import '../../../assets/styles/global';
 
 .menuleft-item-open {
-  padding: 8px;
+  padding: 8px 15px;
   display: inline-block;
   position: relative;
   z-index: 2;
   margin-right: -10px;
-  margin-left: 15px - 8px;
   i {
     width: 14px;
     height: 14px;
@@ -22,5 +21,11 @@
   @include transition($transition-base);
   &.active {
     height: auto;
+  }
+  .pi-caret-down:before {
+    content: "\e902";
+  }
+  .pi-caret-right:before {
+    content: "\e901";
   }
 }

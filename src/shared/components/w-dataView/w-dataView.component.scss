@@ -49,6 +49,14 @@ $box-shadow: false;
     left: 0;
     z-index: 9;
   }
+  .item-media-img {
+    color: #BABABA;
+  }
+  &.content-list {
+    .form-checkbox {
+      z-index: 10;
+    }
+  }
 }
 
 $i_content-grid: 4;
@@ -206,7 +214,7 @@ $i_content-grid: 4;
       margin-right: 10px;
     }
     .form-checkbox {
-      border-color: #666;
+      border-color: #cdcdcd;
       border-width: 1px;
       width: 18px;
       height: 18px;
@@ -214,6 +222,18 @@ $i_content-grid: 4;
       -moz-border-radius: 3px;
       border-radius: 3px;
       margin-top: 1px;
+      @include transition($transition-base);
+      &:hover {
+        border-color: #666666;
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        right: -10px;
+        bottom: -10px;
+      }
     }
     &.selected {
       .form-checkbox {
