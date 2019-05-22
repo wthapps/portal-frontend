@@ -100,8 +100,8 @@ export class DriveStorageService {
 
   private mergeState(currentState: DriveState, newState: DriveState): DriveState {
     const mergedState: DriveState = { ...currentState };
-    mergedState.filesMap = { ...newState.filesMap, ...currentState.filesMap };
-    mergedState.foldersMap = { ...newState.foldersMap, ...currentState.foldersMap };
+    mergedState.filesMap = { ...currentState.filesMap, ...newState.filesMap };
+    mergedState.foldersMap = { ...currentState.foldersMap, ...newState.foldersMap };
 
     return mergedState;
   }

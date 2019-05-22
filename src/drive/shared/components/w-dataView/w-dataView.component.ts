@@ -20,7 +20,7 @@ import { SelectContainerComponent } from 'ngx-drag-to-select';
 })
 export class WDataViewComponent implements OnChanges {
   @HostBinding('class') class = 'objects-main-content';
-  @Input() data: any;
+  @Input() data: any[];
   @Input() scrollWindow: false;
   @Input() sliderView = 3;
   @Input() viewMode = 'grid';
@@ -52,6 +52,10 @@ export class WDataViewComponent implements OnChanges {
     this.container.update();
   }
 
+  clearSelection() {
+    this.container.clearSelection();
+  }
+
   updateView() {
     this.isUpdatedView = true;
     this.container.clearSelection();
@@ -61,7 +65,20 @@ export class WDataViewComponent implements OnChanges {
     }, 200);
   }
 
+  get selectedObjects() {
+    if (this.selectedDocuments) {
+      const selectedUuids = this.selectedDocuments;
+      return this.data.filter(item => selectedUuids.includes(item.uuid));
+    }
+    return [];
+  }
+
+  selectedObjectsAsync(): Promise<any> {
+    const selectedUuids = this.selectedDocuments;
+    return Promise.resolve(this.data.filter(item => selectedUuids.includes(item.uuid)));
+  }
+
   trackItem(index, item) {
-    return item ? item.id : undefined;
+    return item ? item.uuid : undefined;
   }
 }

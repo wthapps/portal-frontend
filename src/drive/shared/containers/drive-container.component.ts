@@ -94,10 +94,8 @@ export class DriveContainerComponent implements OnInit {
 
   onSelectCompleted() {
     // menu favorite
-    console.log(this.dataView.selectedDocuments);
-
-    if (this.dataView.selectedDocuments) {
-      const allFavorite = this.dataView.selectedDocuments.every(ob => {
+    if (this.selectedObjects) {
+      const allFavorite = this.selectedObjects.every(ob => {
         return ob.favorite;
       });
       if (allFavorite) {
@@ -136,6 +134,9 @@ export class DriveContainerComponent implements OnInit {
       case 'favorite': {
         this.driveService.toggleFavorite(this.selectedObjects).subscribe(res => {
           this.driveService.updateMany(res.data);
+          setTimeout(() => {
+            this.onSelectCompleted();
+          }, 500);
         });
       }
         break;
@@ -201,5 +202,5 @@ export class DriveContainerComponent implements OnInit {
     this.fileDriveUploadService.download({});
   }
 
-  private get selectedObjects() { return this.dataView.selectedDocuments };
+  private get selectedObjects() { return this.dataView.selectedObjects };
 }

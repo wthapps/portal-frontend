@@ -19,6 +19,7 @@ export default class CommonGenericFile extends ObjectDataModel {
   file_upload_id: string;
   model: string;
   user_id: number;
+  favorite: any;
   user: User = new User();
   // uploaded file name
   uploaded_name: string;

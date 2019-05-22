@@ -20,6 +20,7 @@ export default class DriveFolder extends ObjectDataModel {
   model: string;
   user_id: number;
   user: User = new User();
+  favorite: any;
   // uploaded file name
   uploaded_name: string;
   // uploaded module
