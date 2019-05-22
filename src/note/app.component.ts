@@ -8,9 +8,9 @@ import {
   ComponentFactoryResolver,
   AfterViewInit
 } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable ,  Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { ZNoteService } from './shared/services/note.service';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
@@ -27,7 +27,7 @@ import * as context from './shared/reducers/context';
 import * as progressContext from './shared/reducers/progress-context';
 import { MixedEntityService } from './shared/mixed-enity/mixed-entity.service';
 import { noteConstants } from '@notes/shared/config/constants';
-import { AuthService } from '@wth/shared/services';
+import { AuthService, UrlService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { withLatestFrom, filter, takeUntil } from 'rxjs/operators';
 import { HeaderComponent } from '@shared/partials/header';
@@ -72,6 +72,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private resolver: ComponentFactoryResolver,
     private commonEventService: CommonEventService,
     private apiBaseService: ApiBaseService,
@@ -82,6 +83,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private visibilityService: PageVisibilityService,
     private swPush: SwPushService,
     private checUpdate: CheckForUpdateService,
+    private urlSerive: UrlService,
     private promptUpdate: PromptUpdateService
   ) {
 
@@ -395,6 +397,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'note:mixed_entity:delete':
+
+        // this.router.navigate(['trash']);
         this.mixedEntityService
           .delete(0, event.payload)
           .subscribe((res: any) => {
@@ -420,6 +424,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
               channel: 'noteLeftMenu',
               payload: event.payload
             });
+            if (event.payload && event.payload.length === 1
+              && parseInt(this.urlSerive.getId()) === event.payload[0].id && event.payload[0].object_type === 'Note::Folder') {
+              this.router.navigate(['trash']);
+            }
           });
         break;
       case 'note:folder:delete':
