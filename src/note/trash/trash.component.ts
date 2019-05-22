@@ -1,7 +1,9 @@
-import { Component, OnInit, HostBinding, ViewChild } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewChild, OnDestroy } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import * as fromRoot from '../shared/reducers/index';
 import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';
@@ -20,7 +22,7 @@ const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
   selector: 'z-note-trash',
   templateUrl: 'trash.component.html'
 })
-export class ZNoteTrashComponent implements OnInit {
+export class ZNoteTrashComponent implements OnInit, OnDestroy {
   @HostBinding('class') class = 'main-page-body';
   @ViewChild('dataView') dataView: WDataViewComponent;
 
@@ -29,7 +31,7 @@ export class ZNoteTrashComponent implements OnInit {
   selectedObjects$: Observable<any[]>;
   isSelectAll$: Observable<boolean>;
   allItems$: Observable<any[]>;
-  context$: Observable<any>;
+  context;
   currentFolder$: Observable<any>;
   loading$: Observable<any>;
 
@@ -61,6 +63,8 @@ export class ZNoteTrashComponent implements OnInit {
     }
   };
 
+  private destroySubject: Subject<any> = new Subject();
+
   constructor(private store: Store<fromRoot.State>,
               private wthConfirm: WthConfirmService,
               public commonEventService: CommonEventService) {
@@ -71,7 +75,8 @@ export class ZNoteTrashComponent implements OnInit {
     this.noteItems$ = this.store.select(listReducer.getNotes);
     this.folderItems$ = this.store.select(listReducer.getFolders);
     this.allItems$ = this.store.select(listReducer.getAllItems);
-    this.context$ = this.store.select(context.getContext);
+    this.store.select('context').pipe(takeUntil(this.destroySubject))
+    .subscribe(context => this.context = context);
     this.currentFolder$ = this.store.select(fromRoot.getCurrentFolder);
 
     this.store.dispatch({
@@ -83,13 +88,13 @@ export class ZNoteTrashComponent implements OnInit {
     this.store.dispatch({ type: note.TRASH_LOAD });
   }
 
+  ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
+  }
+
   onSelectCompleted() {
 
-    // update icon favorite
-    // this.updateMenuFavorite(_.every(this.dataView.selectedDocuments, 'favorite'));
-
-    // check menu view
-    // this.validatePermission();
   }
 
   onDblClick(event: any) {
