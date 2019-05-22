@@ -38,6 +38,9 @@ import { PageVisibilityService } from '@shared/services/page-visibility.service'
 
 
 const GAPI_TIMEOUT = 2000;
+declare let ga: Function;
+
+const CURRENT_MODULE = 'contact';
 
 @Component({
   selector: 'app-root',
@@ -117,6 +120,9 @@ export class AppComponent
       )
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
+
+        ga('set', 'page', `/${CURRENT_MODULE}${event.urlAfterRedirects}`);
+        ga('send', 'pageview');
       });
     this.cardService.getSharedCardNum();
 

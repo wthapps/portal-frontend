@@ -33,6 +33,9 @@ import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/a
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
 import { environment } from '@env/environment';
 
+declare let ga: Function;
+
+const CURRENT_MODULE = 'account';
 
 /**
  * This class represents the main application component.
@@ -97,6 +100,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
       window.scrollTo(0, 0);
+
+      ga('set', 'page', `/${CURRENT_MODULE}${evt.urlAfterRedirects}`);
+      ga('send', 'pageview');
     });
   }
 

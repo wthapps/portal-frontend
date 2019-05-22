@@ -39,6 +39,9 @@ import { PageVisibilityService } from '@shared/services/page-visibility.service'
 import { SwUpdate } from '@angular/service-worker';
 
 declare var _: any;
+declare let ga: Function;
+
+const CURRENT_MODULE = 'note';
 
 /**
  * This class represents the main application component.
@@ -117,6 +120,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
+
+        ga('set', 'page', `/${CURRENT_MODULE}${event.urlAfterRedirects}`);
+        ga('send', 'pageview');
       });
   }
 

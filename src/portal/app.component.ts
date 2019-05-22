@@ -14,6 +14,8 @@ import { PromptUpdateService } from '@shared/services/service-worker/prompt-upda
 import { PageVisibilityService } from './../shared/services/page-visibility.service';
 
 declare let $: any;
+declare let ga: Function;
+const CURRENT_MODULE = 'portal';
 
 /**
  * This class represents the main application component.
@@ -43,6 +45,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // auto close menu on mobile
         $('#wth-navbar-collapse-1').collapse('hide');
+        ga('set', 'page', `/${CURRENT_MODULE}${event.urlAfterRedirects}`);
+        ga('send', 'pageview');
       });
 
     // fix scroll to top after changing route

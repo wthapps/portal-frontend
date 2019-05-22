@@ -29,6 +29,8 @@ import * as MessageActions from '@chat/store/message/message.actions';
 import { AppState } from '@chat/store';
 
 declare const _: any;
+declare const ga: Function;
+const CURRENT_MODULE = 'chat';
 
 /**
  * This class represents the main application component.
@@ -87,6 +89,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
+
+        ga('set', 'page', `/${CURRENT_MODULE}${event.urlAfterRedirects}`);
+        ga('send', 'pageview');
       });
 
     this.profile$ = this.profileService.profile$;

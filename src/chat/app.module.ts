@@ -28,6 +28,7 @@ import { ContactSelectionModule } from '@chat/shared/selections/contact';
 // import { UserCardModule } from '@shared/user/card';
 import { UserEventModule } from '@shared/user/event';
 import { ZChatCardModule } from './shared/modal/cards/chat-card-detail-modal.module';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 @NgModule({
   imports: [
@@ -71,6 +72,7 @@ import { ZChatCardModule } from './shared/modal/cards/chat-card-detail-modal.mod
       provide: APP_BASE_HREF,
       useValue: '/'
     },
+    GoogleAnalyticsService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtIntercepter, multi: true }
   ],
   bootstrap: [AppComponent]

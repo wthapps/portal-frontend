@@ -26,6 +26,7 @@ import { MySettingModule } from './settings/setting.module';
 import { MySharedModule } from './shared/shared.module';
 import { appEffects, appReducers, metaReducers, MyaccountStoreModule } from './store';
 import { UserModule } from '@account/users';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 @NgModule({
   imports: [
@@ -64,7 +65,8 @@ import { UserModule } from '@account/users';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    GoogleAnalyticsService
   ],
   bootstrap: [AppComponent]
 })

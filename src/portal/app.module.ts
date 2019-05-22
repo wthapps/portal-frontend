@@ -26,6 +26,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { FaqModule } from '@portal/faq/faq.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PortalStoreModule } from '@portal/store';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -63,7 +64,8 @@ import { PortalStoreModule } from '@portal/store';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    GoogleAnalyticsService
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: WthInterceptor,
