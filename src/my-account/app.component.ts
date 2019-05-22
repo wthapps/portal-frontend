@@ -194,8 +194,4 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     this.modal = this.modalComponent.instance;
   }
-
-  private loadDynamicScripts() {
-
-  }
 }
