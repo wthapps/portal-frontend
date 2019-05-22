@@ -117,9 +117,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     const { expanded, id } = item;
     const iconClick = (htmlTarget.className.includes('ui-panelmenu-icon'));
 
-    if (
-      item.items && item.items.length === 0
-    ) {
+    if (item.items && item.items.length === 0) {
       if (expanded) {
         this.apiBaseService
           .get(`note/folders/${id}`)
@@ -142,7 +140,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
   update(target: any, folders: any, options: any = {}) {
     target.label = target.name;
     target.title = target.name;
-    target.icon = 'fa fa-folder-o';
+    target.icon = 'fa fa-folder';
     target.styleClass = `js-note-folders-tree-${target.id}`;
     if (!target.items) {
       target.items = [];
