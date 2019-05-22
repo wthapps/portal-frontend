@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@wth/shared/services';
-import { UpgradeComponent } from './upgrade/upgrade.component';
 import { CurrentSubscriptionComponent } from './subscription/current-subscription.component';
 import { MyPaymentComponent } from './payment.component';
 import { PaymentMethodListComponent } from './payment-method/payment-method-list.component';
 import { BillingListComponent } from '@account/payment/billing';
 import { UpgradeCompletionComponent } from '@account/payment/upgrade';
+import { SubscriptionUpgradeComponent } from './subscription/subscription-upgrade.component';
+import { SubscriptionAlertComponent } from './subscription/subscription-alert.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import { UpgradeCompletionComponent } from '@account/payment/upgrade';
           {
             path: 'subscription',
             component: CurrentSubscriptionComponent,
-            canActivate: [AuthGuard]
+            canActivate: [AuthGuard],
           },
           {
             path: 'payment_method',
@@ -34,15 +35,20 @@ import { UpgradeCompletionComponent } from '@account/payment/upgrade';
         ]
       },
       {
-        path: 'upgrade',
-        component: UpgradeComponent,
+        path: 'subscription/upgrade',
+        component: SubscriptionUpgradeComponent,
         canActivate: [AuthGuard]
       },
       {
         path: 'upgrade_completion',
         component: UpgradeCompletionComponent,
         canActivate: [AuthGuard]
-      }
+      },
+      {
+        path: 'subscription/alert',
+        component: SubscriptionAlertComponent,
+        canActivate: [AuthGuard]
+      },
     ])
   ],
   exports: [RouterModule]

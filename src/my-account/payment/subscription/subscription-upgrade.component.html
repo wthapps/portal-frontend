@@ -41,22 +41,25 @@
         </div>
 
         <h4>2. Choose payment method</h4>
-        <div class="card">
-          <div class="card-body">
-            <div class="media media-center">
-              <div class="media-left">
-                <img [src]="'assets/images/card/amex.png'">
-              </div>
-              <div class="media-body">
-                <h4 class="media-heading">Ending in 123456</h4>
-                <p class="text-muted"> 10/2021 </p>
+        <ng-container *ngIf="paymentMethod">
+          <div class="card">
+            <div class="card-body">
+              <div class="media media-center">
+                <div class="media-left">
+                  <img [src]="'assets/images/card/' + paymentMethod?.pm_json?.image">
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">Ending in {{ paymentMethod?.pm_json?.last_4 }}</h4>
+                  <p class="text-muted"> {{ paymentMethod?.pm_json?.expiration_month }}/{{ paymentMethod?.pm_json?.expiration_year }} </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </ng-container>
+
         <div class="pt20">
           <button (click)="openPaymentMethodModal()" type="button" class="btn btn-outline-default">
-            Add/Change method
+            {{ mode === 'add' ? 'Add' : 'Change' }} payment method
           </button>
         </div>
 
@@ -134,7 +137,7 @@
             I agree to the WTHApps <a href="#">Terms of Services</a> and the Automatically Renewal terms above
           </p>
 
-          <button class="btn btn-block btn-primary"> Complete Upgrade </button>
+          <button class="btn btn-block btn-primary" (click)="upgrade()"> Complete Upgrade </button>
         </div>
       </div>
     </div>
@@ -142,6 +145,7 @@
 </div>
 
 
+<payment-method-add-modal #addModal (onCompleted)="savePaymentMethod($event)"></payment-method-add-modal>
 
 
 

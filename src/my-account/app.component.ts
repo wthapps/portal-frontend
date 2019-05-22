@@ -83,7 +83,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadDynamicScripts();
     this.currentUser = this.userService.getSyncProfile();
 
     this.routerSubscription = this.router.events

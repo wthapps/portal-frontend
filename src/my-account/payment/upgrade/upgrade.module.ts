@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { MySharedModule } from '@account/shared/shared.module';
-import { UpgradeComponent } from './upgrade.component';
 import { UpgradeCompletionComponent } from './upgrade-completion.component';
 
 
@@ -9,11 +8,9 @@ import { UpgradeCompletionComponent } from './upgrade-completion.component';
     MySharedModule
   ],
   declarations: [
-    UpgradeComponent,
     UpgradeCompletionComponent
   ],
   exports: [
-    UpgradeComponent,
     UpgradeCompletionComponent
   ]
 })

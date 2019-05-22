@@ -3,6 +3,7 @@ import { MySharedModule } from '@account/shared/shared.module';
 import { BillingListComponent } from '@account/payment/billing/billing-list.component';
 import { MyTransactionDetailsComponent } from '@account/payment/billing/transaction/details.component';
 import { MyReceiptComponent } from '@account/payment/billing/transaction/receipt.component';
+import { MyTransactionService } from '@account/payment/billing/transaction/transaction.service';
 
 
 @NgModule({
@@ -18,7 +19,7 @@ import { MyReceiptComponent } from '@account/payment/billing/transaction/receipt
     BillingListComponent
   ],
   providers: [
-
+    MyTransactionService
   ]
 })
 

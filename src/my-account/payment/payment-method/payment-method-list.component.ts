@@ -36,8 +36,8 @@ export class PaymentMethodListComponent implements OnInit {
     this.paymentMethodService.getCurrent().subscribe(response => {
       this.paymentMethod = response.data;
       this.loaded = true;
+      this.mode = this.paymentMethod ? 'edit' : 'add';
     });
-    this.mode = this.paymentMethod ? 'edit' : 'add';
   }
 
   openModal() {

@@ -8,13 +8,11 @@ import {
 } from '@angular/core';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { environment } from '@env/environment';
 import { PaymentMethodService } from './payment-method.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { PaymentGatewayService } from '@account/shared/payment-gateway';
 
-declare const $: any;
 declare const braintree: any;
 
 @Component({
@@ -38,9 +36,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
 
   constructor(
     private paymentGatewayService: PaymentGatewayService,
-    private paymentMethodService: PaymentMethodService,
-    private renderer: Renderer2,
-    private elementRef: ElementRef
+    private paymentMethodService: PaymentMethodService
   ) {
 
   }
