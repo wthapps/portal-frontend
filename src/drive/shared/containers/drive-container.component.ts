@@ -153,7 +153,7 @@ export class DriveContainerComponent implements OnInit {
       }
         break;
       case 'download': {
-        this.dataView.selectedDocuments.forEach(f => {
+        this.selectedObjects.forEach(f => {
           this.fileDriveUploadService.download(f);
         });
       }
