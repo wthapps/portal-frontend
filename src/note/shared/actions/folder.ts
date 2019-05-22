@@ -11,8 +11,6 @@ export const MULTI_DELETE = '[Folder] Multi Delete';
 export const FOLDERS_DELETED = '[Folders] Deleted';
 export const LOAD_ALL = '[Folder] Load All';
 export const LOAD_SUCCESS = '[Folder] Load Success';
-export const SELECT = '[Folder] Select';
-export const DESELECT_ALL = '[Folder] Deselect All';
 export const CHANGE_SORT_ORDER = '[Folder] Change Sort Order';
 export const SET_CURRENT_FOLDER = '[Folder] Set Current Folder';
 export const SET_FOLDER_PATH_AND_UPDATE_CURRENT = '[Folder] Set Folder Path';
@@ -88,18 +86,6 @@ export class FoldersDeleted implements Action {
   constructor(public payload: Folder[]) {
   }
 }
-
-export class Select implements Action {
-  readonly type = SELECT;
-
-  constructor(public payload: number) {
-  }
-}
-
-export class DeselectAll implements Action {
-  readonly type = DESELECT_ALL;
-}
-
 export class ChangeSortOrder implements Action {
   readonly type = CHANGE_SORT_ORDER;
 
@@ -138,5 +124,5 @@ export class UpdateFolderPath implements Action {
 
 // TODO: Add RouterState | Activated Route
 export type Actions = Add | Update | FoldersUpdated | FolderUpdated | FolderAdded | Delete | MultiDelete |
- FoldersDeleted | LoadAll | LoadSuccess | ChangeSortOrder | Select | DeselectAll | SetCurrentFolder |
+ FoldersDeleted | LoadAll | LoadSuccess | ChangeSortOrder | SetCurrentFolder |
   SetCurrentFolderPathAndUpdateCurrent | UpdateCurrentFolder | UpdateFolderPath;

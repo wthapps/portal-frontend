@@ -35,10 +35,10 @@ import { SwPushService } from '@shared/services/service-worker/sw-push.service';
 import { ProfileService } from '@shared/user/services';
 import { CardService } from '@contacts/shared/card';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 
 const GAPI_TIMEOUT = 2000;
-declare let ga: Function;
 
 const CURRENT_MODULE = 'contact';
 
@@ -84,6 +84,7 @@ export class AppComponent
     private groupService: GroupService,
     private profileService: ProfileService,
     private googleApiService: GoogleApiService,
+    private googleAnalytics: GoogleAnalyticsService,
     private visibilityService: PageVisibilityService,
     private swPush: SwPushService,
     public cardService: CardService,
@@ -121,8 +122,7 @@ export class AppComponent
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
 
-        ga('set', 'page', `/${CURRENT_MODULE}${event.urlAfterRedirects}`);
-        ga('send', 'pageview');
+        this.googleAnalytics.sendPageView(`/${CURRENT_MODULE}${event.urlAfterRedirects}`);
       });
     this.cardService.getSharedCardNum();
 

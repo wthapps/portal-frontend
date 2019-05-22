@@ -71,8 +71,6 @@ export class ZNoteTrashComponent implements OnInit {
     this.noteItems$ = this.store.select(listReducer.getNotes);
     this.folderItems$ = this.store.select(listReducer.getFolders);
     this.allItems$ = this.store.select(listReducer.getAllItems);
-    this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
-    this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
     this.context$ = this.store.select(context.getContext);
     this.currentFolder$ = this.store.select(fromRoot.getCurrentFolder);
 

@@ -12,6 +12,7 @@ import { filter } from 'rxjs/operators';
 import { AuthService } from '@wth/shared/services';
 import { PromptUpdateService } from '@shared/services/service-worker/prompt-update.service';
 import { PageVisibilityService } from './../shared/services/page-visibility.service';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 declare let $: any;
 declare let ga: Function;
@@ -29,7 +30,9 @@ const CURRENT_MODULE = 'portal';
 export class AppComponent implements OnInit, OnDestroy {
   routerSubscription: Subscription;
 
-  constructor(public authService: AuthService, private router: Router,
+  constructor(public authService: AuthService,
+    private router: Router,
+    private googleAnalytics: GoogleAnalyticsService,
     private visibilityService: PageVisibilityService,
     private prompUpdate: PromptUpdateService) {}
 
@@ -45,8 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         // auto close menu on mobile
         $('#wth-navbar-collapse-1').collapse('hide');
-        ga('set', 'page', `/${CURRENT_MODULE}${event.urlAfterRedirects}`);
-        ga('send', 'pageview');
+        this.googleAnalytics.sendPageView(`/${CURRENT_MODULE}${event.urlAfterRedirects}`);
       });
 
     // fix scroll to top after changing route

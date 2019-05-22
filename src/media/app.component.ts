@@ -10,8 +10,7 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { PageVisibilityService } from './../shared/services/page-visibility.service';
-
-declare let ga: Function;
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 const CURRENT_MODULE = 'photos';
 /**
@@ -38,6 +37,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     public authService: AuthService,
     private router: Router,
     private visibilityService: PageVisibilityService,
+    private googleAnalytics: GoogleAnalyticsService,
     private wthConfirmService: WthConfirmService
   ) {
     this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
@@ -51,8 +51,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
 
-        ga('set', 'page', `/${CURRENT_MODULE}${event.urlAfterRedirects}`);
-        ga('send', 'pageview');
+        this.googleAnalytics.sendPageView(`/${CURRENT_MODULE}${event.urlAfterRedirects}`);
       });
     // fix scroll to top after changing route
     this.router.events.subscribe(evt => {

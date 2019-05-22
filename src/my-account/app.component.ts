@@ -31,9 +31,8 @@ import * as fromAccount from './store/account';
 import { AuthService, UserService } from '@wth/shared/services';
 import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
-import { environment } from '@env/environment';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
-declare let ga: Function;
 
 const CURRENT_MODULE = 'account';
 
@@ -68,6 +67,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private resolver: ComponentFactoryResolver,
     private commonEventService: CommonEventService,
+    private googleAnalytics: GoogleAnalyticsService,
     private wthConfirmService: WthConfirmService,
     private accountService: AccountService,
     private subscriptionService: SubscriptionService,
@@ -100,9 +100,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
       window.scrollTo(0, 0);
-
-      ga('set', 'page', `/${CURRENT_MODULE}${evt.urlAfterRedirects}`);
-      ga('send', 'pageview');
+      this.googleAnalytics.sendPageView(`/${CURRENT_MODULE}${evt.urlAfterRedirects}`);
     });
   }
 

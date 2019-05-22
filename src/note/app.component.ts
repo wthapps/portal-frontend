@@ -37,9 +37,9 @@ import { CheckForUpdateService } from './../shared/services/service-worker/check
 import { SwPushService } from '@shared/services/service-worker/sw-push.service';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
 import { SwUpdate } from '@angular/service-worker';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 declare var _: any;
-declare let ga: Function;
 
 const CURRENT_MODULE = 'note';
 
@@ -52,8 +52,6 @@ const CURRENT_MODULE = 'note';
   styleUrls: ['app.component.scss'],
   encapsulation: ViewEncapsulation.None,
   entryComponents: [
-    // NoteEditModalComponent,
-    // ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalSharingComponent,
     ZNoteSharedModalFolderMoveComponent
@@ -84,6 +82,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private noteService: ZNoteService,
     private mixedEntityService: MixedEntityService,
     private visibilityService: PageVisibilityService,
+    private googleAnalytics: GoogleAnalyticsService,
     private swPush: SwPushService,
     private checUpdate: CheckForUpdateService,
     private urlSerive: UrlService,
@@ -121,8 +120,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
 
-        ga('set', 'page', `/${CURRENT_MODULE}${event.urlAfterRedirects}`);
-        ga('send', 'pageview');
+        this.googleAnalytics.sendPageView(`/${CURRENT_MODULE}${event.urlAfterRedirects}`);
       });
   }
 
