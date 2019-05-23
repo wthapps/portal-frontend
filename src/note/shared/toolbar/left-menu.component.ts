@@ -176,45 +176,10 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
           }
         } else {
           folder.items.unshift(target);
-
-          this.sort(folders.items);
         }
       }
     }
-    // for (let folder of folders) {
-    //   if (folder.items instanceof Array && folder.items.length > 0) {
-    //     folder = this.update(target, folder.items);
-    //   }
-    //   if (parent_id === folder.id) {
-    //     if (_.some(folder.items, ['id', id])) {
-    //       for (const f of folder.items) {
-    //         if (f.id === id) {
-    //           Object.assign(f, { label, name, routerLink, routerLinkActiveOptions });
-    //         }
-    //       }
-    //     } else {
-    //       folder.items.unshift(target);
-
-    //       this.sort(folders.items);
-    //     }
-    //   }
-    // }
-
     return folders;
-  }
-
-  sort(folders: any) {
-    // folders.sort(function(a, b) {
-    //   const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-    //   const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-    //   if (nameA < nameB) {
-    //     return -1;
-    //   }
-    //   if (nameA > nameB) {
-    //     return 1;
-    //   }
-    //   return 0;
-    // });
   }
 
   destroy(target: any, folders: any) {
