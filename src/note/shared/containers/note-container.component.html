@@ -2,7 +2,7 @@
   <w-dataView-nav [showViewMode]="true"
                   [enableSort]="enableSort"
                   [sortBy]="context?.sort?.field"
-                  [orderBy]="!context?.sort?.desc ? 'desc' : 'asc'"
+                  [orderBy]="context?.sort?.desc ? 'desc' : 'asc'"
                   [viewBy]="context?.viewMode"
                   (sortComplete)="onSortComplete($event)"
                   (viewComplete)="onViewComplete($event)">

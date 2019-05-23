@@ -31,7 +31,7 @@ export const getNotes = createSelector(
       : sort.field;
     sortField = FIELD_MAP[sort.field] || sortField;
     return Object.values(notes).sort((a: any, b: any) =>
-      _wu.compareBy(a, b, sort.desc, sortField)
+      _wu.compareBy(a, b, !sort.desc, sortField)
     );
   }
 );
@@ -45,7 +45,7 @@ export const getFolders = createSelector(
       : sort.field;
     sortField = FIELD_MAP[sort.field] || sortField;
     return Object.values(notes).sort((a: any, b: any) =>
-      _wu.compareBy(a, b, sort.desc, sortField)
+      _wu.compareBy(a, b, !sort.desc, sortField)
     );
   }
 );

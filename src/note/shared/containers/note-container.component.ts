@@ -419,7 +419,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  async onSortComplete(event: any) {
+  onSortComplete(event: any) {
     if (!this.enableSort) return;
     const sortOption: SortOption = {field: event.sortBy.toLowerCase(), desc: event.orderBy === 'desc'};
     this.store.dispatch({
