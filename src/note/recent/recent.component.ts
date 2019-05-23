@@ -30,7 +30,7 @@ export class ZNoteRecentComponent implements OnInit, OnDestroy {
         viewMode: 'list',
         sort: {
           field: 'accessed_date',
-          desc: false
+          desc: true
         }
       }
     });

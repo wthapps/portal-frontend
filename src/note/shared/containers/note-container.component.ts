@@ -1,12 +1,14 @@
 import { ApiBaseService } from '@shared/services';
 import { Component, HostBinding, Input, OnInit, ViewChild, ViewEncapsulation, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
-import { ZNoteService } from '../services/note.service';
+
 import { Store } from '@ngrx/store';
-import * as listReducer from '../reducers/features/list-mixed-entities';
 import { Observable, Subject } from 'rxjs';
-
-
+import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
+
+
+import { ZNoteService } from '../services/note.service';
+import * as listReducer from '../reducers/features/list-mixed-entities';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { WDataViewComponent } from '@shared/components/w-dataView/w-dataView.component';
 import { Constants } from '@shared/constant';
@@ -15,7 +17,6 @@ import * as note from '../actions/note';
 import * as contextReducer from '../reducers/context';
 import { CommonEventService } from '@shared/services';
 import { SortOption } from '../models/context.model';
-import { takeUntil } from 'rxjs/operators';
 
 declare var _: any;
 const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
@@ -33,6 +34,12 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dataView') dataView: WDataViewComponent;
 
   readonly tooltip: any = Constants.tooltip;
+  readonly DATE_MAP = {
+    'created_at': 'Create Date',
+    'updated_at': 'Last Modified',
+    'accessed_date': 'Last Opened'
+  };
+
   data$: Observable<any[]>;
   context;
   next: string;

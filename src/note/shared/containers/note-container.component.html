@@ -85,7 +85,7 @@
             <span class="can-click" (click)="onSortComplete({sortBy: 'Name', orderBy: 'desc'})">Name</span>
           </div>
           <div class="item-note-owner">Owner</div>
-          <div class="item-note-date">Last Modified</div>
+          <div class="item-note-date">{{ DATE_MAP[context?.sort?.field] || 'Last Modified' }}</div>
         </ng-template>
         <ng-template #viewBody let-item>
           <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === 'Note::Note'}">
@@ -98,9 +98,9 @@
             <span>{{ item.name || 'Untitled' }}</span>
           </div>
           <div class="item-note-owner">
-            {{ item.user.name }}
+            {{ item.user | username }}
           </div>
-          <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
+          <div class="item-note-date">{{ (DATE_MAP[context?.sort?.field] ? item[context?.sort?.field] : item.updated_at) | timeFormat }}</div>
         </ng-template>
       </w-dataView>
       <w-dataView-selected *ngIf="dataView.selectedDocuments?.length"

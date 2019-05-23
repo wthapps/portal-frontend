@@ -127,7 +127,7 @@ export class NoteEffects {
   @Effect() trashLoad = this.actions.pipe(
     ofType(note.TRASH_LOAD),
     concatMap(() => {
-      this.store.dispatch({type: context.SET_CONTEXT, payload: {loading: true}})
+      this.store.dispatch({type: context.SET_CONTEXT, payload: {page: noteConstants.PAGE_TRASH, loading: true}})
       return this.apiBaseService.get(`note/trashs`);
     }),
     concatMap((res: any) => { return [
@@ -136,7 +136,7 @@ export class NoteEffects {
       {type: note.SET_LIST_PERMISSION, payload: {canAdd: false}}]; }),
     catchError(() => of([
       {type: note.LOAD_SUCCESS, payload: []},
-      {type: context.SET_CONTEXT, payload: {loading: false}}
+      {type: context.SET_CONTEXT, payload: {loading: false}},
     ]
     ))
   );
