@@ -1,0 +1,54 @@
+<div *ngIf="data && data.length > 0" class="breadcrumb-wrap">
+  <ol class="breadcrumb m0 p0">
+    <li>
+      <a class="btn btn-default" href="#" [routerLink]="[data[0].routerLink]">
+        {{ data[0].label }}
+      </a>
+    </li>
+
+    <li *ngIf="data.length - max > 1">
+      <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          ...
+        </button>
+        <ul class="dropdown-menu dropdown-menu-sm">
+          <ng-container *ngFor="let item of data; let i = index">
+            <li *ngIf="i > 0 && i < data.length - max">
+              <a href="#" [routerLink]="[item.routerLink]">
+                {{ item.label }}
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </li>
+
+    <ng-container *ngFor="let item of data; let i = index">
+      <ng-container *ngIf="i > 0">
+        <ng-container *ngIf="i === data.length - 1;else templateBreadcrumbItem">
+          <li>
+            <div class="btn-group">
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                {{ item.label }} <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                <ng-template [ngTemplateOutlet]="viewMenuTmpl"
+                             [ngTemplateOutletContext]="{$implicit: item}">
+                </ng-template>
+              </ul>
+            </div>
+          </li>
+        </ng-container>
+        <ng-template #templateBreadcrumbItem>
+          <ng-container *ngIf="i + max >= data.length">
+            <li>
+              <a class="btn btn-default" href="#" [routerLink]="[item.routerLink]">
+                {{ item.label }}
+              </a>
+            </li>
+          </ng-container>
+        </ng-template>
+      </ng-container>
+    </ng-container>
+  </ol>
+</div>
