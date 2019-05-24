@@ -222,7 +222,6 @@ $i_content-grid: 4;
       -moz-border-radius: 3px;
       border-radius: 3px;
       margin-top: 1px;
-      @include transition($transition-base);
       &:hover {
         border-color: #666666;
       }

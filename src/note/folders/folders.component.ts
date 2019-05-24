@@ -3,7 +3,7 @@ import { Params, ActivatedRoute } from '@angular/router';
 
 import { ZNoteService } from '../shared/services/note.service';
 import { Store } from '@ngrx/store';
-import { Subscription ,  Observable } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
@@ -44,7 +44,7 @@ export class ZNoteFoldersComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private urlService: UrlService,
     private commonEventService: CommonEventService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {

@@ -8,7 +8,7 @@ import {
   ComponentFactoryResolver,
   AfterViewInit
 } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 
@@ -27,7 +27,7 @@ import * as context from './shared/reducers/context';
 import * as progressContext from './shared/reducers/progress-context';
 import { MixedEntityService } from './shared/mixed-enity/mixed-entity.service';
 import { noteConstants } from '@notes/shared/config/constants';
-import { AuthService } from '@wth/shared/services';
+import { AuthService, UrlService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
 import { withLatestFrom, filter, takeUntil } from 'rxjs/operators';
 import { HeaderComponent } from '@shared/partials/header';
@@ -36,8 +36,12 @@ import { LogUpdateService } from '@shared/services/service-worker/log-update.ser
 import { CheckForUpdateService } from './../shared/services/service-worker/check-for-update.service';
 import { SwPushService } from '@shared/services/service-worker/sw-push.service';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
+import { SwUpdate } from '@angular/service-worker';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 declare var _: any;
+
+const CURRENT_MODULE = 'note';
 
 /**
  * This class represents the main application component.
@@ -48,8 +52,6 @@ declare var _: any;
   styleUrls: ['app.component.scss'],
   encapsulation: ViewEncapsulation.None,
   entryComponents: [
-    // NoteEditModalComponent,
-    // ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalSharingComponent,
     ZNoteSharedModalFolderMoveComponent
@@ -71,6 +73,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private resolver: ComponentFactoryResolver,
     private commonEventService: CommonEventService,
     private apiBaseService: ApiBaseService,
@@ -79,8 +82,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private noteService: ZNoteService,
     private mixedEntityService: MixedEntityService,
     private visibilityService: PageVisibilityService,
+    private googleAnalytics: GoogleAnalyticsService,
     private swPush: SwPushService,
     private checUpdate: CheckForUpdateService,
+    private urlSerive: UrlService,
     private promptUpdate: PromptUpdateService
   ) {
 
@@ -114,6 +119,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
+
+        this.googleAnalytics.sendPageView(`/${CURRENT_MODULE}${event.urlAfterRedirects}`);
       });
   }
 
@@ -394,6 +401,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'note:mixed_entity:delete':
+
+        // this.router.navigate(['trash']);
         this.mixedEntityService
           .delete(0, event.payload)
           .subscribe((res: any) => {
@@ -419,6 +428,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
               channel: 'noteLeftMenu',
               payload: event.payload
             });
+            if (event.payload && event.payload.length === 1
+              && parseInt(this.urlSerive.getId()) === event.payload[0].id && event.payload[0].object_type === 'Note::Folder') {
+              this.router.navigate(['trash']);
+            }
           });
         break;
       case 'note:folder:delete':

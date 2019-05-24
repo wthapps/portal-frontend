@@ -5,11 +5,11 @@ declare let moment: any;
 
 @Component({
   moduleId: module.id,
-  selector: 'my-subscription',
-  templateUrl: 'subscription.component.html'
+  selector: 'current-subscription',
+  templateUrl: 'current-subscription.component.html'
 })
 
-export class MySubscriptionComponent implements OnInit {
+export class CurrentSubscriptionComponent implements OnInit {
   subscription: any;
   editing;
   plan: any;

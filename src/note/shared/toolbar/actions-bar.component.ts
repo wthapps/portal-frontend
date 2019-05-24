@@ -444,10 +444,6 @@ export class ZNoteSharedActionBarComponent
     const path: string = obj.parent_id
       ? `${parentPath}/folders/${obj.parent_id}`
       : parentPath;
-    this.store.dispatch({
-      type: note.SELECT_ONE,
-      payload: obj
-    });
     this.commonEventService.broadcast({
       channel: 'noteLeftMenu',
       action: 'expanded',

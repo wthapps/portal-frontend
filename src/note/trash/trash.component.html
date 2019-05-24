@@ -1,19 +1,16 @@
 <div class="objects-main">
-  <w-dataView-nav [showViewMode]="true"
-                  (sortComplete)="onSortComplete($event)"
-                  (viewComplete)="onViewComplete($event)">
+  <w-dataView-nav [showViewMode]="true" [enableSort]="true" [sortBy]="context?.sort?.field"
+    [orderBy]="context?.sort?.desc ? 'desc' : 'asc'" [viewBy]="context?.viewMode"
+    (sortComplete)="onSortComplete($event)" (viewComplete)="onViewComplete($event)">
     <h4 class="title">
       Trash
     </h4>
   </w-dataView-nav>
 
-  <ng-container *ngIf="!(context$ | async)?.loading && (data$ | async) as list; else templateloading">
+  <ng-container *ngIf="!context?.loading && (data$ | async) as list; else templateloading">
     <ng-container *ngIf="list?.length > 0; else templateNodata">
-      <w-dataView [data]="list"
-                  (loadMoreCompleted)="onLoadMoreCompleted($event)"
-                  (selectCompleted)="onSelectCompleted()"
-                  (dblClick)="onDblClick($event)"
-                  #dataView>
+      <w-dataView [data]="list" [viewMode]="context?.viewMode" (loadMoreCompleted)="onLoadMoreCompleted($event)"
+        (selectCompleted)="onSelectCompleted()" (dblClick)="onDblClick($event)" #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">
             <span class="can-click" (click)="onSortComplete({sortBy: 'Name', orderBy: 'desc'})">Name</span>
@@ -32,14 +29,13 @@
             <span>{{ item.name || 'Untitled' }}</span>
           </div>
           <div class="item-note-owner">
-            {{ item.user.name }}
+            {{ item.user | username }}
           </div>
           <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
         </ng-template>
       </w-dataView>
-      <w-dataView-selected *ngIf="dataView.selectedDocuments?.length"
-                           [selectedObjects]="dataView.selectedDocuments"
-                           (clear)="dataView.container.clearSelection()">
+      <w-dataView-selected *ngIf="dataView.selectedDocuments?.length" [selectedObjects]="dataView.selectedDocuments"
+        (clear)="dataView.container.clearSelection()" (selectAll)="dataView.container.selectAll()">
         <ul class="nav-selection-actions">
           <ng-container *ngFor="let menu of menuActions | objectValues">
             <li *ngIf="menu.active">

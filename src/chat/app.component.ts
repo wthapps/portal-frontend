@@ -27,8 +27,11 @@ import { select, Store } from '@ngrx/store';
 import * as ConversationSelectors from '@chat/store/conversation/conversation.selectors';
 import * as MessageActions from '@chat/store/message/message.actions';
 import { AppState } from '@chat/store';
+import { GoogleAnalyticsService } from './../shared/services/analytics/google-analytics.service';
+
 
 declare const _: any;
+const CURRENT_MODULE = 'chat';
 
 /**
  * This class represents the main application component.
@@ -59,6 +62,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private visibilityService: PageVisibilityService,
     private wthConfirmService: WthConfirmService,
     private profileService: ProfileService,
+    private googleAnalytics: GoogleAnalyticsService,
     private userEventService: UserEventService,
     private store$: Store<AppState>,
 
@@ -87,6 +91,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
+
+        this.googleAnalytics.sendPageView(`/${CURRENT_MODULE}${event.urlAfterRedirects}`);
       });
 
     this.profile$ = this.profileService.profile$;

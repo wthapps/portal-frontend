@@ -17,7 +17,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { MyAppsModule } from './apps/apps.module';
-import { MyBillingModule } from './billing/billing.module';
 import { ConfirmationModule } from './confirmation/confirmation.module';
 import { MyMyAppsModule } from './my-apps/my-apps.module';
 import { MyPaymentModule } from './payment/payment.module';
@@ -27,6 +26,7 @@ import { MySettingModule } from './settings/setting.module';
 import { MySharedModule } from './shared/shared.module';
 import { appEffects, appReducers, metaReducers, MyaccountStoreModule } from './store';
 import { UserModule } from '@account/users';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 @NgModule({
   imports: [
@@ -36,7 +36,6 @@ import { UserModule } from '@account/users';
     AppRoutingModule,
     DashboardModule,
     MyAppsModule,
-    MyBillingModule,
     MyMyAppsModule,
     MyPaymentModule,
     MyPlansModule,
@@ -66,7 +65,8 @@ import { UserModule } from '@account/users';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    GoogleAnalyticsService
   ],
   bootstrap: [AppComponent]
 })

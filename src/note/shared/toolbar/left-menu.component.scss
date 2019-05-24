@@ -28,4 +28,10 @@
   .pi-caret-right:before {
     content: "\e901";
   }
+  .pi-chevron-down ~ .ui-menuitem-icon:before,
+  .pi-caret-down ~ .ui-menuitem-icon:before {
+    content: $fa-var-folder-open;
+  }
 }
+
+

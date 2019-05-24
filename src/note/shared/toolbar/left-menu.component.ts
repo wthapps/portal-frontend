@@ -65,7 +65,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
           case 'update': {
             console.log('folders: ', payload);
             for (const folder of payload) {
-              this.update(folder, this.noteFoldersTree);
+              this.noteFoldersTree = this.update(folder, this.noteFoldersTree);
             }
             break;
           }
@@ -80,23 +80,23 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
             break;
           }
           case 'expanded': {
-            // folders changes many times to reaches end state
+            // folderexpandeds changes many times to reaches end state
             this.store
               .select(fromRoot.getNotesState)
-              .pipe(take(3))
+              // .pipe(take(3))
               .subscribe((state: any) => {
                 Object.keys(state.folders).forEach((k: any) => {
-                  this.update(state.folders[k], this.noteFoldersTree);
+                  this.noteFoldersTree = this.update(state.folders[k], this.noteFoldersTree);
                 });
               });
             // folder path changes 2 times to reaches end state
             this.store
               .select(fromRoot.getCurrentFolderPath)
-              .pipe(take(2))
+              // .pipe(take(2))
               .subscribe((folders: any) => {
                 folders.forEach((folder: any) => {
                   folder.expanded = true;
-                  this.update(folder, this.noteFoldersTree);
+                  this.noteFoldersTree = this.update(folder, this.noteFoldersTree);
                 });
               });
             break;
@@ -117,9 +117,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     const { expanded, id } = item;
     const iconClick = (htmlTarget.className.includes('ui-panelmenu-icon'));
 
-    if (
-      item.items && item.items.length === 0
-    ) {
+    if (item.items && item.items.length === 0) {
       if (expanded) {
         this.apiBaseService
           .get(`note/folders/${id}`)
@@ -139,10 +137,11 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
     }
   }
 
-  update(target: any, folders: any, options: any = {}) {
+  update(target: any, origFolders: any, options: any = {}): any[] {
+    const folders = _.cloneDeep(origFolders);
     target.label = target.name;
     target.title = target.name;
-    target.icon = 'fa fa-folder-o';
+    target.icon = 'fa fa-folder';
     target.styleClass = `js-note-folders-tree-${target.id}`;
     if (!target.items) {
       target.items = [];
@@ -161,12 +160,12 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
       } else {
         folders.unshift(target);
       }
-      this.sort(folders);
-      return;
+      return folders;
     }
-    for (const folder of folders) {
+    for (let i = 0; i < folders.length; i++) {
+      const folder = folders[i];
       if (folder.items instanceof Array && folder.items.length > 0) {
-        this.update(target, folder.items);
+        folder.items = this.update(target, folder.items);
       }
       if (parent_id === folder.id) {
         if (_.some(folder.items, ['id', id])) {
@@ -180,21 +179,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
         }
       }
     }
-    this.sort(folders);
-  }
-
-  sort(folders: any) {
-    folders.sort(function(a, b) {
-      const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-      const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-      return 0;
-    });
+    return folders;
   }
 
   destroy(target: any, folders: any) {

@@ -16,7 +16,7 @@
   </span>
   <a [routerLink]="[myNoteMenu?.link]"
      [routerLinkActive]="['active']"
-     (click)="onCloseMenu()"
+     (click)="showFolderTree = !showFolderTree; onCloseMenu();"
      class="pl0"
      href="javascript:void(0);">
     <i class="{{ myNoteMenu?.icon }}"></i> {{ myNoteMenu?.name }}
@@ -24,7 +24,7 @@
 </div>
 
 <div class="well-folder-tree" [ngClass]="{'active': showFolderTree}">
-  <p-panelMenu [(model)]="noteFoldersTree"></p-panelMenu>
+  <p-panelMenu [model]="noteFoldersTree | folderSort"></p-panelMenu>
 </div>
 
 <ng-container *ngFor="let note of noteMenu;let i = index;">

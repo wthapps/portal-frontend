@@ -1,17 +1,17 @@
 import { Component, OnInit }   from '@angular/core';
 import { Router }                from '@angular/router';
 
-import { UserService } from '@wth/shared/services/user.service';
-import { MyTransactionService } from '../shared/transaction.service';
-import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
+import { UserService } from '@shared/services/user.service';
+import { MyTransactionService } from './transaction/transaction.service';
+import { LoadingService } from '@shared/shared/components/loading/loading.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'my-billing-history',
-  templateUrl: 'history.component.html'
+  selector: 'billing-list',
+  templateUrl: 'billing-list.component.html'
 })
 
-export class MyBillingHistoryComponent implements OnInit {
+export class BillingListComponent implements OnInit {
   transactions: any[] = [];
 
   constructor(private userService: UserService,
@@ -21,18 +21,18 @@ export class MyBillingHistoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadingService.start();
+    // this.loadingService.start();
     this.transactionService.list(this.userService.getSyncProfile().id)
       .subscribe((response: any) => {
           this.transactions = response.data;
           this.transactions.map((t) => {
             t.created_at = new Date(t.created_at);
           });
-          this.loadingService.stop();
+          // this.loadingService.stop();
         },
         (error: any) => {
           console.log('Billing history error', error);
-          this.loadingService.stop();
+          // this.loadingService.stop();
         });
   }
 

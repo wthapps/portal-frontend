@@ -31,8 +31,10 @@ import * as fromAccount from './store/account';
 import { AuthService, UserService } from '@wth/shared/services';
 import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
-import { environment } from '@env/environment';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
+
+const CURRENT_MODULE = 'account';
 
 /**
  * This class represents the main application component.
@@ -65,6 +67,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private resolver: ComponentFactoryResolver,
     private commonEventService: CommonEventService,
+    private googleAnalytics: GoogleAnalyticsService,
     private wthConfirmService: WthConfirmService,
     private accountService: AccountService,
     private subscriptionService: SubscriptionService,
@@ -83,7 +86,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadDynamicScripts();
     this.currentUser = this.userService.getSyncProfile();
 
     this.routerSubscription = this.router.events
@@ -98,6 +100,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
       window.scrollTo(0, 0);
+      this.googleAnalytics.sendPageView(`/${CURRENT_MODULE}${evt.urlAfterRedirects}`);
     });
   }
 
@@ -194,9 +197,5 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       modalComponentFactory
     );
     this.modal = this.modalComponent.instance;
-  }
-
-  private loadDynamicScripts() {
-
   }
 }

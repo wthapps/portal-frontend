@@ -22,7 +22,18 @@
       margin: 0 10px;
       width: 1px;
       height: $objects-main-menu-button-h;
-      background-color: $line;
+      //background-color: $line;
+    }
+    .form-checkbox {
+      margin-right: 5px;
+      border-color: #fff;
+      background-color: transparent;
+      border-width: 2px;
+      &.active {
+        background-color: #fff;
+        border-color: #fff;
+        color: $theme-color;
+      }
     }
     .btn-icon {
       background-color: transparent;

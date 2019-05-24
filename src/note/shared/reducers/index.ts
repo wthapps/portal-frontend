@@ -26,14 +26,6 @@ export const getFolderEntities = createSelector(
   getNotesState,
   fromNote.getFolders
 );
-export const getSelectAll = createSelector(
-  getNotesState,
-  fromNote.getSelectAll
-);
-export const getSelectedObjects = createSelector(
-  getNotesState,
-  fromNote.getSelectedObjects
-);
 export const getCurrentNote = createSelector(
   getNotesState,
   fromNote.getCurrentNote

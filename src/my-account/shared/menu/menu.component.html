@@ -37,22 +37,16 @@
     </div>
 
     <div class="navgroup">
-      <h5 class="aside-title">Subscription &amp; billings</h5>
+      <h5 class="aside-title">Payment</h5>
       <ul class="navgroup-menu">
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/billing/subscription']">Current subscription</a>
-        </li>
-        <!--<li [routerLinkActive]="['active']">-->
-          <!--<a [routerLink]="['/billing/subscription_history']">Subscription history</a>-->
-        <!--</li>-->
-        <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/billing/plan']">Current plan</a>
+          <a [routerLink]="['/payment/subscription']">Subscription</a>
         </li>
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/billing/payment_methods']">Payment method</a>
+          <a [routerLink]="['/payment/payment_method']">Payment method</a>
         </li>
         <li [routerLinkActive]="['active']">
-          <a [routerLink]="['/billing/history']">Billing history</a>
+          <a [routerLink]="['/payment/billings']">Billing history</a>
         </li>
       </ul>
     </div>

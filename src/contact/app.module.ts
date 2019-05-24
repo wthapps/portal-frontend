@@ -22,7 +22,7 @@ import { ContactSharedModule } from './shared/shared.module';
 // import { ProfileModule } from '@wth/shared/user';
 import { ProfilePageModule } from '@contacts/profile/profile-page.module';
 import { ContactStoreModule } from '@contacts/store';
-
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -60,7 +60,8 @@ import { ContactStoreModule } from '@contacts/store';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    GoogleAnalyticsService
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: WthInterceptor,
@@ -69,5 +70,4 @@ import { ContactStoreModule } from '@contacts/store';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}

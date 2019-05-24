@@ -1,7 +1,9 @@
-import { Component, OnInit, HostBinding, ViewChild } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewChild, OnDestroy } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import * as fromRoot from '../shared/reducers/index';
 import * as context from '../shared/reducers/context';
 import * as note from '../shared/actions/note';
@@ -12,6 +14,8 @@ import { WDataViewComponent } from '@shared/components/w-dataView/w-dataView.com
 import { Constants } from '@shared/constant';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { CommonEventService } from '@shared/services';
+import { SortOption } from '@notes/shared/models/context.model';
+import * as contextReducer from '../shared/reducers/context';
 
 declare var _: any;
 const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
@@ -20,7 +24,7 @@ const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
   selector: 'z-note-trash',
   templateUrl: 'trash.component.html'
 })
-export class ZNoteTrashComponent implements OnInit {
+export class ZNoteTrashComponent implements OnInit, OnDestroy {
   @HostBinding('class') class = 'main-page-body';
   @ViewChild('dataView') dataView: WDataViewComponent;
 
@@ -29,7 +33,7 @@ export class ZNoteTrashComponent implements OnInit {
   selectedObjects$: Observable<any[]>;
   isSelectAll$: Observable<boolean>;
   allItems$: Observable<any[]>;
-  context$: Observable<any>;
+  context;
   currentFolder$: Observable<any>;
   loading$: Observable<any>;
 
@@ -61,9 +65,11 @@ export class ZNoteTrashComponent implements OnInit {
     }
   };
 
+  private destroySubject: Subject<any> = new Subject();
+
   constructor(private store: Store<fromRoot.State>,
-              private wthConfirm: WthConfirmService,
-              public commonEventService: CommonEventService) {
+    private wthConfirm: WthConfirmService,
+    public commonEventService: CommonEventService) {
     this.data$ = this.store.select(listReducer.getAllItems);
   }
 
@@ -71,27 +77,20 @@ export class ZNoteTrashComponent implements OnInit {
     this.noteItems$ = this.store.select(listReducer.getNotes);
     this.folderItems$ = this.store.select(listReducer.getFolders);
     this.allItems$ = this.store.select(listReducer.getAllItems);
-    this.isSelectAll$ = this.store.select(fromRoot.getSelectAll);
-    this.selectedObjects$ = this.store.select(fromRoot.getSelectedObjects);
-    this.context$ = this.store.select(context.getContext);
+    this.store.select('context').pipe(takeUntil(this.destroySubject))
+      .subscribe(ctx => this.context = ctx);
     this.currentFolder$ = this.store.select(fromRoot.getCurrentFolder);
 
-    this.store.dispatch({
-      type: context.SET_CONTEXT,
-      payload: {
-        page: noteConstants.PAGE_TRASH
-      }
-    });
     this.store.dispatch({ type: note.TRASH_LOAD });
+  }
+
+  ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
   onSelectCompleted() {
 
-    // update icon favorite
-    // this.updateMenuFavorite(_.every(this.dataView.selectedDocuments, 'favorite'));
-
-    // check menu view
-    // this.validatePermission();
   }
 
   onDblClick(event: any) {
@@ -111,11 +110,7 @@ export class ZNoteTrashComponent implements OnInit {
   }
 
   onMenuAction(action: string) {
-    const objects = this.dataView.selectedObjects.map(({ id, object_type, favourite }) => ({
-      id,
-      object_type,
-      favourite
-    }));
+    const objects = this.dataView.selectedObjects;
     switch (action) {
       case 'restore': {
         this.store.dispatch({ type: note.RESTORE, payload: objects });
@@ -183,11 +178,24 @@ export class ZNoteTrashComponent implements OnInit {
     }
   }
 
-  async onSortComplete(event: any) {
+  onSortComplete(event: any) {
+    const sortOption: SortOption = { field: event.sortBy.toLowerCase(), desc: event.orderBy === 'desc' };
+    this.store.dispatch({
+      type: contextReducer.SET_CONTEXT,
+      payload: {
+        sort: sortOption
+      }
+    });
   }
 
   onViewComplete(event: any) {
-    this.dataView.viewMode = event;
+    // this.dataView.viewMode = event;
+    this.store.dispatch({
+      type: contextReducer.SET_CONTEXT,
+      payload: {
+        viewMode: event
+      }
+    })
     this.dataView.container.update();
     this.dataView.updateView();
   }

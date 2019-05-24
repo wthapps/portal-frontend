@@ -29,6 +29,7 @@ import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NoteStoreModule } from '@notes/store';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 @NgModule({
   imports: [
@@ -71,7 +72,8 @@ import { NoteStoreModule } from '@notes/store';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    GoogleAnalyticsService
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: WthInterceptor,

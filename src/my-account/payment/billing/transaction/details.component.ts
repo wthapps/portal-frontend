@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { UserService } from '@wth/shared/services/user.service';
+import { UserService } from '@shared/services/user.service';
 
-import { MyTransactionService } from '../shared/transaction.service';
-import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
+import { MyTransactionService } from './transaction.service';
+import { LoadingService } from '@shared/shared/components/loading/loading.service';
 
 @Component({
   moduleId: module.id,

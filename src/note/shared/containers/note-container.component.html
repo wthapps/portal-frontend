@@ -1,9 +1,7 @@
 <div class="objects-main">
-  <w-dataView-nav [showViewMode]="true"
-                  [enableSort]="enableSort"
-                  [viewBy]="context?.viewMode"
-                  (sortComplete)="onSortComplete($event)"
-                  (viewComplete)="onViewComplete($event)">
+  <w-dataView-nav [showViewMode]="true" [enableSort]="enableSort" [sortBy]="context?.sort?.field"
+    [orderBy]="context?.sort?.desc ? 'desc' : 'asc'" [viewBy]="context?.viewMode"
+    (sortComplete)="onSortComplete($event)" (viewComplete)="onViewComplete($event)">
     <div *ngIf="breadcrumbs && breadcrumbs.length > 0" class="breadcrumb-wrap">
       <ol class="breadcrumb m0 p0">
         <ng-container *ngFor="let item of breadcrumbs; let i = index">
@@ -16,7 +14,7 @@
                 <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                   <li>
                     <a (click)="onBreadcrumbAction({action: 'note:open_note_add_modal', payload: {parent_id: item.id}})"
-                       href="#">
+                      href="#">
                       <i class="icon-zone-note"></i> New note
                     </a>
                   </li>
@@ -33,19 +31,17 @@
                   </li>
                   <li>
                     <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_sharing_modal', payload: [item]})"
-                       href="#">
+                      href="#">
                       <i class="fa fa-share-alt"></i> Sharing
                     </a>
                   </li>
                   <li>
-                    <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:delete', payload: [item]})"
-                       href="#">
+                    <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:delete', payload: [item]})" href="#">
                       <i class="fa fa-trash-o"></i> Delete</a>
                   </li>
                   <li role="separator" class="divider"></li>
                   <li>
-                    <a
-                      (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_move_to_folder_modal', payload: [item]})"
+                    <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_move_to_folder_modal', payload: [item]})"
                       href="#">Move to folder</a>
                   </li>
                 </ul>
@@ -72,18 +68,14 @@
   </w-dataView-nav>
   <ng-container *ngIf="!context?.loading && (data$ | async) as list; else templateloading">
     <ng-container *ngIf="list?.length > 0; else templateNodata">
-      <w-dataView [data]="list"
-                  [viewMode]="context?.viewMode"
-                  (loadMoreCompleted)="onLoadMoreCompleted($event)"
-                  (selectCompleted)="onSelectCompleted()"
-                  (dblClick)="onDblClick($event)"
-                  #dataView>
+      <w-dataView [data]="list" [viewMode]="context?.viewMode" (loadMoreCompleted)="onLoadMoreCompleted($event)"
+        (selectCompleted)="onSelectCompleted()" (dblClick)="onDblClick($event)" #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">
             <span class="can-click" (click)="onSortComplete({sortBy: 'Name', orderBy: 'desc'})">Name</span>
           </div>
           <div class="item-note-owner">Owner</div>
-          <div class="item-note-date">Last Modified</div>
+          <div class="item-note-date">{{ DATE_MAP[context?.sort?.field] || 'Last Modified' }}</div>
         </ng-template>
         <ng-template #viewBody let-item>
           <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === 'Note::Note'}">
@@ -96,14 +88,14 @@
             <span>{{ item.name || 'Untitled' }}</span>
           </div>
           <div class="item-note-owner">
-            {{ item.user.name }}
+            {{ item.user | username }}
           </div>
-          <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
+          <div class="item-note-date">
+            {{ (DATE_MAP[context?.sort?.field] ? item[context?.sort?.field] : item.updated_at) | timeFormat }}</div>
         </ng-template>
       </w-dataView>
-      <w-dataView-selected *ngIf="dataView.selectedDocuments?.length"
-                           [selectedObjects]="dataView.selectedDocuments"
-                           (clear)="dataView.container.clearSelection()">
+      <w-dataView-selected *ngIf="dataView.selectedDocuments?.length" [selectedObjects]="dataView.selectedDocuments"
+        (clear)="dataView.container.clearSelection()" (selectAll)="dataView.container.selectAll()">
         <ul class="nav-selection-actions">
           <ng-container *ngFor="let menu of menuActions | objectValues">
             <li *ngIf="menu.active">
@@ -133,8 +125,7 @@
     </ng-container>
     <ng-template #templateNodata>
       <div class="text-center">
-        <box-no-data [icon]="'fa fa-sticky-note'"
-                     [subTitle]="'There are no notes!'">
+        <box-no-data [icon]="'fa fa-sticky-note'" [subTitle]="'There are no notes!'">
           Use "New" button to create new notes.
         </box-no-data>
       </div>
