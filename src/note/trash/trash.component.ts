@@ -14,6 +14,8 @@ import { WDataViewComponent } from '@shared/components/w-dataView/w-dataView.com
 import { Constants } from '@shared/constant';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { CommonEventService } from '@shared/services';
+import { SortOption } from '@notes/shared/models/context.model';
+import * as contextReducer from '../shared/reducers/context';
 
 declare var _: any;
 const OBJECT_TYPE = noteConstants.OBJECT_TYPE;
@@ -76,15 +78,9 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
     this.folderItems$ = this.store.select(listReducer.getFolders);
     this.allItems$ = this.store.select(listReducer.getAllItems);
     this.store.select('context').pipe(takeUntil(this.destroySubject))
-    .subscribe(context => this.context = context);
+    .subscribe(ctx => this.context = ctx);
     this.currentFolder$ = this.store.select(fromRoot.getCurrentFolder);
 
-    this.store.dispatch({
-      type: context.SET_CONTEXT,
-      payload: {
-        page: noteConstants.PAGE_TRASH
-      }
-    });
     this.store.dispatch({ type: note.TRASH_LOAD });
   }
 
@@ -182,11 +178,24 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
     }
   }
 
-  async onSortComplete(event: any) {
+  onSortComplete(event: any) {
+    const sortOption: SortOption = {field: event.sortBy.toLowerCase(), desc: event.orderBy === 'desc'};
+    this.store.dispatch({
+      type: contextReducer.SET_CONTEXT,
+      payload: {
+        sort: sortOption
+      }
+    });
   }
 
   onViewComplete(event: any) {
-    this.dataView.viewMode = event;
+    // this.dataView.viewMode = event;
+    this.store.dispatch({
+      type: contextReducer.SET_CONTEXT,
+      payload: {
+        viewMode: event
+      }
+    })
     this.dataView.container.update();
     this.dataView.updateView();
   }
