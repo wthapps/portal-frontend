@@ -1,6 +1,6 @@
 <div class="objects-main page-body-content" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
   [scrollWindow]="false" (scrolled)="loadMoreObjects($event)">
-  <w-dataView-nav [showViewMode]="true" (sortComplete)="onSortComplete($event)" (viewComplete)="onViewComplete($event)">
+  <w-dataView-nav [showViewMode]="true" [sortBy]="sortBy" [orderBy]="orderBy" (sortComplete)="onSortComplete($event)" (viewComplete)="onViewComplete($event)">
     <z-drive-shared-breadcrumb [model]="breadcrumbs" (breadcrumbEvent)="onBreadcrumbEvent($event)">
     </z-drive-shared-breadcrumb>
   </w-dataView-nav>
@@ -33,7 +33,7 @@
         #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">
-            <span class="can-click" (click)="onSortComplete({sortBy: 'Name', orderBy: 'desc'})">Name</span>
+            <span class="can-click" (click)="onSortComplete({sortBy: 'name', orderBy: 'desc'})">Name</span>
           </div>
           <div class="item-note-owner">Owner</div>
           <div class="item-note-date">Last Modified</div>

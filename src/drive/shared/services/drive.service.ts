@@ -59,6 +59,10 @@ export class DriveService {
     this.dataStorage.prependData(data);
   }
 
+  addOne(data: DriveType): void {
+    this.dataStorage.addOne(data);
+  }
+
   updateMany(data: Array<DriveType>): void {
     this.dataStorage.updateMany(data);
   }
@@ -90,7 +94,8 @@ export class DriveService {
   async createFolder(payload) {
     const parent = this.dataStorage.currentFolder ? { parent_id: this.dataStorage.currentFolder.id } : {};
     const res = await this.folderService.create({ ...payload, ...parent }).toPromise();
-    this.prependData([res.data]);
+    // this.prependData([res.data]);
+    this.addOne(res.data);
   }
 
   async updateFolder(payload) {

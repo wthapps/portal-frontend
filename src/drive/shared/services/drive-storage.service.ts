@@ -6,8 +6,13 @@ import { DriveState, initDriveState } from '@shared/modules/drive/models/functio
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 import { driveConstants, DriveType } from '../config/drive-constants';
 import DriveUtils from '../utils/drive-utils';
+import { _wu } from '@wth/shared/shared/utils/utils';
 
 
+export interface SortOption {
+  sortBy: string;
+  orderBy: 'asc' | 'desc';
+}
 @Injectable()
 export class DriveStorageService {
   readonly OBJECT_TYPE = driveConstants.OBJECT_TYPE;
@@ -16,6 +21,7 @@ export class DriveStorageService {
   currentFolder$: Observable<DriveFolder>;
   private driveStateSubject: BehaviorSubject<DriveState> = new BehaviorSubject(initDriveState);
   private _currentFolder: BehaviorSubject<DriveFolder> = new BehaviorSubject(null);
+  private _sortOption: SortOption;
 
   constructor(
   ) {
@@ -40,6 +46,14 @@ export class DriveStorageService {
     this._currentFolder.next(folder);
   }
 
+  set sortOption(sort: SortOption) {
+    this._sortOption = sort;
+  }
+
+  get sortOption() {
+    return this._sortOption;
+  }
+
   get currentFolder(): DriveFolder {
     return this._currentFolder.getValue();
   }
@@ -50,6 +64,25 @@ export class DriveStorageService {
 
   prependData(data: Array<DriveType>): void {
     this.setState(this.concatState(this.parsedDriveData(data), this.currentState));
+  }
+
+  addOne(data: DriveType): void {
+    console.log(this.sortOption);
+    const {sortBy, orderBy} = this.sortOption;
+    const {fileIds, filesMap, folderIds, foldersMap } = this.currentState;
+    let [newFileIds, newFolderIds] = [fileIds, folderIds];
+    if (data.object_type === DriveFolder.model_const) {
+      foldersMap[data.id] = data;
+      const sortedArr = Object.values(foldersMap).sort((a,b) => _wu.compareBy(a, b, orderBy !== 'desc', sortBy));
+      newFolderIds = sortedArr.map(f => f.id);
+    } if (data.object_type === DriveFile.model_const) {
+      filesMap[data.id] = data;
+      const sortedArr = Object.values(filesMap).sort((a,b) => _wu.compareBy(a, b, orderBy !== 'desc', sortBy));
+      newFileIds = sortedArr.map(f => f.id);
+    } else {
+      console.warn('unhandle object type: ', data.object_type);
+    }
+    this.setState({fileIds: newFileIds, filesMap, folderIds: newFolderIds, foldersMap });
   }
 
   updateMany(data: Array<DriveType>): void {

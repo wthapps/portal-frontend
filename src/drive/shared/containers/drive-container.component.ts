@@ -8,6 +8,7 @@ import { FileDriveUploadService } from '@shared/services/file-drive-upload.servi
 import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 import { WDataViewComponent } from 'drive/shared/components/w-dataView/w-dataView.component';
 import { driveConstants, DriveType } from './../config/drive-constants';
+import { DriveStorageService } from '../services/drive-storage.service';
 
 
 
@@ -25,9 +26,9 @@ export class DriveContainerComponent implements OnInit {
 
   readonly tooltip: any = Constants.tooltip;
   readonly OBJECT_TYPE = driveConstants.OBJECT_TYPE;
-  // data$: Observable<any>;
+  sortBy = 'updated_at';
+  orderBy: 'asc' | 'desc' = 'asc';
   files: any = [];
-  loading = false;
   loaded = true;
 
   menuActions = [
@@ -68,6 +69,7 @@ export class DriveContainerComponent implements OnInit {
 
   constructor(
     private driveService: DriveService,
+    private dataStorage: DriveStorageService,
     private router: Router,
     private fileDriveUploadService: FileDriveUploadService,
   ) {
@@ -76,30 +78,27 @@ export class DriveContainerComponent implements OnInit {
 
   ngOnInit() {
     // this.loadObjects(this.apiUrl);
+    this.dataStorage.sortOption = {sortBy: this.sortBy, orderBy: this.orderBy};
   }
 
 
   async loadMoreObjects(event: any) {
     try {
-      this.loading = true;
       await this.driveService.loadMoreObjects();
     } catch (err) {
       console.warn(err);
-    } finally {
-      this.loading = false;
     }
   }
 
   async loadObjects(url) {
     try {
       if (!url) return;
-      this.loading = true;
       this.loaded = false;
-      this.driveService.loadObjects(url);
+      const sortedUrl = this.urlWithSort({url, sortBy: this.sortBy, orderBy: this.orderBy});
+      this.driveService.loadObjects(sortedUrl);
     } catch (err) {
       console.warn(err);
     } finally {
-      this.loading = false;
       this.loaded = true;
     }
   }
@@ -141,17 +140,14 @@ export class DriveContainerComponent implements OnInit {
   }
 
   async onSortComplete({sortBy, orderBy}) {
-    console.log(sortBy, orderBy);
-    const sortOption = `sort=${orderBy}&sort_name=${sortBy}`;
-    const url = this.apiUrl.includes('?') ? `${this.apiUrl}&${sortOption}` : `${this.apiUrl}?${sortOption}`;
+    this.dataStorage.sortOption = {sortBy, orderBy};
+    const url = this.urlWithSort({url: this.apiUrl, sortBy, orderBy});
     try {
-      this.loading = true;
       this.loaded = false;
       await this.driveService.loadObjects(url);
     } catch (err) {
       console.warn(err);
     } finally {
-      this.loading = false;
       this.loaded = true;
     }
   }
@@ -235,6 +231,11 @@ export class DriveContainerComponent implements OnInit {
 
   download(file: any) {
     this.fileDriveUploadService.download({});
+  }
+
+  private urlWithSort({url, sortBy, orderBy}) {
+    const sortOption = `sort=${orderBy}&sort_name=${sortBy}`;
+    return url.includes('?') ? `${url}&${sortOption}` : `${url}?${sortOption}`;
   }
 
   private get selectedObjects() { return this.dataView.selectedObjects };

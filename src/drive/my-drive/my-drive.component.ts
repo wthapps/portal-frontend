@@ -29,7 +29,8 @@ export class MyDriveComponent implements OnInit {
     this.driveService.resetCurrentFolder();
     this.container.loadObjects(this.apiUrl);
     this.fileDriveUploadService.onDone.subscribe(res => {
-      this.driveService.appendData([DriveFile.from(res)]);
+      // this.driveService.appendData([DriveFile.from(res)]);
+      this.driveService.addOne(res);
     });
     this.fileDriveUploadService.onChange.subscribe(event => {
       this.fileDriveUploadService.upload(event.target.files);
