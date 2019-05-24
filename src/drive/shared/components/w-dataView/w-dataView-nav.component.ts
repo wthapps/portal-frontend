@@ -41,7 +41,7 @@ export class WDataViewNavComponent {
     }
   ];
 
-  sortBy = 'Name';
+  sortBy = 'name';
   orderBy = 'asc';
 
   viewBy = 'grid';

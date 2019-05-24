@@ -75,7 +75,7 @@ export class DriveContainerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadObjects(this.apiUrl);
+    // this.loadObjects(this.apiUrl);
   }
 
 
@@ -92,6 +92,7 @@ export class DriveContainerComponent implements OnInit {
 
   async loadObjects(url) {
     try {
+      if (!url) return;
       this.loading = true;
       this.loaded = false;
       this.driveService.loadObjects(url);
@@ -141,7 +142,8 @@ export class DriveContainerComponent implements OnInit {
 
   async onSortComplete({sortBy, orderBy}) {
     console.log(sortBy, orderBy);
-    const url = `${this.apiUrl}?sort=${orderBy}&sort_name=${sortBy}`;
+    const sortOption = `sort=${orderBy}&sort_name=${sortBy}`;
+    const url = this.apiUrl.includes('?') ? `${this.apiUrl}&${sortOption}` : `${this.apiUrl}?${sortOption}`;
     try {
       this.loading = true;
       this.loaded = false;

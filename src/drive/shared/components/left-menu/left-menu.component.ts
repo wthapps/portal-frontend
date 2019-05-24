@@ -28,7 +28,7 @@ export class ZDriveSharedLeftMenuComponent implements OnInit, OnDestroy {
   myNoteMenu: any;
   settingMenu;
   noteFoldersTree: any[] = [];
-  showFolderTree = true;
+  showFolderTree = false;
   destroySubject: Subject<any> = new Subject();
 
   constructor(
@@ -118,18 +118,11 @@ export class ZDriveSharedLeftMenuComponent implements OnInit, OnDestroy {
       });
   }
   ngOnInit() {
-    // this.loadRootFolders().then();
   }
 
   ngOnDestroy() {
     this.destroySubject.next();
     this.destroySubject.complete();
-  }
-
-  async loadRootFolders() {
-    const res = await this.folderService.getAll().toPromise();
-    this.noteFoldersTree = this.mapToMenuItem(res['data']);
-    this.showFolderTree = true;
   }
 
   onpenFileUpload() {

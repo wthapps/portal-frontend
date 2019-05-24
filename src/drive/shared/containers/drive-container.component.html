@@ -52,7 +52,7 @@
             <span>{{ item.full_name || 'Untitled' }}</span>
           </div>
           <div class="item-note-owner">
-            {{ item?.owner?.name }}
+            {{ item?.owner | username }}
           </div>
           <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
         </ng-template>
