@@ -1,15 +1,13 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
 import { Constants } from '@shared/constant';
 import { DriveService } from 'drive/shared/services/drive.service';
-import { ApiBaseService } from '@shared/services';
 import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 import { WDataViewComponent } from 'drive/shared/components/w-dataView/w-dataView.component';
-import { driveConstants } from './../config/drive-constants';
+import { driveConstants, DriveType } from './../config/drive-constants';
 
 
 
@@ -22,11 +20,15 @@ export class DriveContainerComponent implements OnInit {
   @ViewChild('dataView') dataView: WDataViewComponent;
   @Input() breadcrumbs: Array<DriveBreadcrumb> = [{ name: "My Drive", label: "My Drive" }];
   @Input() next: string;
+  @Input() apiUrl = '';
+  @Input() list: Array<DriveType> = [];
 
   readonly tooltip: any = Constants.tooltip;
   readonly OBJECT_TYPE = driveConstants.OBJECT_TYPE;
-  data$: Observable<any>;
+  // data$: Observable<any>;
   files: any = [];
+  loading = false;
+  loaded = true;
 
   menuActions = [
     {
@@ -69,16 +71,36 @@ export class DriveContainerComponent implements OnInit {
     private router: Router,
     private fileDriveUploadService: FileDriveUploadService,
   ) {
-    this.data$ = this.driveService.data$;
+    // this.data$ = this.driveService.data$;
   }
 
   ngOnInit() {
-
+    this.loadObjects(this.apiUrl);
   }
 
 
-  loadMoreObjects(event: any) {
-    this.driveService.loadMoreObjects();
+  async loadMoreObjects(event: any) {
+    try {
+      this.loading = true;
+      await this.driveService.loadMoreObjects();
+    } catch (err) {
+      console.warn(err);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async loadObjects(url) {
+    try {
+      this.loading = true;
+      this.loaded = false;
+      this.driveService.loadObjects(url);
+    } catch (err) {
+      console.warn(err);
+    } finally {
+      this.loading = false;
+      this.loaded = true;
+    }
   }
 
   onView(item) {
@@ -117,8 +139,19 @@ export class DriveContainerComponent implements OnInit {
     // end menu favorite
   }
 
-  onSortComplete(event: any) {
-
+  async onSortComplete({sortBy, orderBy}) {
+    console.log(sortBy, orderBy);
+    const url = `${this.apiUrl}?sort=${orderBy}&sort_name=${sortBy}`;
+    try {
+      this.loading = true;
+      this.loaded = false;
+      await this.driveService.loadObjects(url);
+    } catch (err) {
+      console.warn(err);
+    } finally {
+      this.loading = false;
+      this.loaded = true;
+    }
   }
 
   onViewComplete(event: any) {

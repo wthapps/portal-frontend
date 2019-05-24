@@ -4,8 +4,8 @@
     <z-drive-shared-breadcrumb [model]="breadcrumbs" (breadcrumbEvent)="onBreadcrumbEvent($event)">
     </z-drive-shared-breadcrumb>
   </w-dataView-nav>
-  <ng-container *ngIf="(data$ | async) as list; else templateloading">
-    <ng-container *ngIf="list?.length > 0; else templateNodata">
+  <ng-container *ngIf="loaded; else templateloading">
+    <ng-container *ngIf="loaded && list?.length > 0; else templateNodata">
       <w-dataView-selected *ngIf="dataView.selectedDocuments?.length" [selectedObjects]="dataView.selectedDocuments"
         (clear)="dataView.container.clearSelection()">
         <ul class="nav-selection-actions">

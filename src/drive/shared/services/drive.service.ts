@@ -4,14 +4,12 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { ApiBaseService, CommonEventService } from '@shared/services';
-import DriveFile from '@shared/modules/drive/models/drive-file.model';
-import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 import { DriveStorageService } from './drive-storage.service';
 import { DriveModalService } from './drive-modal.service';
 import { DriveFolderService } from './drive-folder.service';
+import { DriveType } from '../config/drive-constants';
 
 
-export type DriveType = DriveFile | DriveFolder;
 @Injectable()
 export class DriveService {
   viewMode$: Observable<string>;

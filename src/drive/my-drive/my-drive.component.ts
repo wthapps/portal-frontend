@@ -15,7 +15,7 @@ import DriveFile from '@shared/modules/drive/models/drive-file.model';
 export class MyDriveComponent implements OnInit {
   @HostBinding('class') class = 'main-page-body';
   data$: Observable<Array<DriveFolder | DriveFile>>;
-  next: string;
+  readonly apiUrl = 'drive/drive';
 
   constructor(
     private driveService: DriveService,
@@ -25,7 +25,6 @@ export class MyDriveComponent implements OnInit {
 
   ngOnInit(): void {
     this.driveService.resetCurrentFolder();
-    this.loadObjects();
     this.fileDriveUploadService.onDone.subscribe(res => {
       this.driveService.appendData([DriveFile.from(res)]);
     });
@@ -34,7 +33,4 @@ export class MyDriveComponent implements OnInit {
     });
   }
 
-  loadObjects() {
-    this.driveService.loadObjects('drive/drive');
-  }
 }

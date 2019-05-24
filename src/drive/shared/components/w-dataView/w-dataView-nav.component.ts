@@ -19,11 +19,11 @@ export class WDataViewNavComponent {
 
   sortState = [
     {
-      key: 'Name',
+      key: 'name',
       value: 'Name'
     },
     {
-      key: 'created_at',
+      key: 'updated_at',
       value: 'Upload Date'
     }
   ];

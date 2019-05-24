@@ -10,8 +10,9 @@ import { CommonEventService } from '@shared/services/common-event/common-event.s
 import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { DriveFolderService } from 'drive/shared/services/drive-folder.service';
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
-import { DriveService, DriveType } from 'drive/shared/services/drive.service';
+import { DriveService } from 'drive/shared/services/drive.service';
 import { DriveStorageService } from './../../services/drive-storage.service';
+import { DriveType } from 'drive/shared/config/drive-constants';
 
 
 declare let $: any;

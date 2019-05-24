@@ -4,10 +4,9 @@ import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import DriveFile from '@shared/modules/drive/models/drive-file.model';
 import { DriveState, initDriveState } from '@shared/modules/drive/models/functions/drive-file-list';
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
-import { driveConstants } from '../config/drive-constants';
+import { driveConstants, DriveType } from '../config/drive-constants';
 import DriveUtils from '../utils/drive-utils';
 
-export type DriveType = DriveFolder | DriveFile;
 
 @Injectable()
 export class DriveStorageService {
