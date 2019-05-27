@@ -18,35 +18,29 @@
             </ng-container>
           </div>
           <div>
-            <p class="text-muted">11 days left</p>
+            <p class="text-muted"> {{ subscription?.time_left }}</p>
           </div>
 
 
         </li>
         <ng-container *ngIf="subscription?.status !== 'TRIALING'">
           <li class="list-group-item">
-  <!--          <div class="card mb20">-->
-  <!--            <div class="card-body">-->
-                <dl class="dl-horizontal-plan">
-  <!--
-                  <dt>Number of accounts:</dt>
-                  <dd>{{ editing?.accountCount + subscription?.accounts_count}}
-                    <a [routerLink]="['/admin/accounts']" href="#">Add Account</a>
-                  </dd>
-  -->
-                  <dt>Storage plan:</dt>
-                  <dd>... <a [routerLink]="['/settings/storage']" href="#">Manage</a></dd>
-                  <dt>Total billing:</dt>
-                  <dd>
-                    {{ subscription?.amount | currency }}/month
-                  </dd>
-                  <dt>Payment method:</dt>
-                  <dd>VISA <a [routerLink]="['/payment/payment_method']" href="#">Change</a></dd>
-                  <dt>Next billing date:</dt>
-                  <dd>{{ subscription?.updated_at | date: 'MMM dd yyyy' }}</dd>
-                </dl>
-  <!--            </div>-->
-  <!--          </div>-->
+            <dl class="dl-horizontal-plan">
+              <!--
+              <dt>Number of accounts:</dt>
+              <dd>{{ editing?.accountCount + subscription?.accounts_count}}
+                <a [routerLink]="['/admin/accounts']" href="#">Add Account</a>
+              </dd>
+              -->F
+              <dt>Storage plan:</dt>
+              <dd>... <a [routerLink]="['/settings/storage']" href="#">Manage</a></dd>
+              <dt>Total billing:</dt>
+              <dd> {{ subscription?.amount | currency }}/month </dd>
+              <dt>Payment method:</dt>
+              <dd>VISA <a [routerLink]="['/payment/payment_method']" href="#">Change</a></dd>
+              <dt>Next billing date:</dt>
+              <dd>{{ subscription?.ended_bc_at | date: 'MMM dd yyyy' }}</dd>
+            </dl>
           </li>
         </ng-container>
       </ul>

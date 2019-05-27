@@ -7,19 +7,25 @@ import { PaymentMethodModule } from '@account/payment/payment-method';
 import { PlanModule } from '@shared/common/plan';
 import { StorageModule } from '@shared/common/storage';
 import { SubscriptionModule } from '@shared/common/subscription';
+import { SubscriptionAlertModalComponent } from './subscription-alert-modal.component';
+import { BsModalModule } from 'ng2-bs3-modal';
 
 @NgModule({
   imports: [
+    BsModalModule,
+
     MySharedModule,
     PaymentMethodModule,
     PlanModule,
     StorageModule,
-    SubscriptionModule
+    SubscriptionModule,
+
   ],
   declarations: [
     CurrentSubscriptionComponent,
     SubscriptionUpgradeComponent,
     SubscriptionAlertComponent,
+    SubscriptionAlertModalComponent
   ]
 })
 

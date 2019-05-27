@@ -27,7 +27,7 @@
                 <a [href]="urls.myAccount + '/payment/subscription'">
                   {{ subscription?.status ==='TRIALING' ? 'TRIAL PRO' : subscription?.plan?.name }}
                 </a>
-                <small *ngIf="subscription?.status ==='TRIALING'" class="text-muted"> - 11 days left </small>
+                <small class="text-muted"> - {{ subscription?.time_left }} </small>
               </p>
               <a [href]="urls.myAccount + '/payment/subscription/upgrade'" class="btn btn-primary" *ngIf="subscription?.status ==='TRIALING'">
                 Upgrade account

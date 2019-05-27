@@ -8,6 +8,7 @@ import { PaymentMethodService } from '@account/payment/payment-method/payment-me
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { StorageService } from '@shared/common/storage';
 import { SubscriptionService } from '@shared/common/subscription/subscription.service';
+import { SubscriptionAlertModalComponent } from '@account/payment/subscription/subscription-alert-modal.component';
 
 @Component({
   selector: 'subscription-upgrade',
@@ -15,6 +16,7 @@ import { SubscriptionService } from '@shared/common/subscription/subscription.se
 })
 export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
   @ViewChild('addModal') addModal: PaymentMethodAddModalComponent;
+  @ViewChild('alertModal') alertModal: SubscriptionAlertModalComponent;
 
   submitted: boolean = false;
 
@@ -103,10 +105,11 @@ export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
       storage_id: this.selectedStorage.id,
       payment_method_id: this.paymentMethod.id
     };
+    this.alertModal.open(); return;
     this.subscriptionService.upgrade(subscription).subscribe(response => {
-      // this.gotoSubscriptionAlert(true);
+      this.gotoSubscriptionAlert(true);
     }, error => {
-      this.gotoSubscriptionAlert(false);
+      this.alertModal.open();
     });
   }
 
