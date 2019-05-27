@@ -3,16 +3,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from '@shared/services/user.service';
 
-import { MyTransactionService } from './transaction.service';
+import { TransactionService } from './transaction.service';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
 
 @Component({
-  moduleId: module.id,
-  selector: 'my-transaction-details',
-  templateUrl: 'details.component.html'
+  selector: 'my-transaction-detail',
+  templateUrl: 'transaction-detail.component.html'
 })
 
-export class MyTransactionDetailsComponent implements OnInit {
+export class TransactionDetailComponent implements OnInit {
   pageTitle: string = 'Transaction Details';
   transaction: any = {
     amount: 0,
@@ -46,7 +45,7 @@ export class MyTransactionDetailsComponent implements OnInit {
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
-              private transactionService: MyTransactionService,
+              private transactionService: TransactionService,
               private loadingService: LoadingService,
               private router: Router) {
   }
@@ -57,12 +56,11 @@ export class MyTransactionDetailsComponent implements OnInit {
       this.trans_id = params['id'];
     });
 
-    this.loadingService.start();
-    this.transactionService.detail(this.trans_id, this.userService.getSyncProfile().id).subscribe(
+    // this.loadingService.start();
+    this.transactionService.get(this.trans_id).subscribe(
       (response: any) => {
         this.transaction = response.data;
-        this.transaction.created_at = new Date(response.data.created_at);
-        this.loadingService.stop();
+        // this.loadingService.stop();
       },
       (error: any) => {
         console.log('Receipt error', error);

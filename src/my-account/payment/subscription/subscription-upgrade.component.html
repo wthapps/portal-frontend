@@ -12,31 +12,20 @@
     <div class="col-sm-5 col-sm-offset-1">
       <div class="box-panel">
         <h4 class="">1. Choose your space</h4>
-<!--        <div class="panel panel-default">-->
-<!--          <ul class="list-group">-->
-<!--            <li class="list-group-item">-->
-<!--              <p class="bold">{{ selected_plan.name }} <br>-->
-<!--                &#36;{{ selected_plan.price }}/month - Charged monthly.</p>-->
-<!--            </li>-->
-<!--            <li class="list-group-item">-->
-<!--              <p>You’ll be charged &#36;{{ selected_plan.price }} monthly including applicable taxes until you cancel your-->
-<!--                membership.-->
-<!--                Previous charges won’t be refunded when you cancel unless it’s legally required. Your payment data is-->
-<!--                encrypted and secure. All amounts shown are in USD.</p>-->
-<!--            </li>-->
-<!--          </ul>-->
-<!--        </div>-->
         <div>
           <div class="list-group-radio">
-            <div class="list-group-radio-item">
-              <p-radioButton name="group1" value="1" label="50 GB - $1/user/month" [(ngModel)]="val1"></p-radioButton>
-            </div>
-            <div class="list-group-radio-item">
-              <p-radioButton name="group1" value="2" label="200 GB - $3/user/month" [(ngModel)]="val1"></p-radioButton>
-            </div>
-            <div class="list-group-radio-item">
-              <p-radioButton name="group1" value="3" label="2 TB - $10/user/month" [(ngModel)]="val1"></p-radioButton>
-            </div>
+
+            <ng-container *ngFor="let storage of storages">
+              <div class="list-group-radio-item" [ngClass]="{'item-disabled' : storage.id < currentStorage?.id}">
+                <p-radioButton name="storageSelection"
+                               [disabled]="storage.id < currentStorage?.id"
+                               [value]="storage?.id"
+                               label="{{ storage?.name }} {{ storage?.price | currency }} per month"
+                               [(ngModel)]="selectedStorageId"
+                                (onClick)="selectStorage(storage)">
+                </p-radioButton>
+              </div>
+            </ng-container>
           </div>
         </div>
 
@@ -118,26 +107,28 @@
       <div class="card">
         <div class="card-body">
           <h3>WTH PRO</h3>
-          <h4>$3.00 per month</h4>
+          <h4> {{ selectedStorage?.price | currency }} per month </h4>
           <p>Charged monthly</p>
           <ul class="text-muted">
             <li>Full access to all WTH!Zone apps and services</li>
-            <li>10 GB of cloud storage and able to add more space</li>
+            <li> {{ selectedStorage?.name }} of cloud storage and able to add more space</li>
             <li>Can add and manage Sub Account</li>
           </ul>
           <hr class="">
           <span>
-            You'll be charged $3.00 monthly including application taxes until you cancel your subscription.
+            You'll be charged monthly including application taxes until you cancel your subscription.
             Previous charges won't be refunded when you canceled unless it's legally required.
             Your payment data is encrypted and secure. All amounts shown are in USD
             Not refunds for subscription canceled between billing cycles.
           </span>
           <p class="pt10 pb10">
-            <p-checkbox name="agreeUpgrade" value="chat"></p-checkbox>
-            I agree to the WTHApps <a href="#">Terms of Services</a> and the Automatically Renewal terms above
+            <p-checkbox [(ngModel)]="checked" binary="true"></p-checkbox>
+            I agree to the WTHApps <a [href]="termsOfServiceUrl">Terms of Services</a> and the Automatically Renewal terms above
           </p>
 
-          <button class="btn btn-block btn-primary" (click)="upgrade()"> Complete Upgrade </button>
+          <button class="btn btn-block btn-primary" (click)="upgrade()" [disabled]="!checked || !paymentMethod">
+            Complete Upgrade
+          </button>
         </div>
       </div>
     </div>

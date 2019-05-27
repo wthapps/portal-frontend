@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiBaseService, AuthService } from '@shared/services';
+import { SubscriptionService } from '@shared/common/subscription/subscription.service';
+import { StorageService } from '@shared/common/storage';
+import { PaymentMethodService } from '@account/payment/payment-method/payment-method.service';
+import { PlanService } from '@shared/common/plan';
 
 declare let moment: any;
 
 @Component({
-  moduleId: module.id,
   selector: 'current-subscription',
   templateUrl: 'current-subscription.component.html'
 })
@@ -15,20 +18,25 @@ export class CurrentSubscriptionComponent implements OnInit {
   plan: any;
   paymentMethod: any;
 
-  constructor(private authService: AuthService, private apiBaseService: ApiBaseService) {
+  constructor(
+    private authService: AuthService,
+    private subscriptionService: SubscriptionService,
+    private planService: PlanService,
+    private storageService: StorageService,
+    private paymentMethodService: PaymentMethodService,
+  ) {
 
   }
 
   ngOnInit() {
-    this.getCurrentSubscription(this.authService.user);
-    this.getCurrentPlan(this.authService.user);
-    this.getCurrentPaymentMethod(this.authService.user);
+    this.getCurrentSubscription();
+    this.getCurrentPlan();
+    this.getCurrentPaymentMethod();
   }
 
-  getCurrentSubscription(user: any) {
-    this.apiBaseService.get(`account/accounts/${user.id}/subscription`).subscribe(
-      (response: any) => {
-        this.subscription = response.data;
+  getCurrentSubscription() {
+    this.subscriptionService.getCurrent().subscribe(response => {
+        this.subscription = response.data.attributes;
         if (response.data.next_billing_date === null) {
           this.subscription.next_billing_date = moment().add(1, 'months');
         }
@@ -36,20 +44,16 @@ export class CurrentSubscriptionComponent implements OnInit {
     );
   }
 
-  getCurrentPlan(user: any) {
-    this.apiBaseService.get(`account/accounts/${user.id}/plan`).subscribe(
-      (response: any) => {
+  getCurrentPlan() {
+    this.planService.getCurrent().subscribe(response => {
         this.plan = response.data;
       }
     );
   }
 
-  getCurrentPaymentMethod(user: any) {
-    this.apiBaseService.get(`account/accounts/${user.id}/payment_method`).subscribe(
-      (response: any) => {
-        if (response && response.data && response.data.length > 0) {
-          this.paymentMethod = response.data[0];
-        }
+  getCurrentPaymentMethod() {
+    this.paymentMethodService.getCurrent().subscribe(response => {
+        this.paymentMethod = response.data;
       }
     );
   }

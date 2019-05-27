@@ -21,12 +21,19 @@
           <p class="media-heading">{{ user?.first_name }}
             {{ user?.last_name }}</p>
           <small class="text-fade">{{ user?.email }}</small>
-          <div class="navbar-nav-plan m">
-            <p class="media-heading bold">{{ user?.plan?.name }}</p>
-            <a [href]="urls.myAccount + '/payment/subscription/upgrade'" class="btn btn-primary" *ngIf="user?.plan?.is_trial">
-              <i class="fa fa-arrow-circle-up"></i> Upgrade
-            </a>
-          </div>
+          <ng-container *ngIf="user && subscription">
+            <div class="navbar-nav-plan m">
+              <p class="media-heading bold">
+                <a [href]="urls.myAccount + '/payment/subscription'">
+                  {{ subscription?.status ==='TRIALING' ? 'TRIAL PRO' : subscription?.plan?.name }}
+                </a>
+                <small *ngIf="subscription?.status ==='TRIALING'" class="text-muted"> - 11 days left </small>
+              </p>
+              <a [href]="urls.myAccount + '/payment/subscription/upgrade'" class="btn btn-primary" *ngIf="subscription?.status ==='TRIALING'">
+                Upgrade account
+              </a>
+            </div>
+          </ng-container>
         </div>
       </div>
     </li>

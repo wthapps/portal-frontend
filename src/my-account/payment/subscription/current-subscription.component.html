@@ -1,28 +1,58 @@
 <div class="box-panel">
   <h3 class="box-panel-title">Subscription</h3>
   <div class="box-panel-content">
-    <div class="card mb20">
-      <div class="card-body">
-        <dl class="dl-horizontal-plan">
-          <dt>Plan type:</dt>
-          <dd>{{ plan?.description }} <a [routerLink]="['/billing/plan']" href="#">Change</a></dd>
-          <dt>Number of accounts:</dt>
-          <dd>{{ editing?.accountCount + subscription?.accounts_count}}
-            <a [routerLink]="['/admin/accounts']" href="#">Add Account</a>
-          </dd>
-          <dt>Storage plan:</dt>
-          <dd>... <a [routerLink]="['/settings/storage']" href="#">Manage</a></dd>
-          <dt>Total billing:</dt>
-          <dd>
-            ${{ editing?.accountCount * (editing?.accountPrice | number) + (subscription?.amount | number) }}/month
-          </dd>
-          <dt>Payment method:</dt>
-          <dd>VISA <a [routerLink]="['/payment/payment_method']" href="#">Change</a></dd>
-          <dt>Next billing date:</dt>
-          <dd>{{ subscription?.next_billing_date | date: 'MMM dd yyyy' }}</dd>
-        </dl>
-      </div>
+
+    <div class="panel panel-default">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="clearfix">
+            <div class="pull-left">
+              <h4>PRO</h4>
+            </div>
+            <ng-container *ngIf="subscription?.status === 'TRIALING'">
+              <div class="pull-right">
+                <button class="btn btn-primary" (click)="upgrade()">
+                  Upgrade account
+                </button>
+              </div>
+            </ng-container>
+          </div>
+          <div>
+            <p class="text-muted">11 days left</p>
+          </div>
+
+
+        </li>
+        <ng-container *ngIf="subscription?.status !== 'TRIALING'">
+          <li class="list-group-item">
+  <!--          <div class="card mb20">-->
+  <!--            <div class="card-body">-->
+                <dl class="dl-horizontal-plan">
+  <!--
+                  <dt>Number of accounts:</dt>
+                  <dd>{{ editing?.accountCount + subscription?.accounts_count}}
+                    <a [routerLink]="['/admin/accounts']" href="#">Add Account</a>
+                  </dd>
+  -->
+                  <dt>Storage plan:</dt>
+                  <dd>... <a [routerLink]="['/settings/storage']" href="#">Manage</a></dd>
+                  <dt>Total billing:</dt>
+                  <dd>
+                    {{ subscription?.amount | currency }}/month
+                  </dd>
+                  <dt>Payment method:</dt>
+                  <dd>VISA <a [routerLink]="['/payment/payment_method']" href="#">Change</a></dd>
+                  <dt>Next billing date:</dt>
+                  <dd>{{ subscription?.updated_at | date: 'MMM dd yyyy' }}</dd>
+                </dl>
+  <!--            </div>-->
+  <!--          </div>-->
+          </li>
+        </ng-container>
+      </ul>
     </div>
+
+
     <p>Subscription fees are billed at the beginning of each month and may take a few days for the billing date to appear on your account.</p>
     <button class="btn btn-outline-default" type="button">Cancel Subscription</button>
   </div>
