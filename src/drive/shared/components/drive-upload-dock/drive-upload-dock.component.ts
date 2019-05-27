@@ -110,5 +110,11 @@ export class DriveUploadDockComponent implements OnInit {
 
   close(event: any) {
     this.modalDock.close();
+    const cancelableFiles = this.files.filter(f => {
+      return f._metadata.cancelable;
+    });
+    cancelableFiles.forEach(f => {
+      this.fileDriveUploadService.abortMultipartUploadS3(f);
+    });
   }
 }

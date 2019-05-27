@@ -47,7 +47,6 @@ export class FileDriveUploadService {
 
   upload(files: any) {
     this.beforeUpload(files);
-    this.onStart.emit(this.files);
     this.files.forEach(f => {
       const sizePolicy = new SizePolicy(500);
       sizePolicy.validate(f.data);
@@ -64,6 +63,7 @@ export class FileDriveUploadService {
         payload: filesNotAllow
       });
     } else {
+      this.onStart.emit(this.files);
       const filesAllow = this.files.filter(f => {
         if (f.allow === false) {
           return false;
@@ -132,7 +132,7 @@ export class FileDriveUploadService {
         const uploadParts = [];
         file.key = res.data.key;
         reader.addEventListener("load", (event: any) => {
-          const step = 50 * 1000 * 1000; // 50MB
+          const step = 10 * 1000 * 1000; // 50MB
           // const step = 32428800;
           // Single uploading
           if (event.total < step) {
@@ -212,6 +212,8 @@ export class FileDriveUploadService {
           }
         }, false);
         reader.readAsBinaryString(file.data);
+      }, err => {
+        this.onError.emit(file);
       });
   }
 
