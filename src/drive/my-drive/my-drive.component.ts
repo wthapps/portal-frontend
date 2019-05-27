@@ -1,11 +1,12 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
 import { DriveService } from 'drive/shared/services/drive.service';
 import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
-import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 import DriveFile from '@shared/modules/drive/models/drive-file.model';
+import { DriveContainerComponent } from 'drive/shared/containers/drive-container.component';
+import { DriveType } from 'drive/shared/config/drive-constants';
 
 @Component({
   selector: 'my-drive-list',
@@ -14,8 +15,9 @@ import DriveFile from '@shared/modules/drive/models/drive-file.model';
 })
 export class MyDriveComponent implements OnInit {
   @HostBinding('class') class = 'main-page-body';
-  data$: Observable<Array<DriveFolder | DriveFile>>;
-  next: string;
+  @ViewChild(DriveContainerComponent) container: DriveContainerComponent;
+  data$: Observable<Array<DriveType>>;
+  readonly apiUrl = 'drive/drive';
 
   constructor(
     private driveService: DriveService,
@@ -25,16 +27,14 @@ export class MyDriveComponent implements OnInit {
 
   ngOnInit(): void {
     this.driveService.resetCurrentFolder();
-    this.loadObjects();
+    this.container.loadObjects(this.apiUrl);
     this.fileDriveUploadService.onDone.subscribe(res => {
-      this.driveService.appendData([DriveFile.from(res)]);
+      // this.driveService.appendData([DriveFile.from(res)]);
+      this.driveService.addOne(res);
     });
     this.fileDriveUploadService.onChange.subscribe(event => {
       this.fileDriveUploadService.upload(event.target.files);
     });
   }
 
-  loadObjects() {
-    this.driveService.loadObjects('drive/drive');
-  }
 }

@@ -13,17 +13,19 @@ export class WDataViewNavComponent {
   @HostBinding('class') class = 'objects-main-nav';
   @Input() sliderView;
   @Input() showViewMode;
+  @Input() sortBy = 'updated_at';
+  @Input() orderBy = 'asc';
   @Output() sliderViewCompleted: EventEmitter<number> = new EventEmitter<number>();
   @Output() sortComplete: EventEmitter<SortDataView> = new EventEmitter<SortDataView>(null);
   @Output() viewComplete: EventEmitter<string> = new EventEmitter<string>(null);
 
   sortState = [
     {
-      key: 'Name',
+      key: 'name',
       value: 'Name'
     },
     {
-      key: 'created_at',
+      key: 'updated_at',
       value: 'Upload Date'
     }
   ];
@@ -41,8 +43,6 @@ export class WDataViewNavComponent {
     }
   ];
 
-  sortBy = 'Name';
-  orderBy = 'asc';
 
   viewBy = 'grid';
 

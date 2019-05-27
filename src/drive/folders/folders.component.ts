@@ -1,6 +1,6 @@
-import { Component, HostBinding, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostBinding, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 
 import { DriveService } from './../shared/services/drive.service';
@@ -9,6 +9,8 @@ import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 import { DriveFolderService } from 'drive/shared/services/drive-folder.service';
 import { DriveStorageService } from 'drive/shared/services/drive-storage.service';
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
+import { DriveContainerComponent } from 'drive/shared/containers/drive-container.component';
+import { DriveType } from 'drive/shared/config/drive-constants';
 
 const PAGES = {
   MY_DRIVE: 'MY_DRIVE',
@@ -20,6 +22,8 @@ const PAGES = {
   templateUrl: './folders.component.html'
 })
 export class DriveFolderListComponent implements OnInit, OnDestroy {
+  @HostBinding('class') class = 'main-page-body';
+  @ViewChild(DriveContainerComponent) container: DriveContainerComponent;
   currentPath: string;
   breadcrumbs: DriveBreadcrumb[] = [];
   initRoute = '/';
@@ -30,7 +34,7 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
     label: 'My notes',
     routerLink: '/'
   };
-  @HostBinding('class') class = 'main-page-body';
+  data$: Observable<Array<DriveType>>;
 
   private destroySubject: Subject<any> = new Subject();
 
@@ -45,6 +49,7 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
+    this.data$ = this.driveService.data$;
     // Update breadcrumbs in case current folder get updated
     this.driveStorage.currentFolder$.pipe(
       filter(f => !!f ),
@@ -97,7 +102,7 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
       }
 
       ( async() => {
-        await this.driveService.loadObjects(this.currentUrl);
+        await this.container.loadObjects(this.currentUrl);
         const folderPath = await this.getFolderPath({id, page: this.currentPath});
         this.driveService.currentFolder = [...folderPath].pop();
       }) ();

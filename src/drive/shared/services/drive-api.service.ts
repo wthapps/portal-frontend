@@ -2,13 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import DriveFile from '@shared/modules/drive/models/drive-file.model';
-import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 import { BaseEntityService, ApiBaseService } from '@shared/services';
 import DriveUtils from '../utils/drive-utils';
+import { DriveType } from '../config/drive-constants';
 
-
-export type DriveType = DriveFolder | DriveFile;
 
 @Injectable()
 export class DriveApiService  extends BaseEntityService<any> {
