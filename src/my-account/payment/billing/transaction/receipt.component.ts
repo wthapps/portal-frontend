@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { MyTransactionService } from './transaction.service';
+import { TransactionService } from './transaction.service';
 import { UserService } from '@wth/shared/services/user.service';
 import { LoadingService } from '@wth/shared/shared/components/loading/loading.service';
 
@@ -46,7 +46,7 @@ export class MyReceiptComponent implements OnInit {
 
   constructor(private userService: UserService,
               private route: ActivatedRoute,
-              private transactionService: MyTransactionService,
+              private transactionService: TransactionService,
               private loadingService: LoadingService,
               private _el: ElementRef) {
   }
@@ -58,7 +58,7 @@ export class MyReceiptComponent implements OnInit {
     );
 
     this.loadingService.start();
-    this.transactionService.detail(this.trans_id, this.userService.getSyncProfile().id).subscribe(
+    this.transactionService.get(this.trans_id).subscribe(
       (response: any) => {
         this.transaction = response.data;
         this.transaction.created_at = new Date(response.data.created_at);

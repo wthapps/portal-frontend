@@ -8,7 +8,7 @@ import { MyPaymentComponent } from './payment.component';
 import { PaymentMethodModule } from './payment-method';
 import { BillingModule } from './billing';
 import { UpgradeModule } from './upgrade';
-import { SubscriptionModule } from './subscription';
+import { MySubscriptionModule } from './subscription';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { SubscriptionModule } from './subscription';
     MySharedModule,
     PaymentMethodModule,
     UpgradeModule,
-    SubscriptionModule,
+    MySubscriptionModule,
     BillingModule
   ],
   declarations: [

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { MySharedModule } from '@account/shared/shared.module';
 import { BillingListComponent } from '@account/payment/billing/billing-list.component';
-import { MyTransactionDetailsComponent } from '@account/payment/billing/transaction/details.component';
+import { TransactionDetailComponent } from '@account/payment/billing/transaction/transaction-detail.component';
 import { MyReceiptComponent } from '@account/payment/billing/transaction/receipt.component';
-import { MyTransactionService } from '@account/payment/billing/transaction/transaction.service';
+import { TransactionService } from './transaction/transaction.service';
 
 
 @NgModule({
@@ -12,14 +12,15 @@ import { MyTransactionService } from '@account/payment/billing/transaction/trans
   ],
   declarations: [
     BillingListComponent,
-    MyTransactionDetailsComponent,
+    TransactionDetailComponent,
     MyReceiptComponent
   ],
   exports: [
-    BillingListComponent
+    BillingListComponent,
+    TransactionDetailComponent
   ],
   providers: [
-    MyTransactionService
+    TransactionService
   ]
 })
 

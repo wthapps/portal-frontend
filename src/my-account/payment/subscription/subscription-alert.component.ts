@@ -4,9 +4,6 @@ import { ApiBaseService } from '@shared/services';
 import { ActivatedRoute } from '@angular/router';
 import { Constants } from '@shared/constant';
 
-/**
- * This class represents the lazy loaded AboutComponent.
- */
 @Component({
   selector: 'subscription-alert',
   templateUrl: 'subscription-alert.component.html',

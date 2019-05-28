@@ -1,5 +1,5 @@
 <div class="box-panel">
-  <h3 class="box-panel-title">Billing history</h3>
+  <h3 class="box-panel-title">Transaction details</h3>
   <div class="card">
     <div class="card-body">
       <h3>Transaction {{ trans_id }}</h3>
@@ -13,34 +13,30 @@
         <dt>Description</dt>
         <dd>---------</dd>
         <dt>Amount</dt>
-        <dd>{{ transaction.amount }} {{ transaction.currency_iso_code }}</dd>
+        <dd>{{ transaction.amount | currency }} </dd>
       </dl>
       <hr class="card-line">
       <h4>Payment Method</h4>
       <dl class="dl-horizontal">
-        <dt>Payment Type</dt>
-        <dd>{{ transaction.payment_instrument_type.replace('_', ' ') }}</dd>
-        <dt>Card Holder Name</dt>
-        <dd>{{ transaction.credit_card.cardholder_name }}</dd>
         <dt>Card Type</dt>
-        <dd>{{ transaction.credit_card.card_type }}</dd>
+        <dd>{{ transaction?.subscription_json?.payment_method?.card_type }}</dd>
         <dt>Card Ending With</dt>
-        <dd>xxxx-xxxx-xxxx-{{ transaction.credit_card.last_4 }}</dd>
+        <dd>xxxx-xxxx-xxxx-{{ transaction?.subscription_json?.payment_method?.last_4 }}</dd>
         <dt>Expiration</dt>
-        <dd>---------</dd>
+        <dd> {{ transaction?.subscription_json?.payment_method?.expiration_month }}/{{ transaction?.subscription_json?.payment_method?.expiration_year }}</dd>
       </dl>
       <hr class="card-line">
       <h4>Billing Information</h4>
       <dl class="dl-horizontal">
         <dt>Name</dt>
-        <dd>{{ transaction.customer.first_name }} {{ transaction.customer.last_name }}</dd>
+        <dd>{{ transaction?.subscription_json?.user?.first_name }} {{ transaction?.subscription_json?.user?.last_name }}</dd>
         <dt>Email</dt>
-        <dd>{{ transaction.customer.email }}</dd>
+        <dd>{{ transaction?.subscription_json?.user?.email }}</dd>
       </dl>
     </div>
   </div>
   <div class="mt20 mb20">
-    <a [routerLink]="['/billing/history']" class="btn btn-outline-default mr10" href="#">Back</a>
+    <a [routerLink]="['/payment/billings']" class="btn btn-outline-default mr10" href="#">Back</a>
     <a (click)="viewReceipt($event)" class="btn btn-outline-default" href="#"><i class="fa fa-print"></i> Print</a>
   </div>
 </div>

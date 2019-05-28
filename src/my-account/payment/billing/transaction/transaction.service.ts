@@ -2,17 +2,19 @@ import { Injectable } from '@angular/core';
 import { ApiBaseService } from '@shared/services/apibase.service';
 
 @Injectable()
-export class MyTransactionService {
+export class TransactionService {
+
+  path = 'account/payment/transactions';
 
   constructor(private apiBaseService: ApiBaseService) {
   }
 
-  list(idUser: any): any {
-    return this.apiBaseService.get(`users/${idUser}/transactions`);
+  getAll(): any {
+    return this.apiBaseService.get(`${this.path}`);
   }
 
-  detail(id: any, idUser: any): any {
-    return this.apiBaseService.get(`users/${idUser}/transactions/${id}`);
+  get(id: string): any {
+    return this.apiBaseService.get(`${this.path}/${id}`);
   }
 }
 
