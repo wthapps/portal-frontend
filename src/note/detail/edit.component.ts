@@ -1039,7 +1039,7 @@ export class ZNoteDetailEditComponent
 
   initForm(data?: Note) {
     this.form = this.fb.group({
-      name: [_.get(data, 'name', '')],
+      name: [_.get(data, 'name', 'Untitled')],
       tags: [_.get(data, 'tags', [])],
       attachments: [_.get(data, 'attachments', [])]
     });
