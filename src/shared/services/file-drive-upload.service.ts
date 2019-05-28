@@ -6,6 +6,8 @@ import { environment } from "@env/environment";
 import { FileUtil } from "@shared/shared/utils/file/file.util";
 import { SizePolicy } from "@shared/policies/size-policy";
 import { CommonEventService } from "./common-event/common-event.service";
+import { UserService } from "./user.service";
+import { AuthService } from "./auth.service";
 
 const uuidv1 = require('uuid/v1');
 const uuidv3 = require('uuid/v3');
@@ -28,6 +30,7 @@ export class FileDriveUploadService {
   constructor(
     private cookieService: CookieService,
     private commonEventService: CommonEventService,
+    private authService: AuthService,
     private apiBaseService: ApiBaseService) {
 
   }
@@ -132,7 +135,7 @@ export class FileDriveUploadService {
         const uploadParts = [];
         file.key = res.data.key;
         reader.addEventListener("load", (event: any) => {
-          const step = 10 * 1000 * 1000; // 50MB
+          const step = 50 * 1000 * 1000; // 50MB
           // const step = 32428800;
           // Single uploading
           if (event.total < step) {
@@ -255,15 +258,18 @@ export class FileDriveUploadService {
   }
 
   beforeUpload(files: Array<File>) {
-    this.files = Object.keys(files).map((key, index) => (
-      {
-        id: uuidv1() + uuidv3(files[key].name, uuidv1()) + '.' + FileUtil.getExtension(files[key]),
+    this.files = Object.keys(files).map((key, index) => {
+      const id = uuidv1() + uuidv3(files[key].name, uuidv1()) + '.' + FileUtil.getExtension(files[key]);
+      const file_upload_id = 'portal-frontend/users/' + this.authService.user.uuid + '/drive/' + id;
+      return {
+        id: id,
         data: files[key],
         name: files[key].name,
         type: files[key].type,
+        file_upload_id: file_upload_id,
         percent: 0, index: index, full_name: files[key].name
-      }
-    ));
+      };
+    });
   }
 
   download(file: any) {
