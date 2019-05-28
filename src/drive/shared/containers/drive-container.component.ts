@@ -9,6 +9,7 @@ import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 import { WDataViewComponent } from 'drive/shared/components/w-dataView/w-dataView.component';
 import { driveConstants, DriveType } from './../config/drive-constants';
 import { DriveStorageService } from '../services/drive-storage.service';
+import { Observable } from 'rxjs';
 
 
 
@@ -67,6 +68,8 @@ export class DriveContainerComponent implements OnInit {
     }
   ];
 
+  viewMode$: Observable<string>;
+
   constructor(
     private driveService: DriveService,
     private dataStorage: DriveStorageService,
@@ -74,6 +77,7 @@ export class DriveContainerComponent implements OnInit {
     private fileDriveUploadService: FileDriveUploadService,
   ) {
     // this.data$ = this.driveService.data$;
+    this.viewMode$ = this.driveService.viewMode$;
   }
 
   ngOnInit() {
@@ -153,7 +157,9 @@ export class DriveContainerComponent implements OnInit {
   }
 
   onViewComplete(event: any) {
-
+    this.driveService.changeView(event);
+    this.dataView.container.update();
+    this.dataView.updateView();
   }
 
   onMenuAction(action) {

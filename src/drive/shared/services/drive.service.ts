@@ -9,7 +9,7 @@ import { DriveModalService } from './drive-modal.service';
 import { DriveFolderService } from './drive-folder.service';
 import { DriveType } from '../config/drive-constants';
 
-
+const VIEW_MODE = 'drive_view_mode';
 @Injectable()
 export class DriveService {
   viewMode$: Observable<string>;
@@ -29,14 +29,14 @@ export class DriveService {
     private driveApi: DriveApiService,
     private apiBaseService: ApiBaseService) {
     this.viewMode$ = this.viewModeSubject.asObservable().pipe(distinctUntilChanged());
-    this.viewModeSubject.next(this.localStorageService.get('media_view_mode') || 'grid');
+    this.viewModeSubject.next(this.localStorageService.get(VIEW_MODE) || 'grid');
 
     this.data$ = this.dataStorage.data$;
   }
 
   changeView(view: string) {
     this.viewModeSubject.next(view);
-    this.localStorageService.set('media_view_mode', view);
+    this.localStorageService.set(VIEW_MODE, view);
   }
 
   set data(data: Array<DriveType>) {

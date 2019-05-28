@@ -29,7 +29,7 @@
           </li>
         </ul>
       </w-dataView-selected>
-      <w-dataView [data]="list" (loadMoreObjects)="loadMoreObjects($event)" (selectCompleted)="onSelectCompleted()" (dblClick)="onView($event)" viewMode="grid" sliderView="3"
+      <w-dataView [data]="list" [viewMode]="viewMode$ | async" (loadMoreObjects)="loadMoreObjects($event)" (selectCompleted)="onSelectCompleted()" (dblClick)="onView($event)" viewMode="grid" sliderView="3"
         #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">
