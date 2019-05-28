@@ -18,7 +18,6 @@ import { MySettingComponent } from './setting.component';
         component: MySettingComponent,
         canActivate: [AuthGuard],
         children: [
-          { path: 'storage', component: MyStorageComponent },
           { path: 'preferences', component: MyPreferencesComponent },
           { path: 'account', component: MyAccountComponent },
           { path: 'profile', component: MyProfileComponent },

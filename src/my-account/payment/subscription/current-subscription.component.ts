@@ -4,6 +4,7 @@ import { SubscriptionService } from '@shared/common/subscription/subscription.se
 import { StorageService } from '@shared/common/storage';
 import { PaymentMethodService } from '@account/payment/payment-method/payment-method.service';
 import { PlanService } from '@shared/common/plan';
+import { Router } from '@angular/router';
 
 declare let moment: any;
 
@@ -19,6 +20,7 @@ export class CurrentSubscriptionComponent implements OnInit {
   paymentMethod: any;
 
   constructor(
+    private router: Router,
     private authService: AuthService,
     private subscriptionService: SubscriptionService,
     private planService: PlanService,
@@ -44,6 +46,14 @@ export class CurrentSubscriptionComponent implements OnInit {
     );
   }
 
+  upgrade() {
+    this.router.navigate(['payment/subscription/upgrade']);
+  }
+
+  cancelSubscription() {
+
+  }
+
   getCurrentPlan() {
     this.planService.getCurrent().subscribe(response => {
         this.plan = response.data;
@@ -56,6 +66,14 @@ export class CurrentSubscriptionComponent implements OnInit {
         this.paymentMethod = response.data;
       }
     );
+  }
+
+  viewStorageDetail() {
+
+  }
+
+  upgradeStorage() {
+
   }
 
 }
