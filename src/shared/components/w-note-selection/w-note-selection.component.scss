@@ -43,6 +43,7 @@
     }
     .item-media-name {
       @include flex(1);
+      @include text-overflow;
     }
     .item-note-owner, .item-note-date {
       width: 110px;
