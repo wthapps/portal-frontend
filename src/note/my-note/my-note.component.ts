@@ -19,14 +19,14 @@ export class ZNoteMyNoteComponent implements OnInit {
 
   constructor(
     private store: Store<any>
-  ) {}
+  ) { }
   ngOnInit() {
     this.store.dispatch({ type: note.LOAD, payload: { parent_id: null } });
     this.store.dispatch({
       type: context.SET_CONTEXT,
       payload: {
         page: this.noteConstants.PAGE_MY_NOTE,
-        pathTitle: 'My Notes',
+        pathTitle: 'My notes',
         permissions: this.noteConstants.PAGE_PERMISSIONS.MY_NOTE,
         noData: this.noteConstants.NO_DATA.MY_NOTE
       }
