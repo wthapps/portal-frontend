@@ -134,6 +134,7 @@ export class FileDriveUploadService {
         let partNum = 0;
         const uploadParts = [];
         file.key = res.data.key;
+        file.owner = res.data.owner;
         reader.addEventListener("load", (event: any) => {
           const step = 50 * 1000 * 1000; // 50MB
           // const step = 32428800;

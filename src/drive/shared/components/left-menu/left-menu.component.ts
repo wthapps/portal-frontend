@@ -125,7 +125,7 @@ export class ZDriveSharedLeftMenuComponent implements OnInit, OnDestroy {
     this.destroySubject.complete();
   }
 
-  onpenFileUpload() {
+  onOpenFileUpload() {
     this.fileDriveUploadService.open();
   }
 

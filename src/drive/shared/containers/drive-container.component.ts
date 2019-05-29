@@ -28,7 +28,7 @@ export class DriveContainerComponent implements OnInit {
   readonly tooltip: any = Constants.tooltip;
   readonly OBJECT_TYPE = driveConstants.OBJECT_TYPE;
   sortBy = 'updated_at';
-  orderBy: 'asc' | 'desc' = 'asc';
+  orderBy: 'asc' | 'desc' = 'desc';
   files: any = [];
   loaded = true;
 

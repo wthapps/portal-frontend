@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, EventEmitter, Output, OnInit } from '@angular/core';
 import { DriveBreadcrumb } from './breadcrumb';
 import { Router } from '@angular/router';
+import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 
 @Component({
   selector: 'z-drive-shared-breadcrumb',
@@ -19,7 +20,9 @@ export class ZDriveharedBreadcrumbComponent implements OnInit, OnDestroy {
 
   @Input() permissions: any;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+    private fileDriveUploadService: FileDriveUploadService
+    ) {
   }
 
   ngOnInit() {
@@ -46,6 +49,10 @@ export class ZDriveharedBreadcrumbComponent implements OnInit, OnDestroy {
 
   onMenu(event: string) {
     this.breadcrumbEvent.emit(event);
+  }
+
+  onOpenFileUpload() {
+    this.fileDriveUploadService.open();
   }
 
   ngOnDestroy() {

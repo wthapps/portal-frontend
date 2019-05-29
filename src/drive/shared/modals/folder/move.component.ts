@@ -7,6 +7,8 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { Note } from '@shared/shared/models/note.model';
+import { filter } from 'rxjs/operators';
+import { DriveModalService } from 'drive/shared/services/drive-modal.service';
 
 declare var $: any;
 declare var _: any;
@@ -30,21 +32,29 @@ export class ZDriveSharedModalFolderMoveComponent implements OnInit {
   folder: any = null;
   currentFolder: any = null;
   selectedObjects: any = [];
+  private readonly apiUrl = `drive/folders`;
 
   constructor(private fb: FormBuilder,
               private commonEventService: CommonEventService,
+              private modalService: DriveModalService,
               private apiBaseService: ApiBaseService) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
     });
 
     this.name = this.form.controls['name'];
+
+    this.modalService.modalEvent$.pipe(
+      filter(event => event.action === 'drive:folder:move')
+    ).subscribe(({payload}) => {
+      this.open();
+    });
   }
 
   ngOnInit(): void {
-    this.apiBaseService.get(`note/folders`).subscribe((event: any) => {
-      for (let folder of event.data) {
-        if (this.folder && this.folder.id == folder.id) {
+    this.apiBaseService.get(this.apiUrl).subscribe((event: any) => {
+      for (const folder of event.data) {
+        if (this.folder && this.folder.id === folder.id) {
           continue;
         } else {
           folder.label = folder.name;
@@ -55,17 +65,6 @@ export class ZDriveSharedModalFolderMoveComponent implements OnInit {
         }
       }
     });
-
-
-    // this.store.select(fromRoot.getCurrentFolder).subscribe(
-    //   res => {
-    //     if (res) {
-    //       this.nextFolder(res, false);
-    //     } else {
-    //       this.initialMenu();
-    //     }
-    //   }
-    // );
   }
 
   open() {
@@ -76,12 +75,12 @@ export class ZDriveSharedModalFolderMoveComponent implements OnInit {
   loadMenu(event: any) {
     event.originalEvent.stopPropagation();
 
-    let htmlTarget: any = event.originalEvent.target;
+    const htmlTarget: any = event.originalEvent.target;
     if ($(htmlTarget).hasClass('fa-caret-right') || $(htmlTarget).hasClass('fa-caret-down')) {
       if (event.item.expanded) {
-        this.apiBaseService.get(`note/folders/${event.item.id}`).subscribe((res: any) => {
+        this.apiBaseService.get(`${this.apiUrl}/${event.item.id}`).subscribe((res: any) => {
           event.item.items.length = 0;
-          for (let folder of res.data) {
+          for (const folder of res.data) {
             folder.label = folder.name;
             folder.icon = 'fa-folder-o';
             folder.styleClass = `js-note-folders-tree-${folder.id}`;
@@ -101,14 +100,14 @@ export class ZDriveSharedModalFolderMoveComponent implements OnInit {
   }
 
   nextFolder(item: any, setFolder: boolean = true) {
-    if(setFolder) {
-      if(this.selectedObjects[0].parent_id == item.id) {
+    if (setFolder) {
+      if (this.selectedObjects[0].parent_id === item.id) {
         this.folder = null;
       } else {
         this.folder = item;
       }
     }
-    this.apiBaseService.get(`note/folders/${item.id}`).subscribe(
+    this.apiBaseService.get(`${this.apiUrl}/${item.id}`).subscribe(
       (res: any) => {
         this.rootFolder = res.parent;
         this.listFolder = res.data;
@@ -116,14 +115,14 @@ export class ZDriveSharedModalFolderMoveComponent implements OnInit {
   }
 
   prevFolder(item: any) {
-    if(this.selectedObjects[0].parent_id == item.id) {
+    if (this.selectedObjects[0].parent_id === item.id) {
       this.folder = null;
     } else {
       this.folder = item;
     }
 
     if (item.parent_id) {
-      this.apiBaseService.get(`note/folders/${item.parent_id}`).subscribe(
+      this.apiBaseService.get(`${this.apiUrl}/${item.parent_id}`).subscribe(
         (res: any) => {
           this.rootFolder = res.parent;
           this.listFolder = res.data;
@@ -135,7 +134,7 @@ export class ZDriveSharedModalFolderMoveComponent implements OnInit {
   }
 
   initialMenu() {
-    this.apiBaseService.get(`note/folders`).subscribe(
+    this.apiBaseService.get(this.apiUrl).subscribe(
       (res: any) => {
         this.rootFolder = null;
         this.listFolder = res.data;
@@ -143,7 +142,7 @@ export class ZDriveSharedModalFolderMoveComponent implements OnInit {
   }
 
   chooseFolder(item: any) {
-    if(this.selectedObjects[0].parent_id == item.id) {
+    if (this.selectedObjects[0].parent_id === item.id) {
       this.folder = null;
     } else {
       this.folder = item;

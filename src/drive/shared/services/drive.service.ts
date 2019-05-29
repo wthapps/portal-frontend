@@ -103,6 +103,12 @@ export class DriveService {
     this.updateOne(res.data);
   }
 
+  async moveFolder(payload) {
+    const res = await this.driveApi.update(payload).toPromise();
+    console.log('res: ', res);
+    this.dataStorage.deleteData(res.data);
+  }
+
   loadMoreObjects() {
     if (this.nextUrl) {
       this.apiBaseService.get(this.nextUrl).toPromise().then(res => {

@@ -11,6 +11,7 @@ import { DriveStorageService } from 'drive/shared/services/drive-storage.service
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 import { DriveContainerComponent } from 'drive/shared/containers/drive-container.component';
 import { DriveType } from 'drive/shared/config/drive-constants';
+import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 
 const PAGES = {
   MY_DRIVE: 'MY_DRIVE',
@@ -43,6 +44,7 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
     private driveService: DriveService,
     private driveStorage: DriveStorageService,
     private folderService: DriveFolderService,
+    private fileDriveUploadService: FileDriveUploadService,
     private urlService: UrlService,
     ) {
       this.breadcrumbs = [this.breadcrumbsInit];
@@ -59,6 +61,19 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
       this.breadcrumbs.push(this.mapBreadcrumbItem(folder));
     }
     );
+
+
+    // Upload files with parent_id
+    this.fileDriveUploadService.onDone.pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe(res => {
+      this.driveService.addOne(res);
+    });
+    this.fileDriveUploadService.onChange.pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe(event => {
+      this.fileDriveUploadService.upload(event.target.files, {parent_id: this.route.snapshot.paramMap.get('id')});
+    });
 
     this.route.params.forEach((params: Params) => {
       const urlData = this.urlService.parse();
@@ -100,6 +115,7 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
           };
         }
       }
+
 
       ( async() => {
         await this.container.loadObjects(this.currentUrl);
