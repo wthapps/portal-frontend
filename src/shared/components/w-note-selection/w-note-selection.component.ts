@@ -129,7 +129,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   }
 
   onSelectCompleted(objects: Array<any>) {
-    this.selectedObjects = objects.filter(object => object.object_type !== 'Note::Folder');
+    this.selectedObjects = this.dataView.selectedObjects.filter(object => object.object_type !== 'Note::Folder');
   }
 
   onSearchEnter(event: any) {
