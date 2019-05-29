@@ -14,7 +14,7 @@ export class ConstantsBase {
   };
   cdn: any = Config.CDN;
   googleAnalyticsId = Config.GOOGLE_ANALYTICS_ID;
-  currentVersion = '2018 WTHApps - v1.13.0';
+  currentVersion = '2018 WTHApps - v1.14.0';
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
