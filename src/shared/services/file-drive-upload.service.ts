@@ -48,8 +48,8 @@ export class FileDriveUploadService {
     this.input.click();
   }
 
-  upload(files: any) {
-    this.beforeUpload(files);
+  upload(files: any, options: any = {}) {
+    this.beforeUpload(files, options);
     this.files.forEach(f => {
       const sizePolicy = new SizePolicy(500);
       sizePolicy.validate(f.data);
@@ -128,7 +128,7 @@ export class FileDriveUploadService {
 
   uploadS3(file: any) {
     this.apiBaseService.post('drive/files/create_metadata',
-      { name: file.name, file_upload_id: file.id, type: file.type }).subscribe(res => {
+      { name: file.name, file_upload_id: file.id, type: file.type, parent_id: file.parent_id }).subscribe(res => {
         this.createS3instane(res);
         const reader = new FileReader();
         let partNum = 0;
@@ -257,7 +257,7 @@ export class FileDriveUploadService {
     request.send(form);
   }
 
-  beforeUpload(files: Array<File>) {
+  beforeUpload(files: Array<File>, options: any) {
     this.files = Object.keys(files).map((key, index) => {
       const id = uuidv1() + uuidv3(files[key].name, uuidv1()) + '.' + FileUtil.getExtension(files[key]);
       const file_upload_id = 'portal-frontend/users/' + this.authService.user.uuid + '/drive/' + id;
@@ -267,6 +267,7 @@ export class FileDriveUploadService {
         name: files[key].name,
         type: files[key].type,
         file_upload_id: file_upload_id,
+        parent_id: options.parent_id,
         percent: 0, index: index, full_name: files[key].name
       };
     });
