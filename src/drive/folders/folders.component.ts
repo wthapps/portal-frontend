@@ -67,11 +67,13 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
     this.fileDriveUploadService.onDone.pipe(
       takeUntil(this.destroySubject)
     ).subscribe(res => {
+      // TODO: Skip addOne action if current page is not MY DRIVE
       this.driveService.addOne(res);
     });
     this.fileDriveUploadService.onChange.pipe(
       takeUntil(this.destroySubject)
     ).subscribe(event => {
+      // TODO: set parent_id is null if current page is not MY DRive
       this.fileDriveUploadService.upload(event.target.files, {parent_id: this.route.snapshot.paramMap.get('id')});
     });
 

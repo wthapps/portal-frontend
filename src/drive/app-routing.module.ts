@@ -13,6 +13,10 @@ const routes: Routes = [
     loadChildren: './my-drive/my-drive.module#MyDriveModule'
   },
   {
+    path: 'recents',
+    loadChildren: './recents/recents.module#RecentsModule'
+  },
+  {
     path: 'folders',
     loadChildren: './folders/folders.module#DriveFolderModule'
   }

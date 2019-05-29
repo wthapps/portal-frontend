@@ -88,7 +88,7 @@ export class DriveService {
   async loadObjects(url: string) {
     const res = await this.apiBaseService.get(url).toPromise();
     this.dataStorage.data = res.data;
-    this.nextUrl = res.meta.links.next;
+    this.nextUrl = _.get(res.meta, 'links.next');
   }
 
   async createFolder(payload) {
@@ -113,7 +113,7 @@ export class DriveService {
     if (this.nextUrl) {
       this.apiBaseService.get(this.nextUrl).toPromise().then(res => {
         this.prependData(res.data);
-        this.nextUrl = res.meta.links.next;
+        this.nextUrl = _.get(res.meta, 'links.next');
       });
     }
   }

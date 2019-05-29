@@ -76,12 +76,10 @@ export class DriveContainerComponent implements OnInit {
     private router: Router,
     private fileDriveUploadService: FileDriveUploadService,
   ) {
-    // this.data$ = this.driveService.data$;
     this.viewMode$ = this.driveService.viewMode$;
   }
 
   ngOnInit() {
-    // this.loadObjects(this.apiUrl);
     this.dataStorage.sortOption = {sortBy: this.sortBy, orderBy: this.orderBy};
   }
 
@@ -99,7 +97,7 @@ export class DriveContainerComponent implements OnInit {
       if (!url) return;
       this.loaded = false;
       const sortedUrl = this.urlWithSort({url, sortBy: this.sortBy, orderBy: this.orderBy});
-      this.driveService.loadObjects(sortedUrl);
+      await this.driveService.loadObjects(sortedUrl);
     } catch (err) {
       console.warn(err);
     } finally {
