@@ -150,7 +150,7 @@ export class FileDriveUploadService {
             };
             this.s3.putObject(params, (err, data) => {
               if (err) this.onError.emit(err); // an error occurred
-              else this.onDone.emit(file);           // successful response
+              else this.onDone.emit({ ...file, ...res.data.file });           // successful response
             });
           } else {
             // Multiple uploading
@@ -205,7 +205,7 @@ export class FileDriveUploadService {
                         if (err2) {
                           file.error = err2;
                           this.onError.emit(file);
-                        } else this.onDone.emit(file);           // successful response
+                        } else this.onDone.emit({ ...file, ...res.data.file });           // successful response
                       });
                     }
                   }
