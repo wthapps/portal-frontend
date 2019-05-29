@@ -39,6 +39,8 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
   readonly urls: any = Constants.baseUrls;
   type = 'update'; // update , connection
   notificationCount = 0;
+  subscription: any;
+  subscriptionSub: Subscription;
 
   private hiddenSubscription: Subscription;
 
@@ -91,6 +93,7 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
   ngOnDestroy(): void {
     this.channelService.unsubscribe();
     this.hiddenSubscription.unsubscribe();
+    this.subscriptionSub.unsubscribe();
   }
 
   handleOnlineOffline() {
@@ -155,7 +158,6 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
       this.websocketService.connectUserChannel(this.authService.user.uuid);
     }
   }
-
   onShowSideBar(event: Event) {
     event.preventDefault();
     event.stopPropagation();

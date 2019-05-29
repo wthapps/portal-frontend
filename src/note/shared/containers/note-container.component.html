@@ -2,67 +2,49 @@
   <w-dataView-nav [showViewMode]="true" [enableSort]="enableSort" [sortBy]="context?.sort?.field"
     [orderBy]="context?.sort?.desc ? 'desc' : 'asc'" [viewBy]="context?.viewMode"
     (sortComplete)="onSortComplete($event)" (viewComplete)="onViewComplete($event)">
-    <div *ngIf="breadcrumbs && breadcrumbs.length > 0" class="breadcrumb-wrap">
-      <ol class="breadcrumb m0 p0">
-        <ng-container *ngFor="let item of breadcrumbs; let i = index">
-          <li>
-            <ng-container *ngIf="i === breadcrumbs.length - 1;else templateBreadcrumbItem">
-              <div class="btn-group">
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                  {{ item.label }} <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                  <li>
-                    <a (click)="onBreadcrumbAction({action: 'note:open_note_add_modal', payload: {parent_id: item.id}})"
-                      href="#">
-                      <i class="icon-zone-note"></i> New note
-                    </a>
-                  </li>
-                  <li>
-                    <a (click)="onBreadcrumbAction({action: 'note:folder:create'})" href="javascript:;">
-                      <i class="fa fa-folder-o"></i> New folder
-                    </a>
-                  </li>
-                  <li role="separator" class="divider"></li>
-                  <li>
-                    <a (click)="onBreadcrumbAction({action: 'note:folder:edit', payload: item})" href="javascript:;">
-                      <i class="fa fa-pencil"></i> Edit folder
-                    </a>
-                  </li>
-                  <li>
-                    <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_sharing_modal', payload: [item]})"
-                      href="#">
-                      <i class="fa fa-share-alt"></i> Sharing
-                    </a>
-                  </li>
-                  <li>
-                    <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:delete', payload: [item]})" href="#">
-                      <i class="fa fa-trash-o"></i> Delete</a>
-                  </li>
-                  <li role="separator" class="divider"></li>
-                  <li>
-                    <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_move_to_folder_modal', payload: [item]})"
-                      href="#">Move to folder</a>
-                  </li>
-                </ul>
-              </div>
-            </ng-container>
-            <ng-template #templateBreadcrumbItem>
-              <a class="btn btn-default" href="#" [routerLink]="[item.routerLink]">
-                {{ item.label }}
-              </a>
-            </ng-template>
-          </li>
-        </ng-container>
-      </ol>
-    </div>
+
+    <w-breadcrumbs *ngIf="breadcrumbs && breadcrumbs.length > 0" [data]="breadcrumbs">
+      <ng-template #viewMenu let-item>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:open_note_add_modal', payload: {parent_id: item.id}})" href="#">
+            <i class="fa fa-sticky-note"></i> New note
+          </a>
+        </li>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:folder:create'})" href="javascript:;">
+            <i class="fa fa-folder-o"></i> New folder
+          </a>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_sharing_modal', payload: [item]})" href="#">
+            <i class="fa fa-share-alt"></i> Sharing
+          </a>
+        </li>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:delete', payload: [item]})" href="#">
+            <i class="fa fa-trash-o"></i> Delete</a>
+        </li>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_move_to_folder_modal', payload: [item]})"
+            href="#">
+            <i class="wicon-move-to-folder"></i> Move to folder
+          </a>
+        </li>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:folder:edit', payload: item})" href="javascript:;">
+            <i class="fa fa-pencil"></i> Rename
+          </a>
+        </li>
+      </ng-template>
+    </w-breadcrumbs>
 
     <div *ngIf="!breadcrumbs" class="btn-group">
       <h4 class="title can-click" data-toggle="dropdown">{{ context?.pathTitle }} <span class="caret"></span>
       </h4>
       <ul class="dropdown-menu">
         <li><a (click)="onNewNote()" href="#"><i class="fa fa-sticky-note"></i> New Note</a></li>
-        <li><a (click)="onFolder()" href="#"><i class="fa fa-folder"></i> New Folder</a></li>
+        <li><a (click)="onFolder()" href="#"><i class="fa fa-folder-o"></i> New Folder</a></li>
       </ul>
     </div>
   </w-dataView-nav>
@@ -125,9 +107,14 @@
     </ng-container>
     <ng-template #templateNodata>
       <div class="text-center">
-        <box-no-data [icon]="'fa fa-sticky-note'" [subTitle]="'There are no notes!'">
+        <<<<<<< HEAD <box-no-data [icon]="'fa fa-sticky-note'" [subTitle]="'There are no notes!'">
           Use "New" button to create new notes.
-        </box-no-data>
+          =======
+          <box-no-data [icon]="'fa fa-sticky-note'" title="There are no notes!"
+            subTitle='Use "New" button to create new notes.'>
+
+            >>>>>>> development
+          </box-no-data>
       </div>
     </ng-template>
   </ng-container>

@@ -14,7 +14,7 @@ export class PaymentMethodService extends BaseEntityService<any> {
   }
 
   getCurrent(): Observable<any> {
-    return this.apiBaseService.get(`${this.path}/current`);
+    return this.apiBaseService.get(`${this.path}/get_current`);
   }
 
   create(paymentMethod: any): Observable<any> {

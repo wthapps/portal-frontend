@@ -17,14 +17,14 @@
                    [formControl]="name"
                    class="form-control"
                    [ngClass]="{'has-no-edit': !disabled}"
-                   placeholder="Title">
+                   placeholder="Untitled">
           </div>
           <div class="visible-xs-block">
             <h4 *ngIf="note.permission !== 'view'" class="can-click"
                 (click)="modalEditName.open(form.value.name, note.permission)">
-              <span>{{note.name || 'Untitled Note'}}</span>
+              <span>{{note.name || 'Untitled'}}</span>
             </h4>
-            <h4 *ngIf="note.permission == 'view'" class="can-click"
+            <h4 *ngIf="note.permission === 'view'" class="can-click"
                 (click)="modalEditName.open(form.value.name, note.permission)">
               {{note.name}}</h4>
           </div>

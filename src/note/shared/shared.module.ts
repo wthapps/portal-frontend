@@ -25,21 +25,15 @@ import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-me
 import { ComponentsModule } from '@shared/components/components.module';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
-import { PartialModule } from './../../shared/partials/partial.module';
 
-import {
-  InputSwitchModule,
-  CheckboxModule,
-  TooltipModule,
-  RadioButtonModule,
-  AutoCompleteModule,
-  PanelMenuModule
-} from 'primeng/primeng';
+import { InputSwitchModule, CheckboxModule, TooltipModule, RadioButtonModule, AutoCompleteModule, PanelMenuModule } from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from '@shared/components/modal/modal.module';
-import { WDataViewModule } from '../../shared/components/w-dataView/w-dataView.module';
 import { WModalsModule } from '../../sample/shared/components/modals/modals.module';
 import { FolderSortPipe } from './pipes/folder-sort.pipe';
+import { WBreadcrumbsModule } from '@shared/components/w-breadcrumbs/w-breadcrumbs.module';
+import { WDataViewModule } from '@shared/components/w-dataView/w-dataView.module';
+import { PartialModule } from '@shared/partials';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -70,7 +64,8 @@ import { FolderSortPipe } from './pipes/folder-sort.pipe';
     RadioButtonModule,
     AutoCompleteModule,
     PanelMenuModule,
-    TooltipModule
+    TooltipModule,
+    WBreadcrumbsModule
   ],
   declarations: [
     ZNoteSharedActionBarComponent,

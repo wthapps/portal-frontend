@@ -18,10 +18,10 @@
         <tr>
           <td>{{ bill.created_at | date: 'MMM dd yyyy' }}</td>
           <td>---</td>
-          <td>{{ bill.amount }} {{ bill.currency_iso_code }}</td>
-          <td>{{ bill.id }}</td>
+          <td>{{ bill.amount | currency }} </td>
+          <td> <a [routerLink]="['/payment/billings/transactions', bill?.str_id]"> {{ bill.str_id }} </a></td>
           <td>
-            <a class="btn btn-outline-default" (click)="viewReceipt(bill.id, $event)">View</a>
+            <a class="btn btn-outline-default" href="javascript:void(0);" (click)="viewReceipt(bill?.str_id)">View</a>
           </td>
         </tr>
       </ng-template>

@@ -8,6 +8,7 @@ import { BillingListComponent } from '@account/payment/billing';
 import { UpgradeCompletionComponent } from '@account/payment/upgrade';
 import { SubscriptionUpgradeComponent } from './subscription/subscription-upgrade.component';
 import { SubscriptionAlertComponent } from './subscription/subscription-alert.component';
+import { TransactionDetailComponent } from '@account/payment/billing/transaction/transaction-detail.component';
 
 @NgModule({
   imports: [
@@ -20,18 +21,20 @@ import { SubscriptionAlertComponent } from './subscription/subscription-alert.co
           {
             path: 'subscription',
             component: CurrentSubscriptionComponent,
-            canActivate: [AuthGuard],
           },
           {
             path: 'payment_method',
             component: PaymentMethodListComponent,
-            canActivate: [AuthGuard]
+          },
+          {
+            path: 'billings/transactions/:id',
+            component: TransactionDetailComponent,
           },
           {
             path: 'billings',
             component: BillingListComponent,
-            canActivate: [AuthGuard]
-          }
+          },
+
         ]
       },
       {

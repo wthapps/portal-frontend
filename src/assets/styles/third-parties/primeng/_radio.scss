@@ -93,6 +93,14 @@
           border-color: $color-success;
         }
       }
+      &.ui-label-disabled {
+        &:before {
+          cursor: not-allowed;
+        }
+      }
+    }
+    &.item-disabled{
+      background: $line;
     }
   }
 }
