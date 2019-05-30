@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 
-import {Constants} from '@shared/constant/config/constants';
+import {Constants, hasEnoughPermission} from '@shared/constant/config/constants';
 import {ZNoteService} from '../services/note.service';
 import {CommonEventService} from '@shared/services/common-event/common-event.service';
 import * as note from '../actions/note';
@@ -51,7 +51,7 @@ export class ZNoteSharedActionBarComponent
   disableDropDown: any = false;
   detectMenu: any = false;
 
-  actionsMenu: any = {
+  readonly DEFAULT_ACTIONS_MENU =  {
     attachments: {
       show: true,
       needPermission: 'view',
@@ -120,7 +120,7 @@ export class ZNoteSharedActionBarComponent
     },
     copy: {
       show: true,
-      needPermission: 'edit',
+      needPermission: 'owner',
       inDropDown: true, // Inside dropdown list
       action: this.makeACopy.bind(this),
       title: 'Make copy',
@@ -143,7 +143,7 @@ export class ZNoteSharedActionBarComponent
     },
     print: {
       show: true,
-      needPermission: 'view',
+      needPermission: 'download',
       inDropDown: true, // Inside dropdown list
       action: this.print.bind(this),
       title: 'Print',
@@ -151,7 +151,7 @@ export class ZNoteSharedActionBarComponent
     },
     exportPdf: {
       show: true,
-      needPermission: 'view',
+      needPermission: 'download',
       inDropDown: true, // Inside dropdown list
       action: this.exportPdf.bind(this),
       title: 'Export as PDF',
@@ -165,6 +165,7 @@ export class ZNoteSharedActionBarComponent
       title: 'Stop Sharing'
     }
   };
+  actionsMenu: any = {...this.DEFAULT_ACTIONS_MENU};
   attactments: any;
 
   constructor(
@@ -202,8 +203,10 @@ export class ZNoteSharedActionBarComponent
     this.outEvent.emit({action: 'showComments'});
   }
 
-  validatePermission(objects) {
+  validatePermission(objects: any[]) {
     this.urls = this.urlService.parse();
+
+    this.resetActionsMenu();
     /*====================================
     [Position] validate
     ====================================*/
@@ -213,24 +216,25 @@ export class ZNoteSharedActionBarComponent
     /*====================================
     [Permission] validate
     ====================================*/
-    const permissonValidateObjects = (action, objs) => {
+    const permissonValidateObjects = (action, object) => {
       // check permission in each objects
-      objs.map((object: any) => {
-        // if permission is view turn off all acions edit
-        if (
-          object.permission === 'view' &&
-          (action.needPermission === 'edit' || action.needPermission === 'owner')
-        ) {
-          action.show = false;
-        }
-        if (object.permission === 'edit' && action.needPermission === 'owner') {
-          action.show = false;
-        }
-      });
+      if (
+        !hasEnoughPermission(object.permission, action.needPermission)
+      ) {
+        action.show = false;
+      }
+      if (object.permission === 'edit' && action.needPermission === 'owner') {
+        action.show = false;
+      }
     };
-    Object.keys(this.actionsMenu).map((action: any) =>
-      permissonValidateObjects(this.actionsMenu[action], objects)
+
+    if (objects.length === 1) {
+      Object.keys(this.actionsMenu).forEach((action: any) =>
+      permissonValidateObjects(this.actionsMenu[action], objects[0])
     );
+    } else {
+      // Not supported
+    }
 
     /*====================================
     [Path And Page] validate (shared-with-me, shared-by-me)
@@ -483,5 +487,9 @@ export class ZNoteSharedActionBarComponent
         this.validatePermission(this.selectedObjects);
         this.store.dispatch(new note.MultiNotesUpdated(res.data));
       });
+  }
+
+  private resetActionsMenu() {
+    this.actionsMenu = {...this.DEFAULT_ACTIONS_MENU};
   }
 }

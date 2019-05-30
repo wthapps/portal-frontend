@@ -11,7 +11,7 @@ import { ZNoteService } from '../services/note.service';
 import * as listReducer from '../reducers/features/list-mixed-entities';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { WDataViewComponent } from '@shared/components/w-dataView/w-dataView.component';
-import { Constants } from '@shared/constant';
+import { Constants, hasEnoughPermission } from '@shared/constant';
 import { noteConstants } from '../config/constants';
 import * as note from '../actions/note';
 import * as contextReducer from '../reducers/context';
@@ -43,70 +43,84 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
   data$: Observable<any[]>;
   context;
   next: string;
-  menuActions = {
+  readonly DEFAULT_MENU_ACTIONS = Object.freeze({
     share: {
       active: true,
+      needPermission: 'owner',
       icon: 'fa fa-share-alt',
       text: this.tooltip.share,
       action: 'share'
     },
     favorite: {
       active: true,
+      needPermission: 'view',
       icon: 'fa fa-star-o',
       text: this.tooltip.favourite,
       action: 'favorite'
     },
     delete: {
       active: true,
+      needPermission: 'view',
       icon: 'fa fa-trash-o',
       text: this.tooltip.delete,
       action: 'delete'
     }
-  };
+  });
 
-  otherActions = {
+  readonly DEFAULT_OTHER_ACTIONS = Object.freeze({
     edit: {
       active: true,
       icon: 'fa fa-pencil',
+      needPermission: 'edit',
       text: 'Edit',
       action: 'edit'
     },
     move_to_folder: {
       active: true,
+      needPermission: 'owner',
       icon: 'fa fa-download',
       text: 'Move to folder',
       action: 'move_to_folder'
     },
     make_copy: {
       active: true,
+      needPermission: 'owner',
       icon: 'fa fa-files-o',
       text: 'Make copy',
       action: 'make_copy'
     },
     find_folder: {
       active: false,
+      needPermission: 'view',
       icon: 'fa fa-map-marker',
       text: 'Go to location',
       action: 'find_folder'
     },
     divider: {
       active: false,
+      needPermission: 'download',
       divider: true,
       action: ''
     },
     print: {
       active: false,
+      needPermission: 'download',
       icon: 'fa fa-print',
       text: 'Print',
       action: 'print'
     },
     export_to_pdf: {
       active: false,
+      needPermission: 'download',
       icon: 'fa fa-cloud-download',
       text: 'Export to PDF',
       action: 'export_to_pdf'
     }
-  };
+  });
+
+  menuActions = {...this.DEFAULT_MENU_ACTIONS};
+
+  otherActions = {...this.DEFAULT_OTHER_ACTIONS};
   noOtherActions = false;
 
   private destroySubject: Subject<any> = new Subject<any>();
@@ -159,39 +173,40 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.dataView) {
       return;
     }
+    this.resetMenuActions();
     const objects: any[] = this.selectedObjects;
     const path = this.router.url;
 
     /*====================================
-    [Permission] validate
+    [Path And Page] validate (shared-with-me)
     ====================================*/
-    // const permissonValidateObjects = (action, objs) => {
-    //   // check permission in each objects
-    //   objs.map((object: any) => {
-    //     // if permission is view turn off all acions edit
-    //     if (
-    //       object.permission === 'view' &&
-    //       (action.needPermission === 'edit' || action.needPermission === 'owner')
-    //     ) {
-    //       action.active = false;
-    //     }
-    //     if (object.permission === 'edit' && action.needPermission === 'owner') {
-    //       action.active = false;
-    //     }
-    //   });
-    // };
-    // Object.keys(this.otherActions).map((action: any) =>
-    //   permissonValidateObjects(this.otherActions[action], objects)
-    // );
+    if (['/shared-with-me'].includes(path)) {
+      this.menuActions['share'].active = false;
+
+      const viewOnly = objects.some(o => o.permission === 'view');
+      if ( viewOnly ) {
+        this.hideAllOtherActions();
+      } else {
+        ['move_to_folder', 'make_copy'].forEach(k => this.otherActions[k].active = false);
+
+        if (objects.length === 1) {
+          ['print', 'export_to_pdf'].forEach(k => this.otherActions[k].active = true);
+          if ( !hasEnoughPermission(objects[0].permission, 'edit')) {
+            ['edit', 'divider'].forEach(k => this.otherActions[k].active = false);
+          } else {
+            ['edit', 'divider'].forEach(k => this.otherActions[k].active = true);
+          }
+        }
+      }
+      return;
+    }
 
 
     /*====================================
-    [Path And Page] validate (shared-with-me, shared-by-me)
+    [Path And Page] validate (recents, shared-by-me)
     ====================================*/
     if (['/recent', '/shared-by-me'].includes(path) && objects.length === 1) {
       this.otherActions['find_folder'].active = true;
-    } else {
-      this.otherActions['find_folder'].active = false;
     }
 
     /*====================================
@@ -223,12 +238,8 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     const userSet = objects.reduce((acc, obj) => acc.add(obj.user.id), new Set());
     if (userSet.size > 1) {
       this.menuActions.share.active = false;
-      Object.keys(this.otherActions).forEach(action => this.otherActions[action].active = false);
-      this.noOtherActions = true;
+      this.hideAllOtherActions();
       return;
-    } else {
-      this.menuActions.share.active = true;
-      this.noOtherActions = false;
     }
 
   }
@@ -462,6 +473,16 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
       return this.dataView.selectedObjects;
     }
     return [];
+  }
+
+  private resetMenuActions(): void {
+    this.menuActions = {...this.DEFAULT_MENU_ACTIONS};
+    this.otherActions = {...this.DEFAULT_OTHER_ACTIONS };
+    this.noOtherActions = false;
+  }
+
+  private hideAllOtherActions(): void {
+    this.noOtherActions = true;
   }
 
   private updateMenuFavorite(isFavorite: boolean) {

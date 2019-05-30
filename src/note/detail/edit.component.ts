@@ -910,6 +910,7 @@ export class ZNoteDetailEditComponent
   selectInlinePhotos4Note() {
     this.mediaSelectionService.open({
       allowSelectMultiple: true,
+      photoOnly: true,
       hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
       onBeforeUpload: (files) => {
         Object.keys(files).forEach(f_id => this.insertFakeImage(f_id));
@@ -1133,7 +1134,7 @@ export class ZNoteDetailEditComponent
   }
 
   selectPhotos() {
-    this.mediaSelectionService.open({ allowSelectMultiple: true });
+    this.mediaSelectionService.open({photoOnly: true, allowSelectMultiple: true });
 
     this.selectPhotos4Attachments();
   }
@@ -1147,6 +1148,7 @@ export class ZNoteDetailEditComponent
         this.editorElement.innerHTML !== '<p><br></p>')
     ) {
       if (!this.editorElement) {
+        this.onModalClose();
         return;
       }
 
@@ -1249,6 +1251,7 @@ export class ZNoteDetailEditComponent
   private selectPhotos4Attachments() {
     this.mediaSelectionService.open({
       allowSelectMultiple: true,
+      photoOnly: true,
       hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
       onBeforeUpload: (files) => {
         this.note.attachments.push(...Object.values(files));

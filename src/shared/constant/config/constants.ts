@@ -605,3 +605,16 @@ export const MODEL_TYPE = {
   photo: 'Media::Photo',
   video: 'Media::Video'
 };
+
+export const PERMISSION_SCORE = {
+  'view': 1,
+  'download': 2,
+  'edit': 3,
+  'full': 4,
+  'owner': 5
+};
+
+export const hasEnoughPermission = (permission: string, target: string) => {
+  return PERMISSION_SCORE[permission] >= PERMISSION_SCORE[target];
+}
+

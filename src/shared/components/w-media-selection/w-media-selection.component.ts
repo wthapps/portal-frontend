@@ -67,6 +67,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   initLoading = true;
   sortName = 'created_at';
   sortDirection = 'desc';
+  photoOnly = true;
 
   currentTab: string; // upload, photos, albums, albums_detail, favourites
   readonly tabNameMap = {
@@ -163,6 +164,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     } else {
       this.allowedFileTypes = options.allowedFileTypes;
     }
+    this.photoOnly = options.photoOnly;
     this.beforeCallBackUrl = options.beforeCallBackUrl;
     this.afterCallBackUrl = options.afterCallBackUrl;
     this.payload = options.payload;
@@ -374,17 +376,17 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   private buildNextLink() {
     let urlAPI = '';
-    console.log(this.currentTab);
+    const modelFilter = this.photoOnly ? 'model=Media::Photo' : '1=1';
 
     switch (this.currentTab) {
       case 'photos':
-        urlAPI = this.filter === 'all' ? 'media/media/index_combine?model=Media::Photo' : `media/photos?active=1`;
+        urlAPI = this.filter === 'all' ? `media/media/index_combine?${modelFilter}` : `media/photos?active=1`;
         break;
       case 'albums':
-        urlAPI = `media/albums?active=1`;
+        urlAPI = `media/albums?active=1&${modelFilter}`;
         break;
       case 'albums_detail':
-        urlAPI = this.filter === 'all' ? `media/albums/${this.mediaParent.uuid}/objects?model=Media::Album` :
+        urlAPI = this.filter === 'all' ? `media/albums/${this.mediaParent.uuid}/objects?${modelFilter}` :
           `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'favourites':
@@ -394,8 +396,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
             // tslint:disable-next-line:max-line-length
             urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Video&filter[or][object_type]=Media::Photo&filter[or][object_type]=Media::Video`;
           } else if (this.subFilter === 'album') {
-            // urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Media::Album`;
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Common::Sharing`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Common::Sharing&${modelFilter}`;
           }
         }
         if (this.filter === 'photo') {
@@ -405,15 +406,14 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
             // tslint:disable-next-line:max-line-length
             urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Photo`;
           } else if (this.subFilter === 'album') {
-            // urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Media::Album`;
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Common::Sharing`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Common::Sharing&${modelFilter}`;
           }
         }
         break;
       case 'favourites_detail':
         switch (this.mediaParent.model) {
           case 'Media::Album':
-            urlAPI = `media/albums/${this.mediaParent.uuid}/objects?model=Media::Album`;
+            urlAPI = `media/albums/${this.mediaParent.uuid}/objects?${modelFilter}`;
             break;
           case 'Common::Sharing':
             urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;
@@ -424,12 +424,12 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
         }
         break;
       case 'search':
-        urlAPI = `media/search?active=1&q=${this.searchText}&filter=${this.filter}`;
+        urlAPI = `media/search?active=1&q=${this.searchText}&filter=${this.filter}&${modelFilter}`;
         break;
       case 'search_detail':
         switch (this.mediaParent.model) {
           case 'Media::Album':
-            urlAPI = `media/media/${this.mediaParent.uuid}/objects?model=Media::Album`;
+            urlAPI = `media/media/${this.mediaParent.uuid}/objects?${modelFilter}`;
             break;
           case 'Common::Sharing':
             urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;
