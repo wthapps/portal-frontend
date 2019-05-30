@@ -9,15 +9,18 @@
             <div class="pull-left">
               <h4>PRO</h4>
             </div>
-            <ng-container *ngIf="subscription?.status === 'TRIALING'">
-              <div class="pull-right">
-                <button class="btn btn-primary" (click)="upgrade()">
+            <div class="pull-right">
+              <ng-container [ngSwitch]="subscription?.status">
+                <button *ngSwitchCase="TRIALING" class="btn btn-primary" (click)="upgradeSubscription()">
                   Upgrade account
                 </button>
-              </div>
-            </ng-container>
+                <button *ngSwitchCase="CANCELING" class="btn btn-primary" (click)="continueSubscription()">
+                  Continue subscription
+                </button>
+              </ng-container>
+            </div>
           </div>
-          <div *ngIf="subscription?.status === 'TRIALING'">
+          <div *ngIf="[TRIALING, CANCELING].includes(subscription?.status)">
             <p class="text-muted"> {{ subscription?.time_left }}</p>
           </div>
 
@@ -40,16 +43,18 @@
               <dd>{{ subscription?.ended_bc_at | date: 'MMM dd yyyy' }}</dd>
               <dt>&nbsp;</dt>
               <dd><p>Subscription fees are billed at the beginning of each month and may take a few days for the billing date to appear on your account.</p>
-                <a href="#" (click)="cancelSubscription()">Cancel Subscription</a></dd>
+                <a href="#" (click)="openCancelSubscriptionConfirmation()">Cancel Subscription</a></dd>
             </dl>
           </li>
         </ng-container>
       </ul>
     </div>
 
-    <div class="row pb30">
+    <!-- Total storage-->
+    <div class="row pb10">
       <div class="col-sm-12">
         <h3 class="mt-0">Total storage</h3>
+        <hr class="mt10">
       </div>
       <div class="col-sm-8">
 
@@ -66,5 +71,22 @@
         </a>
       </div>
     </div>
+
+    <!-- Delete account-->
+    <div class="row pb30">
+      <div class="col-sm-12">
+        <h3 class="mt-0">Delete account</h3>
+        <hr class="mt10">
+      </div>
+      <div class="col-sm-8">
+        <p>Please make sure you really want to delete your account.</p>
+        <p>We cannot restore your account once your account is deleted.</p>
+        <a class="btn btn-outline-default" (click)="viewStorageDetail()" href="#">Delete account</a>
+      </div>
+    </div>
   </div>
 </div>
+
+<subscription-cancel-modal #cancelModal (onNext)="openPasswordConfirmation($event)"></subscription-cancel-modal>
+<w-password-confirmation-modal #passwordConfirmationModal (onNext)="cancelSubscription()">
+</w-password-confirmation-modal>

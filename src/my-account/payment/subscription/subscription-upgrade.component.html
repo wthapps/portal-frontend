@@ -48,7 +48,7 @@
 
         <div class="pt20">
           <button (click)="openPaymentMethodModal()" type="button" class="btn btn-outline-default">
-            {{ mode === 'add' ? 'Add' : 'Change' }} payment method
+            {{ paymentMethod ? 'Change' : 'Add' }} payment method
           </button>
         </div>
 
