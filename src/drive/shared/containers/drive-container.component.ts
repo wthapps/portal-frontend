@@ -80,11 +80,13 @@ export class DriveContainerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataStorage.sortOption = {sortBy: this.sortBy, orderBy: this.orderBy};
+    this.dataStorage.sortOption = { sortBy: this.sortBy, orderBy: this.orderBy };
   }
 
 
   async loadMoreObjects(event: any) {
+    console.log(event);
+
     try {
       await this.driveService.loadMoreObjects();
     } catch (err) {
@@ -96,7 +98,7 @@ export class DriveContainerComponent implements OnInit {
     try {
       if (!url) return;
       this.loaded = false;
-      const sortedUrl = this.urlWithSort({url, sortBy: this.sortBy, orderBy: this.orderBy});
+      const sortedUrl = this.urlWithSort({ url, sortBy: this.sortBy, orderBy: this.orderBy });
       await this.driveService.loadObjects(sortedUrl);
     } catch (err) {
       console.warn(err);
@@ -141,9 +143,9 @@ export class DriveContainerComponent implements OnInit {
     // end menu favorite
   }
 
-  async onSortComplete({sortBy, orderBy}) {
-    this.dataStorage.sortOption = {sortBy, orderBy};
-    const url = this.urlWithSort({url: this.apiUrl, sortBy, orderBy});
+  async onSortComplete({ sortBy, orderBy }) {
+    this.dataStorage.sortOption = { sortBy, orderBy };
+    const url = this.urlWithSort({ url: this.apiUrl, sortBy, orderBy });
     try {
       this.loaded = false;
       await this.driveService.loadObjects(url);
@@ -237,7 +239,7 @@ export class DriveContainerComponent implements OnInit {
     this.fileDriveUploadService.download({});
   }
 
-  private urlWithSort({url, sortBy, orderBy}) {
+  private urlWithSort({ url, sortBy, orderBy }) {
     const sortOption = `sort=${orderBy}&sort_name=${sortBy}`;
     return url.includes('?') ? `${url}&${sortOption}` : `${url}?${sortOption}`;
   }

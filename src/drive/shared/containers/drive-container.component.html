@@ -1,6 +1,7 @@
-<div class="objects-main page-body-content" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"
-  [scrollWindow]="false" (scrolled)="loadMoreObjects($event)">
-  <w-dataView-nav [showViewMode]="true" [sortBy]="sortBy" [orderBy]="orderBy" (sortComplete)="onSortComplete($event)" (viewComplete)="onViewComplete($event)">
+<div class="objects-main" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
+  [scrollWindow]="true" (scrolled)="loadMoreObjects($event)">
+  <w-dataView-nav [showViewMode]="true" [sortBy]="sortBy" [orderBy]="orderBy" (sortComplete)="onSortComplete($event)"
+    (viewComplete)="onViewComplete($event)">
     <z-drive-shared-breadcrumb [model]="breadcrumbs" (breadcrumbEvent)="onBreadcrumbEvent($event)">
     </z-drive-shared-breadcrumb>
   </w-dataView-nav>
@@ -29,8 +30,8 @@
           </li>
         </ul>
       </w-dataView-selected>
-      <w-dataView [data]="list" [viewMode]="viewMode$ | async" (loadMoreObjects)="loadMoreObjects($event)" (selectCompleted)="onSelectCompleted()" (dblClick)="onView($event)" viewMode="grid" sliderView="3"
-        #dataView>
+      <w-dataView [data]="list" [viewMode]="viewMode$ | async" (loadMoreObjects)="loadMoreObjects($event)"
+        (selectCompleted)="onSelectCompleted()" (dblClick)="onView($event)" viewMode="grid" sliderView="3" #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">
             <span class="can-click" (click)="onSortComplete({sortBy: 'name', orderBy: 'desc'})">Name</span>
