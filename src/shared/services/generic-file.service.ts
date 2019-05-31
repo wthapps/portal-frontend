@@ -5,6 +5,7 @@ import { ApiBaseService } from './apibase.service';
 
 declare var _: any;
 
+// DEPRECATED - Use WUploader instead
 @Injectable()
 export class GenericFileService extends BaseEntityService<GenericFile> {
   constructor(protected api: ApiBaseService) {

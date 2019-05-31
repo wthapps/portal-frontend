@@ -358,15 +358,15 @@
                 <i class="fa fa-plus"></i> Photo
               </button>
               <button type="button" *ngIf="note?.permission !== 'view' && note?.permission !== 'download'"
-                      class="btn btn-outline-default can-click btn-style-1 fileinput-button">
+                      class="btn btn-outline-default can-click btn-style-1 fileinput-button" (click)="onSelectFiles()">
                 <i class="fa fa-paperclip"></i> Attachment
-                <input *ngIf="note?.permission !== 'view' && note?.permission !== 'download'"
+                <!-- <input *ngIf="note?.permission !== 'view' && note?.permission !== 'download'"
                        #fileBrowse
                        id="files"
                        type="file"
                        multiple="multiple"
                        (click)="fileBrowse.value='';"
-                       (change)="selectFiles($event)">
+                       (change)="selectFiles($event)"> -->
               </button>
             </div>
             <div *ngIf="note?.attachments?.length > 0 && note?.permission !== 'view'" class="btn-group" role="group">
@@ -389,8 +389,8 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let att of note.attachments">
-                <td [ngClass]="{'can-click': ['photo', 'Media::Photo'].includes(att.object_type)}"
+              <tr *ngFor="let att of note.attachments" [attr.disabled]="note?.permission === 'view' ? 'disabled' : null">
+                <td [ngClass]="{'can-click': ['photo', 'Media::Photo'].includes(att.object_type)}" 
                     (click)="fileAttachmentClick(att)">
                   <i *ngIf="att.thumbnail_url &&  ['photo', 'Media::Photo'].includes(att.object_type)"
                      class="fa fa-picture-o"></i>

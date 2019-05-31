@@ -99,9 +99,8 @@ export class ZNoteDetailEditComponent
   disabled = false;
   noSave = false;
 
-  private closeSubject: Subject<any> = new Subject<any>();
-  private noSaveSubject: Subject<any> = new Subject<any>();
   private destroySubject: Subject<any> = new Subject<any>();
+  private noSaveSubject: Subject<any> = new Subject<any>();
   private editMode = Constants.modal.add;
   private parentId: string;
   private defaultImg = Constants.img.default;
@@ -155,71 +154,13 @@ export class ZNoteDetailEditComponent
 
   ngOnInit() {
     this.context$ = this.store.select('context');
-    this.commonEventService
-      .filter((e: any) => e.channel === 'noteActionsBar')
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe((e: any) => {
-        switch (e.action) {
-          case 'note:note_edit:close':
-            this.router.navigate([{ outlets: { detail: null } }], {
-              queryParamsHandling: 'preserve', preserveFragment: true
-            });
-            break;
-          case 'note:note_edit:print':
-            this.print();
-            break;
-        }
-      });
+    this.handleCommonEventActions();
 
-    // Lock note if other user are editing ..
-    this.noteChannel.lock$.pipe(
-      filter(val => !!val),
-      distinctUntilChanged((p, q) => p.user_uuid === q.user_uuid),
-      takeUntil(this.destroySubject)
-    ).subscribe((user) => {
-      this.messageService.clear();
-      if (!user || Object.keys(user).length === 0) {
-        if (!this.canViewOnly(this.note)) {
-          this.enable();
-          this.customEditor.focus();
-        }
-        return;
-      }
-      const { user_uuid, user_name } = user;
-      if (user_uuid !== this.profile.uuid) {
-        this.enable(false);
-      }
+    this.handleFileUploadActions();
+    
+    this.handleLockAction();
 
-      if (user_name) {
-        this.messageService.add({
-          severity: 'warn',
-          detail: `<i class="fa fa-lock mr5" aria-hidden="true"></i><strong>${user_name}</strong> is editing`,
-          life: 60000,
-          closable: false,
-          sticky: true
-        });
-      }
-    });
-
-    // Reload note if this note's content is updated by another user
-    this.noteChannel.reload$.pipe(
-      tap(() => this.editStatus = this.EDIT_STATUS.reloading),
-      switchMap(() =>
-        this.noteService.getNoteAvailable(this.route.snapshot.paramMap.get('id'))),
-      takeUntil(this.destroySubject)
-    ).subscribe(res => {
-      const noteContent = res.data;
-      this.note = noteContent;
-      this.store.dispatch(new note.NoteUpdated(this.note));
-
-      this.noSave = true;
-      this.updateFormValue(this.note);
-      // Reset content of elemenet div.ql-editor to prevent HTML data loss
-      if (document.querySelector('.ql-editor')) {
-        document.querySelector('.ql-editor').innerHTML = this.note.content;
-      }
-      _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400);
-    });
+    this.handleReloadRealtime();
   }
 
   ngAfterViewInit() {
@@ -293,15 +234,14 @@ export class ZNoteDetailEditComponent
     );
   }
 
+
   ngOnDestroy() {
     // Clear lock modal
     this.noteChannel.idle(this.note.uuid);
     this.messageService.clear();
 
-    this.closeSubject.next('');
-    this.closeSubject.unsubscribe();
     this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
+    this.destroySubject.complete();
 
 
     if (this.timeInterval) {
@@ -337,7 +277,7 @@ export class ZNoteDetailEditComponent
       interval(1000)
     ).pipe(
       // skip(1),
-      takeUntil(this.closeSubject)
+      takeUntil(this.destroySubject)
     ).subscribe(() => {
       if (this.editStatus !== this.EDIT_STATUS.reloading && !this.disabled && !this.canViewOnly(this.note)) {
         this.viewing();
@@ -357,7 +297,7 @@ export class ZNoteDetailEditComponent
           this.editStatus = this.EDIT_STATUS.editing;
         }),
         debounceTime(DEBOUNCE_MS),
-        takeUntil(this.closeSubject)
+        takeUntil(this.destroySubject)
       )
       .subscribe(() => {
         this.noteChanged = true;
@@ -1030,7 +970,7 @@ export class ZNoteDetailEditComponent
   updateCurrentNote(): void {
     this.store
       .select(fromRoot.getCurrentNote)
-      .pipe(takeUntil(merge(this.closeSubject, this.destroySubject)))
+      .pipe(takeUntil(merge(this.destroySubject)))
       .subscribe((note2: Note) => {
         if (note2 !== undefined) {
           this.updateFormValue(note2);
@@ -1095,42 +1035,34 @@ export class ZNoteDetailEditComponent
     }
   }
 
-  selectFiles(event: any) {
-    const files = event.target.files;
-    if (files.length === 0) {
-      return;
-    }
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35, { only: /video\//g })]);
-    this.note.attachments = [
-      ...this.note.attachments,
-      ...filesAddedPolicy.filter(file => file.allow === true)
-    ];
+  onSelectFiles() {
+    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      allowedFileTypes: null,
+      module: 'note'
+    });
+  }
 
-    for (let i = 0; i < files.length; i++) {
-      const f = files[i];
-      const sub = this.fileUploaderService
-        .uploadGenericFile(f)
-        .subscribe((response: any) => {
-          if (!response.error) {
-            this.note.attachments = this.note.attachments.map(att => {
-              if (att.name === response.data.full_name && !att.uuid) {
-                return response.data;
-              }
-              return att;
-            });
-            this.form.controls['attachments'].setValue(this.note.attachments);
-          }
-        });
+  handleFileUploadActions(): void {
+    this.uploader.event$.pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe(event => {
+      const { action, payload } = event;
+      const { file, resp } = payload;
+      switch (action) {
+        case 'file-added': {
+          this.note.attachments.push(file);
+        }
+        break;
+        case 'success': {
+          this.note.attachments = this.note.attachments.map(att => {
+            return (att.id === file.id) ? resp.data : att;
+          });
+          this.form.controls['attachments'].setValue(this.note.attachments);
 
-      this.uploadSubscriptions[f.name] = sub;
-    }
-    const filesNotAllow = filesAddedPolicy.filter(file => file.allow === false);
-    if (filesNotAllow.length > 0) {
-      this.commonEventService.broadcast({
-        channel: 'LockMessage',
-        payload: filesNotAllow
-      });
-    }
+          break;
+        }
+      }
+    });
   }
 
   selectPhotos() {
@@ -1170,7 +1102,7 @@ export class ZNoteDetailEditComponent
       ? { ...options, queryParamsHandling: 'merge' }
       : { queryParamsHandling: 'merge' };
     this.router.navigate([{ outlets: { detail: null } }], qOptions);
-    this.closeSubject.next('');
+    this.destroySubject.next('');
     this.renderer.removeClass(document.body, 'modal-open');
   }
 
@@ -1300,6 +1232,78 @@ export class ZNoteDetailEditComponent
     this.timeout = setTimeout(() => {
       this.noteChannel.idle(this.note.uuid);
     }, DEBOUNCE_MS);
+  }
+
+  private handleCommonEventActions(): void {
+    this.commonEventService
+      .filter((e: any) => e.channel === 'noteActionsBar')
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe((e: any) => {
+        switch (e.action) {
+          case 'note:note_edit:close':
+            this.router.navigate([{ outlets: { detail: null } }], {
+              queryParamsHandling: 'preserve', preserveFragment: true
+            });
+            break;
+          case 'note:note_edit:print':
+            this.print();
+            break;
+        }
+      });
+  }
+
+  private handleReloadRealtime(): void {
+    // Reload note if this note's content is updated by another user
+    this.noteChannel.reload$.pipe(
+      tap(() => this.editStatus = this.EDIT_STATUS.reloading),
+      switchMap(() =>
+        this.noteService.getNoteAvailable(this.route.snapshot.paramMap.get('id'))),
+      takeUntil(this.destroySubject)
+    ).subscribe(res => {
+      const noteContent = res.data;
+      this.note = noteContent;
+      this.store.dispatch(new note.NoteUpdated(this.note));
+
+      this.noSave = true;
+      this.updateFormValue(this.note);
+      // Reset content of elemenet div.ql-editor to prevent HTML data loss
+      if (document.querySelector('.ql-editor')) {
+        document.querySelector('.ql-editor').innerHTML = this.note.content;
+      }
+      _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400);
+    });
+  }
+
+  private handleLockAction(): void {
+    // Lock note if other user are editing ..
+    this.noteChannel.lock$.pipe(
+      filter(val => !!val),
+      distinctUntilChanged((p, q) => p.user_uuid === q.user_uuid),
+      takeUntil(this.destroySubject)
+    ).subscribe((user) => {
+      this.messageService.clear();
+      if (!user || Object.keys(user).length === 0) {
+        if (!this.canViewOnly(this.note)) {
+          this.enable();
+          this.customEditor.focus();
+        }
+        return;
+      }
+      const { user_uuid, user_name } = user;
+      if (user_uuid !== this.profile.uuid) {
+        this.enable(false);
+      }
+
+      if (user_name) {
+        this.messageService.add({
+          severity: 'warn',
+          detail: `<i class="fa fa-lock mr5" aria-hidden="true"></i><strong>${user_name}</strong> is editing`,
+          life: 60000,
+          closable: false,
+          sticky: true
+        });
+      }
+    });
   }
 
 }

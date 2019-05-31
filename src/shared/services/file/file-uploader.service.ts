@@ -14,6 +14,7 @@ import * as Boom from 'boom';
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { BlackListPolicy } from '@shared/policies/black-list-policy';
 
+// DEPRECATED - Use WUploader instead
 @Injectable()
 export class FileUploaderService {
 
