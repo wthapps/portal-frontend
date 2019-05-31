@@ -58,7 +58,7 @@
         </div>
         <div class="note-editor-aside-body">
           <div class="btn-toolbar mb15" role="toolbar">
-            <div *ngIf="note?.attachments?.length > 0" class="btn-group" role="group">
+            <div *ngIf="note?.attachments?.length > 0 && note?.permission !== 'view'" class="btn-group" role="group">
               <button (click)="downloadAttachments()" type="button" class="btn btn-outline-default">
                 <i class="fa fa-download"></i> Download all
               </button>
@@ -217,7 +217,7 @@
     </div>
 
     <div class="btn-group ml10">
-      <button class="btn btn-outline-default" [disabled]="note?.attachments?.length === 0"
+      <button class="btn btn-outline-default" [disabled]="note?.attachments?.length === 0 && note?.permission !== 'view'"
               (click)="downloadAttachments()">
         <i class="fa fa-download"></i> Download all
       </button>

@@ -63,17 +63,17 @@ export class ZNoteSharedActionBarComponent
       title: 'Attachments',
       iconClass: 'fa fa-paperclip'
     },
-    chat: {
-      show: true,
-      needPermission: 'view',
-      inDropDown: false,
-      action: this.showComments.bind(this),
-      class: 'btn btn-default',
-      tooltip: this.tooltip.chat,
-      tooltipPosition: 'bottom',
-      title: 'Chat',
-      iconClass: 'fa fa-comment'
-    },
+    // chat: {
+    //   show: false,
+    //   needPermission: 'view',
+    //   inDropDown: false,
+    //   action: this.showComments.bind(this),
+    //   class: 'btn btn-default',
+    //   tooltip: this.tooltip.chat,
+    //   tooltipPosition: 'bottom',
+    //   title: 'Chat',
+    //   iconClass: 'fa fa-comment'
+    // },
     favourite: {
       show: true,
       needPermission: 'view',
@@ -198,10 +198,10 @@ export class ZNoteSharedActionBarComponent
     this.outEvent.emit({action: 'openAttactments'});
   }
 
-  showComments() {
-    console.log('open chat ...');
-    this.outEvent.emit({action: 'showComments'});
-  }
+  // showComments() {
+  //   console.log('open chat ...');
+  //   this.outEvent.emit({action: 'showComments'});
+  // }
 
   validatePermission(objects: any[]) {
     this.urls = this.urlService.parse();

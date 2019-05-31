@@ -19,7 +19,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
-import { Constants } from '@shared/constant/config/constants';
+import { Constants, hasEnoughPermission } from '@shared/constant/config/constants';
 import { PhotoUploadService } from '@shared/services/photo-upload.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
@@ -179,7 +179,7 @@ export class ZNoteDetailEditComponent
     ).subscribe((user) => {
       this.messageService.clear();
       if (!user || Object.keys(user).length === 0) {
-        if (this.note.permission !== 'view') {
+        if (!this.canViewOnly(this.note)) {
           this.enable();
           this.customEditor.focus();
         }
@@ -275,7 +275,7 @@ export class ZNoteDetailEditComponent
           }
 
           this.broadcastViewing();
-          if (this.note.permission !== 'view') {
+          if (!this.canViewOnly(this.note)) {
             this.registerAutoSave();
           }
         },
@@ -339,7 +339,7 @@ export class ZNoteDetailEditComponent
       // skip(1),
       takeUntil(this.closeSubject)
     ).subscribe(() => {
-      if (this.editStatus !== this.EDIT_STATUS.reloading && !this.disabled && this.note.permission !== 'view') {
+      if (this.editStatus !== this.EDIT_STATUS.reloading && !this.disabled && !this.canViewOnly(this.note)) {
         this.viewing();
       }
     });
@@ -599,12 +599,12 @@ export class ZNoteDetailEditComponent
       scrollingContainer: '#scrolling-container'
     };
 
-    if (this.note.permission === 'view') {
+    if (this.canViewOnly(this.note)) {
       modules.modules.imageResize = null;
       modules.placeholder = '';
     }
     this.customEditor = new Quill('#quill-editor', modules);
-    if (this.note.permission === 'view') {
+    if (this.canViewOnly(this.note)) {
       this.enable(false);
     } else {
       this.enable(true);
@@ -1153,11 +1153,11 @@ export class ZNoteDetailEditComponent
       }
 
       if (this.editMode === Constants.modal.add) {
-        if (this.note.permission !== 'view') {
+        if (!this.canViewOnly(this.note)) {
           this.onFirstSave();
         }
       } else {
-        if (this.note.permission !== 'view') {
+        if (!this.canViewOnly(this.note)) {
           this.updateNote();
         }
       }
@@ -1246,6 +1246,10 @@ export class ZNoteDetailEditComponent
   onSaveName(event: any) {
     this.note.name = event;
     this.form.controls['name'].setValue(event);
+  }
+
+  private canViewOnly(note: Note): boolean {
+    return !hasEnoughPermission(note.permission, 'edit'); // 'view', 'download'
   }
 
   private selectPhotos4Attachments() {

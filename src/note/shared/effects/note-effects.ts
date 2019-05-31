@@ -15,6 +15,7 @@ import { WthConfirmService } from '@shared/shared/components/confirmation/wth-co
 import { noteConstants } from '@notes/shared/config/constants';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FORBIDDEN } from 'http-status-codes';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 
 @Injectable()
@@ -22,6 +23,7 @@ export class NoteEffects {
 
   constructor(private actions: Actions, public noteService: ZNoteService, private apiBaseService: ApiBaseService,
               private wthConfirmService: WthConfirmService,
+              private toasts: ToastsService,
               private router: Router,
               private store: Store<any>) {
   }
@@ -72,6 +74,8 @@ export class NoteEffects {
                 return this.router.navigate([{outlets: {detail: null}}]);
               }
             });
+          } else {
+            this.toasts.warning('Cannot update note due to following error: ', err.error.error);
           }
           return EMPTY;
         })

@@ -62,7 +62,7 @@
   </div>
   <div class="note-editor-content hidden-print" [ngClass]="{'show-aside': !!visibleTab}">
     <div class="note-editor-toolbar ">
-      <ng-container *ngIf="note.permission === 'view';else templateQuillToolbar">
+      <ng-container *ngIf="['view', 'download'].includes(note?.permission);else templateQuillToolbar">
         <div class="ql-toolbar ql-snow">
           <div class="ql-container">
             <div class="ql-formats">
@@ -353,14 +353,14 @@
         </div>
         <div class="note-editor-aside-body">
           <div class="btn-toolbar mb15" role="toolbar">
-            <div *ngIf="note.permission !== 'view'" class="btn-group" role="group">
+            <div *ngIf="note?.permission !== 'view' && note?.permission !== 'download'" class="btn-group" role="group">
               <button (click)="selectPhotos()" type="button" class="btn btn-outline-default">
                 <i class="fa fa-plus"></i> Photo
               </button>
-              <button type="button"
+              <button type="button" *ngIf="note?.permission !== 'view' && note?.permission !== 'download'"
                       class="btn btn-outline-default can-click btn-style-1 fileinput-button">
                 <i class="fa fa-paperclip"></i> Attachment
-                <input *ngIf="note.permission !== 'view'"
+                <input *ngIf="note?.permission !== 'view' && note?.permission !== 'download'"
                        #fileBrowse
                        id="files"
                        type="file"
@@ -369,7 +369,7 @@
                        (change)="selectFiles($event)">
               </button>
             </div>
-            <div *ngIf="note?.attachments?.length > 0" class="btn-group" role="group">
+            <div *ngIf="note?.attachments?.length > 0 && note?.permission !== 'view'" class="btn-group" role="group">
               <button (click)="downloadAttachments()" type="button" class="btn btn-outline-default">
                 <i class="fa fa-download"></i> Download all
               </button>
@@ -401,7 +401,7 @@
                   <p class="text-fade">{{ att.size | bytes:3 }}</p>
                 </td>
                 <td class="text-right">
-                  <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
+                  <button class="btn btn-sm btn-default" type="button" *ngIf="note?.permission !== 'view'" (click)="download(att)">
                     <i class="fa fa-download"></i>
                   </button>
                   <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button"
