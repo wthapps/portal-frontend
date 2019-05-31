@@ -157,7 +157,7 @@ export class ZNoteDetailEditComponent
     this.handleCommonEventActions();
 
     this.handleFileUploadActions();
-    
+
     this.handleLockAction();
 
     this.handleReloadRealtime();
@@ -586,7 +586,6 @@ export class ZNoteDetailEditComponent
 
     const range = this.customEditor.getSelection(true);
     if (this.customEditor.getLength() <= 1) {
-      console.log('this editor is blank', this.customEditor);
       this.customEditor.format('font', font);
       this.customEditor.format('size', font_size);
     } else {
@@ -1182,7 +1181,7 @@ export class ZNoteDetailEditComponent
   }
 
   private canViewOnly(note: Note): boolean {
-    return !hasEnoughPermission(note.permission, 'edit'); // 'view', 'download'
+    return this.editMode === Constants.modal.edit &&  !hasEnoughPermission(note.permission, 'edit'); // 'view', 'download'
   }
 
   private selectPhotos4Attachments() {
