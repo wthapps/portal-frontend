@@ -213,6 +213,7 @@ export class ZNoteDetailEditComponent
           // Reset content of elemenet div.ql-editor to prevent HTML data loss
           if (document.querySelector('.ql-editor')) {
             document.querySelector('.ql-editor').innerHTML = this.note.content;
+            this.updateWordCount();
           }
 
           this.broadcastViewing();
@@ -1213,6 +1214,11 @@ export class ZNoteDetailEditComponent
 
   }
 
+  private updateWordCount(): void {
+    const count = Counter.count($('.ql-editor').text() );
+    $('#counter').text(count);
+  }
+
   private async updateNote() {
     if (!this.note.id || !this.editorElement) {
       return;
@@ -1269,6 +1275,7 @@ export class ZNoteDetailEditComponent
       // Reset content of elemenet div.ql-editor to prevent HTML data loss
       if (document.querySelector('.ql-editor')) {
         document.querySelector('.ql-editor').innerHTML = this.note.content;
+        this.updateWordCount();
       }
       _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400);
     });

@@ -7,10 +7,8 @@
       <div class="d-flex">
         <div class="body">
           <div class="hidden-xs">
-            <h4 *ngIf="note.permission == 'view'" class="ml5">{{note.name}}</h4>
-            <input (click)="disabled = true"
-                   (clickElseWhere)="disabled = false"
-                   [type]="note.permission == 'view' ? 'hidden' :  'text'"
+            <h4 *ngIf="disabled" class="ml5">{{note.name}}</h4>
+            <input [type]="disabled ? 'hidden' :  'text'"
                    tabindex="1"
                    autofocus
                    (keypress)="onToEditor($event)"
@@ -20,12 +18,11 @@
                    placeholder="Untitled">
           </div>
           <div class="visible-xs-block">
-            <h4 *ngIf="note.permission !== 'view'" class="can-click"
+            <h4 *ngIf="!disabled" class="can-click"
                 (click)="modalEditName.open(form.value.name, note.permission)">
               <span>{{note.name || 'Untitled'}}</span>
             </h4>
-            <h4 *ngIf="note.permission === 'view'" class="can-click"
-                (click)="modalEditName.open(form.value.name, note.permission)">
+            <h4 *ngIf="disabled">
               {{note.name}}</h4>
           </div>
         </div>
@@ -337,8 +334,8 @@
       </ng-template>
     </div>
     <div class="note-editor-body" id="scrolling-container">
-      <div id="quill-editor" class="ql-font-{{setting?.font}}" [ngStyle]="{'font-size': setting?.font_size}"
-           [attr.data-size]="setting?.font_size"></div>
+      <div id="quill-editor" class="ql-font-{{setting?.font}}" [ngStyle]="disabled ? null : {'font-size': setting?.font_size}"
+      [attr.data-size]="disabled ? null : setting?.font_size"></div>
     </div>
 
     <div class="note-editor-aside ">
