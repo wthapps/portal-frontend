@@ -47,13 +47,13 @@ export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
       this.storages = response.data;
     });
 
-    // Get current storage
+    // // Get current storage
     // this.storageService.getCurrent().subscribe(response => {
     //   this.currentStorage = response.data;
     //   this.selectedStorageId = this.currentStorage.id;
     // });
 
-    // Get current payment methods
+    // // Get current payment methods
     // this.paymentMethodService.getCurrent().subscribe(response => {
     //   this.paymentMethod = response.data;
     //   this.mode = this.paymentMethod ? 'edit' : 'add';
@@ -105,7 +105,6 @@ export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
       storage_id: this.selectedStorage.id,
       payment_method_id: this.paymentMethod.id
     };
-    this.alertModal.open(); return;
     this.subscriptionService.upgrade(subscription).subscribe(response => {
       this.gotoSubscriptionAlert(true);
     }, error => {

@@ -9,12 +9,15 @@ import { StorageModule } from '@shared/common/storage';
 import { SubscriptionModule } from '@shared/common/subscription';
 import { SubscriptionAlertModalComponent } from './subscription-alert-modal.component';
 import { BsModalModule } from 'ng2-bs3-modal';
+import { SubscriptionCancelModalComponent } from './modal/subscription-cancel-modal.component';
+import { ModalModule } from '@shared/modals';
 
 @NgModule({
   imports: [
     BsModalModule,
 
     MySharedModule,
+    ModalModule,
     PaymentMethodModule,
     PlanModule,
     StorageModule,
@@ -25,7 +28,8 @@ import { BsModalModule } from 'ng2-bs3-modal';
     CurrentSubscriptionComponent,
     SubscriptionUpgradeComponent,
     SubscriptionAlertComponent,
-    SubscriptionAlertModalComponent
+    SubscriptionAlertModalComponent,
+    SubscriptionCancelModalComponent,
   ]
 })
 

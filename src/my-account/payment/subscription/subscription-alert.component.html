@@ -5,11 +5,10 @@
         <h1>
           <i class="fa fa-check-circle-o" style="color: green"></i>
         </h1>
-        <p class="h4">Upgrade Completed</p>
+        <p class="h4"> {{ title }} </p>
       </div>
-      <div class="text-left pl50">
-        <p>With WTH PRO, you  wil have full access to all WTHApps services</p>
-        <p>Click on button below to continue.</p>
+      <div class="text-left pl50" [innerHtml]="message">
+
       </div>
       <div class="text-center">
         <div class="form-group">
