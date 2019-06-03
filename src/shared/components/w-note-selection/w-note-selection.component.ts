@@ -28,6 +28,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   breadcrumb: Note[];
   searchShow: boolean;
   searchText = '';
+  viewMode = 'grid';
 
   tabs: WTab[] = [
     {
@@ -99,6 +100,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   }
 
   onViewComplete(event: any) {
+    this.viewMode = event;
     this.dataView.viewMode = event;
     this.dataView.container.update();
     this.dataView.updateView();
