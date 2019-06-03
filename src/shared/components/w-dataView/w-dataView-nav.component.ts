@@ -45,8 +45,6 @@ export class WDataViewNavComponent {
     }
   ];
 
-
-
   onSlideChange(event: any) {
     this.sliderViewCompleted.emit(event.value);
   }
