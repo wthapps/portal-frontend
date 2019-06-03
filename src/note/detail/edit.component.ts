@@ -1225,6 +1225,7 @@ export class ZNoteDetailEditComponent
     const noteObj: any = Object.assign({}, this.note, this.form.value, {
       content: this.getValidHtml()
     });
+    noteObj.attachments = noteObj.attachments.filter(a => a.uuid && a.source !== 'FileInput');
     this.store.dispatch(new note.Update(noteObj));
     return Promise.resolve();
   }
