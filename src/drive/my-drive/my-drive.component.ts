@@ -18,7 +18,7 @@ export class MyDriveComponent implements OnInit, OnDestroy {
   @HostBinding('class') class = 'main-page-body';
   @ViewChild(DriveContainerComponent) container: DriveContainerComponent;
   data$: Observable<Array<DriveType>>;
-  private readonly apiUrl = 'drive/drive';
+  public readonly apiUrl = 'drive/drive';
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(

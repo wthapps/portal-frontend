@@ -84,7 +84,7 @@ export class DriveUploadDockComponent implements OnInit {
     });
     this.fileDriveUploadService.onDone.subscribe(res => {
       this.files = this.files.map((item: DriveFile) => {
-        if (item.id === res.id) {
+        if (item.file_upload_id === res.file_upload_id) {
           item.setMetadata({ percent: 100, status: this.upload_steps.uploaded });
         }
         return item;
@@ -92,7 +92,7 @@ export class DriveUploadDockComponent implements OnInit {
     });
     this.fileDriveUploadService.onError.subscribe(res => {
       this.files = this.files.map((item: DriveFile) => {
-        if (item.id === res.id) {
+        if (item.file_upload_id === res.file_upload_id) {
           item.setMetadata({ percent: 0, status: this.upload_steps.error });
         }
         return item;

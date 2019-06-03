@@ -18,7 +18,7 @@ export class RecentsComponent implements OnInit, OnDestroy {
   @HostBinding('class') class = 'main-page-body';
   @ViewChild(DriveContainerComponent) container: DriveContainerComponent;
   data$: Observable<Array<DriveType>>;
-  private readonly apiUrl = 'drive/drive?recents=true';
+  public readonly apiUrl = 'drive/drive?recents=true';
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(
