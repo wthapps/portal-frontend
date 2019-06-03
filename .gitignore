@@ -54,7 +54,7 @@ package-lock.json
 yarn.lock
 deploy/build_all.sh
 deploy/deploy_all.sh
-
+.angulardoc.json
 
 gulpfile.js
 gulpfile.js.map

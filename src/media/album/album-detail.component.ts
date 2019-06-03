@@ -279,7 +279,7 @@ export class ZMediaAlbumDetailComponent
 
   loadObjects(input: any, opts: any = {}) {
     this.loading = true;
-    opts = { ...opts, model: 'Media::Album' };
+    // opts = { ...opts, model: 'Media::Album' };
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
     this.apiBaseService.get(`media/albums/${input}/objects`, opts).toPromise().then(res => {
       this.objects = MediaList.map(res.data);

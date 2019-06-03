@@ -14,7 +14,7 @@ export class ConstantsBase {
   };
   cdn: any = Config.CDN;
   googleAnalyticsId = Config.GOOGLE_ANALYTICS_ID;
-  currentVersion = '2018 WTHApps - v1.13.0';
+  currentVersion = '2018 WTHApps - v1.14.0';
   env: any = Config.ENV;
   cloudfront = Config.CLOUDFRONT;
   s3Bucket = Config.S3BUCKET;
@@ -608,3 +608,16 @@ export const MODEL_TYPE = {
   photo: 'Media::Photo',
   video: 'Media::Video'
 };
+
+export const PERMISSION_SCORE = {
+  'view': 1,
+  'download': 2,
+  'edit': 3,
+  'full': 4,
+  'owner': 5
+};
+
+export const hasEnoughPermission = (permission: string, target: string) => {
+  return PERMISSION_SCORE[permission] >= PERMISSION_SCORE[target];
+}
+

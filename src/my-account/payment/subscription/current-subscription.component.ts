@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ApiBaseService, AuthService } from '@shared/services';
 import { SubscriptionService } from '@shared/common/subscription/subscription.service';
 import { StorageService } from '@shared/common/storage';
 import { PaymentMethodService } from '@account/payment/payment-method/payment-method.service';
 import { PlanService } from '@shared/common/plan';
 import { Router } from '@angular/router';
+import { SubscriptionCancelModalComponent } from '@account/payment/subscription/modal/subscription-cancel-modal.component';
+import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
+import {ToastsService} from "@shared/shared/components/toast/toast-message.service";
 
 declare let moment: any;
 
@@ -14,10 +17,17 @@ declare let moment: any;
 })
 
 export class CurrentSubscriptionComponent implements OnInit {
-  subscription: any;
+  @ViewChild('cancelModal') cancelModal: SubscriptionCancelModalComponent;
+  @ViewChild('passwordConfirmationModal') passwordConfirmationModal: PasswordConfirmationModalComponent;
+
   editing;
+  subscription: any;
   plan: any;
+  storage: any;
   paymentMethod: any;
+
+  readonly TRIALING = 'TRIALING';
+  readonly CANCELING = 'CANCELING';
 
   constructor(
     private router: Router,
@@ -26,46 +36,56 @@ export class CurrentSubscriptionComponent implements OnInit {
     private planService: PlanService,
     private storageService: StorageService,
     private paymentMethodService: PaymentMethodService,
+    private toastsService: ToastsService
   ) {
 
   }
 
   ngOnInit() {
     this.getCurrentSubscription();
-    this.getCurrentPlan();
-    this.getCurrentPaymentMethod();
   }
 
   getCurrentSubscription() {
     this.subscriptionService.getCurrent().subscribe(response => {
-        this.subscription = response.data.attributes;
-        if (response.data.next_billing_date === null) {
-          this.subscription.next_billing_date = moment().add(1, 'months');
-        }
+        this.updateCurrentSubscriptionValues(response.data.attributes);
       }
     );
   }
 
-  upgrade() {
+  upgradeSubscription() {
     this.router.navigate(['payment/subscription/upgrade']);
   }
 
+  openCancelSubscriptionConfirmation() {
+    this.cancelModal.open();
+  }
+
+  openPasswordConfirmation(confirmed: boolean) {
+    this.passwordConfirmationModal.open({ email: this.authService.user.email });
+  }
+
   cancelSubscription() {
-
+    this.subscriptionService.cancel(this.subscription).subscribe(response => {
+      this.updateCurrentSubscriptionValues(response.data.attributes);
+      this.gotoSubscriptionAlert(true);
+    }, error => {
+      this.toastsService.danger(
+        'Cancel subscription',
+        `Canceling subscription failed.</br>${error.error.error}`);
+    });
   }
 
-  getCurrentPlan() {
-    this.planService.getCurrent().subscribe(response => {
-        this.plan = response.data;
-      }
-    );
-  }
-
-  getCurrentPaymentMethod() {
-    this.paymentMethodService.getCurrent().subscribe(response => {
-        this.paymentMethod = response.data;
-      }
-    );
+  continueSubscription() {
+    this.subscriptionService.continue(this.subscription).subscribe(response => {
+      this.updateCurrentSubscriptionValues(response.data.attributes);
+      this.toastsService.success(
+        'Continue subscription',
+        `You continued your subscription successful.</br>You can use until 12/12/2019`);
+    }, error => {
+      this.toastsService.danger(
+        'Continue subscription',
+        `Continuing subscription failed.</br>${error.error.error}`);
+    });
   }
 
   viewStorageDetail() {
@@ -74,6 +94,19 @@ export class CurrentSubscriptionComponent implements OnInit {
 
   upgradeStorage() {
 
+  }
+
+  private updateCurrentSubscriptionValues(subscription: any) {
+    this.subscription = subscription;
+    this.plan = subscription.plan;
+    this.storage = subscription.storage;
+    this.paymentMethod = subscription.payment_method;
+  }
+
+  private gotoSubscriptionAlert(success: boolean) {
+    this.router.navigate(['payment/subscription/alert'], {
+      queryParams: { alertType: 'canceling', success: success }}
+    ).then();
   }
 
 }

@@ -13,6 +13,7 @@ declare let _: any;
 
 const DEFAULT_OPTIONS = {
   selectedTab: 'photos',
+  photoOnly: false,
   hiddenTabs: [],
   allowSelectMultiple: true,
   allowCancelUpload: false,

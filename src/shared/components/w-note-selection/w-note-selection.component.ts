@@ -129,7 +129,14 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   }
 
   onSelectCompleted(objects: Array<any>) {
-    this.selectedObjects = objects.filter(object => object.object_type !== 'Note::Folder');
+    let hasFolder = false;
+    this.dataView.selectedObjects.forEach(object => {
+      if (object.object_type === 'Note::Folder') {
+        hasFolder = true;
+        return;
+      }
+    });
+    this.selectedObjects = hasFolder ? [] : this.dataView.selectedObjects;
   }
 
   onSearchEnter(event: any) {

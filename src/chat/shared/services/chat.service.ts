@@ -172,44 +172,44 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     );
   }
 
-  createUploadingFile(files?: any) {
-    const groupId = this.storage.find(CONVERSATION_SELECT).value.group.id;
-    const message: Message = new Message({
-      message: 'Sending file.....',
-      message_type: 'file',
-      content_type: 'media/generic'
-    });
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35)]);
-    const validFiles = filesAddedPolicy.filter((item: any) => item.allow);
+  // createUploadingFile(files?: any) {
+  //   const groupId = this.storage.find(CONVERSATION_SELECT).value.group.id;
+  //   const message: Message = new Message({
+  //     message: 'Sending file.....',
+  //     message_type: 'file',
+  //     content_type: 'media/generic'
+  //   });
+  //   const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35)]);
+  //   const validFiles = filesAddedPolicy.filter((item: any) => item.allow);
 
-    // upload multiple files in batch of CONCURRENT_UPLOAD, usually set as 4
-    from(validFiles).pipe(
-      mergeMap(file => this.sendMessage(groupId, message, null),
-      (file, response) => {
-        return Object.assign(file, {parent: {
-                  id: response.data.id,
-                  uuid: '',
-                  type: 'Chat::Message'}});
-      },
-      CONCURRENT_UPLOAD
-      ),
-      mergeMap(file => this.fileUploaderService.uploadGenericFile(file),
-        (file, response) => (response),
-        CONCURRENT_UPLOAD
-      )
-    ).subscribe(res => {
-      console.log('send file successfully', res);
-              setTimeout(() => this.messageService.scrollToBottom(), 500);
-    });
+  //   // upload multiple files in batch of CONCURRENT_UPLOAD, usually set as 4
+  //   from(validFiles).pipe(
+  //     mergeMap(file => this.sendMessage(groupId, message, null),
+  //     (file, response) => {
+  //       return Object.assign(file, {parent: {
+  //                 id: response.data.id,
+  //                 uuid: '',
+  //                 type: 'Chat::Message'}});
+  //     },
+  //     CONCURRENT_UPLOAD
+  //     ),
+  //     mergeMap(file => this.fileUploaderService.uploadGenericFile(file),
+  //       (file, response) => (response),
+  //       CONCURRENT_UPLOAD
+  //     )
+  //   ).subscribe(res => {
+  //     console.log('send file successfully', res);
+  //             setTimeout(() => this.messageService.scrollToBottom(), 500);
+  //   });
 
-    const tmp = filesAddedPolicy.filter((item: any) => !item.allow);
-    if (tmp && tmp.length > 0) {
-      this.commonEventService.broadcast({
-        channel: 'LockMessage',
-        payload: tmp
-      });
-    }
-  }
+  //   const tmp = filesAddedPolicy.filter((item: any) => !item.allow);
+  //   if (tmp && tmp.length > 0) {
+  //     this.commonEventService.broadcast({
+  //       channel: 'LockMessage',
+  //       payload: tmp
+  //     });
+  //   }
+  // }
 
   getUsersOnline(): Observable<any> {
     return this.storage.getAsync(USERS_ONLINE);

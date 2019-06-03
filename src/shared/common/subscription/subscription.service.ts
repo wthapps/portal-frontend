@@ -17,6 +17,10 @@ export class SubscriptionService {
   }
 
   cancel(subscription: any): Observable<any> {
-    return this.apiBaseService.delete(`${this.path}/cancel`, {subscription: subscription});
+    return this.apiBaseService.patch(`${this.path}/cancel`, {subscription: subscription});
+  }
+
+  continue(subscription: any): Observable<any> {
+    return this.apiBaseService.patch(`${this.path}/continue`, {subscription: subscription});
   }
 }
