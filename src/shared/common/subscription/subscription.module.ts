@@ -5,7 +5,7 @@ import { SubscriptionService } from './subscription.service';
 
 @NgModule({
   providers: [
-    SubscriptionService
+    SubscriptionService,
   ]
 })
 

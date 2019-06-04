@@ -17,20 +17,21 @@ export class WDataViewNavComponent {
   @Input() viewBy = 'grid';
   @Input() sortBy = 'name';
   @Input() orderBy = 'asc';
-  @Output() sliderViewCompleted: EventEmitter<number> = new EventEmitter<number>();
-  @Output() sortComplete: EventEmitter<SortDataView> = new EventEmitter<SortDataView>(null);
-  @Output() viewComplete: EventEmitter<string> = new EventEmitter<string>(null);
-
-  sortState = [
+  @Input() sortState = [
     {
       key: 'name',
       value: 'Name'
     },
     {
       key: 'updated_at',
-      value: 'Upload Date'
+      value: 'Last modified'
     }
   ];
+
+  @Output() sliderViewCompleted: EventEmitter<number> = new EventEmitter<number>();
+  @Output() sortComplete: EventEmitter<SortDataView> = new EventEmitter<SortDataView>(null);
+  @Output() viewComplete: EventEmitter<string> = new EventEmitter<string>(null);
+
 
   viewState = [
     {
@@ -52,7 +53,7 @@ export class WDataViewNavComponent {
   onSort(sortBy, orderBy) {
     this.sortBy = sortBy;
     this.orderBy = orderBy;
-    this.sortComplete.emit({sortBy, orderBy});
+    this.sortComplete.emit({ sortBy, orderBy });
   }
 
   onView(view) {

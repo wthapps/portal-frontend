@@ -6,7 +6,7 @@
     </div>
     <div class="message-item-card">
       <div *ngIf="message.showInfo" class="message-item-owner">
-        <h6 *ngIf="!byMe" class="message-item-owner-name">
+        <h6 *ngIf="!byMe && message?.user?.uuid" class="message-item-owner-name">
           <a class="mr5" href="javascript:void(0)" (click)="viewProfile(message.user)"> {{ message?.user?.name | maxLength:50}} </a>
         </h6>
         <small class="message-item-owner-time text-fade">{{ message.created_at | timeFormat: "time_only" }}</small>

@@ -109,7 +109,9 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   viewProfile() {
-    this.onViewDetail.emit(this.conversation.partner);
+    if ( this.conversation.partner && this.conversation.partner.uuid) {
+      this.onViewDetail.emit(this.conversation.partner);
+    }
   }
 
   leaveConversation() {

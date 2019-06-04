@@ -1,7 +1,9 @@
 import { Component, ViewChild, Input, OnDestroy, OnInit, EventEmitter, Output } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { ApiBaseService } from '@wth/shared/services';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Constants } from '@shared/constant';
 
 
 @Component({
@@ -12,7 +14,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 
 export class PasswordConfirmationModalComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
-  @ViewChild('wrongPasswordModal') wrongPasswordModal: BsModalComponent;  
+  @ViewChild('wrongPasswordModal') wrongPasswordModal: BsModalComponent;
   @Input() email: any;
   @Output() onNext: EventEmitter<any> = new EventEmitter<any>();
   @Output() onBack: EventEmitter<any> = new EventEmitter<any>();
@@ -21,6 +23,7 @@ export class PasswordConfirmationModalComponent implements OnInit, OnDestroy {
   attemptsFailed = 0;
   readonly retryTimes = 3;
 
+  readonly forgotPasswordUrl = `${Constants.baseUrls.app}/recovery/forgottenpassword`;
   passwordConfirmationForm: FormGroup;
 
 
@@ -48,8 +51,7 @@ export class PasswordConfirmationModalComponent implements OnInit, OnDestroy {
       this.modal.open();
       this.wrongPasswordModal.close();
     } else {
-      this.modal.close();
-      this.wrongPasswordModal.close();
+      this.close();
     }
   }
 

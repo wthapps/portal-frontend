@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ConfigByEnv } from '@env/environment';
-import { UserService } from '@shared/services';
-import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { MessageService } from 'primeng/api';
+
+import { UserService } from '@shared/services';
+import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
+import { Constants } from '@shared/constant';
 
 @Component({
   selector: 'app-delete-account',
@@ -16,7 +17,7 @@ export class DeleteAccountComponent implements OnInit {
   @ViewChild('deleteAccountModal') deleteAccountModal: BsModalComponent;
 
 
-  host: string = ConfigByEnv.SUB_DOMAIN.APP;
+  readonly host: string = Constants.baseUrls.app;
   successful = false;
   constructor(private router: Router, private userService: UserService, private messageService: MessageService) {
   }

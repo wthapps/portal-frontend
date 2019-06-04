@@ -7,28 +7,19 @@ import { MySharedModule } from '../shared/shared.module';
 import { MyPaymentComponent } from './payment.component';
 import { PaymentMethodModule } from './payment-method';
 import { BillingModule } from './billing';
-import { UpgradeModule } from './upgrade';
-import { MySubscriptionModule } from './subscription';
+import { AccountService } from '@account/shared/account/account.service';
+import { MySubscriptionModule } from './subscription/subscription.module';
 
 @NgModule({
   imports: [
     MyPaymentRoutingModule,
     MySharedModule,
     PaymentMethodModule,
-    UpgradeModule,
     MySubscriptionModule,
     BillingModule
   ],
-  declarations: [
-    MyPaymentComponent,
-    MyPaymentConfirmComponent
-  ],
-  exports: [
-    MyPaymentConfirmComponent
-  ],
-  providers: [
-    MyPaymentService
-  ]
+  declarations: [MyPaymentComponent, MyPaymentConfirmComponent],
+  exports: [MyPaymentConfirmComponent],
+  providers: [AccountService, MyPaymentService]
 })
-
 export class MyPaymentModule {}

@@ -23,4 +23,8 @@ export class SubscriptionService {
   continue(subscription: any): Observable<any> {
     return this.apiBaseService.patch(`${this.path}/continue`, {subscription: subscription});
   }
+
+  canActivate(): boolean {
+    return true;
+  }
 }

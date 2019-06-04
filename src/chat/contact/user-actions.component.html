@@ -1,11 +1,21 @@
 <div class="media-flex-item">
-  <div class="btn-group">
-    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
-      <i class="fa fa-ellipsis-v"></i>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-right">
-      <li><a href="javascript:void(0);" (click)="viewProfile(user)">View Profile</a></li>
-    </ul>
-  </div>
+    <div class="btn-group">
+        <button
+            class="btn btn-default dropdown-toggle"
+            data-toggle="dropdown"
+            type="button"
+        >
+            <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li *ngIf="user?.uuid" >
+                <a
+                    href="javascript:void(0);"
+                    (click)="viewProfile(user)"
+                >
+                    View Profile
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>
-

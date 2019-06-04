@@ -1,15 +1,16 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { ApiBaseService, AuthService, WthConfirmService } from '@shared/services';
-import { SubscriptionService } from '@shared/common/subscription/subscription.service';
-import { StorageService } from '@shared/common/storage';
-import { PaymentMethodService } from '@account/payment/payment-method/payment-method.service';
-import { PlanService } from '@shared/common/plan';
+
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+
 import { SubscriptionCancelModalComponent } from '@account/payment/subscription/modal/subscription-cancel-modal.component';
 import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
-import {ToastsService} from "@shared/shared/components/toast/toast-message.service";
+import { ToastsService } from "@shared/shared/components/toast/toast-message.service";
+import { AuthService, WthConfirmService, UserService } from '@shared/services';
+import { SubscriptionService } from '@shared/common/subscription/subscription.service';
 import { Constants } from '@shared/constant';
-import { take } from 'rxjs/operators';
+import { AccountService } from '@account/shared/account/account.service';
+
 
 declare let moment: any;
 
@@ -36,9 +37,8 @@ export class CurrentSubscriptionComponent implements OnInit {
     private authService: AuthService,
     private subscriptionService: SubscriptionService,
     private wthConfirm: WthConfirmService,
-    private planService: PlanService,
-    private storageService: StorageService,
-    private paymentMethodService: PaymentMethodService,
+    private userService: UserService,
+    private accountService: AccountService,
     private toastsService: ToastsService
   ) {
 
@@ -61,15 +61,28 @@ export class CurrentSubscriptionComponent implements OnInit {
 
   openCancelSubscriptionConfirmation() {
     this.cancelModal.open();
+    // TODO: Pass callback into open method instead
+    this.passwordConfirmationModal.onNext.pipe(
+      take(1)
+    ).subscribe(_ => {
+      console.log('Cancel subscription');
+      this.cancelSubscription();
+    });
   }
 
   openPasswordConfirmation(confirmed: boolean) {
     this.passwordConfirmationModal.open({ email: this.authService.user.email });
+    // TODO: Pass callback into open method instead
     this.passwordConfirmationModal.onNext.pipe(
       take(1)
     ).subscribe(_ => {
       console.log('Account is deleted');
-      this.router.navigate(['/account-deleted']);
+      const user = this.userService.getSyncProfile();
+      this.accountService.delete(user.uuid).toPromise()
+      .then(() => this.router.navigate(['/account-deleted'])
+      .then(() => this.userService.deleteUserInfo())
+      );
+
     });
   }
 
