@@ -84,7 +84,8 @@ export class FileDriveUploadService {
     }
   }
 
-  retry(file: any) {
+  retry(file: any, options: any) {
+    this.beforeUpload([file], options);
     if (Constants.env === 'PROD') {
       this.uploadS3(file);
     } else {
@@ -94,7 +95,8 @@ export class FileDriveUploadService {
   }
 
   abortMultipartUploadS3(file) {
-    // file.Bucket, file.id, file.UploadId
+    this.onError.emit(file);
+    this.removeMetadata(file);
     const params = {
       Bucket: file.Bucket,
       Key: file.id,
@@ -103,11 +105,13 @@ export class FileDriveUploadService {
     this.s3.abortMultipartUpload(params, (err, data) => {
       if (err) console.log(err, err.stack); // an error occurred
       else {
-        this.onError.emit({});
-        this.apiBaseService.post('drive/files/remove_metadata', { id: file.key }).subscribe(res => {
-          console.log(res);
-        });
+        console.log(data);
       }
+    });
+  }
+
+  removeMetadata(file: any) {
+    this.apiBaseService.post('drive/files/remove_metadata', { id: file.key }).subscribe(res => {
     });
   }
 
@@ -145,13 +149,14 @@ export class FileDriveUploadService {
               Key: file.id, /* required */
               Body: file.data,
               Metadata: {
-                file_upload_id: file.id,
-                name: file.name
+                file_upload_id: file.id
               },
             };
             this.s3.putObject(params, (err, data) => {
-              if (err) this.onError.emit(err); // an error occurred
-              else this.onDone.emit({ ...file, ...res.data.file });           // successful response
+              if (err) {
+                this.onError.emit(err);
+                this.removeMetadata(file);
+              } else { this.onDone.emit({ ...file, ...res.data.file }); }           // successful response
             });
           } else {
             // Multiple uploading
@@ -159,8 +164,7 @@ export class FileDriveUploadService {
               Bucket: res.data.bucket, /* required */
               Key: file.id, /* required */
               Metadata: {
-                file_upload_id: file.id,
-                name: file.name
+                file_upload_id: file.id
               },
             };
 
@@ -168,6 +172,7 @@ export class FileDriveUploadService {
               if (err) {
                 file.error = err;
                 this.onError.emit(file);
+                this.removeMetadata(file);
                 return;
               }
               file.Bucket = res.data.bucket;
@@ -188,6 +193,7 @@ export class FileDriveUploadService {
                   if (err1) {
                     file.error = err1;
                     this.onError.emit(file);
+                    this.removeMetadata(file);
                   } else {
                     uploadParts.push({ ETag: data1.ETag, PartNumber: params1.PartNumber });
                     if (uploadParts.length === partNum) {
@@ -206,6 +212,7 @@ export class FileDriveUploadService {
                         if (err2) {
                           file.error = err2;
                           this.onError.emit(file);
+                          this.removeMetadata(file);
                         } else this.onDone.emit({ ...file, ...res.data.file });           // successful response
                       });
                     }

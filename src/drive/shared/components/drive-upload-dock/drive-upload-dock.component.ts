@@ -105,7 +105,7 @@ export class DriveUploadDockComponent implements OnInit {
   }
 
   retry(file) {
-    this.fileDriveUploadService.retry(file);
+    this.fileDriveUploadService.retry(file, {});
   }
 
   close(event: any) {
