@@ -4,6 +4,7 @@
                   [sortBy]="context?.sort?.field"
                   [orderBy]="context?.sort?.desc ? 'desc' : 'asc'"
                   [viewBy]="context?.viewMode"
+                  [sortState]="sortState"
                   (sortComplete)="onSortComplete($event)"
                   (viewComplete)="onViewComplete($event)">
 
@@ -66,7 +67,7 @@
                   #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">
-            <span class="can-click" (click)="onSortComplete({sortBy: 'Name', orderBy: 'desc'})">Name</span>
+            <span>Name</span>
           </div>
           <div class="item-note-owner">Owner</div>
           <div class="item-note-date">{{ DATE_MAP[context?.sort?.field] || 'Last Modified' }}</div>
