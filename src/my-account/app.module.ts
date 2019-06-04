@@ -27,6 +27,7 @@ import { MySharedModule } from './shared/shared.module';
 import { appEffects, appReducers, metaReducers, MyaccountStoreModule } from './store';
 import { UserModule } from '@account/users';
 import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
+import { GuardModule } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -44,6 +45,8 @@ import { GoogleAnalyticsService } from '@shared/services/analytics/google-analyt
     ConfirmationModule,
     UserModule,
     FooterModule,
+
+    GuardModule,
 
     // Store
     MyaccountStoreModule,

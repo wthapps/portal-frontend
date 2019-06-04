@@ -5,10 +5,10 @@ import { CurrentSubscriptionComponent } from './subscription/current-subscriptio
 import { MyPaymentComponent } from './payment.component';
 import { PaymentMethodListComponent } from './payment-method/payment-method-list.component';
 import { BillingListComponent } from '@account/payment/billing';
-import { UpgradeCompletionComponent } from '@account/payment/upgrade';
 import { SubscriptionUpgradeComponent } from './subscription/subscription-upgrade.component';
 import { SubscriptionAlertComponent } from './subscription/subscription-alert.component';
 import { TransactionDetailComponent } from '@account/payment/billing/transaction/transaction-detail.component';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -16,11 +16,12 @@ import { TransactionDetailComponent } from '@account/payment/billing/transaction
       {
         path: '',
         component: MyPaymentComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, SubscriptionGuard],
         children: [
           {
             path: 'subscription',
             component: CurrentSubscriptionComponent,
+            canActivate: [AuthGuard]
           },
           {
             path: 'payment_method',
@@ -34,17 +35,11 @@ import { TransactionDetailComponent } from '@account/payment/billing/transaction
             path: 'billings',
             component: BillingListComponent,
           },
-
         ]
       },
       {
         path: 'subscription/upgrade',
         component: SubscriptionUpgradeComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'upgrade_completion',
-        component: UpgradeCompletionComponent,
         canActivate: [AuthGuard]
       },
       {
