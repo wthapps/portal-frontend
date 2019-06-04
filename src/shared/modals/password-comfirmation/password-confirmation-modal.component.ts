@@ -12,12 +12,14 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 
 export class PasswordConfirmationModalComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
+  @ViewChild('wrongPasswordModal') wrongPasswordModal: BsModalComponent;  
   @Input() email: any;
   @Output() onNext: EventEmitter<any> = new EventEmitter<any>();
   @Output() onBack: EventEmitter<any> = new EventEmitter<any>();
 
   sub: any;
-  sub2: any;
+  attemptsFailed = 0;
+  readonly retryTimes = 3;
 
   passwordConfirmationForm: FormGroup;
 
@@ -39,11 +41,21 @@ export class PasswordConfirmationModalComponent implements OnInit, OnDestroy {
       this.email = options.email;
     }
     this.initializeForm();
-    this.modal.open();
+
+    // TODO: Check last confirm password attempt time in local storage. After x time, allow user to confirm password again.
+    if(true) {
+      this.attemptsFailed = 0;
+      this.modal.open();
+      this.wrongPasswordModal.close();
+    } else {
+      this.modal.close();
+      this.wrongPasswordModal.close();
+    }
   }
 
   close() {
     this.modal.close();
+    this.wrongPasswordModal.close();
   }
 
   submit(values) {
@@ -51,9 +63,17 @@ export class PasswordConfirmationModalComponent implements OnInit, OnDestroy {
       email: this.email,
       password: values.password
     }).subscribe(response => {
-      this.modal.close();
+      this.close();
       this.onNext.emit({password: values.password});
     }, error => {
+      // TODO: Check error code, make sure only 'Invalid password' error is catched
+      this.attemptsFailed++;
+      if(this.attemptsFailed >= this.retryTimes) {
+        // TODO: Store last attempts time in local device. Make sure user can only retry after x times.
+        this.modal.close();
+        this.wrongPasswordModal.open();
+      }
+
       this.passwordConfirmationForm.controls['password'].setErrors({notMatched: true});
     });
   }
