@@ -52,54 +52,6 @@
           </button>
         </div>
 
-<!--
-        <form id="paymentForm" class="scale-down" [formGroup]="paymentForm" novalidate>
-          <h3 class="box-panel-title">2.Add Payment Methods</h3>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <h4 class="list-group-item-heading">Payment Method</h4>
-
-              <div class="payment-method-wrap">
-                <label class="radio-inline">
-                  <input type="radio" name="paymentMethod" #paymentMethodCredit value="credit" checked
-                         (change)="changePaymentMethod(paymentMethodCredit)">
-                  <span class="payment-method-credit"></span>
-                </label>
-                <label class="radio-inline">
-                  <input type="radio"
-                         name="paymentMethod" #paymentMethodPaypal value="paypal"
-                         (change)="changePaymentMethod(paymentMethodPaypal)">
-                  <span class="payment-method-paypal"></span>
-                </label>
-              </div>
-
-              <div [style.display]="paymentMethod=='paypal' ? 'none' : 'block'">
-                <div class="form-group">
-                  <label for="card-number">Card Number</label>
-                  <div class="cardinfo-card-number">
-                    <div class="form-control" id="card-number"></div>
-                    <div id="card-image"></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="expiration-date">Valid Thru</label>
-                      <div class='form-control' id="expiration-date"></div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label for="cvv">CVV</label>
-                      <div class='form-control' id="cvv"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </form>
--->
       </div>
     </div>
 
@@ -126,7 +78,8 @@
             I agree to the WTHApps <a [href]="termsOfServiceUrl">Terms of Services</a> and the Automatically Renewal terms above
           </p>
 
-          <button class="btn btn-block btn-primary" (click)="upgrade()" [disabled]="!checked || !paymentMethod">
+          <button class="btn btn-block btn-primary" (click)="upgrade()"
+                  [disabled]="!checked || !paymentMethod || (subscription?.status === 'ACTIVATING' && selectedStorage?.id === subscription?.storage?.id)">
             Complete Upgrade
           </button>
         </div>

@@ -1,9 +1,10 @@
 <div class="page-content">
   <div class="container">
-    <div class="form-box-sm" *ngIf="success">
+    <div class="form-box-sm">
       <div class="text-center">
         <h1>
-          <i class="fa fa-check-circle-o" style="color: green"></i>
+          <i class="fa "
+             [ngClass]="success ? 'fa-check-circle-o icon-success' : 'fa-exclamation-circle icon-error'"></i>
         </h1>
         <p class="h4"> {{ title }} </p>
       </div>
@@ -12,32 +13,12 @@
       </div>
       <div class="text-center">
         <div class="form-group">
-          <a class="btn btn-primary" [href]="dashboardUrl">Continue to WTHApps Dashboard</a>
+          <a class="btn btn-primary" *ngIf="![CANCELED, EXPIRED].includes(alertType)" [href]="dashboardUrl">Continue to WTHApps Dashboard</a>
+          <a class="btn btn-primary" *ngIf="alertType === CANCELED" [href]="upgradeUrl">Renew subscription</a>
+          <a class="btn btn-primary" *ngIf="alertType === EXPIRED" [href]="upgradeUrl">Upgrade account</a>
         </div>
       </div>
     </div>
-
-    <div class="form-box-sm" *ngIf="!success">
-      <div class="text-center">
-        <h1>
-          <i class="fa fa-times-circle-o" style="color: red"></i>
-        </h1>
-        <p class="h4">Upgrading account plan failed</p>
-      </div>
-      <div class="text-left  pl50">
-        <p>Your email address couldn't be verified.</p>
-        <p>Your verification emails maybe out of date.</p>
-        <p>Please click on button below to redirect to your account management. Then, press Verify Email button to receive new verification email.</p>
-      </div>
-
-      <div class="text-center">
-
-        <div class="form-group">
-          <a class="btn btn-primary" [href]="profileUrl">Go to Account Management</a>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 

@@ -14,7 +14,7 @@ import { SubscriptionAlertModalComponent } from '@account/payment/subscription/s
   selector: 'subscription-upgrade',
   templateUrl: 'subscription-upgrade.component.html'
 })
-export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
+export class SubscriptionUpgradeComponent implements OnInit {
   @ViewChild('addModal') addModal: PaymentMethodAddModalComponent;
   @ViewChild('alertModal') alertModal: SubscriptionAlertModalComponent;
 
@@ -47,18 +47,6 @@ export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
       this.storages = response.data;
     });
 
-    // // Get current storage
-    // this.storageService.getCurrent().subscribe(response => {
-    //   this.currentStorage = response.data;
-    //   this.selectedStorageId = this.currentStorage.id;
-    // });
-
-    // // Get current payment methods
-    // this.paymentMethodService.getCurrent().subscribe(response => {
-    //   this.paymentMethod = response.data;
-    //   this.mode = this.paymentMethod ? 'edit' : 'add';
-    // });
-
     this.subscriptionService.getCurrent().subscribe(response => {
       this.subscription = response.data.attributes;
       this.plan = this.subscription.plan;
@@ -68,14 +56,6 @@ export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
       this.selectedStorageId = this.currentStorage.id;
       this.mode = this.paymentMethod ? 'edit' : 'add';
     });
-  }
-
-  ngAfterViewInit() {
-
-
-  }
-
-  changePaymentMethod(element: any) {
   }
 
   onSubmit() {

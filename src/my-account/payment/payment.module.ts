@@ -7,7 +7,6 @@ import { MySharedModule } from '../shared/shared.module';
 import { MyPaymentComponent } from './payment.component';
 import { PaymentMethodModule } from './payment-method';
 import { BillingModule } from './billing';
-import { UpgradeModule } from './upgrade';
 import { MySubscriptionModule } from './subscription';
 
 @NgModule({
@@ -15,7 +14,6 @@ import { MySubscriptionModule } from './subscription';
     MyPaymentRoutingModule,
     MySharedModule,
     PaymentMethodModule,
-    UpgradeModule,
     MySubscriptionModule,
     BillingModule
   ],
