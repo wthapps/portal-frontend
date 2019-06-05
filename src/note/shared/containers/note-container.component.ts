@@ -40,6 +40,8 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     'accessed_date': 'Last Opened'
   };
 
+  noteConstants = noteConstants;
+
   data$: Observable<any[]>;
   context;
   next: string;

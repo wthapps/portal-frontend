@@ -56,6 +56,8 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
     }
   };
 
+  noOtherActions = true;
+
   otherActions = {
     emptyTrash: {
       active: true,
@@ -64,6 +66,8 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
       action: 'emptyTrash'
     }
   };
+
+  subTitle = `Moves notes or folders you want to permanently delete to Trash.<br>Click 'Empty Trash' from the Trash's menu to permanently delete these files.`
 
   private destroySubject: Subject<any> = new Subject();
 
@@ -78,7 +82,7 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
     this.folderItems$ = this.store.select(listReducer.getFolders);
     this.allItems$ = this.store.select(listReducer.getAllItems);
     this.store.select('context').pipe(takeUntil(this.destroySubject))
-    .subscribe(ctx => this.context = ctx);
+      .subscribe(ctx => this.context = ctx);
     this.currentFolder$ = this.store.select(fromRoot.getCurrentFolder);
 
     this.store.dispatch({ type: note.TRASH_LOAD });
@@ -179,7 +183,7 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
   }
 
   onSortComplete(event: any) {
-    const sortOption: SortOption = {field: event.sortBy.toLowerCase(), desc: event.orderBy === 'desc'};
+    const sortOption: SortOption = { field: event.sortBy.toLowerCase(), desc: event.orderBy === 'desc' };
     this.store.dispatch({
       type: contextReducer.SET_CONTEXT,
       payload: {
@@ -195,7 +199,7 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
       payload: {
         viewMode: event
       }
-    })
+    });
     this.dataView.container.update();
     this.dataView.updateView();
   }

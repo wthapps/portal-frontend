@@ -150,6 +150,9 @@ $active-color: red;
     .ui-submenu-list {
       margin-left: 15px;
     }
+    .ui-panelmenu-header-link, .ui-menuitem-link {
+      @include text-overflow;
+    }
     .ui-menuitem {
       .ui-menuitem-link {
         padding-left: 0;

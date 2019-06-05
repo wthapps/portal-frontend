@@ -6,9 +6,14 @@
                   [viewBy]="context?.viewMode"
                   (sortComplete)="onSortComplete($event)"
                   (viewComplete)="onViewComplete($event)">
-    <h4 class="title">
-      Trash
-    </h4>
+    <div class="btn-group">
+      <h4 class="title can-click" data-toggle="dropdown">
+        Trash <span class="caret"></span>
+      </h4>
+      <ul class="dropdown-menu">
+        <li><a (click)="onMenuAction('emptyTrash')" href="#"><i class="fa fa-trash-o"></i> Empty Trash</a></li>
+      </ul>
+    </div>
   </w-dataView-nav>
 
   <ng-container *ngIf="!context?.loading && (data$ | async) as list; else templateloading">
@@ -71,7 +76,8 @@
     </ng-container>
     <ng-template #templateNodata>
       <div class="text-center">
-        <box-no-data [icon]="'fa fa-sticky-note'" [subTitle]="'There is no note'"></box-no-data>
+        <box-no-data [icon]="'fa fa-sticky-note'" [title]="'There are no items in Trash!'"
+                     [subTitle]="subTitle"></box-no-data>
       </div>
     </ng-template>
   </ng-container>

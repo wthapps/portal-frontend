@@ -1,7 +1,7 @@
 <div *ngIf="data && data.length > 0" class="breadcrumb-wrap">
   <ol class="breadcrumb m0 p0">
     <li>
-      <a class="btn btn-default" href="#" [routerLink]="[data[0].routerLink]">
+      <a class="btn btn-default" href="#" [routerLink]="[data[0].routerLink]" [title]="data[0].label">
         {{ data[0].label }}
       </a>
     </li>
@@ -14,7 +14,7 @@
         <ul class="dropdown-menu dropdown-menu-sm">
           <ng-container *ngFor="let item of data; let i = index">
             <li *ngIf="i > 0 && i < data.length - max">
-              <a href="#" [routerLink]="[item.routerLink]">
+              <a href="#" [routerLink]="[item.routerLink]" [title]="item.label">
                 {{ item.label }}
               </a>
             </li>
@@ -28,7 +28,7 @@
         <ng-container *ngIf="i === data.length - 1;else templateBreadcrumbItem">
           <li>
             <div class="btn-group">
-              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" [title]="item.label">
                 {{ item.label }} <span class="caret"></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
@@ -42,7 +42,7 @@
         <ng-template #templateBreadcrumbItem>
           <ng-container *ngIf="i + max >= data.length">
             <li>
-              <a class="btn btn-default" href="#" [routerLink]="[item.routerLink]">
+              <a class="btn btn-default" href="#" [routerLink]="[item.routerLink]" [title]="item.label">
                 {{ item.label }}
               </a>
             </li>
