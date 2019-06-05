@@ -36,14 +36,20 @@ export class FileDriveUploadService {
   }
 
   open() {
-    if (!this.input) {
-      this.input = document.createElement('input');
-      this.input.type = "file";
-      this.input.multiple = true;
-      this.input.addEventListener('change', (event) => {
-        this.onChange.emit(event);
-      });
-    }
+    // if (!this.input) {
+    //   this.input = document.createElement('input');
+    //   this.input.type = "file";
+    //   this.input.multiple = true;
+    //   this.input.addEventListener('change', (event) => {
+    //     this.onChange.emit(event);
+    //   });
+    // }
+    this.input = document.createElement('input');
+    this.input.type = "file";
+    this.input.multiple = true;
+    this.input.addEventListener('change', (event) => {
+      this.onChange.emit(event);
+    });
 
     this.input.click();
   }
@@ -140,17 +146,16 @@ export class FileDriveUploadService {
         file.key = res.data.key;
         file.owner = res.data.owner;
         reader.addEventListener("load", (event: any) => {
-          const step = 50 * 1000 * 1000; // 50MB
-          // const step = 32428800;
+          let mb = 50;
+          if (event.total < 50 * 1000 * 1000) mb = 10;
+          if (event.total >= 50 * 1000 * 1000 && event.total < 150 * 1000 * 1000) mb = 30;
+          const step = mb * 1000 * 1000;
           // Single uploading
           if (event.total < step) {
             const params = {
               Bucket: res.data.bucket, /* required */
               Key: file.id, /* required */
-              Body: file.data,
-              Metadata: {
-                file_upload_id: file.id
-              },
+              Body: file.data
             };
             this.s3.putObject(params, (err, data) => {
               if (err) {
@@ -163,9 +168,6 @@ export class FileDriveUploadService {
             const params = {
               Bucket: res.data.bucket, /* required */
               Key: file.id, /* required */
-              Metadata: {
-                file_upload_id: file.id
-              },
             };
 
             this.s3.createMultipartUpload(params, (err, data) => {
@@ -178,7 +180,6 @@ export class FileDriveUploadService {
               file.Bucket = res.data.bucket;
               file.UploadId = data.UploadId;
               this.onProgress.emit(file);
-              // const step = 5242880;
               for (let start = 0; start < event.total; start = start + step) {
                 partNum = partNum + 1;
                 const end = Math.min(start + step, event.total);
