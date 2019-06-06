@@ -46,7 +46,7 @@ import { SubscriptionGuard } from '@shared/guards';
         path: 'subscription/alert',
         component: SubscriptionAlertComponent,
         canActivate: [AuthGuard]
-      },
+      }
     ])
   ],
   exports: [RouterModule]

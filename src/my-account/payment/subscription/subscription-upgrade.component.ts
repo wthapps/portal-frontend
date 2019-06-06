@@ -30,7 +30,7 @@ export class SubscriptionUpgradeComponent implements OnInit {
   checked: false;
   subscription: any;
 
-  termsOfServiceUrl = Constants.baseUrls.app + '/policies/terms';
+  readonly termsOfServiceUrl = Constants.baseUrls.app + '/policies/terms';
 
   constructor(
     private router: Router,

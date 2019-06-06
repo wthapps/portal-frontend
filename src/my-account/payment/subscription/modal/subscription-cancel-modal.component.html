@@ -3,8 +3,11 @@
     <h4 class="modal-title">Cancel subscription</h4>
   </bs-modal-header>
   <bs-modal-body>
-    <p>Once you cancel this subscription you still able touser this account until the end of our subscription period on 10/10/2019.</p>
-    <p>All data in this account will be deleted after 60 days. Make sure you export or download all information you want to keep. After 60 days we can't recover your data.</p>
+    <p>Once you cancel this subscription you still able touser this account
+      until the end of our subscription period on {{ subscription?.ended_bc_at | date: 'MMM dd yyyy'}}.</p>
+    <p>All data in this account will be deleted after {{ deletedDayNum }} days.
+      Make sure you export or download all information you want to keep.
+      After {{ deletedDayNum }} days we can't recover your data.</p>
     <p>Please confirm you want to cancel your subscription.</p>
   </bs-modal-body>
 

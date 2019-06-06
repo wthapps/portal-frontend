@@ -6,10 +6,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class WDataViewSelectedComponent {
   @Input() selectedObjects: any;
+  @Input() isSelectAll: boolean;
   @Output() clear: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   @Output() selectAll: EventEmitter<boolean> = new EventEmitter<boolean>(false);
 
-  isSelectAll: boolean;
+
 
   onClear() {
     this.isSelectAll = false;

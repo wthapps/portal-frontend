@@ -1,19 +1,19 @@
 <div class="box-panel">
   <h3 class="box-panel-title">Transaction details</h3>
   <div class="card">
-    <div class="card-body">
-      <h3>Transaction {{ trans_id }}</h3>
+    <div class="card-body" id="print-section">
+      <h3>Transaction Id: {{ trans_id }}</h3>
       <hr class="card-line">
       <h4>Transaction Information</h4>
       <dl class="dl-horizontal">
         <dt>Transaction Date</dt>
-        <dd>{{ transaction.created_at | date:'MMM dd yyyy' }} {{ transaction.created_at | date:'H:mm:ss' }}</dd>
+        <dd>{{ transaction?.created_at | date:'MMM dd yyyy' }} {{ transaction?.created_at | date:'H:mm:ss' }}</dd>
         <dt>Merchant</dt>
-        <dd>{{ transaction.merchant_account_id }}</dd>
+        <dd>{{ transaction?.merchant_id }}</dd>
         <dt>Description</dt>
-        <dd>---------</dd>
+        <dd> {{ transaction?.description }} </dd>
         <dt>Amount</dt>
-        <dd>{{ transaction.amount | currency }} </dd>
+        <dd>{{ transaction?.amount | currency }} </dd>
       </dl>
       <hr class="card-line">
       <h4>Payment Method</h4>
@@ -37,6 +37,10 @@
   </div>
   <div class="mt20 mb20">
     <a [routerLink]="['/payment/billings']" class="btn btn-outline-default mr10" href="#">Back</a>
-    <a (click)="viewReceipt($event)" class="btn btn-outline-default" href="#"><i class="fa fa-print"></i> Print</a>
+    <a (click)="printTransaction()" class="btn btn-outline-default" href="#"><i class="fa fa-print"></i> Print</a>
+<!--    <button class="btn btn-outline-default"-->
+<!--            [useExistingCss]="true"-->
+<!--            printSectionId="print-section"-->
+<!--            ngxPrint><i class="fa fa-print"></i> Print</button>-->
   </div>
 </div>

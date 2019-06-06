@@ -6,21 +6,21 @@ import { BsModalComponent } from 'ng2-bs3-modal';
   selector: 'subscription-cancel-modal',
   templateUrl: 'subscription-cancel-modal.component.html'
 })
-export class SubscriptionCancelModalComponent implements OnInit {
+export class SubscriptionCancelModalComponent {
   @ViewChild('modal') modal: BsModalComponent;
   @Output() onNext: EventEmitter<boolean> = new EventEmitter<boolean>();
-  dashboardUrl = Constants.baseUrls.myAccount + '/dashboard';
-  faqUrl = Constants.baseUrls.app + '/faq';
-  contactUsUrl = Constants.baseUrls.app + '/contact';
 
-  constructor(
-  ) {}
+  subscription: any;
+  deletedDayNum: number;
 
-  ngOnInit() {
+  readonly dashboardUrl = Constants.baseUrls.myAccount + '/dashboard';
+  readonly faqUrl = Constants.baseUrls.app + '/faq';
+  readonly contactUsUrl = Constants.baseUrls.app + '/contact';
 
-  }
+  open(options: { subscription: any, deletedDayNum: number }) {
+    this.subscription = options.subscription;
+    this.deletedDayNum = options.deletedDayNum;
 
-  open() {
     this.modal.open();
   }
 

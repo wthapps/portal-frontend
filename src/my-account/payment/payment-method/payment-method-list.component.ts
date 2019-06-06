@@ -22,7 +22,8 @@ export class PaymentMethodListComponent implements OnInit {
   paymentMethod: any;
   loaded = false;
   mode: 'add' | 'edit';
-  termsOfServiceUrl = Constants.baseUrls.app + '/policies/terms';
+
+  readonly termsOfServiceUrl = Constants.baseUrls.app + '/policies/terms';
 
   constructor(public userService: UserService,
               private wthConfirmService: WthConfirmService,

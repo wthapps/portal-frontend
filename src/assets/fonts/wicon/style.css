@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'wicon';
-  src:  url('fonts/wicon.eot?x6lxy');
-  src:  url('fonts/wicon.eot?x6lxy#iefix') format('embedded-opentype'),
-    url('fonts/wicon.ttf?x6lxy') format('truetype'),
-    url('fonts/wicon.woff?x6lxy') format('woff'),
-    url('fonts/wicon.svg?x6lxy#wicon') format('svg');
+  src:  url('fonts/wicon.eot?gnkpff');
+  src:  url('fonts/wicon.eot?gnkpff#iefix') format('embedded-opentype'),
+    url('fonts/wicon.ttf?gnkpff') format('truetype'),
+    url('fonts/wicon.woff?gnkpff') format('woff'),
+    url('fonts/wicon.svg?gnkpff#wicon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,12 +24,75 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.wicon-album:before {
+  content: "\e900";
+}
+.wicon-shared-with-me:before {
+  content: "\e901";
+}
+.wicon-user:before {
+  content: "\f007";
+}
+.wicon-arrow-circle-o-down:before {
+  content: "\f01a";
+}
+.wicon-arrow-circle-o-up:before {
+  content: "\f01b";
+}
+.wicon-phone:before {
+  content: "\f095";
+}
+.wicon-twitter:before {
+  content: "\f099";
+}
+.wicon-facebook:before {
+  content: "\f09a";
+}
+.wicon-arrow-circle-left:before {
+  content: "\f0a8";
+}
+.wicon-arrow-circle-right:before {
+  content: "\f0a9";
+}
+.wicon-arrow-circle-up:before {
+  content: "\f0aa";
+}
+.wicon-arrow-circle-down:before {
+  content: "\f0ab";
+}
+.wicon-google-plus:before {
+  content: "\f0d5";
+}
+.wicon-linkedin:before {
+  content: "\f0e1";
+}
+.wicon-location-arrow:before {
+  content: "\f124";
+}
+.wicon-youtube:before {
+  content: "\f167";
+}
+.wicon-arrow-circle-o-right:before {
+  content: "\f18e";
+}
+.wicon-arrow-circle-o-left:before {
+  content: "\f190";
+}
+.wicon-pinterest-p:before {
+  content: "\f231";
+}
+.wicon-megaphone:before {
+  content: "\e903";
+}
+.wicon-megaphone-mute:before {
+  content: "\e904";
+}
 .wicon-folder-shared:before {
   content: "\e902";
 }
 .wicon-merge:before {
-  content: "\e900";
+  content: "\e905";
 }
 .wicon-move-to-folder:before {
-  content: "\e901";
+  content: "\e906";
 }

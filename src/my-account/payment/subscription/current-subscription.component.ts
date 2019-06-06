@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 import { SubscriptionCancelModalComponent } from '@account/payment/subscription/modal/subscription-cancel-modal.component';
 import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
@@ -10,7 +11,6 @@ import { AuthService, WthConfirmService, UserService } from '@shared/services';
 import { SubscriptionService } from '@shared/common/subscription/subscription.service';
 import { Constants } from '@shared/constant';
 import { AccountService } from '@account/shared/account/account.service';
-
 
 declare let moment: any;
 
@@ -31,6 +31,7 @@ export class CurrentSubscriptionComponent implements OnInit {
 
   readonly TRIALING = 'TRIALING';
   readonly CANCELING = 'CANCELING';
+  readonly DELETED_DAY_NUM = 60;
 
   constructor(
     private router: Router,
@@ -39,7 +40,8 @@ export class CurrentSubscriptionComponent implements OnInit {
     private wthConfirm: WthConfirmService,
     private userService: UserService,
     private accountService: AccountService,
-    private toastsService: ToastsService
+    private toastsService: ToastsService,
+    private datePipe: DatePipe
   ) {
 
   }
@@ -60,7 +62,7 @@ export class CurrentSubscriptionComponent implements OnInit {
   }
 
   openCancelSubscriptionConfirmation() {
-    this.cancelModal.open();
+    this.cancelModal.open({subscription: this.subscription, deletedDayNum: this.DELETED_DAY_NUM });
     // TODO: Pass callback into open method instead
     this.passwordConfirmationModal.onNext.pipe(
       take(1)
@@ -102,7 +104,8 @@ export class CurrentSubscriptionComponent implements OnInit {
       this.updateCurrentSubscriptionValues(response.data.attributes);
       this.toastsService.success(
         'Continue subscription',
-        `You continued your subscription successful.</br>You can use until 12/12/2019`);
+        `You continued your subscription successful.<br/>
+                You can use until ${ this.datePipe.transform(this.subscription.ended_bc_at, 'MMM dd yyyy') }`);
     }, error => {
       this.toastsService.danger(
         'Continue subscription',

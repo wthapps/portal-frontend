@@ -14,14 +14,14 @@
           <th>&nbsp;</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-bill>
-        <tr>
-          <td>{{ bill.created_at | date: 'MMM dd yyyy' }}</td>
-          <td>---</td>
-          <td>{{ bill.amount | currency }} </td>
-          <td> <a [routerLink]="['/payment/billings/transactions', bill?.str_id]"> {{ bill.str_id }} </a></td>
+      <ng-template pTemplate="body" let-transaction>
+        <tr class="tr-middle">
+          <td>{{ transaction?.created_at | date: 'MMM dd yyyy' }}</td>
+          <td> {{ transaction?.description }}</td>
+          <td>{{ transaction?.amount | currency }} </td>
+          <td> <a [routerLink]="['/payment/billings/transactions', transaction?.str_id]"> {{ transaction.str_id }} </a></td>
           <td>
-            <a class="btn btn-outline-default" href="javascript:void(0);" (click)="viewReceipt(bill?.str_id)">View</a>
+            <a class="btn btn-outline-default" href="javascript:void(0);" (click)="viewReceipt(transaction?.str_id)">View</a>
           </td>
         </tr>
       </ng-template>

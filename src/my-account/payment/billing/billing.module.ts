@@ -13,7 +13,7 @@ import { TransactionService } from './transaction/transaction.service';
   declarations: [
     BillingListComponent,
     TransactionDetailComponent,
-    MyReceiptComponent
+    MyReceiptComponent,
   ],
   exports: [
     BillingListComponent,
