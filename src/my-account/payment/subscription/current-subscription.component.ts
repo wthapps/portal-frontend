@@ -63,29 +63,15 @@ export class CurrentSubscriptionComponent implements OnInit {
 
   openCancelSubscriptionConfirmation() {
     this.cancelModal.open({subscription: this.subscription, deletedDayNum: this.DELETED_DAY_NUM });
-    // TODO: Pass callback into open method instead
-    this.passwordConfirmationModal.onNext.pipe(
+    this.cancelModal.onNext.pipe(
       take(1)
     ).subscribe(_ => {
-      console.log('Cancel subscription');
-      this.cancelSubscription();
+      this.passwordConfirmationModal.open({ email: this.authService.user.email,
+        accept: () =>  {
+        this.cancelSubscription();
+        }});
     });
-  }
 
-  openPasswordConfirmation(confirmed: boolean) {
-    this.passwordConfirmationModal.open({ email: this.authService.user.email });
-    // TODO: Pass callback into open method instead
-    this.passwordConfirmationModal.onNext.pipe(
-      take(1)
-    ).subscribe(_ => {
-      console.log('Account is deleted');
-      const user = this.userService.getSyncProfile();
-      this.accountService.delete(user.uuid).toPromise()
-      .then(() => this.router.navigate(['/account-deleted'])
-      .then(() => this.userService.deleteUserInfo())
-      );
-
-    });
   }
 
   cancelSubscription() {
@@ -130,7 +116,14 @@ export class CurrentSubscriptionComponent implements OnInit {
       `,
       header: 'Delete account',
       accept: () => {
-        this.openPasswordConfirmation(false);
+        this.passwordConfirmationModal.open({ email: this.authService.user.email,
+          accept: () =>  {
+            const user = this.userService.getSyncProfile();
+            this.accountService.delete(user.uuid).toPromise()
+            .then(() => this.router.navigate(['/account-deleted'])
+            .then(() => this.userService.deleteUserInfo())
+            );
+          }});
       }
     });
   }
