@@ -23,7 +23,8 @@
                 "glob": "**/*",
                 "input": "src/assets/",
                 "output": "/assets/"
-              }
+              },
+              "src/portal/manifest.json"
             ],
             "styles": [
               "src/assets/styles/styles-app-loading.scss",

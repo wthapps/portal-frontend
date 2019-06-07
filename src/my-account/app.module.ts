@@ -17,20 +17,13 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { MyAppsModule } from './apps/apps.module';
-import { ConfirmationModule } from './confirmation/confirmation.module';
 import { MyMyAppsModule } from './my-apps/my-apps.module';
 import { MyPaymentModule } from './payment/payment.module';
 import { MyPlansModule } from './plans/plans.module';
 import { MySettingModule } from './settings/setting.module';
 
 import { MySharedModule } from './shared/shared.module';
-import {
-  appEffects,
-  appReducers,
-  metaReducers,
-  MyaccountStoreModule
-} from './store';
-import { UserModule } from '@account/users';
+import { appEffects, appReducers, metaReducers, MyaccountStoreModule } from './store';
 import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 import { GuardModule } from '@shared/guards';
 import { AccountService } from './shared/account/account.service';
@@ -48,8 +41,6 @@ import { AccountService } from './shared/account/account.service';
     MyPlansModule,
     MySettingModule,
     MyAdminModule,
-    ConfirmationModule,
-    UserModule,
     FooterModule,
 
     GuardModule,

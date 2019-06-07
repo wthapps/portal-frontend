@@ -24,7 +24,6 @@ export class ProfileDropDownComponent implements OnInit {
 
     if (this.authService.isAuthenticated()) {
       this.subscriptionService.getCurrent().subscribe(response => {
-        console.log('this.auService::::', response.data.attributes);
         this.subscription = response.data.attributes;
       });
     }

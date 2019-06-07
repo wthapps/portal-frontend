@@ -1,0 +1,22 @@
+<div class="page-content">
+  <div class="container">
+    <div class="form-box-sm">
+      <div class="text-center">
+        <h1>
+          <i class="fa "
+             [ngClass]="success ? 'fa-check-circle-o icon-success' : 'fa-exclamation-circle icon-error'"></i>
+        </h1>
+        <p class="h4"> {{ title }} </p>
+      </div>
+      <div class="text-left pl50" [innerHtml]="message">
+
+      </div>
+      <div class="text-center">
+        <div class="form-group">
+          <a class="btn btn-primary" (click)="sendVerificationEmail()">Resend verification email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
