@@ -40,7 +40,7 @@
     [(selectedItems)]="selectedDocuments" (select)="onSelect($event)" infinite-scroll [infiniteScrollDistance]="2"
     [infiniteScrollThrottle]="50" [scrollWindow]="scrollWindow" (scrolled)="onLoadMore()">
     <div *ngIf="!isUpdatedView" class="content-view content-{{viewMode}} content-grid-{{ sliderView }}">
-        <div *ngFor="let item of data | itemListDisplay ; trackBy: trackItem" [dtsSelectItem]="item?.uuid"
+        <div *ngFor="let item of data | itemListDisplay: viewMode ; trackBy: trackItem" [dtsSelectItem]="item?.uuid"
             class="content-item">
             <div class="item-media">
                 <div class="item-actions">

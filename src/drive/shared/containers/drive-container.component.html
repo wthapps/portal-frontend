@@ -1,6 +1,6 @@
 <div class="objects-main" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
   [scrollWindow]="true" (scrolled)="loadMoreObjects($event)">
-  <w-dataView-nav [showViewMode]="true" [sortBy]="sortBy" [orderBy]="orderBy" (sortComplete)="onSortComplete($event)"
+  <w-dataView-nav [showViewMode]="true" [viewBy]="viewMode" [sortBy]="sortBy" [orderBy]="orderBy" (sortComplete)="onSortComplete($event)"
     (viewComplete)="onViewComplete($event)">
     <z-drive-shared-breadcrumb [model]="breadcrumbs" (breadcrumbEvent)="onBreadcrumbEvent($event)">
     </z-drive-shared-breadcrumb>
@@ -30,7 +30,7 @@
           </li>
         </ul>
       </w-dataView-selected>
-      <w-dataView [data]="list" [viewMode]="viewMode$ | async" (loadMoreObjects)="loadMoreObjects($event)"
+      <w-dataView [data]="list" [viewMode]="viewMode" (loadMoreObjects)="loadMoreObjects($event)"
         (selectCompleted)="onSelectCompleted()" (dblClick)="onView($event)" viewMode="grid" sliderView="3" #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">

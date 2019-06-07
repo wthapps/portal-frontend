@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 
 import { Router } from '@angular/router';
 
@@ -9,7 +9,8 @@ import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 import { WDataViewComponent } from 'drive/shared/components/w-dataView/w-dataView.component';
 import { driveConstants, DriveType } from './../config/drive-constants';
 import { DriveStorageService } from '../services/drive-storage.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 
@@ -18,7 +19,7 @@ import { Observable } from 'rxjs';
   templateUrl: './drive-container.component.html',
   styleUrls: ['./drive-container.component.scss']
 })
-export class DriveContainerComponent implements OnInit {
+export class DriveContainerComponent implements OnInit, OnDestroy {
   @ViewChild('dataView') dataView: WDataViewComponent;
   @Input() breadcrumbs: Array<DriveBreadcrumb> = [{ name: "My Drive", label: "My Drive" }];
   @Input() next: string;
@@ -68,7 +69,9 @@ export class DriveContainerComponent implements OnInit {
     }
   ];
 
-  viewMode$: Observable<string>;
+  // viewMode$: Observable<string>;
+  viewMode: string;
+  private destroySubject: Subject<any> = new Subject();
 
   constructor(
     private driveService: DriveService,
@@ -76,13 +79,19 @@ export class DriveContainerComponent implements OnInit {
     private router: Router,
     private fileDriveUploadService: FileDriveUploadService,
   ) {
-    this.viewMode$ = this.driveService.viewMode$;
+    this.driveService.viewMode$.pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe( viewMode => this.viewMode = viewMode);
   }
 
   ngOnInit() {
     this.dataStorage.sortOption = { sortBy: this.sortBy, orderBy: this.orderBy };
   }
 
+  ngOnDestroy() {
+    this.destroySubject.next();
+    this.destroySubject.complete();
+  }
 
   async loadMoreObjects(event: any) {
     console.log(event);

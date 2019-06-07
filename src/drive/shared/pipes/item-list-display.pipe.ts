@@ -6,7 +6,7 @@ const CLOUDFRONT = Constants.cloudfront;
 @Pipe({ name: 'itemListDisplay' })
 export class ItemListDisplayPipe implements PipeTransform {
   transform(items: any[], viewMode = 'grid'): any {
-    const size = viewMode === 'list' ? '100x100' : '200x200';
+    const size = viewMode === 'list' ? '50x50' : '400x400';
     return items.map(item => {
       if (item && item.content_type && item.content_type.startsWith('image')) {
         // TODO: Calculate thumbnail image base on original image url and view mode
