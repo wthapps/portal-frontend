@@ -17,7 +17,8 @@ import {
   HandlerService,
   WMessageService,
   WTHNavigateService,
-  NotificationService
+  NotificationService,
+  WthConfirmService
 } from '@shared/services';
 import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { HeaderModule } from '@shared/partials/header';
@@ -42,6 +43,8 @@ import { DriveFolderService } from './shared/services/drive-folder.service';
 import { DriveStorageService } from './shared/services/drive-storage.service';
 import { DriveModalService } from './shared/services/drive-modal.service';
 import { DriveApiService } from './shared/services/drive-api.service';
+import { ConfirmationService } from 'primeng/api';
+import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-confirm.module';
 
 @NgModule({
   imports: [
@@ -64,6 +67,7 @@ import { DriveApiService } from './shared/services/drive-api.service';
     WDriveUploadDockModule,
     PipeModule,
     DriveStoreModule,
+    WthConfirmModule,
     BsModalModule
   ],
   declarations: [AppComponent, LockUploadModalComponent],
@@ -90,6 +94,8 @@ import { DriveApiService } from './shared/services/drive-api.service';
     WebsocketService,
     WHttpClientService,
     WTHEmojiService,
+    WthConfirmService,
+    ConfirmationService,
     NotificationEventService,
     ConnectionNotificationService,
     WMessageService
@@ -97,4 +103,4 @@ import { DriveApiService } from './shared/services/drive-api.service';
 
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

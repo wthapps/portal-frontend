@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
 
 import { WUploader } from './../../../../shared/services/w-uploader';
 import { ModalDockComponent } from '@shared/shared/components/modal/dock.component';
-import { ApiBaseService, CommonEventService, CommonEventHandler } from '@shared/services';
+import { ApiBaseService, CommonEventService, CommonEventHandler, WthConfirmService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { ModalService } from '@shared/components/modal/modal-service';
 import { Constants } from '@shared/constant';
@@ -60,20 +60,20 @@ export class DriveUploadDockComponent implements OnInit {
     public apiBaseService: ApiBaseService,
     public toastsService: ToastsService,
     public fileDriveUploadService: FileDriveUploadService,
+    public wthConfirmService: WthConfirmService,
     public commonEventService: CommonEventService,
   ) {
   }
 
   ngOnInit() {
     this.fileDriveUploadService.onStart.subscribe(res => {
-      // this.modalDock.open();
       this.modalDock.open('media-uploader-dock');
 
       const newFiles = DriveFileList.map(res).map((item: DriveFile) => {
         item.setMetadata({ percent: 0, status: this.upload_steps.begin });
         return item;
       });
-      this.files = this.files.filter(f => f._metadata.status !== this.upload_steps.uploaded).concat(newFiles);
+      this.files = this.files.filter(f => f._metadata.status === this.upload_steps.init).concat(newFiles);
     });
     this.fileDriveUploadService.onProgress.subscribe(res => {
       this.files = this.files.map((item: DriveFile) => {
@@ -111,12 +111,25 @@ export class DriveUploadDockComponent implements OnInit {
   }
 
   close(event: any) {
-    this.modalDock.close();
     const cancelableFiles = this.files.filter(f => {
-      return f._metadata.cancelable;
+      return f._metadata.cancelable && f._metadata.status === this.upload_steps.init;
     });
-    cancelableFiles.forEach(f => {
-      this.fileDriveUploadService.abortMultipartUploadS3(f);
-    });
+
+    if (cancelableFiles.length > 0) {
+      this.wthConfirmService.confirm({
+        acceptLabel: 'Cancel uploads',
+        rejectLabel: 'Continue uploads',
+        message: 'Your uploads aren\'t complete. Do you want to cancel all ongoing uploads?',
+        header: 'Cancel uploads',
+        accept: () => {
+          this.modalDock.close();
+          cancelableFiles.forEach(f => {
+            this.fileDriveUploadService.abortMultipartUploadS3(f);
+          });
+        }
+      });
+    } else {
+      this.modalDock.close();
+    }
   }
 }
