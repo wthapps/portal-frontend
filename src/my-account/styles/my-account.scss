@@ -13,3 +13,12 @@ div[data-braintree-id="number-field-group"] label {
   border-color: #b5b5b5;
   border-width: 1px;
 }
+
+/* Alert icons */
+.icon-success {
+  color: $input-color-active;
+}
+
+.icon-error {
+  color: $theme-color;
+}
