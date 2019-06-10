@@ -32,7 +32,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
 
   tabs: WTab[] = [
     {
-      name: 'My Note',
+      name: 'My Notes',
       link: 'parent_id=null',
       icon: 'icon-zone-note',
       number: null,
