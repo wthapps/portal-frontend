@@ -29,9 +29,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   private checkLogin(url: string): boolean {
-    if (this.authService.loggedIn && !this.authService.user.confirmed_at) {
-      location.href = `${Constants.baseUrls.myAccount}/users/alert?alertType=complete_signup`;
-    }
+    // if (this.authService.loggedIn && !this.authService.user.confirmed_at) {
+    //   location.href = `${Constants.baseUrls.myAccount}/users/alert?alertType=complete_signup`;
+    // }
     if (this.authService.loggedIn) {
       return true;
     }

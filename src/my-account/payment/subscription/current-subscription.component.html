@@ -46,12 +46,9 @@
                             </dd>
                             <dt>Payment method:</dt>
                             <dd>
-                                VISA
-                                <a
-                                    [routerLink]="['/payment/payment_method']"
-                                    href="#"
-                                >
-                                    Change
+                              <span *ngIf="paymentMethod"> {{ paymentMethod?.pm_json?.card_type }} - Ending in {{ paymentMethod?.pm_json?.last_4 }} </span>
+                                <a href="#" (click)="openPaymentMethodModal()">
+                                  {{ mode === 'add' ? 'Add' : 'Change' }}
                                 </a>
                             </dd>
                             <dt>Next billing date:</dt>
@@ -147,3 +144,4 @@
     #cancelModal
 ></subscription-cancel-modal>
 <w-password-confirmation-modal #passwordConfirmationModal></w-password-confirmation-modal>
+<payment-method-add-modal #addModal (onCompleted)="savePaymentMethod($event)"></payment-method-add-modal>

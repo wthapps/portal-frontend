@@ -1,16 +1,13 @@
 import {
-  AfterViewInit,
-  Component, ElementRef,
+  Component,
   EventEmitter,
   OnInit,
-  Output, Renderer2,
+  Output,
   ViewChild
 } from '@angular/core';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { PaymentMethodService } from './payment-method.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { PaymentGatewayService } from '@account/shared/payment-gateway';
 
 declare const braintree: any;
@@ -30,7 +27,6 @@ export class PaymentMethodAddModalComponent implements OnInit {
   title: string;
   submitButton: any;
   loading = false;
-  private destroy$ = new Subject();
   private token: string;
   private dropin: any;
 
@@ -68,10 +64,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
   close(options?: any) {
     this.loading = false;
     this.modal.close(options).then(() => {
-      // Clear input payment method form
-      if (this.dropin) {
-        this.dropin.teardown();
-      }
+      this.desctroyDropIn();
     });
   }
 
@@ -87,7 +80,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
       // dropinInstance.clearSelectedPaymentMethod();
       this.loading = false;
       this.submitButton.addEventListener('click', () => {
-        dropinInstance.requestPaymentMethod().then(payload => {
+        this.dropin.requestPaymentMethod().then(payload => {
           // Send payload to server
           this.close();
           this.submitPayload(payload);
@@ -95,11 +88,11 @@ export class PaymentMethodAddModalComponent implements OnInit {
           this.handleUpsertError(error);
         });
 
-        dropinInstance.on('noPaymentMethodRequestable', () => {
+        this.dropin.on('noPaymentMethodRequestable', () => {
           this.submitButton.setAttribute('disabled', 'true');
         });
 
-        dropinInstance.on('paymentMethodRequestable', event => {
+        this.dropin.on('paymentMethodRequestable', event => {
           // if the nonce is already available (via PayPal authentication
           // or by using a stored payment method), we can request the
           // nonce right away. Otherwise, we wait for the customer to
@@ -108,7 +101,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
           this.submitButton.removeAttribute('disabled');
         });
 
-        // dropinInstance.on('paymentOptionSelected', event => {
+        // this.dropin.on('paymentOptionSelected', event => {
         // });
 
       });
@@ -118,9 +111,20 @@ export class PaymentMethodAddModalComponent implements OnInit {
     });
   }
 
+  desctroyDropIn() {
+    if (this.dropin) {
+      this.dropin.teardown(error => {
+        if (error) {
+          console.log('Dropin teardown:::', error);
+        }
+        this.dropin = null;
+      });
+    }
+  }
+
 
   private submitPayload(payload: any) {
-    this.paymentMethodService.create(payload).pipe(takeUntil(this.destroy$)).subscribe(response => {
+    this.paymentMethodService.create(payload).subscribe(response => {
       this.onCompleted.emit({ success: true, data: response.data });
     }, error => {
       this.onCompleted.emit({ error: true, data: error });

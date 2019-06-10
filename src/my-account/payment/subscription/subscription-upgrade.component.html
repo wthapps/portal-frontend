@@ -20,7 +20,7 @@
                 <p-radioButton name="storageSelection"
                                [disabled]="storage.id < currentStorage?.id"
                                [value]="storage?.id"
-                               label="{{ storage?.name }} {{ storage?.price | currency }} per month"
+                               label="{{ storage?.name }} {{ storage?.price | currency }} per month {{ subscription?.status === 'ACTIVATING' && subscription?.storage?.id === storage?.id ? ' - current': '' }}"
                                [(ngModel)]="selectedStorageId"
                                 (onClick)="selectStorage(storage)">
                 </p-radioButton>
@@ -45,6 +45,9 @@
             </div>
           </div>
         </ng-container>
+        <ng-container *ngIf="!paymentMethod">
+          <span>Click on below button to add payment method</span>
+        </ng-container>
 
         <div class="pt20">
           <button (click)="openPaymentMethodModal()" type="button" class="btn btn-outline-default">
@@ -60,8 +63,8 @@
         <div class="card-body">
           <h3>WTH PRO</h3>
           <h4> {{ selectedStorage?.price | currency }} per month </h4>
-          <p>Charged monthly</p>
-          <ul class="text-muted">
+          <p class="text-muted">Charged monthly</p>
+          <ul>
             <li>Full access to all WTH!Zone apps and services</li>
             <li> {{ selectedStorage?.name }} of cloud storage and able to add more space</li>
             <li>Can add and manage Sub Account</li>
@@ -75,12 +78,12 @@
           </span>
           <p class="pt10 pb10">
             <p-checkbox [(ngModel)]="checked" binary="true"></p-checkbox>
-            I agree to the WTHApps <a [href]="termsOfServiceUrl">Terms of Services</a> and the Automatically Renewal terms above
+            I agree to the WTHApps <a [href]="termsOfServiceUrl">Terms of Services</a> and the Automatic Renewal terms above
           </p>
 
           <button class="btn btn-block btn-primary" (click)="upgrade()"
                   [disabled]="!checked || !paymentMethod || (subscription?.status === 'ACTIVATING' && selectedStorage?.id === subscription?.storage?.id)">
-            Complete Upgrade
+            Complete upgrade
           </button>
         </div>
       </div>

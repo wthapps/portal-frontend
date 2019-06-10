@@ -11,8 +11,7 @@ import { AuthService, WthConfirmService, UserService } from '@shared/services';
 import { SubscriptionService } from '@shared/common/subscription/subscription.service';
 import { Constants } from '@shared/constant';
 import { AccountService } from '@account/shared/account/account.service';
-
-declare let moment: any;
+import { PaymentMethodAddModalComponent } from '@account/payment/payment-method/payment-method-add-modal.component';
 
 @Component({
   selector: 'current-subscription',
@@ -22,12 +21,15 @@ declare let moment: any;
 export class CurrentSubscriptionComponent implements OnInit {
   @ViewChild('cancelModal') cancelModal: SubscriptionCancelModalComponent;
   @ViewChild('passwordConfirmationModal') passwordConfirmationModal: PasswordConfirmationModalComponent;
+  @ViewChild('addModal') addModal: PaymentMethodAddModalComponent;
+
 
   editing;
   subscription: any;
   plan: any;
   storage: any;
   paymentMethod: any;
+  mode: 'add' | 'edit';
 
   readonly TRIALING = 'TRIALING';
   readonly CANCELING = 'CANCELING';
@@ -99,6 +101,27 @@ export class CurrentSubscriptionComponent implements OnInit {
     });
   }
 
+  openPaymentMethodModal() {
+    this.addModal.open({mode: this.mode});
+  }
+
+  savePaymentMethod(response: any) {
+    const action = this.mode === 'add' ? 'added' : 'changed';
+
+    if (response.success) {
+      this.paymentMethod = response.data;
+      this.toastsService.success(
+        `Payment method ${ action }`,
+        `You ${ action } payment method successfully`
+      );
+    } else if (response.error) {
+      this.toastsService.danger(
+        `Payment method ${ action } error`,
+        `Error found after you ${ action } payment method`
+      );
+    }
+  }
+
   deleteAccount() {
     const faqUrl = `${Constants.baseUrls.app}/faq`;
     this.wthConfirm.confirm({
@@ -141,6 +164,7 @@ export class CurrentSubscriptionComponent implements OnInit {
     this.plan = subscription.plan;
     this.storage = subscription.storage;
     this.paymentMethod = subscription.payment_method;
+    this.mode = this.paymentMethod ? 'edit' : 'add';
   }
 
   private gotoSubscriptionAlert(success: boolean) {

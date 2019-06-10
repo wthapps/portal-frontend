@@ -67,11 +67,19 @@ export class SubscriptionUpgradeComponent implements OnInit {
   }
 
   savePaymentMethod(response: any) {
+    const action = this.mode === 'add' ? 'added' : 'changed';
+
     if (response.success) {
       this.paymentMethod = response.data;
-      this.toastsService.success(`You ${ this.mode === 'add' ? 'added' : 'changed' } payment method successfully`);
+      this.toastsService.success(
+        `Payment method ${ action }`,
+        `You ${ action } payment method successfully`
+      );
     } else if (response.error) {
-      this.toastsService.danger(`'Error found after you ${ this.mode === 'add' ? 'added' : 'changed' } payment method'`);
+      this.toastsService.danger(
+        `Payment method ${ action } error`,
+  `Error found after you ${ action } payment method`
+      );
     }
   }
 

@@ -51,18 +51,7 @@ export class UserAlertComponent implements OnInit {
                         Follow the introduction that you receive from WTH!Apps to complete the sign up process.
                         </p>
                         <p>You may resend the email by click on the button below.</p>`;
-
         break;
-      case this.COMPLETE_SIGNUP:
-        this.title = 'Email verification needed';
-        this.message = `<p>An email has been sent to ${this.userService.getSyncProfile().email}.
-                        You must verify your email before start using WTH!Apps. 
-                        Follow the introduction that you receive from WTH!Apps to complete the sign up process. 
-                        </p>
-                        <p>You may resend the email by click on the button below.</p>`;
-
-        break;
-
     }
   }
 }
