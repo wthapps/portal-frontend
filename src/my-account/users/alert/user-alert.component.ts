@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ApiBaseService, UserService } from '@shared/services';
+import { UserService } from '@shared/services';
 import { ActivatedRoute } from '@angular/router';
-import { Constants } from '@shared/constant';
-import { RegistrationService } from '../registration/registration.service';
 import { MessageService } from 'primeng/api';
 
 @Component({
