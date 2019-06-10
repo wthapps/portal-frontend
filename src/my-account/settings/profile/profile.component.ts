@@ -256,7 +256,8 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
   openPasswordConfirmationModal() {
     this.closeChangeEmailModal();
-    this.passwordConfirmationModal.open({email: this.userService.getSyncProfile().email});
+    this.passwordConfirmationModal.open({email: this.userService.getSyncProfile().email
+    , accept: ({password}) => this.changeEmail({password})});
   }
 
   checkTakenUsername(event: any) {
@@ -278,6 +279,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
 
   changeEmail(payload: any) {
+    console.log('change email: ', payload);
     this.passwordConfirmationModal.close();
     this.apiBaseService.post(`account/users/email/change`, {
       email: this.changedEmailForm.value.email,

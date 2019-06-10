@@ -296,10 +296,17 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
         break;
       }
       case OBJECT_TYPE.FOLDER: {
-        this.router.navigate([
-          'folders',
-          event.id
-        ]);
+        const url = this.router.url;
+        if (url.includes('folders')) {
+          this.router.navigate([
+            '../',
+            event.id
+          ], {relativeTo: this.route});
+        } else if (url.includes('shared')) {
+          this.router.navigate(['folders', event.id], {relativeTo: this.route});
+        } else {
+          this.router.navigate(['folders', event.id]);
+        }
         break;
       }
     }

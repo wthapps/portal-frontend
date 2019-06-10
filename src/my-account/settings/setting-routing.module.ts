@@ -1,6 +1,4 @@
-import { DeleteAccountComponent } from '@account/settings/delete-account/delete-account.component';
 import { SettingsPasswordComponent } from '@account/settings/password/password.component';
-import { MyStorageComponent } from '@account/settings/storage/storage.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -22,7 +20,6 @@ import { MySettingComponent } from './setting.component';
           { path: 'account', component: MyAccountComponent },
           { path: 'profile', component: MyProfileComponent },
           { path: 'password', component: SettingsPasswordComponent },
-          { path: 'delete-account', component: DeleteAccountComponent },
           { path: '', component: MySettingComponent },
           { path: '*', component: MySettingComponent }
         ]
@@ -31,5 +28,4 @@ import { MySettingComponent } from './setting.component';
   ],
   exports: [RouterModule]
 })
-export class MySettingRoutingModule {
-}
+export class MySettingRoutingModule {}

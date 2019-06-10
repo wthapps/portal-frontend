@@ -113,6 +113,7 @@ export class ZNoteDetailEditComponent
   private initRetry = 0; // number of times this component will try to init Quill editor, default max tries is 3
   resize: any;
   context$: any;
+  context;
   profile: User;
   setting$: Observable<NoteSetting>;
   setting: NoteSetting;
@@ -170,6 +171,7 @@ export class ZNoteDetailEditComponent
         withLatestFrom(this.context$),
         switchMap(([paramMap, ctx]: any) => {
           const noteId = paramMap.get('id');
+          this.context = ctx;
           this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
           if (!!noteId) {
             if (ctx.page === noteConstants.PAGE_TRASH) {
@@ -206,8 +208,10 @@ export class ZNoteDetailEditComponent
             }
             console.warn('exception: ', e);
           }
-          if (currentFolder) {
+          if (currentFolder && this.context.permissions.edit === true) {
             this.parentId = currentFolder.id;
+          } else {
+            this.parentId = undefined;
           }
           this.updateFormValue(this.note);
           // Reset content of elemenet div.ql-editor to prevent HTML data loss
@@ -1109,21 +1113,13 @@ export class ZNoteDetailEditComponent
   /**
    * Save post and change to EDIT mode
    */
-  async onFirstSave() {
-    const res = await this.noteService
-      .create({
-        ...this.form.value,
-        content: this.getValidHtml(),
-        parent_id: this.parentId
-      })
-      .toPromise();
-    this.note = res.data;
+  onFirstSave(): void {
+    this.store.dispatch(new note.Add({
+      ...this.form.value,
+      content: this.getValidHtml(),
+      parent_id: this.parentId
+    }))
     this.editMode = Constants.modal.edit;
-    this.store.dispatch(new note.MultiNotesAdded([res['data']]));
-
-    // return await this.router.navigate([
-    //   { outlets: { detail: ['notes', this.note.id] } }
-    // ]);
   }
 
   getValidHtml() {
