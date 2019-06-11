@@ -22,7 +22,6 @@ import {
 import { SubscriptionEditModalComponent } from './shared/subscription/modal/subscription-edit-modal.component';
 import { CommonEventService } from '../shared/services/common-event/common-event.service';
 import { WthConfirmService } from '../shared/shared/components/confirmation/wth-confirm.service';
-import { SubscriptionService } from './shared/subscription/subscription.service';
 import { ToastsService } from '../shared/shared/components/toast/toast-message.service';
 import { AccountService } from './shared/account/account.service';
 import { Store } from '@ngrx/store';
@@ -70,7 +69,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private googleAnalytics: GoogleAnalyticsService,
     private wthConfirmService: WthConfirmService,
     private accountService: AccountService,
-    private subscriptionService: SubscriptionService,
     private toastsService: ToastsService,
     private userService: UserService,
     private visibilityService: PageVisibilityService,

@@ -7,7 +7,7 @@ import { PaymentMethodAddModalComponent } from '@account/payment/payment-method/
 import { PaymentMethodService } from '@account/payment/payment-method/payment-method.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { StorageService } from '@shared/common/storage';
-import { SubscriptionService } from '@shared/common/subscription/subscription.service';
+import { SubscriptionService } from '@shared/common/subscription';
 import { SubscriptionAlertModalComponent } from '@account/payment/subscription/subscription-alert-modal.component';
 
 @Component({
@@ -76,9 +76,10 @@ export class SubscriptionUpgradeComponent implements OnInit {
         `You ${ action } payment method successfully`
       );
     } else if (response.error) {
+      console.log('response:::', response);
       this.toastsService.danger(
         `Payment method ${ action } error`,
-  `Error found after you ${ action } payment method`
+  `${response.error}`
       );
     }
   }

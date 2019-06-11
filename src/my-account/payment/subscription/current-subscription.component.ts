@@ -8,7 +8,7 @@ import { SubscriptionCancelModalComponent } from '@account/payment/subscription/
 import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
 import { ToastsService } from "@shared/shared/components/toast/toast-message.service";
 import { AuthService, WthConfirmService, UserService } from '@shared/services';
-import { SubscriptionService } from '@shared/common/subscription/subscription.service';
+import { SubscriptionService } from '@shared/common/subscription';
 import { Constants } from '@shared/constant';
 import { AccountService } from '@account/shared/account/account.service';
 import { PaymentMethodAddModalComponent } from '@account/payment/payment-method/payment-method-add-modal.component';
@@ -117,7 +117,7 @@ export class CurrentSubscriptionComponent implements OnInit {
     } else if (response.error) {
       this.toastsService.danger(
         `Payment method ${ action } error`,
-        `Error found after you ${ action } payment method`
+        `${response.error}`
       );
     }
   }

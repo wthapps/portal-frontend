@@ -64,7 +64,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
   close(options?: any) {
     this.loading = false;
     this.modal.close(options).then(() => {
-      this.desctroyDropIn();
+      this.destroyDropIn();
     });
   }
 
@@ -111,7 +111,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
     });
   }
 
-  desctroyDropIn() {
+  destroyDropIn() {
     if (this.dropin) {
       this.dropin.teardown(error => {
         if (error) {
@@ -127,7 +127,7 @@ export class PaymentMethodAddModalComponent implements OnInit {
     this.paymentMethodService.create(payload).subscribe(response => {
       this.onCompleted.emit({ success: true, data: response.data });
     }, error => {
-      this.onCompleted.emit({ error: true, data: error });
+      this.onCompleted.emit(error.error);
     });
   }
 

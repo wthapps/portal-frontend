@@ -47,8 +47,8 @@ export class UserAlertComponent implements OnInit {
     switch (alertType) {
       case this.COMPLETE_SIGNUP:
         this.title = 'Thank you for signing up';
-        this.message = `<p>An email has been sent to ${this.userService.getSyncProfile().email}.
-                        Follow the introduction that you receive from WTH!Apps to complete the sign up process.
+        this.message = `<p>An email has been sent to ${this.userService.getSyncProfile().email}. It may take a few minutes or less.
+                        Follow the instruction that you receive from WTH!Apps to complete the sign up process.
                         </p>
                         <p>You may resend the email by click on the button below.</p>`;
         break;

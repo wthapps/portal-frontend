@@ -16,7 +16,7 @@ import { BsModalModule } from 'ng2-bs3-modal';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { ChatPipeModule } from '@shared/chat/pipe';
-import { SubscriptionModule } from '@shared/common/subscription';
+// import { SubscriptionModule } from '@shared/common/subscription';
 
 @NgModule({
   imports: [
@@ -33,7 +33,7 @@ import { SubscriptionModule } from '@shared/common/subscription';
     WTHEmojiModule,
     BoxLoadingModule,
     BoxNoDataModule,
-    SubscriptionModule
+    // SubscriptionModule
   ],
   declarations: [
     AppsNavigationComponent,

@@ -42,7 +42,7 @@
       <notification-dropdown></notification-dropdown>
 
       <!-- profile dropdown -->
-      <profile-dropdown [user]="user"></profile-dropdown>
+      <profile-dropdown [user]="user" [subscription]="subscription$ | async"></profile-dropdown>
     </ng-container>
   </div>
 </nav>
