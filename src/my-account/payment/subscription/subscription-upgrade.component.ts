@@ -7,14 +7,14 @@ import { PaymentMethodAddModalComponent } from '@account/payment/payment-method/
 import { PaymentMethodService } from '@account/payment/payment-method/payment-method.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { StorageService } from '@shared/common/storage';
-import { SubscriptionService } from '@shared/common/subscription/subscription.service';
+import { SubscriptionService } from '@shared/common/subscription';
 import { SubscriptionAlertModalComponent } from '@account/payment/subscription/subscription-alert-modal.component';
 
 @Component({
   selector: 'subscription-upgrade',
   templateUrl: 'subscription-upgrade.component.html'
 })
-export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
+export class SubscriptionUpgradeComponent implements OnInit {
   @ViewChild('addModal') addModal: PaymentMethodAddModalComponent;
   @ViewChild('alertModal') alertModal: SubscriptionAlertModalComponent;
 
@@ -30,7 +30,7 @@ export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
   checked: false;
   subscription: any;
 
-  termsOfServiceUrl = Constants.baseUrls.app + '/policies/terms';
+  readonly termsOfServiceUrl = Constants.baseUrls.app + '/policies/terms';
 
   constructor(
     private router: Router,
@@ -47,18 +47,6 @@ export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
       this.storages = response.data;
     });
 
-    // // Get current storage
-    // this.storageService.getCurrent().subscribe(response => {
-    //   this.currentStorage = response.data;
-    //   this.selectedStorageId = this.currentStorage.id;
-    // });
-
-    // // Get current payment methods
-    // this.paymentMethodService.getCurrent().subscribe(response => {
-    //   this.paymentMethod = response.data;
-    //   this.mode = this.paymentMethod ? 'edit' : 'add';
-    // });
-
     this.subscriptionService.getCurrent().subscribe(response => {
       this.subscription = response.data.attributes;
       this.plan = this.subscription.plan;
@@ -70,14 +58,6 @@ export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
     });
   }
 
-  ngAfterViewInit() {
-
-
-  }
-
-  changePaymentMethod(element: any) {
-  }
-
   onSubmit() {
     this.submitted = true;
   }
@@ -87,11 +67,20 @@ export class SubscriptionUpgradeComponent implements AfterViewInit, OnInit {
   }
 
   savePaymentMethod(response: any) {
+    const action = this.mode === 'add' ? 'added' : 'changed';
+
     if (response.success) {
       this.paymentMethod = response.data;
-      this.toastsService.success(`You ${ this.mode === 'add' ? 'added' : 'changed' } payment method successfully`);
+      this.toastsService.success(
+        `Payment method ${ action }`,
+        `You ${ action } payment method successfully`
+      );
     } else if (response.error) {
-      this.toastsService.danger(`'Error found after you ${ this.mode === 'add' ? 'added' : 'changed' } payment method'`);
+      console.log('response:::', response);
+      this.toastsService.danger(
+        `Payment method ${ action } error`,
+  `${response.error}`
+      );
     }
   }
 

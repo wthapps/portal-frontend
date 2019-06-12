@@ -1,7 +1,12 @@
 <div class="objects-main">
-  <w-dataView-nav [showViewMode]="true" [enableSort]="enableSort" [sortBy]="context?.sort?.field"
-    [orderBy]="context?.sort?.desc ? 'desc' : 'asc'" [viewBy]="context?.viewMode"
-    (sortComplete)="onSortComplete($event)" (viewComplete)="onViewComplete($event)">
+  <w-dataView-nav [showViewMode]="true"
+                  [enableSort]="enableSort"
+                  [sortBy]="context?.sort?.field"
+                  [orderBy]="context?.sort?.desc ? 'desc' : 'asc'"
+                  [viewBy]="context?.viewMode"
+                  [sortState]="sortState"
+                  (sortComplete)="onSortComplete($event)"
+                  (viewComplete)="onViewComplete($event)">
 
     <w-breadcrumbs *ngIf="breadcrumbs && breadcrumbs.length > 0" [data]="breadcrumbs">
       <ng-template #viewMenu let-item>
@@ -54,14 +59,21 @@
         (selectCompleted)="onSelectCompleted()" (dblClick)="onDblClick($event)" #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">
-            <span class="can-click" (click)="onSortComplete({sortBy: 'Name', orderBy: 'desc'})">Name</span>
+            <span>Name</span>
           </div>
           <div class="item-note-owner">Owner</div>
           <div class="item-note-date">{{ DATE_MAP[context?.sort?.field] || 'Last Modified' }}</div>
         </ng-template>
         <ng-template #viewBody let-item>
           <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === 'Note::Note'}">
-            <i *ngIf="item.object_type === 'Note::Folder'" class="fa fa-folder"></i>
+            <ng-container *ngIf="item.object_type === 'Note::Folder'">
+              <i
+                *ngIf="context?.page === noteConstants.PAGE_SHARED_WITH_ME || context?.page === noteConstants.PAGE_SHARED_BY_ME;else templateIconFolder"
+                class="wicon-shared-with-me"></i>
+              <ng-template #templateIconFolder>
+                <i class="fa fa-folder"></i>
+              </ng-template>
+            </ng-container>
             <ng-container *ngIf="item.object_type === 'Note::Note'">
               <i class="fa fa-sticky-note"></i><span [innerHTML]="item?.content | safeHtml"></span>
             </ng-container>
@@ -72,12 +84,16 @@
           <div class="item-note-owner">
             {{ item.user | username }}
           </div>
-          <div class="item-note-date">
-            {{ (DATE_MAP[context?.sort?.field] ? item[context?.sort?.field] : item.updated_at) | timeFormat }}</div>
+          <div class="item-note-date">{{ (DATE_MAP[context?.sort?.field] ? item[context?.sort?.field] : item.updated_at)
+            | timeFormat }}
+          </div>
         </ng-template>
       </w-dataView>
-      <w-dataView-selected *ngIf="dataView.selectedDocuments?.length" [selectedObjects]="dataView.selectedDocuments"
-        (clear)="dataView.container.clearSelection()" (selectAll)="dataView.container.selectAll()">
+      <w-dataView-selected *ngIf="dataView.selectedDocuments?.length"
+                           [isSelectAll]="(list?.length === dataView.selectedDocuments?.length)"
+                           [selectedObjects]="dataView.selectedDocuments"
+                           (clear)="dataView.container.clearSelection()"
+                           (selectAll)="dataView.container.selectAll()">
         <ul class="nav-selection-actions">
           <ng-container *ngFor="let menu of menuActions | objectValues">
             <li *ngIf="menu.active">

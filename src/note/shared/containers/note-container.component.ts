@@ -40,6 +40,8 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     'accessed_date': 'Last Opened'
   };
 
+  noteConstants = noteConstants;
+
   data$: Observable<any[]>;
   context;
   next: string;
@@ -118,10 +120,23 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     }
   });
 
-  menuActions = {...this.DEFAULT_MENU_ACTIONS};
+  readonly DEFAULT_SORT_STATE = [
+    {
+      key: 'name',
+      value: 'Name'
+    },
+    {
+      key: 'updated_at',
+      value: 'Last modified'
+    }
+  ];
 
-  otherActions = {...this.DEFAULT_OTHER_ACTIONS};
+  menuActions = { ...this.DEFAULT_MENU_ACTIONS };
+
+  otherActions = { ...this.DEFAULT_OTHER_ACTIONS };
   noOtherActions = false;
+
+  sortState = [...this.DEFAULT_SORT_STATE];
 
   private destroySubject: Subject<any> = new Subject<any>();
 
@@ -137,7 +152,15 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
   ) {
     this.data$ = this.store.select(listReducer.getAllItems);
     this.store.select('context').pipe(takeUntil(this.destroySubject))
-      .subscribe(context => this.context = context);
+      .subscribe(context => {
+        this.context = context;
+        if (context.page === noteConstants.PAGE_SHARED_WITH_ME) {
+          this.sortState = [...this.DEFAULT_SORT_STATE, {
+            key: 'created_at',
+            value: 'Shared date'
+          }];
+        }
+      });
   }
 
   ngOnInit() {
@@ -184,14 +207,14 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
       this.menuActions['share'].active = false;
 
       const viewOnly = objects.some(o => o.permission === 'view');
-      if ( viewOnly ) {
+      if (viewOnly) {
         this.hideAllOtherActions();
       } else {
         ['move_to_folder', 'make_copy'].forEach(k => this.otherActions[k].active = false);
 
         if (objects.length === 1) {
           ['print', 'export_to_pdf'].forEach(k => this.otherActions[k].active = true);
-          if ( !hasEnoughPermission(objects[0].permission, 'edit')) {
+          if (!hasEnoughPermission(objects[0].permission, 'edit')) {
             ['edit', 'divider'].forEach(k => this.otherActions[k].active = false);
           } else {
             ['edit', 'divider'].forEach(k => this.otherActions[k].active = true);
@@ -273,10 +296,17 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
         break;
       }
       case OBJECT_TYPE.FOLDER: {
-        this.router.navigate([
-          'folders',
-          event.id
-        ]);
+        const url = this.router.url;
+        if (url.includes('folders')) {
+          this.router.navigate([
+            '../',
+            event.id
+          ], {relativeTo: this.route});
+        } else if (url.includes('shared')) {
+          this.router.navigate(['folders', event.id], {relativeTo: this.route});
+        } else {
+          this.router.navigate(['folders', event.id]);
+        }
         break;
       }
     }
@@ -454,7 +484,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
       payload: {
         viewMode: event
       }
-    })
+    });
     this.dataView.container.update();
     this.dataView.updateView();
   }
@@ -476,8 +506,8 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private resetMenuActions(): void {
-    this.menuActions = {...this.DEFAULT_MENU_ACTIONS};
-    this.otherActions = {...this.DEFAULT_OTHER_ACTIONS };
+    this.menuActions = { ...this.DEFAULT_MENU_ACTIONS };
+    this.otherActions = { ...this.DEFAULT_OTHER_ACTIONS };
     this.noOtherActions = false;
   }
 

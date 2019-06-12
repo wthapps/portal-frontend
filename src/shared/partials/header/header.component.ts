@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { ChannelService } from '../../channels/channel.service';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 import { User } from '@wth/shared/shared/models';
@@ -9,6 +9,9 @@ import { ApiBaseService, AuthService, NotificationService, CommonEventHandler, C
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
 import { Subscription } from 'rxjs/Subscription';
 import { WebsocketService } from '@shared/channels/websocket.service';
+import { SubscriptionService } from '@shared/common/subscription';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 declare var $: any;
 declare var _: any;
@@ -22,7 +25,7 @@ declare var _: any;
   styleUrls: ['header.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class HeaderComponent extends CommonEventHandler implements OnInit, OnDestroy {
+export class HeaderComponent extends CommonEventHandler implements OnInit, AfterViewInit, OnDestroy {
   @Input() user: User;
   @Input() loggedIn: boolean;
   @Input() hasSearch: Boolean = true;
@@ -40,6 +43,8 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
   type = 'update'; // update , connection
   notificationCount = 0;
   subscription: any;
+  subscription$: Observable<any>;
+
   subscriptionSub: Subscription;
 
   private hiddenSubscription: Subscription;
@@ -61,9 +66,12 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
     public connectionService: ConnectionNotificationService,
     public commonEventService: CommonEventService,
     public notificationService: NotificationService,
-    private websocketService: WebsocketService
+    private websocketService: WebsocketService,
+    private subscriptionService: SubscriptionService
   ) {
     super(commonEventService);
+
+    this.subscription$ = this.subscriptionService.subscription$;
   }
 
   ngOnInit(): void {
@@ -90,6 +98,13 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
     });
   }
 
+  ngAfterViewInit (): void {
+    if (this.authService.isAuthenticated()) {
+      this.subscriptionService.getCurrent().subscribe(response => {
+        this.subscription = response.data.attributes;
+      });
+    }
+  }
   ngOnDestroy(): void {
     this.channelService.unsubscribe();
     this.hiddenSubscription.unsubscribe();

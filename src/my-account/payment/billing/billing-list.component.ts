@@ -8,7 +8,8 @@ import { LoadingService } from '@shared/shared/components/loading/loading.servic
 @Component({
   moduleId: module.id,
   selector: 'billing-list',
-  templateUrl: 'billing-list.component.html'
+  templateUrl: 'billing-list.component.html',
+  styleUrls: ['billing-list.component.scss']
 })
 
 export class BillingListComponent implements OnInit {

@@ -17,7 +17,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { MyAppsModule } from './apps/apps.module';
-import { ConfirmationModule } from './confirmation/confirmation.module';
 import { MyMyAppsModule } from './my-apps/my-apps.module';
 import { MyPaymentModule } from './payment/payment.module';
 import { MyPlansModule } from './plans/plans.module';
@@ -25,8 +24,8 @@ import { MySettingModule } from './settings/setting.module';
 
 import { MySharedModule } from './shared/shared.module';
 import { appEffects, appReducers, metaReducers, MyaccountStoreModule } from './store';
-import { UserModule } from '@account/users';
 import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
+import { GuardModule } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -41,9 +40,9 @@ import { GoogleAnalyticsService } from '@shared/services/analytics/google-analyt
     MyPlansModule,
     MySettingModule,
     MyAdminModule,
-    ConfirmationModule,
-    UserModule,
     FooterModule,
+
+    GuardModule,
 
     // Store
     MyaccountStoreModule,

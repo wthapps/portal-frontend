@@ -1,4 +1,3 @@
-import { DeleteAccountComponent } from '@account/settings/delete-account/delete-account.component';
 import { SettingsPasswordComponent } from '@account/settings/password/password.component';
 import { MyStorageComponent } from '@account/settings/storage/storage.component';
 import { CommonModule } from '@angular/common';
@@ -30,7 +29,7 @@ import { ProfileService } from '@shared/user/services';
     MyProfileComponent,
     SettingsPasswordComponent,
     MyAccountComponent,
-    DeleteAccountComponent,
+    // DeleteAccountComponent,
     MyPreferencesComponent,
     MyStorageComponent
   ],

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { UserService } from '@shared/services/user.service';
-
 import { TransactionService } from './transaction.service';
 import { LoadingService } from '@shared/shared/components/loading/loading.service';
+
+import * as printJs from 'print-js';
 
 @Component({
   selector: 'my-transaction-detail',
@@ -68,9 +69,55 @@ export class TransactionDetailComponent implements OnInit {
       });
   }
 
-  viewReceipt(event: any): void {
-    event.preventDefault();
-    this.router.navigate([`transactions/${this.trans_id}/receipt`]);
-    return;
+  printTransaction(): void {
+    printJs({
+      printable: 'print-section',
+      type: 'html',
+      style: `
+        body {
+          font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+          font-size: 14px;
+          line-height: 1.42857143;
+          color: #4a4a4a;
+        }
+        h4 {
+          font-size: 18px;
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+        .card-line {
+          clear: both;
+          margin: 10px -10px;
+          margin-top: 20px;
+          margin-bottom: 20px;
+          border: 0;
+          border-top: 1px solid #eeeeee
+        }
+        dl {
+          margin-top: 0;
+          margin-bottom: 20px; 
+          display: block;
+          margin-block-start: 1em;
+          margin-block-end: 1em;
+          margin-inline-start: 0px;
+          margin-inline-end: 0px;
+        }
+        dt {
+            font-weight: bold;
+        }
+        .dl-horizontal dt {
+          float: left;
+          width: 160px;
+          clear: left;
+          text-align: right;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .dl-horizontal dd {
+          margin-left: 180px;
+        }
+      `
+    });
   }
 }

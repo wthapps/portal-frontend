@@ -6,7 +6,6 @@
     .item-media-img {
       background-color: transparent;
       > i {
-        color: $gray-light;
         &.fa-folder-o {
           &:before {
             font-size: 130%;
@@ -50,7 +49,6 @@
     .item-note-date {
       padding: 0 10px;
       width: 130px;
-      text-align: right;
       display: none;
       @media (min-width: $screen-sm-min) {
         display: block;

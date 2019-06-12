@@ -16,7 +16,7 @@
                 <i class="fa fa-ellipsis-v"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li>
+                <li *ngIf="user?.uuid" >
                   <a href="javascript:void(0);" (click)="viewProfile(user)">View Profile</a>
                 </li>
                 <li *ngIf="authService.user.id !== user.id">
@@ -43,12 +43,12 @@
   <ng-container *ngIf="!isLoading; else templateloading">
     <ng-container *ngIf="medias?.length; else templateNodata">
       <div class="message-assets-list" [ngClass]="{'row-img grid': currentTab === 'photos'}">
-        <div *ngFor="let item of medias" class="message-assets-item" 
+        <div *ngFor="let item of medias" class="message-assets-item"
         [ngClass]="{'active': selectedIds[item?.id], 'row-img-item photo-box content-item': ['Media::Photo', 'Media::Video'].includes(item.file_type)}" >
           <!-------------- Photo view --------------->
           <ng-container *ngIf="item.file_type === 'Media::Photo' && item?.file">
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
-  
+
             <div class="message-assets-item-body" (click)="onClickItem(item)"  (dblclick)="view(item)">
                   <div class="message-assets-item-img">
                       <img alt=""
@@ -56,7 +56,7 @@
                   </div>
                   <div class="photo-box-name" [title]="item?.file?.full_name">
                       <span>{{ item?.file?.full_name }} </span>
-                    </div> 
+                    </div>
             </div>
 
           </ng-container>
@@ -71,15 +71,15 @@
                 </div>
                 <div class="photo-box-name" [title]="item?.file?.full_name">
                     <span>{{ item?.file?.full_name }} </span>
-                  </div> 
+                  </div>
           </div>
           </ng-container>
-  
+
           <!-------------- End Photo view --------------->
           <!-------------- Note view --------------->
           <ng-container *ngIf="item.file_type === 'Note::Note'">
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
-  
+
             <div class="message-assets-item-body" (click)="onClickItem(item)" (dblclick)="view(item)">
               <span class="bold wobject-box-title-note name-clickable"><i class="fa fa-sticky-note"></i>
                 <a [href]="noteUrl + '/' + item.uuid" class="note-title" target="_blank"> {{ item?.file?.name === '' ? 'Untitled' :
@@ -91,7 +91,7 @@
           <!-------------- File view --------------->
           <ng-container *ngIf="item.file_type === 'Common::GenericFile'">
             <ng-container *ngTemplateOutlet="templateItemHeader; context: {item: item}"></ng-container>
-  
+
             <div class="message-assets-item-body text-fade" (click)="onClickItem(item)" (dblclick)="view(item)">
               <div class="media">
                 <div class="media-left">
@@ -104,12 +104,12 @@
               </div>
             </div>
           </ng-container>
-  
+
           <!-------------- End File view --------------->
-  
+
         </div>
       </div>
-      
+
     </ng-container>
     <ng-template #templateItemHeader let-item="item">
         <div class="message-assets-item-header text-fade">

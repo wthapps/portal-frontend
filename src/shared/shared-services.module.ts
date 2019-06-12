@@ -51,6 +51,7 @@ import { DatePipe } from '@angular/common';
 import { WHttpClientService } from '@shared/services/w-http-client.service';
 import { WebsocketService } from '@shared/channels/websocket.service';
 import { NotificationEventService } from '@shared/services/notification';
+import { SubscriptionService } from '@shared/common/subscription';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -125,6 +126,7 @@ export class SharedServicesModule {
         PageVisibilityService,
         WHttpClientService,
         WebsocketService,
+        SubscriptionService,
 
         // Event Service
         NotificationEventService,

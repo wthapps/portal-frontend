@@ -1,15 +1,17 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { ApiBaseService, AuthService } from '@shared/services';
-import { SubscriptionService } from '@shared/common/subscription/subscription.service';
-import { StorageService } from '@shared/common/storage';
-import { PaymentMethodService } from '@account/payment/payment-method/payment-method.service';
-import { PlanService } from '@shared/common/plan';
+
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
+
 import { SubscriptionCancelModalComponent } from '@account/payment/subscription/modal/subscription-cancel-modal.component';
 import { PasswordConfirmationModalComponent } from '@shared/modals/password-comfirmation';
-import {ToastsService} from "@shared/shared/components/toast/toast-message.service";
-
-declare let moment: any;
+import { ToastsService } from "@shared/shared/components/toast/toast-message.service";
+import { AuthService, WthConfirmService, UserService } from '@shared/services';
+import { SubscriptionService } from '@shared/common/subscription';
+import { Constants } from '@shared/constant';
+import { AccountService } from '@account/shared/account/account.service';
+import { PaymentMethodAddModalComponent } from '@account/payment/payment-method/payment-method-add-modal.component';
 
 @Component({
   selector: 'current-subscription',
@@ -19,24 +21,29 @@ declare let moment: any;
 export class CurrentSubscriptionComponent implements OnInit {
   @ViewChild('cancelModal') cancelModal: SubscriptionCancelModalComponent;
   @ViewChild('passwordConfirmationModal') passwordConfirmationModal: PasswordConfirmationModalComponent;
+  @ViewChild('addModal') addModal: PaymentMethodAddModalComponent;
+
 
   editing;
   subscription: any;
   plan: any;
   storage: any;
   paymentMethod: any;
+  mode: 'add' | 'edit';
 
   readonly TRIALING = 'TRIALING';
   readonly CANCELING = 'CANCELING';
+  readonly DELETED_DAY_NUM = 60;
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private subscriptionService: SubscriptionService,
-    private planService: PlanService,
-    private storageService: StorageService,
-    private paymentMethodService: PaymentMethodService,
-    private toastsService: ToastsService
+    private wthConfirm: WthConfirmService,
+    private userService: UserService,
+    private accountService: AccountService,
+    private toastsService: ToastsService,
+    private datePipe: DatePipe
   ) {
 
   }
@@ -57,11 +64,16 @@ export class CurrentSubscriptionComponent implements OnInit {
   }
 
   openCancelSubscriptionConfirmation() {
-    this.cancelModal.open();
-  }
+    this.cancelModal.open({subscription: this.subscription, deletedDayNum: this.DELETED_DAY_NUM });
+    this.cancelModal.onNext.pipe(
+      take(1)
+    ).subscribe(_ => {
+      this.passwordConfirmationModal.open({ email: this.authService.user.email,
+        accept: () =>  {
+        this.cancelSubscription();
+        }});
+    });
 
-  openPasswordConfirmation(confirmed: boolean) {
-    this.passwordConfirmationModal.open({ email: this.authService.user.email });
   }
 
   cancelSubscription() {
@@ -80,11 +92,62 @@ export class CurrentSubscriptionComponent implements OnInit {
       this.updateCurrentSubscriptionValues(response.data.attributes);
       this.toastsService.success(
         'Continue subscription',
-        `You continued your subscription successful.</br>You can use until 12/12/2019`);
+        `You continued your subscription successful.<br/>
+                You can use until ${ this.datePipe.transform(this.subscription.ended_bc_at, 'MMM dd yyyy') }`);
     }, error => {
       this.toastsService.danger(
         'Continue subscription',
         `Continuing subscription failed.</br>${error.error.error}`);
+    });
+  }
+
+  openPaymentMethodModal() {
+    this.addModal.open({mode: this.mode});
+  }
+
+  savePaymentMethod(response: any) {
+    const action = this.mode === 'add' ? 'added' : 'changed';
+
+    if (response.success) {
+      this.paymentMethod = response.data;
+      this.toastsService.success(
+        `Payment method ${ action }`,
+        `You ${ action } payment method successfully`
+      );
+    } else if (response.error) {
+      this.toastsService.danger(
+        `Payment method ${ action } error`,
+        `${response.error}`
+      );
+    }
+  }
+
+  deleteAccount() {
+    const faqUrl = `${Constants.baseUrls.app}/faq`;
+    this.wthConfirm.confirm({
+      acceptLabel: 'Delete account',
+      rejectLabel: 'Cancel',
+      message: `Please make sure you reallly want to delete your account.
+
+      <p>If you insist to continue, please remember to download all of your important data beforehand.
+       We can't restore your account and data once it is deleted. </p>
+
+      <p> We do not provide refunds for your remaining subscription.</p>
+
+      <p>Check our <a href="${faqUrl}">FAQ page</a> for more details on shared data and how this data is treated when you delete your account.</p>
+
+      `,
+      header: 'Delete account',
+      accept: () => {
+        this.passwordConfirmationModal.open({ email: this.authService.user.email,
+          accept: () =>  {
+            const user = this.userService.getSyncProfile();
+            this.accountService.delete(user.uuid).toPromise()
+            .then(() => this.router.navigate(['/account-deleted'])
+            .then(() => this.userService.deleteUserInfo())
+            );
+          }});
+      }
     });
   }
 
@@ -101,6 +164,7 @@ export class CurrentSubscriptionComponent implements OnInit {
     this.plan = subscription.plan;
     this.storage = subscription.storage;
     this.paymentMethod = subscription.payment_method;
+    this.mode = this.paymentMethod ? 'edit' : 'add';
   }
 
   private gotoSubscriptionAlert(success: boolean) {

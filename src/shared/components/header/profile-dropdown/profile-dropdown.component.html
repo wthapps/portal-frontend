@@ -1,4 +1,4 @@
-<div class="btn-group header-nav-profile">
+<div class="btn-group header-nav-profile" id="dropdown-menu-profile">
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false">
@@ -21,6 +21,8 @@
           <p class="media-heading">{{ user?.first_name }}
             {{ user?.last_name }}</p>
           <small class="text-fade">{{ user?.email }}</small>
+          <div>
+          </div>
           <ng-container *ngIf="user && subscription">
             <div class="navbar-nav-plan m">
               <p class="media-heading bold">

@@ -33,7 +33,7 @@ export class NoteConstants extends ConstantsBase {
       enableEdit: true
     },
     RECENT: {
-      edit: false,
+      edit: true,
       enableEdit: true
     },
     SEARCH: {

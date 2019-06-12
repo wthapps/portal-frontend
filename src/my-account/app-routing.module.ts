@@ -24,6 +24,16 @@ import { RouterModule } from '@angular/router';
       {
         path: 'payment',
         loadChildren: './payment/payment.module#MyPaymentModule'
+      },
+      {
+        path: 'account-deleted',
+        loadChildren:
+          './account-deleted/account-deleted.module#AccountDeletedModule'
+      },
+      {
+        path: 'users',
+        loadChildren:
+          './users/user.module#UserModule'
       }
     ])
   ],

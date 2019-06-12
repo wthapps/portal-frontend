@@ -18,7 +18,7 @@ import { PoliciesModule } from './policies/policies.module';
 import { PricingModule } from './pricing/pricing.module';
 import { ProductsModule } from './products/products.module';
 import { RecoveryModule } from './recovery/recovery.module';
-import { RegisterModule } from './register/register.module';
+// import { RegisterModule } from './register/register.module';
 import { SubscribeModule } from './sub_unsub/subscribe.module';
 import { SupportModule } from './support/support.module';
 import { NotificationModule } from './notifications/notifications.module';
@@ -44,7 +44,7 @@ import { GoogleAnalyticsService } from '@shared/services/analytics/google-analyt
     PricingModule,
     ProductsModule,
     RecoveryModule,
-    RegisterModule,
+    // RegisterModule,
     SubscribeModule,
     SupportModule,
     NotificationModule,

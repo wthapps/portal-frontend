@@ -1,92 +1,147 @@
 <div class="box-panel">
-  <h3 class="box-panel-title">Subscription</h3>
-  <div class="box-panel-content">
+    <h3 class="box-panel-title">Subscription</h3>
+    <div class="box-panel-content">
 
-    <div class="panel panel-default mb10">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <div class="clearfix">
-            <div class="pull-left">
-              <h4>PRO</h4>
-            </div>
-            <div class="pull-right">
-              <ng-container [ngSwitch]="subscription?.status">
-                <button *ngSwitchCase="TRIALING" class="btn btn-primary" (click)="upgradeSubscription()">
-                  Upgrade account
-                </button>
-                <button *ngSwitchCase="CANCELING" class="btn btn-primary" (click)="continueSubscription()">
-                  Continue subscription
-                </button>
-              </ng-container>
-            </div>
-          </div>
-          <div *ngIf="[TRIALING, CANCELING].includes(subscription?.status)">
-            <p class="text-muted"> {{ subscription?.time_left }}</p>
-          </div>
+        <div class="panel panel-default mb10">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="clearfix">
+                        <div class="pull-left">
+                            <h4>PRO</h4>
+                        </div>
+                        <div class="pull-right">
+                            <ng-container [ngSwitch]="subscription?.status">
+                                <button
+                                    *ngSwitchCase="TRIALING"
+                                    class="btn btn-primary"
+                                    (click)="upgradeSubscription()"
+                                >
+                                    Upgrade account
+                                </button>
+                                <button
+                                    *ngSwitchCase="CANCELING"
+                                    class="btn btn-primary"
+                                    (click)="continueSubscription()"
+                                >
+                                    Continue subscription
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div *ngIf="[TRIALING, CANCELING].includes(subscription?.status)">
+                        <p class="text-muted">{{ subscription?.time_left }}</p>
+                    </div>
 
-
-        </li>
-        <ng-container *ngIf="subscription?.status !== 'TRIALING'">
-          <li class="list-group-item">
-            <dl class="dl-horizontal-plan">
-              <!--
-              <dt>Number of accounts:</dt>
+                </li>
+                <ng-container *ngIf="subscription?.status !== 'TRIALING'">
+                    <li class="list-group-item">
+                        <dl class="dl-horizontal-plan">
+                            <!-- <dt>Number of accounts:</dt>
               <dd>{{ editing?.accountCount + subscription?.accounts_count}}
                 <a [routerLink]="['/admin/accounts']" href="#">Add Account</a>
-              </dd>
-              -->
-              <dt>Total billing:</dt>
-              <dd> {{ subscription?.amount | currency }}/month </dd>
-              <dt>Payment method:</dt>
-              <dd>VISA <a [routerLink]="['/payment/payment_method']" href="#">Change</a></dd>
-              <dt>Next billing date:</dt>
-              <dd>{{ subscription?.ended_bc_at | date: 'MMM dd yyyy' }}</dd>
-              <dt>&nbsp;</dt>
-              <dd><p>Subscription fees are billed at the beginning of each month and may take a few days for the billing date to appear on your account.</p>
-                <a href="#" (click)="openCancelSubscriptionConfirmation()">Cancel Subscription</a></dd>
-            </dl>
-          </li>
-        </ng-container>
-      </ul>
-    </div>
-
-    <!-- Total storage-->
-    <div class="row pb10">
-      <div class="col-sm-12">
-        <h3 class="mt-0">Total storage</h3>
-        <hr class="mt10">
-      </div>
-      <div class="col-sm-8">
-
-        <div class="progress mb10">
-          <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-               style="width: 40%;">
-            <span class="sr-only">40%</span>
-          </div>
+              </dd> -->
+                            <dt>Total billing:</dt>
+                            <dd>
+                                {{ subscription?.amount | currency }}/month
+                            </dd>
+                            <dt>Payment method:</dt>
+                            <dd>
+                              <span *ngIf="paymentMethod"> {{ paymentMethod?.pm_json?.card_type }} - Ending in {{ paymentMethod?.pm_json?.last_4 }} </span>
+                                <a href="#" (click)="openPaymentMethodModal()">
+                                  {{ mode === 'add' ? 'Add' : 'Change' }}
+                                </a>
+                            </dd>
+                            <dt>Next billing date:</dt>
+                            <dd>
+                                {{ subscription?.ended_bc_at | date: 'MMM dd yyyy' }}
+                            </dd>
+                            <dt>&nbsp;</dt>
+                            <dd>
+                                <p>
+                                    Subscription fees are billed at the beginning of each month and may take a few days for the billing date to appear on your account.
+                                </p>
+                                <a
+                                    href="#"
+                                    (click)="openCancelSubscriptionConfirmation()"
+                                >
+                                    Cancel Subscription
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ng-container>
+            </ul>
         </div>
-        <h4 class="text-normal"><span class="text-danger">4GB used</span> | 10GB total storage</h4>
-        <a class="btn btn-outline-default" (click)="viewStorageDetail()" href="#">View detail</a>
-        <a *ngIf="subscription?.status !== 'TRIALING'"class="btn btn-outline-default ml10"
-           (click)="upgradeStorage()" href="#">Upgrade storage
-        </a>
-      </div>
-    </div>
 
-    <!-- Delete account-->
-    <div class="row pb30">
-      <div class="col-sm-12">
-        <h3 class="mt-0">Delete account</h3>
-        <hr class="mt10">
-      </div>
-      <div class="col-sm-8">
-        <p>Please make sure you really want to delete your account.</p>
-        <p>We cannot restore your account once your account is deleted.</p>
-        <a class="btn btn-outline-default" (click)="viewStorageDetail()" href="#">Delete account</a>
-      </div>
+        <!-- Total storage -->
+        <div class="row pb10">
+            <div class="col-sm-12">
+                <h3 class="mt-0">Total storage</h3>
+                <hr class="mt10">
+            </div>
+            <div class="col-sm-8">
+
+                <div class="progress mb10">
+                    <div
+                        class="progress-bar"
+                        role="progressbar"
+                        aria-valuenow="60"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        style="width: 40%;"
+                    >
+                        <span class="sr-only">40%</span>
+                    </div>
+                </div>
+                <h4 class="text-normal">
+                    <span class="text-danger">4GB used</span>
+                    | 10GB total storage
+                </h4>
+                <a
+                    class="btn btn-outline-default"
+                    (click)="viewStorageDetail()"
+                    href="#"
+                >
+                    View detail
+                </a>
+                <a
+                    *ngIf="subscription?.status !== 'TRIALING'"
+                    class="btn btn-outline-default ml10"
+                    (click)="upgradeStorage()"
+                    href="#"
+                >
+                    Upgrade storage
+                </a>
+            </div>
+        </div>
+
+        <!-- Delete account -->
+        <div class="row pb30">
+            <div class="col-sm-12">
+                <h3 class="mt-0">Delete account</h3>
+                <hr class="mt10">
+            </div>
+            <div class="col-sm-8">
+                <p>
+                    Please make sure you really want to delete your account.
+                </p>
+                <p>
+                    We cannot restore your account once your account is deleted.
+                </p>
+                <a
+                    class="btn btn-outline-default"
+                    (click)="deleteAccount()"
+                    href="#"
+                >
+                    Delete account
+                </a>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
-<subscription-cancel-modal #cancelModal (onNext)="openPasswordConfirmation($event)"></subscription-cancel-modal>
-<w-password-confirmation-modal #passwordConfirmationModal (onNext)="cancelSubscription()">
-</w-password-confirmation-modal>
+<subscription-cancel-modal
+    #cancelModal
+></subscription-cancel-modal>
+<w-password-confirmation-modal #passwordConfirmationModal></w-password-confirmation-modal>
+<payment-method-add-modal #addModal (onCompleted)="savePaymentMethod($event)"></payment-method-add-modal>

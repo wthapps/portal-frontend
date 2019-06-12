@@ -1,8 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({name: 'messageNotification'})
+@Pipe({ name: 'messageNotification' })
 export class MessageNotificationPipe implements PipeTransform {
-
   transform(message: any, byMe: boolean) {
     let content: string;
     if (message) {
@@ -14,11 +13,19 @@ export class MessageNotificationPipe implements PipeTransform {
           break;
         case 'notification':
           if (message.message.indexOf('added into') > -1) {
-            content = `${ byMe ? 'You' : message.user.name } added ${ message.receiver.name } into this conversation`;
+            content = `${byMe ? 'You' : message.user.name} added ${_.get(
+              message,
+              'receiver.name',
+              'Deleted user'
+            )} into this conversation`;
           } else if (message.message.indexOf('removed from') > -1) {
-            content = `${ byMe ? 'You' : message.user.name } removed ${ message.receiver.name } from this conversation`;
+            content = `${byMe ? 'You' : message.user.name} removed ${_.get(
+              message,
+              'receiver.name',
+              'Deleted user'
+            )} from this conversation`;
           } else if (message.message.indexOf('renamed the conversation') > -1) {
-            content = `${ byMe ? 'You' : message.user.name } ${ message.message }`;
+            content = `${byMe ? 'You' : message.user.name} ${message.message}`;
           }
           break;
         default:
@@ -28,4 +35,3 @@ export class MessageNotificationPipe implements PipeTransform {
     return content;
   }
 }
-

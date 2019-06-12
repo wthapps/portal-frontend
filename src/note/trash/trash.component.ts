@@ -56,6 +56,8 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
     }
   };
 
+  noOtherActions = true;
+
   otherActions = {
     emptyTrash: {
       active: true,
@@ -64,6 +66,8 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
       action: 'emptyTrash'
     }
   };
+
+  subTitle = `Moves notes or folders you want to permanently delete to Trash.<br>Click 'Empty Trash' from the Trash's menu to permanently delete these files.`
 
   private destroySubject: Subject<any> = new Subject();
 
@@ -195,7 +199,7 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
       payload: {
         viewMode: event
       }
-    })
+    });
     this.dataView.container.update();
     this.dataView.updateView();
   }

@@ -1,12 +1,12 @@
-import { Component, Input, OnDestroy, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, EventEmitter, Output, OnInit, ViewEncapsulation } from '@angular/core';
 import { NoteBreadcrumb } from './breadcrumb';
 import { Router } from '@angular/router';
-import { Observable } from "rxjs";
 
 @Component({
   selector: 'z-shared-breadcrumb',
   templateUrl: 'breadcrumb.component.html',
-  styleUrls: ['breadcrumb.component.scss']
+  styleUrls: ['breadcrumb.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ZSharedBreadcrumbComponent implements OnInit, OnDestroy {
 

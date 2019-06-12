@@ -11,6 +11,7 @@ import { SubscriptionAlertModalComponent } from './subscription-alert-modal.comp
 import { BsModalModule } from 'ng2-bs3-modal';
 import { SubscriptionCancelModalComponent } from './modal/subscription-cancel-modal.component';
 import { ModalModule } from '@shared/modals';
+import { AccountService } from '@account/shared/account/account.service';
 
 @NgModule({
   imports: [
@@ -21,16 +22,22 @@ import { ModalModule } from '@shared/modals';
     PaymentMethodModule,
     PlanModule,
     StorageModule,
-    SubscriptionModule,
-
+    SubscriptionModule
   ],
   declarations: [
     CurrentSubscriptionComponent,
     SubscriptionUpgradeComponent,
     SubscriptionAlertComponent,
     SubscriptionAlertModalComponent,
-    SubscriptionCancelModalComponent,
-  ]
+    SubscriptionCancelModalComponent
+  ],
+  exports: [
+    CurrentSubscriptionComponent,
+    SubscriptionUpgradeComponent,
+    SubscriptionAlertComponent,
+    SubscriptionAlertModalComponent,
+    SubscriptionCancelModalComponent
+  ],
+  providers: [AccountService]
 })
-
 export class MySubscriptionModule {}

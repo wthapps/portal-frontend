@@ -70,10 +70,35 @@ export class UserService {
   /*
    * `sign up` new an account.
    */
-  signup(path: string, body: string): Observable<Response> {
+  signup(path: string, body: string): Observable<any> {
     return this.apiBaseService.post(path, body, { unauthen: true }).pipe(map(res => {
       if (res) {
         this.storeUserInfo(res);
+      }
+      return res;
+    }));
+  }
+
+  /*
+   * `sendConfirmationEmail` to user.
+   */
+  sendConfirmationEmail(): Observable<any> {
+    return this.apiBaseService.post('users/confirmation').pipe(map(res => {
+      if (res) {
+        this.storeUserInfo(res);
+      }
+      return res;
+    }));
+  }
+
+  /*
+   * `confirmEmail` of user.
+   */
+  confirmEmail(token: string): Observable<any> {
+    return this.apiBaseService.get(`users/confirmation?confirmation_token=${ token }`).pipe(map(res => {
+      const profile = res.data.attributes;
+      if (profile) {
+        this.updateProfile(profile);
       }
       return res;
     }));

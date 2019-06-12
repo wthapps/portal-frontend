@@ -27,7 +27,7 @@ export class ZNoteRecentComponent implements OnInit, OnDestroy {
         pathTitle: 'Recent',
         permissions: this.noteConstants.PAGE_PERMISSIONS.RECENT,
         noData: this.noteConstants.NO_DATA.RECENT,
-        viewMode: 'list',
+        // viewMode: 'list',
         sort: {
           field: 'accessed_date',
           desc: true
