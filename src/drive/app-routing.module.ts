@@ -19,6 +19,10 @@ const routes: Routes = [
   {
     path: 'folders',
     loadChildren: './folders/folders.module#DriveFolderModule'
+  },
+  {
+    path: 'favorites',
+    loadChildren: './favorites/favorites.module#FavoritesModule'
   }
 ];
 
@@ -26,4 +30,4 @@ const routes: Routes = [
   imports: [WDriveHeaderModule, RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

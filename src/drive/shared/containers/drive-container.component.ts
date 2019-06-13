@@ -25,6 +25,7 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
   @Input() next: string;
   @Input() apiUrl = '';
   @Input() list: Array<DriveType> = [];
+  @Input() reloadFavorites = false;
 
   readonly tooltip: any = Constants.tooltip;
   readonly OBJECT_TYPE = driveConstants.OBJECT_TYPE;
@@ -81,7 +82,7 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
   ) {
     this.driveService.viewMode$.pipe(
       takeUntil(this.destroySubject)
-    ).subscribe( viewMode => this.viewMode = viewMode);
+    ).subscribe(viewMode => this.viewMode = viewMode);
   }
 
   ngOnInit() {
@@ -179,10 +180,14 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
         break;
       case 'favorite': {
         this.driveService.toggleFavorite(this.selectedObjects).subscribe(res => {
-          this.driveService.updateMany(res.data);
-          setTimeout(() => {
-            this.onSelectCompleted();
-          }, 500);
+          if (!this.reloadFavorites) {
+            this.driveService.updateMany(res.data);
+            setTimeout(() => {
+              this.onSelectCompleted();
+            }, 500);
+          } else {
+            this.loadObjects(this.apiUrl);
+          }
         });
       }
         break;

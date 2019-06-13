@@ -45,6 +45,7 @@ import { DriveModalService } from './shared/services/drive-modal.service';
 import { DriveApiService } from './shared/services/drive-api.service';
 import { ConfirmationService } from 'primeng/api';
 import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-confirm.module';
+import { SubscriptionService } from '@shared/common/subscription';
 
 @NgModule({
   imports: [
@@ -86,6 +87,7 @@ import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-con
     ServiceManager,
     StorageService,
     UrlService,
+    SubscriptionService,
     ChatCommonService,
     WTHNavigateService,
     NotificationService,
