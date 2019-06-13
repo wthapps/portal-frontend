@@ -127,14 +127,20 @@ export class CurrentSubscriptionComponent implements OnInit {
     this.wthConfirm.confirm({
       acceptLabel: 'Delete account',
       rejectLabel: 'Cancel',
-      message: `Please make sure you reallly want to delete your account.
+      message: `<p>Please make sure you reallly want to delete your account.</p>
+
+      <p>By pressing 'Delete Account' your account and all data will be deleted permanently and it cannot be restored.</p>
+
+      <p>Before you press the 'Delete account' button below - make sure you have downloaded all your data, files, notes, pictures, etc. </p>
+
+      <p>We CANNOT restore your data or account once you delete your account.</p>
 
       <p>If you insist to continue, please remember to download all of your important data beforehand.
        We can't restore your account and data once it is deleted. </p>
 
       <p> We do not provide refunds for your remaining subscription.</p>
 
-      <p>Check our <a href="${faqUrl}">FAQ page</a> for more details on shared data and how this data is treated when you delete your account.</p>
+      <p>Check out our <a href="${faqUrl}">FAQ page</a> for more details on shared data and how this data is treated when you delete your account.</p>
 
       `,
       header: 'Delete account',
@@ -143,9 +149,9 @@ export class CurrentSubscriptionComponent implements OnInit {
           accept: () =>  {
             const user = this.userService.getSyncProfile();
             this.accountService.delete(user.uuid).toPromise()
-            .then(() => this.router.navigate(['/account-deleted'])
+            .then(() => this.router.navigate(['/account-deleted'], {queryParams: {email: user.email}}))
             .then(() => this.userService.deleteUserInfo())
-            );
+            ;
           }});
       }
     });

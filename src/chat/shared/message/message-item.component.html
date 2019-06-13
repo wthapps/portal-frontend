@@ -208,7 +208,7 @@
 <!--Share contact message-->
 <ng-template #messageItemContentContact>
   <div class="wapper message-item-content message-padding message-item-content-contact-sharing">
-    <div class="message-item-content-contact-sharing-info" >
+    <div class="message-item-content-contact-sharing-info" *ngIf="message?.file">
       <span class="avatar-xs">
         <a href="javascript:void(0)" (click)="viewProfile(message.file)">
           <img [src]="message?.file?.profile_image" [alt]="message?.file?.name">
@@ -218,7 +218,10 @@
         <a href="javascript:void(0)" (click)="viewProfile(message.file)"> {{ message?.file?.name }} </a>
       </span>
     </div>
-    <div>
+    <div class="message-item-content-contact-sharing-info" *ngIf="!message?.file">
+      <span class="text-muted">Resource is not available</span>
+    </div>
+    <div *ngIf="message?.file">
       <button type="button" class="btn btn-default"
               pTooltip="Chat" tooltipPosition="top" (click)="createChat(message.file)">
         <i class="fa fa-comments-o"></i></button>
