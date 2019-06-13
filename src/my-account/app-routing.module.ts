@@ -13,10 +13,6 @@ import { RouterModule } from '@angular/router';
         pathMatch: 'full'
       },
       {
-        path: 'contact',
-        loadChildren: './contact-us/contact.module#ContactUsModule'
-      },
-      {
         path: 'notifications',
         loadChildren:
           './notifications/notifications.module#MyNotificationModule'
