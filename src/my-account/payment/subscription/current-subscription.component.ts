@@ -33,6 +33,7 @@ export class CurrentSubscriptionComponent implements OnInit {
 
   readonly TRIALING = 'TRIALING';
   readonly CANCELING = 'CANCELING';
+  readonly ACTIVATING = 'ACTIVATING';
   readonly DELETED_DAY_NUM = 60;
 
   constructor(
