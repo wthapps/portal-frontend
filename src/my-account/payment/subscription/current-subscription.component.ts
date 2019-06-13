@@ -135,9 +135,6 @@ export class CurrentSubscriptionComponent implements OnInit {
 
       <p>We CANNOT restore your data or account once you delete your account.</p>
 
-      <p>If you insist to continue, please remember to download all of your important data beforehand.
-       We can't restore your account and data once it is deleted. </p>
-
       <p> We do not provide refunds for your remaining subscription.</p>
 
       <p>Check out our <a href="${faqUrl}">FAQ page</a> for more details on shared data and how this data is treated when you delete your account.</p>
@@ -150,8 +147,9 @@ export class CurrentSubscriptionComponent implements OnInit {
             const user = this.userService.getSyncProfile();
             this.accountService.delete(user.uuid).toPromise()
             .then(() => this.router.navigate(['/account-deleted'], {queryParams: {email: user.email}}))
-            .then(() => this.userService.deleteUserInfo())
-            ;
+            .then(() => setTimeout(() => {
+              this.userService.deleteUserInfo()
+            }, 1000));
           }});
       }
     });
