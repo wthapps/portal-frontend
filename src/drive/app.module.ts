@@ -51,7 +51,7 @@ import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-con
     BrowserModule,
     BrowserAnimationsModule,
 
-    DriveSharedModule,
+    DriveSharedModule.forRoot(),
     CookieModule.forRoot(),
     AppRoutingModule,
     HeaderModule,
@@ -103,4 +103,4 @@ import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-con
 
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

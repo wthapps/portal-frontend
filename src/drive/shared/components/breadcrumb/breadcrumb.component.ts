@@ -55,6 +55,10 @@ export class ZDriveharedBreadcrumbComponent implements OnInit, OnDestroy {
     this.fileDriveUploadService.open();
   }
 
+  onOpenFolderUpload() {
+    this.fileDriveUploadService.open({folderOnly: true});
+  }
+
   ngOnDestroy() {
     if (this.model && this.model.length > 0) {
       for (const item of this.model) {

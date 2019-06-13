@@ -11,6 +11,7 @@ import { CommonEventService } from '@shared/services';
 import { DrivePipeModule } from './pipes/pipe.module';
 import { WDriveLeftMenuModule } from './components/left-menu/left-menu.module';
 import { DriveSharedModalModule } from './modals/shared-modals.module';
+import { SubscriptionService } from '@shared/common/subscription/subscription.service';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -45,7 +46,7 @@ export class DriveSharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: DriveSharedModule,
-      providers: [CommonEventService]
+      providers: [CommonEventService, SubscriptionService]
     };
   }
 }

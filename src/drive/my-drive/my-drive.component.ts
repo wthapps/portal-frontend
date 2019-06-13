@@ -40,7 +40,11 @@ export class MyDriveComponent implements OnInit, OnDestroy {
     this.fileDriveUploadService.onChange.pipe(
       takeUntil(this.destroySubject)
     ).subscribe(event => {
-      this.fileDriveUploadService.upload(event.target.files);
+      if (event.folderOnly) {
+        this.fileDriveUploadService.uploadFolder(event.target.files);
+      } else {
+        this.fileDriveUploadService.upload(event.target.files);
+      }
     });
   }
 

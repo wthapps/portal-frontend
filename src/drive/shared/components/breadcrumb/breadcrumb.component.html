@@ -26,11 +26,11 @@
                       </a>
                     </li>
                     <li>
-                      <a href="javascript:;">
+                      <a href="javascript:;" (click)="onOpenFolderUpload()">
                         <i class="fa fa-folder-o"></i> Upload folder
                       </a>
                     </li>
-                          
+
                     <li role="separator" class="divider"></li>
                     <li>
                       <a (click)="onMenu({action: 'drive:mixed_entity:open_sharing_modal', payload: [item]})"
