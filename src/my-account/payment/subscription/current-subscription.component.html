@@ -56,7 +56,7 @@
                                 {{ subscription?.ended_bc_at | date: 'MMM dd yyyy' }}
                             </dd>
                             <dt>&nbsp;</dt>
-                            <dd>
+                            <dd *ngIf="subscription?.status === ACTIVATING">
                                 <p>
                                     Subscription fees are billed at the beginning of each month and may take a few days for the billing date to appear on your account.
                                 </p>
