@@ -32,7 +32,7 @@ export class FileDriveUploadService {
     private commonEventService: CommonEventService,
     private authService: AuthService,
     private apiBaseService: ApiBaseService
-  ) {}
+  ) { }
 
   open(
     options: { folderOnly: boolean; accept?: string } = {
@@ -137,7 +137,7 @@ export class FileDriveUploadService {
   removeMetadata(file: any) {
     this.apiBaseService
       .post("drive/files/remove_metadata", { id: file.key })
-      .subscribe(res => {});
+      .subscribe(res => { });
   }
 
   createS3instane(res: any) {
@@ -161,6 +161,7 @@ export class FileDriveUploadService {
         name: file.name,
         file_upload_id: file.id,
         type: file.type,
+        size: file.data.size,
         parent_id: file.parent_id
       })
       .subscribe(
@@ -342,7 +343,7 @@ export class FileDriveUploadService {
 
   download(file: any) {
     const doDownload = (s3Params: any) => {
-      this.s3.getObject(s3Params, function(err, data) {
+      this.s3.getObject(s3Params, function (err, data) {
         if (err)
           console.log(err, err.stack); // an error occurred
         else console.log(data); // successful response

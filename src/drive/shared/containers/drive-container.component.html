@@ -1,7 +1,7 @@
 <div class="objects-main" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
   [scrollWindow]="true" (scrolled)="loadMoreObjects($event)">
-  <w-dataView-nav [showViewMode]="true" [viewBy]="viewMode" [sortBy]="sortBy" [orderBy]="orderBy" (sortComplete)="onSortComplete($event)"
-    (viewComplete)="onViewComplete($event)">
+  <w-dataView-nav [showViewMode]="true" [viewBy]="viewMode" [sortBy]="sortBy" [orderBy]="orderBy"
+    (sortComplete)="onSortComplete($event)" (viewComplete)="onViewComplete($event)">
     <z-drive-shared-breadcrumb [model]="breadcrumbs" (breadcrumbEvent)="onBreadcrumbEvent($event)">
     </z-drive-shared-breadcrumb>
   </w-dataView-nav>
@@ -38,6 +38,7 @@
           </div>
           <div class="item-note-owner">Owner</div>
           <div class="item-note-date">Last Modified</div>
+          <div class="item-note-date">File size</div>
         </ng-template>
         <ng-template #viewBody let-item>
           <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === OBJECT_TYPE.FILE}">
@@ -49,13 +50,10 @@
               <img [src]="item?.temp_thumbnail_url" alt="" draggable="false" class="img-center lazy-load">
             </ng-container>
           </div>
-          <div class="item-media-name">
-            <span>{{ item.full_name || 'Untitled' }}</span>
-          </div>
-          <div class="item-note-owner">
-            {{ item?.owner | username }}
-          </div>
+          <div class="item-media-name"><span>{{ item.full_name || 'Untitled' }}</span></div>
+          <div class="item-note-owner">{{ item?.owner | username }}</div>
           <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
+          <div class="item-note-size">{{ item.size || '--' }}</div>
         </ng-template>
       </w-dataView>
     </ng-container>
