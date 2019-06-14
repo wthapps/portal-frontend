@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ReCaptchaComponent } from 'angular2-recaptcha/lib/captcha.component';
 
-import { ContactService } from './contact.service';
+import { ContactUsService } from './contact-us.service';
 
 import { UserService } from '@shared/services';
 import { User } from '@shared/shared/models';
@@ -28,12 +28,11 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
  * This class represents the lazy loaded AboutComponent.
  */
 @Component({
-  moduleId: module.id,
-  selector: 'app-contact',
-  templateUrl: 'contact.component.html',
-  styleUrls: ['contact.component.scss']
+  selector: 'contact-us',
+  templateUrl: 'contact-us.component.html',
+  styleUrls: ['contact-us.component.scss']
 })
-export class ContactComponent implements OnInit, OnDestroy {
+export class ContactUsComponent implements OnInit, OnDestroy {
   siteKey: string = environment.keys.recaptcha_site_key;
   recaptchaState: Boolean = false;
 
@@ -41,47 +40,35 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
 
-  emailInput: String = '';
-  first_nameInput: String = '';
-  last_nameInput: String = '';
   first_name: AbstractControl;
   last_name: AbstractControl;
   email: AbstractControl;
   subject: AbstractControl;
-  body: AbstractControl;
+  content: AbstractControl;
   submitted: Boolean = false;
 
   private recaptchaResponse: any = '';
 
   constructor(
     private fb: FormBuilder,
-    private contactService: ContactService,
+    private contactUsService: ContactUsService,
     private userService: UserService,
     private loadingService: LoadingService,
     private toastsService: ToastsService
   ) {
-    // if (this.userService.loggedIn) {
-    //   this.emailInput = this.userService.getSyncProfile().email;
-    //   this.first_nameInput = this.userService.getSyncProfile().first_name;
-    //   this.last_nameInput = this.userService.getSyncProfile().last_name;
-    // }
-
     this.form = fb.group({
-      first_name: [this.first_nameInput],
-      last_name: [this.last_nameInput],
-      email: [
-        this.emailInput,
-        Validators.compose([Validators.required, CustomValidator.emailFormat])
-      ],
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
+      email: ['', Validators.compose([Validators.required, CustomValidator.emailFormat])],
       subject: ['', Validators.compose([Validators.required])],
-      body: ['', Validators.compose([Validators.required])]
+      content: ['', Validators.compose([Validators.required])]
     });
 
     this.first_name = this.form.controls['first_name'];
     this.last_name = this.form.controls['last_name'];
     this.email = this.form.controls['email'];
     this.subject = this.form.controls['subject'];
-    this.body = this.form.controls['body'];
+    this.content = this.form.controls['content'];
   }
 
   ngOnInit(): any {
@@ -90,6 +77,8 @@ export class ContactComponent implements OnInit, OnDestroy {
 
     this.userService.profile$.subscribe((res: User) => {
       if (res) {
+        (<FormControl>this.first_name).setValue(res.first_name);
+        (<FormControl>this.last_name).setValue(res.last_name);
         (<FormControl>this.email).setValue(res.email);
       }
     });
@@ -108,24 +97,18 @@ export class ContactComponent implements OnInit, OnDestroy {
       // start loading
       this.loadingService.start();
 
-      values.body = values.body.replace(/(\r\n|\n\r|\r|\n)/g, '<br>');
-      values.recaptcha_response = this.recaptchaResponse;
-
-      const body = JSON.stringify(values);
-      this.contactService.createFeedback(body)
+      values.content = values.content.replace(/(\r\n|\n\r|\r|\n)/g, '<br>');
+      this.contactUsService.create(values)
         .pipe(takeUntil(componentDestroyed(this)))
         .subscribe(
           (res: any) => {
             this.loadingService.stop();
-            this.toastsService.success(
-              'Message sent! Thanks for your email, we will answer you within 24 hours.'
+            this.toastsService.success('Message sent', 'Thanks for your email. We\'ve received your request and certainly help you out as soon as we can'
             );
           },
           (error: any) => {
-            // stop loading
             this.loadingService.stop();
-            this.toastsService.danger('Sending of the email failed');
-            // console.log('login error:', error);
+            this.toastsService.danger('Message failed', `Sending of the email failed. ${error.error.error}`);
           }
         );
     }

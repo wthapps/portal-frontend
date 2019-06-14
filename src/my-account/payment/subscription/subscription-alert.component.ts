@@ -26,6 +26,8 @@ export class SubscriptionAlertComponent implements OnInit {
   readonly EXPIRED = 'expired';
   readonly CANCELING = 'canceling';
   readonly CANCELED = 'canceled';
+  readonly termsOfServiceUrl = `${Constants.baseUrls.app}/policies/terms`;
+  readonly privacyUrl = `${Constants.baseUrls.app}/policies/privacy`;
   alertType: 'upgrading' | 'expired' | 'canceling' | 'canceled';
 
 
@@ -58,11 +60,11 @@ export class SubscriptionAlertComponent implements OnInit {
         break;
       case this.CANCELING:
         this.title = 'Subscription was canceled';
-        this.message = `<p>You are still able to user this account until the end of subscription on 
+        this.message = `<p>You are still able to use this account until the end of subscription on 
                         ${ this.datePipe.transform(this.subscription.ended_bc_at, 'MMM dd, yyyy') }. 
                         After this, your account will be deleted after ${ this.DELETED_DAY_NUM } days</p>
                         <p>For more information, please check our 
-                        <a href="${Constants.baseUrls.app}/policies/term" target="_blank">Terms of Service</a></p>`;
+                        <a href="${this.termsOfServiceUrl}" target="_blank">Terms of Service</a></p>`;
         break;
       case this.CANCELED:
         this.title = 'Subscription expired';
@@ -70,16 +72,16 @@ export class SubscriptionAlertComponent implements OnInit {
                         by clicking on the button below</p>
                         <p>After ${ this.DELETED_DAY_NUM } days of expiration, all of your WTHApps data will be permanently deleted.
                         For more information, visit our
-                        <a href="${Constants.baseUrls.app}/policies/term" target="_blank">Terms of Service</a>
-                        and <a href="${Constants.baseUrls.app}/policies/privacy" target="_blank">Privacy & Cookie Policy</a></p>`;
+                        <a href="${this.termsOfServiceUrl}" target="_blank">Terms of Service</a>
+                        and <a href="${this.privacyUrl}" target="_blank">Privacy & Cookie Policy</a></p>`;
         break;
       case this.EXPIRED:
         this.title = 'Trial expired';
         this.message = `<p>Your ${ this.TRIAL_DAY_NUM } days trail had expired. To continue using WTHApps, you need to upgrade to PRO plan.</p>
                         <p>After ${ this.DELETED_DAY_NUM } days of expiration, all of your WTHApps data will be permanently deleted.
                         For more information, visit our
-                         <a href="${Constants.baseUrls.app}/policies/term" target="_blank">Terms of Service</a>
-                        and <a href="${Constants.baseUrls.app}/policies/privacy" target="_blank">Privacy & Cookie Policy</a></p>`;
+                         <a href="${this.termsOfServiceUrl}" target="_blank">Terms of Service</a>
+                        and <a href="${this.privacyUrl}" target="_blank">Privacy & Cookie Policy</a></p>`;
         break;
     }
   }

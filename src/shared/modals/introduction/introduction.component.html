@@ -13,13 +13,16 @@
       <!-- <img alt="" src="../../assets/images_new/pricing/note.png"> -->
     </bs-modal-body>
     <bs-modal-footer>
-      <ul class="list-inline pull-left">
+      <ng-container *ngIf="data?.length > 1"><ul class="list-inline pull-left">
         <li *ngFor="let d of data; let i = index" class="can-click" (click)="setIndex(i)">
           <i class="fa fa-circle" [ngClass]="(i == index)? 'active' : 'normal'" aria-hidden="true"></i>
         </li>
       </ul>
       <button [disabled]="index == 0" type="button" class="btn btn-outline-default btn-min"
               (click)="setIndex(index-1)">Back</button>
+      
+      </ng-container>
+      
       <button *ngIf="data && index == data.length - 1" type="submit" class="btn btn-outline-primary btn-min"
               (click)="done()">Done</button>
       <button *ngIf="data && index < data.length - 1" type="submit" class="btn btn-outline-primary btn-min"
