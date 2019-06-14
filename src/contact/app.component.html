@@ -1,41 +1,47 @@
 <div class="wrapper">
-  <w-header #header class="header" [user]="user$ | async" [loggedIn]="loggedIn$ | async">
-    <contact-shared-header class="header-nav-left" ></contact-shared-header>
-  </w-header>
-  <main class="main">
-    <w-left-menu>
-      <z-contact-shared-sidebar [sharedCardNum]="sharedCardNum$|async"
-                                (createCard) = "createCard()"
-                                (reloaded)="reload($event)"
-
-      ></z-contact-shared-sidebar>
-    </w-left-menu>
-    <div class="main-page-body">
-      <router-outlet></router-outlet>
-    </div>
-  </main>
-  <wth-toast></wth-toast>
-  <wth-loading></wth-loading>
-  <z-contact-share-import-progress></z-contact-share-import-progress>
-  <z-contact-share-merge-progress></z-contact-share-merge-progress>
-  <wth-confirm></wth-confirm>
-  <!-- <w-card-edit-modal #cardEditModal [profile]="(profile$ | async)" (save)="onSave($event)"></w-card-edit-modal> -->
+    <w-header
+        #header
+        class="header"
+        [user]="user$ | async"
+        [loggedIn]="loggedIn$ | async"
+    >
+        <contact-shared-header class="header-nav-left"></contact-shared-header>
+    </w-header>
+    <main class="main">
+        <w-left-menu>
+            <z-contact-shared-sidebar
+                [sharedCardNum]="sharedCardNum$|async"
+                (createCard)="createCard()"
+                (reloaded)="reload($event)"
+            ></z-contact-shared-sidebar>
+        </w-left-menu>
+        <div class="main-page-body">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+    <wth-toast></wth-toast>
+    <wth-loading></wth-loading>
+    <z-contact-share-import-progress></z-contact-share-import-progress>
+    <z-contact-share-merge-progress></z-contact-share-merge-progress>
+    <wth-confirm></wth-confirm>
+    <!-- <w-card-edit-modal #cardEditModal [profile]="(profile$ | async)" (save)="onSave($event)"></w-card-edit-modal> -->
 </div>
 
 <ng-template #modalContainer></ng-template>
 <h-file-select-crop></h-file-select-crop>
 
-<wth-introduction #introduction
-                  [after]="{contact: true}"
-                  [data]="[
+<wth-introduction
+    #introduction
+    [after]="{contact: true}"
+    [data]="[
   {
     title: 'Welcome to WTH!Contacts',
     icon: 'icon-zone-lg-contact',
-    content: 'WTH!Contacts helps you organize your acquaintance\'s contacts'
+    content: 'WTH!Contacts helps you organize your acquaintance\'s contacts.'
   }
-  ]">
+  ]"
+>
 </wth-introduction>
 <lock-upload-modal></lock-upload-modal>
 <w-media-selection></w-media-selection>
-<div class="w-uploader-file-input-container">
-</div>
+<div class="w-uploader-file-input-container"></div>
