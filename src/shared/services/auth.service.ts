@@ -133,6 +133,23 @@ export class AuthService {
     }
   }
 
+  deleteAuthInfo() {
+    const cookieOptionsArgs = {
+      ...Constants.cookieOptionsArgs,
+      expires: new Date(new Date().getTime() + this.EXP_TIME)
+    };
+
+    this.deleteLoggedInInfo();
+
+    // delete cookie datawt
+    this.cookieService.remove(Constants.cookieKeys.jwt, cookieOptionsArgs);
+    this.cookieService.remove(Constants.cookieKeys.loggedIn, cookieOptionsArgs);
+    this.cookieService.remove(Constants.cookieKeys.profile, cookieOptionsArgs);
+
+    this._loggedIn$.next(false);
+    this._user$.next({});
+  }
+
   private storeAuthInfo() {
     const cookieOptionsArgs = {
       ...Constants.cookieOptionsArgs,
@@ -159,20 +176,6 @@ export class AuthService {
     localStorage.setItem(CONSTANTS, '{}');
     localStorage.setItem(VERSION, '1.0.0');
     localStorage.setItem(APPS, '{}');
-  }
-
-  private deleteAuthInfo() {
-    const cookieOptionsArgs = {
-      ...Constants.cookieOptionsArgs,
-      expires: new Date(new Date().getTime() + this.EXP_TIME)
-    };
-
-    this.deleteLoggedInInfo();
-
-    // delete cookie datawt
-    this.cookieService.remove(Constants.cookieKeys.jwt, cookieOptionsArgs);
-    this.cookieService.remove(Constants.cookieKeys.loggedIn, cookieOptionsArgs);
-    this.cookieService.remove(Constants.cookieKeys.profile, cookieOptionsArgs);
   }
 
   private deleteLoggedInInfo() {

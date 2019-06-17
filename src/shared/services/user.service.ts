@@ -162,6 +162,7 @@ export class UserService {
 
     this.loggedIn = false;
     this.profile = null;
+    this.setProfile(this.profile);
   }
 
   getDefaultPayment(): Observable<Response> {
@@ -185,6 +186,8 @@ export class UserService {
   }
 
   validProfile() {
+    console.log('cookieKeys: ', this.cookieService.get(Constants.cookieKeys.loggedIn), this.cookieService.get(Constants.cookieKeys.profile));
+
     return this.cookieService.get(Constants.cookieKeys.loggedIn) && this.cookieService.get(Constants.cookieKeys.profile);
   }
 

@@ -125,6 +125,7 @@ export class CurrentSubscriptionComponent implements OnInit {
 
   deleteAccount() {
     const faqUrl = `${Constants.baseUrls.app}/faq`;
+    const user = this.userService.getSyncProfile();
     this.wthConfirm.confirm({
       acceptLabel: 'Delete account',
       rejectLabel: 'Cancel',
@@ -145,12 +146,12 @@ export class CurrentSubscriptionComponent implements OnInit {
       accept: () => {
         this.passwordConfirmationModal.open({ email: this.authService.user.email,
           accept: () =>  {
-            const user = this.userService.getSyncProfile();
             this.accountService.delete(user.uuid).toPromise()
             .then(() => this.router.navigate(['/account-deleted'], {queryParams: {email: user.email}}))
-            .then(() => setTimeout(() => {
-              this.userService.deleteUserInfo()
-            }, 1000));
+            .then(() => {
+              this.userService.deleteUserInfo();
+              this.authService.deleteAuthInfo();
+            });
           }});
       }
     });

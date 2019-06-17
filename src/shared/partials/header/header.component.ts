@@ -5,7 +5,7 @@ import { User } from '@wth/shared/shared/models';
 import { SwUpdate } from '@angular/service-worker';
 import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
 import { Constants } from '@shared/constant';
-import { ApiBaseService, AuthService, NotificationService, CommonEventHandler, CommonEventService, UserService } from '@shared/services';
+import { ApiBaseService, AuthService, NotificationService, CommonEventHandler, CommonEventService, UserService, WTHNavigateService } from '@shared/services';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
 import { Subscription } from 'rxjs/Subscription';
 import { WebsocketService } from '@shared/channels/websocket.service';
@@ -67,6 +67,7 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, After
     public commonEventService: CommonEventService,
     public notificationService: NotificationService,
     private userService: UserService,
+    private wthNavigate: WTHNavigateService,
     private websocketService: WebsocketService,
     private subscriptionService: SubscriptionService
   ) {
@@ -110,6 +111,20 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, After
     this.channelService.unsubscribe();
     this.hiddenSubscription.unsubscribe();
     this.subscriptionSub.unsubscribe();
+  }
+
+  onSignup(): void {
+    this.wthNavigate.navigateOrRedirect(
+      `signup`,
+      'portal'
+    );
+  }
+
+  onLogin(): void {
+    this.wthNavigate.navigateOrRedirect(
+      `login`,
+      'portal'
+    );
   }
 
   handleOnlineOffline() {
