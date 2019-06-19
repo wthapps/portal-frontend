@@ -18,6 +18,8 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   @HostBinding('class') class = 'main-page-body';
   @ViewChild(DriveContainerComponent) container: DriveContainerComponent;
   data$: Observable<Array<DriveType>>;
+  page: string = 'favorite';
+  breadcrumbs: any = [{ name: "Favorite", label: "Favorite" }];
   public readonly apiUrl = 'drive/drive?favorite=true';
   private destroySubject: Subject<any> = new Subject<any>();
 

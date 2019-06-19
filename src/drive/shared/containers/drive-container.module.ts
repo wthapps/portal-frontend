@@ -13,6 +13,7 @@ import { WDriveBreadcrumbModule } from '../components/breadcrumb/breadcrumb.modu
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { DriveContainerComponent } from './drive-container.component';
+import { FileSizePipe } from '@shared/shared/pipe/file-size.pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.

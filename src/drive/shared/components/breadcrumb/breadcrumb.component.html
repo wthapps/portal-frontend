@@ -5,15 +5,9 @@
           <ng-container *ngIf="i === model.length - 1;else templateBreadcrumbItem">
             <div class="btn-group">
               <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                {{ item.label }} <span class="caret"></span>
+                {{ item.label }} <span *ngIf="page == 'my-drive'" class="caret"></span>
               </button>
-              <ul class="dropdown-menu dropdown-menu-sm">
-                  <!-- <li>
-                      <a (click)="onMenu({action: 'drive:open_drive_add_modal', payload: {parent_id: item?.id}})"
-                        href="javascript:;">
-                        <i class="icon-zone-note"></i> Upload files
-                      </a>
-                    </li> -->
+              <ul *ngIf="page == 'my-drive'" class="dropdown-menu dropdown-menu-sm">
                     <li>
                       <a (click)="onMenu({action: 'drive:folder:create'})" href="javascript:;">
                         <i class="fa fa-folder-o"></i> New folder

@@ -26,6 +26,7 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
   @Input() apiUrl = '';
   @Input() list: Array<DriveType> = [];
   @Input() reloadFavorites = false;
+  @Input() page = 'my-drive';
 
   readonly tooltip: any = Constants.tooltip;
   readonly OBJECT_TYPE = driveConstants.OBJECT_TYPE;

@@ -2,7 +2,7 @@
   [scrollWindow]="true" (scrolled)="loadMoreObjects($event)">
   <w-dataView-nav [showViewMode]="true" [viewBy]="viewMode" [sortBy]="sortBy" [orderBy]="orderBy"
     (sortComplete)="onSortComplete($event)" (viewComplete)="onViewComplete($event)">
-    <z-drive-shared-breadcrumb [model]="breadcrumbs" (breadcrumbEvent)="onBreadcrumbEvent($event)">
+    <z-drive-shared-breadcrumb [model]="breadcrumbs" (breadcrumbEvent)="onBreadcrumbEvent($event)" [page]="page">
     </z-drive-shared-breadcrumb>
   </w-dataView-nav>
   <ng-container *ngIf="loaded; else templateloading">
@@ -53,7 +53,8 @@
           <div class="item-media-name"><span>{{ item.full_name || 'Untitled' }}</span></div>
           <div class="item-note-owner">{{ item?.owner | username }}</div>
           <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
-          <div class="item-note-size">{{ item.size || '--' }}</div>
+          <div *ngIf="item.size" class="item-note-size">{{ item.size | fileSize }}</div>
+          <div *ngIf="!item.size" class="item-note-size">--</div>
         </ng-template>
       </w-dataView>
     </ng-container>
