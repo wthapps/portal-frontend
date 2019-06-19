@@ -34,8 +34,8 @@ export class MyDriveComponent implements OnInit, OnDestroy {
     this.fileDriveUploadService.onDone.pipe(
       takeUntil(this.destroySubject)
     ).subscribe(res => {
-      console.log(res);
-      this.driveService.addOne(res);
+      if ( !res.parent_id)
+        this.driveService.addOne(res);
     });
     this.fileDriveUploadService.onChange.pipe(
       takeUntil(this.destroySubject)

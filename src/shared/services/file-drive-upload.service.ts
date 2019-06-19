@@ -6,8 +6,8 @@ import { environment } from "@env/environment";
 import { FileUtil } from "@shared/shared/utils/file/file.util";
 import { SizePolicy } from "@shared/policies/size-policy";
 import { CommonEventService } from "./common-event/common-event.service";
-import { UserService } from "./user.service";
 import { AuthService } from "./auth.service";
+import { DriveFolderService } from "drive/shared/services/drive-folder.service";
 
 const uuidv1 = require("uuid/v1");
 const uuidv3 = require("uuid/v3");
@@ -15,7 +15,6 @@ const AWS = require("aws-sdk");
 
 @Injectable()
 export class FileDriveUploadService {
-  files = [];
   input: any;
   s3: any;
   config: any = {
@@ -30,6 +29,7 @@ export class FileDriveUploadService {
   constructor(
     private cookieService: CookieService,
     private commonEventService: CommonEventService,
+    private driveFolder: DriveFolderService,
     private authService: AuthService,
     private apiBaseService: ApiBaseService
   ) { }
@@ -67,45 +67,55 @@ export class FileDriveUploadService {
     this.input.click();
   }
 
-  uploadFolder(files: any[], options: any = {}) {
-    console.log("upload folder: ", files);
+  async uploadFolder(fileList: FileList, options: any = {}) {
+    const folderSet = new Set<String>();
+    const parent_id = options.parent_id;
+    const filePathFolderPathMap = {};
+    Object.values(fileList).forEach(file => {
+      const {name} = file;
+      const webkitRelativePath = file['webkitRelativePath'];
+      const path = webkitRelativePath.slice(0, - name.length - 1);
+
+      // TODO: Remove redundant paths: 'test', 'test/inside test'
+      filePathFolderPathMap[webkitRelativePath] = path;
+      folderSet.add(path);
+    });
+
+
+    const res = await this.driveFolder.create_from_path_arr(Array.from(folderSet), parent_id).toPromise();
+    const folders = res.data;
+    const name_id_map = res.name_id_map;
+
+    // Display visible folders
+    folders.forEach(folder => {
+      if ((!folder.parent_id && !parent_id) || folder.parent_id == parent_id)
+        this.onDone.emit(folder);
+    });
+
+    const files: Array<File> = Object.values(fileList).map(file => {
+      const webkitRelativePath = file['webkitRelativePath'];
+      const folderPath = filePathFolderPathMap[webkitRelativePath];
+      const folder_id = name_id_map[folderPath];
+      return Object.assign(file, {parent_id: folder_id});
+    });
+
+    console.log('files: ', files);
+
+    // Create metadata for drive files
+    const files2 = this.beforeUpload(files);
+
+    // Upload to S3
+    this.validateAndUpload(files2);
+
+    return Promise.resolve(null);
   }
 
+
   upload(files: any, options: any = {}) {
-    this.beforeUpload(files, options);
-    this.files.forEach(f => {
-      const sizePolicy = new SizePolicy(500);
-      sizePolicy.validate(f.data);
-    });
-    const filesNotAllow = this.files.map(f => f.data).filter(f => {
-      if (f.allow === false) {
-        return true;
-      }
-      return false;
-    });
-    if (filesNotAllow && filesNotAllow.length > 0) {
-      this.commonEventService.broadcast({
-        channel: "LockMessage",
-        payload: filesNotAllow
-      });
-    } else {
-      this.onStart.emit(this.files);
-      const filesAllow = this.files.filter(f => {
-        if (f.allow === false) {
-          return false;
-        }
-        return true;
-      });
-      filesAllow.forEach(f => {
-        if (environment.production) {
-          this.uploadS3(f);
-        } else {
-          this.uploadS3(f);
-          // this.uploadLocal(f);
-        }
-      });
-    }
+    const files2 =  this.beforeUpload(files, options);
+    this.validateAndUpload(files2);
   }
+
 
   retry(file: any, options: any) {
     this.beforeUpload([file], options);
@@ -318,8 +328,9 @@ export class FileDriveUploadService {
     request.send(form);
   }
 
-  beforeUpload(files: Array<File>, options: any) {
-    this.files = Object.keys(files).map((key, index) => {
+  beforeUpload(files: Array<File>, options: any = {}): Array<any> {
+    return Object.keys(files).map((key, index) => {
+      const parent_id = files[key].parent_id || options.parent_id ;
       const id =
         uuidv1() +
         uuidv3(files[key].name, uuidv1()) +
@@ -333,7 +344,7 @@ export class FileDriveUploadService {
         name: files[key].name,
         type: files[key].type,
         file_upload_id: file_upload_id,
-        parent_id: options.parent_id,
+        parent_id: parent_id,
         percent: 0,
         index: index,
         full_name: files[key].name
@@ -370,5 +381,40 @@ export class FileDriveUploadService {
     } else {
       doDownload(params);
     }
+  }
+
+  private validateAndUpload(files: any[]): void {
+    files.forEach(f => {
+          const sizePolicy = new SizePolicy(500);
+          sizePolicy.validate(f.data);
+        });
+        const filesNotAllow = files.map(f => f.data).filter(f => {
+          if (f.allow === false) {
+            return true;
+          }
+          return false;
+        });
+        if (filesNotAllow && filesNotAllow.length > 0) {
+          this.commonEventService.broadcast({
+            channel: "LockMessage",
+            payload: filesNotAllow
+          });
+        } else {
+          this.onStart.emit(files);
+          const filesAllow = files.filter(f => {
+            if (f.allow === false) {
+              return false;
+            }
+            return true;
+          });
+          filesAllow.forEach(f => {
+            if (environment.production) {
+              this.uploadS3(f);
+            } else {
+              this.uploadS3(f);
+              // this.uploadLocal(f);
+            }
+          });
+        }
   }
 }

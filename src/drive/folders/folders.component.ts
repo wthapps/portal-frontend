@@ -66,15 +66,26 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
     // Upload files with parent_id
     this.fileDriveUploadService.onDone.pipe(
       takeUntil(this.destroySubject)
-    ).subscribe(res => {
-      // TODO: Skip addOne action if current page is not MY DRIVE
-      this.driveService.addOne(res);
+    ).subscribe(item => {
+      if ( this.currentPath == PAGES.MY_DRIVE && item.parent_id === +this.folderId) {
+        this.driveService.addOne(item);
+      }
     });
+
+    // TODO: Consider move following actions into container component
     this.fileDriveUploadService.onChange.pipe(
       takeUntil(this.destroySubject)
     ).subscribe(event => {
-      // TODO: set parent_id is null if current page is not MY DRive
-      this.fileDriveUploadService.upload(event.target.files, {parent_id: this.route.snapshot.paramMap.get('id')});
+      let options = {};
+      if ( this.currentPath == PAGES.MY_DRIVE ) {
+        options =  {parent_id: this.folderId};
+      }
+
+      if (event.folderOnly) {
+        this.fileDriveUploadService.uploadFolder(event.target.files, options);
+      } else {
+        this.fileDriveUploadService.upload(event.target.files, options);
+      }
     });
 
     this.route.params.forEach((params: Params) => {
@@ -140,4 +151,8 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
 
   private mapBreadcrumbItem = f => ({name: f.name, label: f.name, id: f.id,
     routerLink: this.initRoute + '/folders/' + f.id});
+
+  private get folderId(): String {
+    return this.route.snapshot.paramMap.get('id');
+  }
 }

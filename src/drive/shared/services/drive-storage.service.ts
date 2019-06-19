@@ -66,6 +66,20 @@ export class DriveStorageService {
     this.setState(this.concatState(this.parsedDriveData(data), this.currentState));
   }
 
+  // Add new files, folders; Remove duplicate items; sort by sort options
+  addMany(data: DriveType[]): void {
+    const {sortBy, orderBy} = this.sortOption;
+    const newState = this.parsedDriveData(data);
+
+    const filesMap = {...this.currentState.filesMap, ...newState.filesMap };
+    const foldersMap = {...this.currentState.foldersMap, ...newState.foldersMap };
+
+    const fileIds = Object.values(filesMap).sort((a,b) => _wu.compareBy(a, b, orderBy !== 'desc', sortBy)).map(f => f.id);
+    const folderIds = Object.values(foldersMap).sort((a,b) => _wu.compareBy(a, b, orderBy !== 'desc', sortBy)).map(f => f.id);
+
+    this.setState({fileIds, filesMap, folderIds, foldersMap });
+  }
+
   addOne(data: DriveType): void {
     console.log(this.sortOption);
     const {sortBy, orderBy} = this.sortOption;
