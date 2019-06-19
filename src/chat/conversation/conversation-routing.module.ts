@@ -3,13 +3,14 @@ import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@shared/services';
 import { ConversationListComponent } from './conversation-list.component';
 import { ConversationDetailComponent } from './conversation-detail.component';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: 'conversations',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, SubscriptionGuard],
         children: [
           {
             path: '',

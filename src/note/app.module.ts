@@ -30,6 +30,7 @@ import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NoteStoreModule } from '@notes/store';
 import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
+import { GuardModule } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -48,6 +49,8 @@ import { GoogleAnalyticsService } from '@shared/services/analytics/google-analyt
     ZNoteTrashModule,
     ZNotePhotoModule,
     ModalModule,
+
+    GuardModule,
 
     // Store
     NoteStoreModule,

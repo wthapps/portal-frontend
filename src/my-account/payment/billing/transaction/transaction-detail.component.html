@@ -8,8 +8,6 @@
       <dl class="dl-horizontal">
         <dt>Transaction Date</dt>
         <dd>{{ transaction?.created_at | date:'MMM dd yyyy' }} {{ transaction?.created_at | date:'H:mm:ss' }}</dd>
-        <dt>Merchant</dt>
-        <dd>{{ transaction?.merchant_id }}</dd>
         <dt>Description</dt>
         <dd> {{ transaction?.description }} </dd>
         <dt>Amount</dt>

@@ -35,19 +35,25 @@ export class SubscriptionGuard implements CanActivate, CanActivateChild {
       }
       switch (subscription.status) {
         case 'CANCELED':
-          this.router.navigate([this.subscriptionAlertUrl], {
-            queryParams: { alertType: 'canceled', success: false }}
-          ).then();
+          this.redirectToExpiredSubscription('canceled');
           break;
         case 'EXPIRED':
-          this.router.navigate([this.subscriptionAlertUrl], {
-            queryParams: { alertType: 'expired', success: false }}
-          ).then();
+          this.redirectToExpiredSubscription('expired');
           break;
       }
       return true;
     }, error => {
       return false;
     }));
+  }
+
+  private redirectToExpiredSubscription(alertType: 'canceled' | 'expired') {
+    if (location.href.indexOf(Constants.baseUrls.myAccount) > -1) {
+      this.router.navigate([this.subscriptionAlertUrl], {
+        queryParams: { alertType: alertType, success: false }}
+      ).then();
+    } else {
+      location.href = `${Constants.baseUrls.myAccount}/${this.subscriptionAlertUrl}?alertType=${alertType}&success=false`;
+    }
   }
 }

@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { ZNoteFoldersComponent } from './folders.component';
 import { AuthGuard } from '@wth/shared/services';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -10,7 +11,7 @@ import { AuthGuard } from '@wth/shared/services';
       {
         path: 'folders/:id',
         component: ZNoteFoldersComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       }
     ])
   ],

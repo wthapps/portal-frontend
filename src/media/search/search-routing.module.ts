@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@wth/shared/services';
 import { ZMediaSearchComponent } from './search.component';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -9,7 +10,7 @@ import { ZMediaSearchComponent } from './search.component';
       {
         path: 'search',
         component: ZMediaSearchComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       }
     ])
   ],

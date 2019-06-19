@@ -6,6 +6,7 @@ import { ZContactEditPageComponent } from './contact-edit/contact-edit-page.comp
 // import { ZContactDetailComponent } from './contact-detail/contact-detail.component';
 import { AuthGuard } from '@wth/shared/services';
 import { MY_CONTACTS } from '@contacts/shared/services/contact.service';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -14,34 +15,34 @@ import { MY_CONTACTS } from '@contacts/shared/services/contact.service';
         path: 'contacts',
         component: ZContactListComponent,
         data: { page: MY_CONTACTS },
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       },
       {
         path: 'others',
         component: ZContactListComponent,
         data: { page: OTHER_CONTACTS },
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       },
       {
         path: 'contacts/:id/:mode',
         component: ZContactEditPageComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       },
       {
         path: 'contacts/:id',
         component: ZContactEditPageComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       },
       {
         path: 'contacts/new',
         component: ZContactEditPageComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       },
       {
         path: 'contacts/:group',
         component: ZContactListComponent,
         data: { page: MY_CONTACTS },
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       },
       // {
       //   path: 'contacts/detail/:id',

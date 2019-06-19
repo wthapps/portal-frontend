@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ZNoteFoldersComponent } from '@notes/folders/folders.component';
 import { AuthGuard } from '@shared/services';
 import { ZNoteSharedByMeComponent } from '@notes/shared-by-me/shared-by-me.component';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -11,12 +12,12 @@ import { ZNoteSharedByMeComponent } from '@notes/shared-by-me/shared-by-me.compo
       {
         path: 'shared-by-me',
         component: ZNoteSharedByMeComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       },
       {
         path: 'shared-by-me/folders/:id',
         component: ZNoteFoldersComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       }
     ])
   ],

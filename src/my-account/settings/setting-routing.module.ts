@@ -7,6 +7,7 @@ import { MyAccountComponent } from './account/account.component';
 import { MyPreferencesComponent } from './preferences/preferences.component';
 import { MyProfileComponent } from './profile/profile.component';
 import { MySettingComponent } from './setting.component';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { MySettingComponent } from './setting.component';
       {
         path: 'settings',
         component: MySettingComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, SubscriptionGuard],
         children: [
           { path: 'preferences', component: MyPreferencesComponent },
           { path: 'account', component: MyAccountComponent },
