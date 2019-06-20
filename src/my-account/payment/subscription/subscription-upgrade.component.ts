@@ -97,7 +97,7 @@ export class SubscriptionUpgradeComponent implements OnInit {
     this.subscriptionService.upgrade(subscription).subscribe(response => {
       this.gotoSubscriptionAlert(true);
     }, error => {
-      this.alertModal.open();
+      this.alertModal.open(error.error.error);
     });
   }
 
