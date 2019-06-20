@@ -80,7 +80,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     move_to_folder: {
       active: true,
       needPermission: 'owner',
-      icon: 'fa fa-download',
+      icon: 'wicon-move-to-folder',
       text: 'Move to folder',
       action: 'move_to_folder'
     },
