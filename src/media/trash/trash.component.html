@@ -30,8 +30,22 @@
     </ul>
   </div>
 </ng-template>
+
+<ng-template #leftSubMenuTemplate>
+  <ul class="page-body-control-menu">
+    <li class="divider">
+      <a class="btn btn-default" href="javascript:;" (click)="deSelect()" draggable="false"
+        pTooltip="{{ tooltip.close }}" tooltipPosition="bottom">
+        <i class="fa fa-times"></i>
+      </a>
+    </li>
+    <li class="hidden-xs hidden-sm">
+      <span class="btn btn-text">{{ selectedObjects.length }} selected</span>
+    </li>
+  </ul>
+</ng-template>
 <w-toolbar #toolbar [viewMode]="viewMode" [selectedObjects]="selectedObjects"
-  [objectActionsTemplate]="objectActionsTemplate" [leftAddActionsTemplate]="leftAddActionsTemplate"
+  [objectActionsTemplate]="objectActionsTemplate" [leftActionsTemplate]="leftSubMenuTemplate"
   (event)="doToolbarEvent($event)">
 </w-toolbar>
 
