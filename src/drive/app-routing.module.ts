@@ -21,6 +21,10 @@ const routes: Routes = [
     loadChildren: './folders/folders.module#DriveFolderModule'
   },
   {
+    path: 'search',
+    loadChildren: './search/search.module#SearchModule'
+  },
+  {
     path: 'favorites',
     loadChildren: './favorites/favorites.module#FavoritesModule'
   }
