@@ -8,6 +8,7 @@ import { DriveStorageService } from './drive-storage.service';
 import { DriveModalService } from './drive-modal.service';
 import { DriveFolderService } from './drive-folder.service';
 import { DriveType } from '../config/drive-constants';
+import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 
 const VIEW_MODE = 'drive_view_mode';
 @Injectable()
@@ -51,6 +52,11 @@ export class DriveService {
     this.currentFolder = null;
   }
 
+  notifyFoldersUpdate(item): void {
+    if (DriveFolder.isFolder(item))
+      this.commonEventService.broadcast({action: 'update', channel: 'driveLeftMenu', payload: [item]});
+  }
+
   appendData(data: Array<DriveType>): void {
     this.dataStorage.appendData(data);
   }
@@ -91,15 +97,17 @@ export class DriveService {
     this.nextUrl = _.get(res.meta, 'links.next');
   }
 
-  async createFolder(payload) {
+  async createFolder(payload): Promise<DriveFolder> {
     const parent = this.dataStorage.currentFolder ? { parent_id: this.dataStorage.currentFolder.id } : {};
     const res = await this.folderService.create({ ...payload, ...parent }).toPromise();
     this.addOne(res.data);
+    return <DriveFolder> res.data;
   }
 
-  async updateFolder(payload) {
+  async updateFolder(payload): Promise<DriveFolder> {
     const res = await this.folderService.update(payload).toPromise();
     this.updateOne(res.data);
+    return <DriveFolder> (res.data);
   }
 
   async moveFolder(payload) {

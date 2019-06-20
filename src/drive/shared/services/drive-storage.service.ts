@@ -125,7 +125,7 @@ export class DriveStorageService {
     mergedState.fileIds = mergedState.fileIds.filter(f => !fileIds.includes(f));
     fileIds.forEach(id => delete mergedState.filesMap[id]);
     mergedState.folderIds = mergedState.folderIds.filter(f => !folderIds.includes(f));
-    folderIds.forEach(id => delete mergedState.folderIds[id]);
+    folderIds.forEach(id => delete mergedState.foldersMap[id]);
     this.setState(mergedState);
   }
 

@@ -3,11 +3,7 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
-import { ApiBaseService } from '@shared/services/apibase.service';
-import { Store } from '@ngrx/store';
-import { withLatestFrom, filter } from 'rxjs/operators';
-import { DriveFolderModule } from 'drive/folders/folders.module';
-import { DriveFolderService } from 'drive/shared/services/drive-folder.service';
+import { filter } from 'rxjs/operators';
 import { DriveService } from 'drive/shared/services/drive.service';
 import { DriveModalService } from 'drive/shared/services/drive-modal.service';
 
@@ -34,6 +30,7 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private driveService: DriveService,
+    private commonEventService: CommonEventService,
     private modalService: DriveModalService) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
@@ -70,8 +67,8 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
   async onSubmit(value: any) {
     this.folder.name = value.name;
     if (this.folder.id) {
-      await this.driveService.updateFolder(this.folder);
-      // this.commonEventService.broadcast({action: 'update', channel: 'driveLeftMenu', payload: [res.data]});
+      const folder = await this.driveService.updateFolder(this.folder);
+      this.commonEventService.broadcast({action: 'update', channel: 'driveLeftMenu', payload: [folder]});
       this.form.reset();
       this.modal.close();
     } else {
@@ -79,8 +76,8 @@ export class ZDriveSharedModalFolderEditComponent implements OnInit {
         this.folder.parent_id = this.currentFolder.id;
       }
 
-      await this.driveService.createFolder(this.folder);
-      // this.commonEventService.broadcast({action: 'update', channel: 'driveLeftMenu', payload: [combine.res.data]});
+      const folder = await this.driveService.createFolder(this.folder);
+      this.commonEventService.broadcast({action: 'update', channel: 'driveLeftMenu', payload: [folder]});
       this.form.reset();
       this.modal.close();
     }

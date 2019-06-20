@@ -6,7 +6,7 @@ import { DriveService } from 'drive/shared/services/drive.service';
 import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { DriveContainerComponent } from 'drive/shared/containers/drive-container.component';
 import { DriveType } from 'drive/shared/config/drive-constants';
-import { UserService } from '@shared/services';
+import { UserService, CommonEventService } from '@shared/services';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -23,7 +23,6 @@ export class MyDriveComponent implements OnInit, OnDestroy {
 
   constructor(
     private driveService: DriveService,
-    private userService: UserService,
     private fileDriveUploadService: FileDriveUploadService, ) {
     this.data$ = driveService.data$;
   }
@@ -34,8 +33,10 @@ export class MyDriveComponent implements OnInit, OnDestroy {
     this.fileDriveUploadService.onDone.pipe(
       takeUntil(this.destroySubject)
     ).subscribe(res => {
-      if ( !res.parent_id)
+      if ( !res.parent_id) {
+        this.driveService.notifyFoldersUpdate(res);
         this.driveService.addOne(res);
+      }
     });
     this.fileDriveUploadService.onChange.pipe(
       takeUntil(this.destroySubject)

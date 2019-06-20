@@ -29,4 +29,8 @@ export default class DriveFolder extends ObjectDataModel {
   constructor(data: Object = {}) {
     super(data);
   }
+
+  static isFolder(item) {
+    return item && item.object_type === DriveFolder.model_const;
+  }
 }
