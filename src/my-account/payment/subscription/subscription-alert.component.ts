@@ -77,7 +77,7 @@ export class SubscriptionAlertComponent implements OnInit {
         break;
       case this.EXPIRED:
         this.title = 'Trial expired';
-        this.message = `<p>Your ${ this.TRIAL_DAY_NUM } days trail had expired. To continue using WTHApps, you need to upgrade to PRO plan.</p>
+        this.message = `<p>Your ${ this.TRIAL_DAY_NUM } days trial had expired. To continue using WTHApps, you need to upgrade to PRO plan.</p>
                         <p>After ${ this.DELETED_DAY_NUM } days of expiration, all of your WTHApps data will be permanently deleted.
                         For more information, visit our
                          <a href="${this.termsOfServiceUrl}" target="_blank">Terms of Service</a>
