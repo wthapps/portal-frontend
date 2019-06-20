@@ -120,7 +120,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     }
   });
 
-  readonly DEFAULT_SORT_STATE = [
+  readonly DEFAULT_SORT_STATE = Object.freeze([
     {
       key: 'name',
       value: 'Name'
@@ -129,7 +129,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
       key: 'updated_at',
       value: 'Last modified'
     }
-  ];
+  ]);
 
   menuActions = { ...this.DEFAULT_MENU_ACTIONS };
 
@@ -154,11 +154,20 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     this.store.select('context').pipe(takeUntil(this.destroySubject))
       .subscribe(context => {
         this.context = context;
+        const {field, desc} = context.sort;
         if (context.page === noteConstants.PAGE_SHARED_WITH_ME) {
           this.sortState = [...this.DEFAULT_SORT_STATE, {
             key: 'created_at',
             value: 'Shared date'
           }];
+        } else {
+          this.sortState = this.DEFAULT_SORT_STATE.slice();
+
+          // Reset sort option if current sort option is shared date
+          const notExistSortField = !this.sortState.some(({key}) => key === field);
+          if(notExistSortField) {
+            this.onSortComplete({sortBy: 'updated_at', orderBy: (desc ? 'desc' : 'asc')});
+          }
         }
       });
   }
