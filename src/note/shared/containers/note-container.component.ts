@@ -34,11 +34,12 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dataView') dataView: WDataViewComponent;
 
   readonly tooltip: any = Constants.tooltip;
-  readonly DATE_MAP = {
+  readonly DATE_MAP = Object.freeze({
     'created_at': 'Create Date',
     'updated_at': 'Last Modified',
+    'shared_date': 'Shared Date',
     'accessed_date': 'Last Opened'
-  };
+  });
 
   noteConstants = noteConstants;
 
@@ -157,7 +158,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
         const {field, desc} = context.sort;
         if (context.page === noteConstants.PAGE_SHARED_WITH_ME) {
           this.sortState = [...this.DEFAULT_SORT_STATE, {
-            key: 'created_at',
+            key: 'shared_date',
             value: 'Shared date'
           }];
         } else {
