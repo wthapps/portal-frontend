@@ -186,8 +186,6 @@ export class UserService {
   }
 
   validProfile() {
-    console.log('cookieKeys: ', this.cookieService.get(Constants.cookieKeys.loggedIn), this.cookieService.get(Constants.cookieKeys.profile));
-
     return this.cookieService.get(Constants.cookieKeys.loggedIn) && this.cookieService.get(Constants.cookieKeys.profile);
   }
 

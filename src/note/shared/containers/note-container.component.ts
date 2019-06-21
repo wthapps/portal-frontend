@@ -156,7 +156,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(context => {
         this.context = context;
         const {field, desc} = context.sort;
-        if (context.page === noteConstants.PAGE_SHARED_WITH_ME) {
+        if ([noteConstants.PAGE_SHARED_WITH_ME, noteConstants.PAGE_SHARED_BY_ME].includes(context.page)) {
           this.sortState = [...this.DEFAULT_SORT_STATE, {
             key: 'shared_date',
             value: 'Shared date'
