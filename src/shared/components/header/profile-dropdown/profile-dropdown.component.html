@@ -27,12 +27,15 @@
             <div class="navbar-nav-plan m">
               <p class="media-heading bold">
                 <a [href]="urls.myAccount + '/payment/subscription'">
-                  {{ subscription?.status ==='TRIALING' ? 'TRIAL' : subscription?.plan?.name }}
+                  {{ TRIAL_STATUS.includes(subscription?.status) ? 'TRIAL' : subscription?.plan?.name }}
                 </a>
                 <small class="text-muted" *ngIf="subscription?.status ==='TRIALING'"> - {{ subscription?.time_left }} </small>
               </p>
-              <a [href]="urls.myAccount + '/payment/subscription/upgrade'" class="btn btn-primary" *ngIf="subscription?.status ==='TRIALING'">
+              <a [href]="upgradeUrl" class="btn btn-primary" *ngIf="TRIAL_STATUS.includes(subscription?.status)">
                 Upgrade account
+              </a>
+              <a [href]="upgradeUrl" class="btn btn-primary" *ngIf="'CANCELED' === subscription?.status">
+                Renew subscription
               </a>
             </div>
           </ng-container>
