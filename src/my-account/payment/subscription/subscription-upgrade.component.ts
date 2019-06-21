@@ -29,6 +29,7 @@ export class SubscriptionUpgradeComponent implements OnInit {
   mode: 'add' | 'edit';
   checked: false;
   subscription: any;
+  loading = false;
 
   readonly termsOfServiceUrl = Constants.baseUrls.app + '/policies/terms';
 
@@ -94,9 +95,12 @@ export class SubscriptionUpgradeComponent implements OnInit {
       storage_id: this.selectedStorage.id,
       payment_method_id: this.paymentMethod.id
     };
+    this.loading = true;
     this.subscriptionService.upgrade(subscription).subscribe(response => {
+      this.loading = false;
       this.gotoSubscriptionAlert(true);
     }, error => {
+      this.loading = false;
       this.alertModal.open(error.error.error);
     });
   }
