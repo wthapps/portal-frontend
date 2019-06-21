@@ -19,7 +19,6 @@ import { User } from '@wth/shared/shared/models';
 import { WUploader } from '@shared/services/w-uploader';
 import { Message } from '@chat/shared/models/message.model';
 import { CommonEventHandler } from '@shared/services/common-event/common-event.handler';
-import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
 import * as ConversationSelectors from '@chat/store/conversation/conversation.selectors';
 import { AppState } from '@chat/store';
 import * as ConversationActions from '@chat/store/conversation/conversation.actions';

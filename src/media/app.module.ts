@@ -46,6 +46,7 @@ import { AddToAlbumModalComponent } from '@shared/modules/photo/components/modal
 import { PhotoEditModalComponent } from '@shared/modules/photo/components/modal/photo/photo-edit-modal.component';
 import { PhotoStoreModule } from '@media/store';
 import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
+import { GuardModule } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -72,6 +73,8 @@ import { GoogleAnalyticsService } from '@shared/services/analytics/google-analyt
     AppRoutingModule,
     ModalModule,
     ServiceModule,
+
+    GuardModule,
 
     // Store
     PhotoStoreModule,

@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { AuthGuard } from '@shared/services';
 import { ZNoteRecentComponent } from './recent.component';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -10,7 +11,7 @@ import { ZNoteRecentComponent } from './recent.component';
       {
         path: '',
         component: ZNoteRecentComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       }
     ])
   ],

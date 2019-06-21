@@ -43,6 +43,7 @@ export class WTHNavigateService {
           this.redirectIfNeed(path, Constants.baseUrls.note, queryParams);
           break;
         default:
+          this.redirectIfNeed(path, Constants.baseUrls.app, queryParams);
           break;
       }
     }

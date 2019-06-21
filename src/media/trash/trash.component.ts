@@ -38,7 +38,7 @@ export class ZMediaTrashComponent implements OnInit, OnDestroy,
   MediaDownloadMixin,
   MediaModalMixin {
   currentQuery: string;
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   type = 'photo';
   path = 'media/media';
   objects: any;
@@ -122,6 +122,7 @@ export class ZMediaTrashComponent implements OnInit, OnDestroy,
     this.loading = true;
     opts = { ...opts, model: 'Media::Trash' };
     this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.selectedObjects.length = 0;
     this.apiBaseService.get('media/trashes', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
@@ -149,6 +150,7 @@ export class ZMediaTrashComponent implements OnInit, OnDestroy,
         })
         this.apiBaseService.post(`media/trashes/really_destroy`, { objects: this.selectedObjects.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
           // this.loadObjects();
+          this.selectedObjects.length = 0;
         })
       }
     })

@@ -123,9 +123,46 @@
     </ng-container>
     <ng-template #templateNodata>
       <div class="text-center">
-        <box-no-data [icon]="'fa fa-sticky-note'" title="There are no notes!"
-          subTitle='Use "New" button to create new notes.'>
-        </box-no-data>
+        <ng-container [ngSwitch]="context?.page">
+          <!-- the same view can be shown in more than one case -->
+          <ng-container *ngSwitchCase="noteConstants.PAGE_RECENT">
+            <box-no-data [icon]="'fa fa-clock-o'"
+                         title="There are not files in recent notes!"
+                         subTitle='You did not create or access to any notes.'>
+            </box-no-data>
+          </ng-container>
+          <ng-container *ngSwitchCase="noteConstants.PAGE_NOTE_FAVOURITE">
+            <box-no-data [icon]="'fa fa-star'"
+                         title="There are no favorite notes!"
+                         subTitle='"Favorite" notes and folders to easily find them later.'>
+            </box-no-data>
+          </ng-container>
+          <ng-container *ngSwitchCase="noteConstants.PAGE_SHARED_WITH_ME">
+            <box-no-data [icon]="'wicon-shared-with-me'"
+                         title="Nobody has shared files with you yet!"
+                         subTitle='Notes and folders can be shared by your WTH!Apps contacts.'>
+            </box-no-data>
+          </ng-container>
+          <ng-container *ngSwitchCase="noteConstants.PAGE_SHARED_BY_ME">
+            <box-no-data [icon]="'fa fa-share-alt'"
+                         title="You have not shared files with anyone."
+                         subTitle='You can share notes and folders with your WTH!Apps contacts.'>
+            </box-no-data>
+          </ng-container>
+
+          <!--default case when there are no matches -->
+          <ng-container *ngSwitchDefault>
+            <box-no-data [icon]="'fa fa-sticky-note'"
+                         title="There are no notes!"
+                         subTitle='Use "New" button to create new notes.'>
+            </box-no-data>
+          </ng-container>
+        </ng-container>
+
+
+        <ng-container *ngIf="context?.page === noteConstants.PAGE_MY_NOTE">
+
+        </ng-container>
       </div>
     </ng-template>
   </ng-container>

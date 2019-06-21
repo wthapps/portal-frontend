@@ -209,7 +209,7 @@
             "scripts": [
               "src/shared/channels/common.js",
               "node_modules/moment/min/moment.min.js",
-              "node_modules/print-js/src/index.js"
+              "node_modules/print-js/dist/print.js"
             ]
           },
           "configurations": {

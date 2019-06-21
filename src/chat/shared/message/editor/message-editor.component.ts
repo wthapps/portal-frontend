@@ -75,7 +75,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   destroy$ = new Subject();
 
   private close$: Observable<any>;
-  private currentFileId: string;
   private uploadingMessages: { [id: string]: Message } = {};
   private uploadedFiles: { [id: string]: any } = {};
   private stripHtml: StripHtmlPipe;
@@ -234,9 +233,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   updateAttributes(attributes: any) {
     if ('message' in attributes) {
       this.message = attributes.message;
-      if (this.message.message_type === 'text') {
-        this.setEditor(this.message);
-      }
     }
     if ('appendedMessage' in attributes) {
       this.appendedMessages.push(attributes.appendedMessage);
@@ -263,18 +259,15 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   }
 
   handleImagePaste(file) {
-    const { type } = file;
+    const { name, type } = file;
     const message = new Message({
-      message: 'Sending file.....',
+      message: name,
       message_type: 'file',
       content_type: type,
-      meta_data: {}
     });
-    const fakeMessage = this.chatMessageService.create(this.conversation.id, message);
-    const uploadedMessage = this.uploadService.uploadPhotos([file]).toPromise();
-    Promise.all([fakeMessage, uploadedMessage]).then(([fake, uploaded]) => {
-      const updateMessage = { ...fake.data, file: uploaded['data'], content_type: type };
-      this.messageService.update(updateMessage).toPromise();
+
+    this.uploadService.uploadPhotos([file]).subscribe(response => {
+      this.sendMessage({...message, file_id: response.data.id, file_type: response.data.object_type, content_type: type})
     });
   }
 
@@ -479,11 +472,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   private resetEditor() {
     this.message = new Message();
-    this.setEditor(this.message);
     this.focus();
-  }
-
-  private setEditor(message: Message) {
-    // $(this.messageEditorId).html(message.message)
   }
 }

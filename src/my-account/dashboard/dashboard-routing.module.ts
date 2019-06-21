@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './dashboard.component';
 import { AuthGuard } from '@shared/services';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -10,7 +11,7 @@ import { AuthGuard } from '@shared/services';
       {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       }
     ])
   ],

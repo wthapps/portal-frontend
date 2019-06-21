@@ -162,6 +162,7 @@ export class UserService {
 
     this.loggedIn = false;
     this.profile = null;
+    this.setProfile(this.profile);
   }
 
   getDefaultPayment(): Observable<Response> {

@@ -83,6 +83,7 @@
 
           <button class="btn btn-block btn-primary" (click)="upgrade()"
                   [disabled]="!checked || !paymentMethod || (subscription?.status === 'ACTIVATING' && selectedStorage?.id === subscription?.storage?.id)">
+            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
             Complete upgrade
           </button>
         </div>

@@ -12,6 +12,7 @@ export class SubscriptionAlertModalComponent implements OnInit {
   dashboardUrl = Constants.baseUrls.myAccount + '/dashboard';
   faqUrl = Constants.baseUrls.app + '/faq';
   contactUsUrl = Constants.baseUrls.app + '/contact';
+  error: string;
 
   constructor(
   ) {}
@@ -20,7 +21,8 @@ export class SubscriptionAlertModalComponent implements OnInit {
 
   }
 
-  open() {
+  open(error: string) {
+    this.error = error;
     this.modal.open();
   }
 

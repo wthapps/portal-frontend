@@ -23,6 +23,7 @@ import { ContactSharedModule } from './shared/shared.module';
 import { ProfilePageModule } from '@contacts/profile/profile-page.module';
 import { ContactStoreModule } from '@contacts/store';
 import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
+import { GuardModule } from '@shared/guards';
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,6 +42,8 @@ import { GoogleAnalyticsService } from '@shared/services/analytics/google-analyt
     GroupModule,
     ModalModule,
     CardModule,
+
+    GuardModule,
 
     // Store
     ContactStoreModule,

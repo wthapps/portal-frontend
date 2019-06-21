@@ -16,6 +16,8 @@ export class ProfileDropDownComponent {
   readonly tooltip: any = Constants.tooltip;
   readonly urls: any = Constants.baseUrls;
   readonly defaultAvatar: string = Constants.img.avatar;
+  readonly upgradeUrl = `${Constants.baseUrls.myAccount}/payment/subscription/upgrade`;
+  readonly TRIAL_STATUS = ['TRIALING', 'EXPIRED'];
 
   constructor(private authService: AuthService) {
   }

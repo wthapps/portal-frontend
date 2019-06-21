@@ -5,7 +5,7 @@ import { User } from '@wth/shared/shared/models';
 import { SwUpdate } from '@angular/service-worker';
 import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
 import { Constants } from '@shared/constant';
-import { ApiBaseService, AuthService, NotificationService, CommonEventHandler, CommonEventService } from '@shared/services';
+import { ApiBaseService, AuthService, NotificationService, CommonEventHandler, CommonEventService, UserService, WTHNavigateService } from '@shared/services';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
 import { Subscription } from 'rxjs/Subscription';
 import { WebsocketService } from '@shared/channels/websocket.service';
@@ -66,6 +66,8 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, After
     public connectionService: ConnectionNotificationService,
     public commonEventService: CommonEventService,
     public notificationService: NotificationService,
+    private userService: UserService,
+    private wthNavigate: WTHNavigateService,
     private websocketService: WebsocketService,
     private subscriptionService: SubscriptionService
   ) {
@@ -111,6 +113,20 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, After
     this.subscriptionSub.unsubscribe();
   }
 
+  onSignup(): void {
+    this.wthNavigate.navigateOrRedirect(
+      `signup`,
+      'portal'
+    );
+  }
+
+  onLogin(): void {
+    this.wthNavigate.navigateOrRedirect(
+      `login`,
+      'portal'
+    );
+  }
+
   handleOnlineOffline() {
     window.addEventListener('online', () => this.updateNotifications());
     window.addEventListener('offline', () => this.updateNotifications());
@@ -133,6 +149,9 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, After
   updateDisconnectedData() {
     console.log('update disconnected data ...');
 
+    if (!this.userService.validProfile()) {
+      return;
+    }
     // connection / update notitications count
     this.countCommonNotification()
       .then(() => {

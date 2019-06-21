@@ -4,6 +4,7 @@ import { AuthGuard } from '@wth/shared/services';
 import { ZMediaFavoriteListComponent } from './favourite-list.component';
 import { ZMediaFavoriteDetailComponent } from './favourites-detail.component';
 import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -11,12 +12,12 @@ import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
       {
         path: 'favorites',
         component: ZMediaFavoriteListComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       },
       {
         path: 'favorites/:filter',
         component: ZMediaFavoriteListComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       },
       // {
       //   path: 'favorites/:filter/:id',
@@ -26,7 +27,7 @@ import { ZMediaAlbumDetailComponent } from '../album/album-detail.component';
       {
         path: 'album/:id',
         component: ZMediaAlbumDetailComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       }
     ])
   ],

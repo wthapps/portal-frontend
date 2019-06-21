@@ -29,6 +29,7 @@ import { ContactSelectionModule } from '@chat/shared/selections/contact';
 import { UserEventModule } from '@shared/user/event';
 import { ZChatCardModule } from './shared/modal/cards/chat-card-detail-modal.module';
 import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
+import { GuardModule } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -50,6 +51,8 @@ import { GoogleAnalyticsService } from '@shared/services/analytics/google-analyt
 
     AppRoutingModule,
     ModalModule,
+
+    GuardModule,
 
     // Store
     ChatStoreModule,

@@ -16,7 +16,7 @@ import { SubscriptionGuard } from '@shared/guards';
       {
         path: '',
         component: MyPaymentComponent,
-        canActivate: [AuthGuard, SubscriptionGuard],
+        canActivate: [AuthGuard],
         children: [
           {
             path: 'subscription',
