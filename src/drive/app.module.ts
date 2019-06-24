@@ -46,6 +46,9 @@ import { DriveApiService } from './shared/services/drive-api.service';
 import { ConfirmationService } from 'primeng/api';
 import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-confirm.module';
 import { SubscriptionService } from '@shared/common/subscription';
+import { ConfirmDialogModule, MessageService } from 'primeng/primeng';
+import { ToastsModule } from '@shared/shared/components/toast/toast-message.module';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 @NgModule({
   imports: [
@@ -68,6 +71,8 @@ import { SubscriptionService } from '@shared/common/subscription';
     WDriveUploadDockModule,
     PipeModule,
     DriveStoreModule,
+    ConfirmDialogModule,
+    ToastsModule,
     WthConfirmModule,
     BsModalModule
   ],
@@ -90,6 +95,8 @@ import { SubscriptionService } from '@shared/common/subscription';
     SubscriptionService,
     ChatCommonService,
     WTHNavigateService,
+    ToastsService,
+    MessageService,
     NotificationService,
     HandlerService,
     PageVisibilityService,

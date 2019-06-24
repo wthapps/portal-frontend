@@ -29,7 +29,7 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
   ],
   declarations: [DriveUploadDockComponent],
   exports: [DriveUploadDockComponent],
-  providers: [ApiBaseService, ToastsService, MessageService]
+  providers: [ApiBaseService]
 })
 export class WDriveUploadDockModule {
 }

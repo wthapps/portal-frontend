@@ -10,6 +10,16 @@ export class DriveConstants extends ConstantsBase {
 }
 
 export type DriveType = DriveFolder | DriveFile;
+interface Permission {
+  edit: boolean;
+}
+interface IDriveContext {
+  permission: Permission
+};
+
+const DEFAULT_CONTEXT: IDriveContext = Object.freeze({
+  permission: {edit: true}
+});
 
 const driveConstants: DriveConstants = new DriveConstants();
-export { driveConstants };
+export { driveConstants, IDriveContext, DEFAULT_CONTEXT };

@@ -67,7 +67,7 @@ export class DriveFolderListComponent implements OnInit, OnDestroy {
     this.fileDriveUploadService.onDone.pipe(
       takeUntil(this.destroySubject)
     ).subscribe(item => {
-      if ( this.currentPath == PAGES.MY_DRIVE && item.parent_id === +this.folderId) {
+      if ( this.currentPath === PAGES.MY_DRIVE && item.parent_id === +this.folderId) {
         this.driveService.notifyFoldersUpdate(item);
         this.driveService.addOne(item);
       }

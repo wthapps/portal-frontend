@@ -29,6 +29,7 @@ export class MyDriveComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.driveService.resetCurrentFolder();
+    this.driveService.context = {permission: {edit: true}};
     this.container.loadObjects(this.apiUrl);
     this.fileDriveUploadService.onDone.pipe(
       takeUntil(this.destroySubject)

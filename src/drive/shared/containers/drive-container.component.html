@@ -1,71 +1,153 @@
-<div class="objects-main" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
-  [scrollWindow]="true" (scrolled)="loadMoreObjects($event)">
-  <w-dataView-nav [showViewMode]="true" [viewBy]="viewMode" [sortBy]="sortBy" [orderBy]="orderBy"
-    (sortComplete)="onSortComplete($event)" (viewComplete)="onViewComplete($event)">
-    <z-drive-shared-breadcrumb [model]="breadcrumbs" (breadcrumbEvent)="onBreadcrumbEvent($event)">
-    </z-drive-shared-breadcrumb>
-  </w-dataView-nav>
-  <ng-container *ngIf="loaded; else templateloading">
-    <ng-container *ngIf="loaded && list?.length > 0; else templateNodata">
-      <w-dataView-selected *ngIf="dataView.selectedDocuments?.length" [selectedObjects]="dataView.selectedDocuments"
-        (clear)="dataView.container.clearSelection()">
-        <ul class="nav-selection-actions">
-          <ng-container *ngFor="let menu of menuActions">
-            <li *ngIf="menu.active">
-              <button (click)="onMenuAction(menu.action)" class="btn btn-icon" type="button"><i [class]="menu.icon"></i>
-              </button>
-            </li>
-          </ng-container>
-          <li class="dropdown">
-            <button class="btn btn-icon" type="button" data-toggle="dropdown">
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <ng-container *ngFor="let menu of otherActions">
-                <li *ngIf="menu.active">
-                  <a (click)="onMenuAction(menu.action)" href="#"><i [class]="menu.icon"></i> {{ menu.text }}</a>
-                </li>
-              </ng-container>
-            </ul>
-          </li>
-        </ul>
-      </w-dataView-selected>
-      <w-dataView [data]="list" [viewMode]="viewMode" (loadMoreObjects)="loadMoreObjects($event)"
-        (selectCompleted)="onSelectCompleted()" (dblClick)="onView($event)" viewMode="grid" sliderView="3" #dataView>
-        <ng-template #viewHeader>
-          <div class="item-media-name">
-            <span class="can-click" (click)="onSortComplete({sortBy: 'name', orderBy: 'desc'})">Name</span>
-          </div>
-          <div class="item-note-owner">Owner</div>
-          <div class="item-note-date">Last Modified</div>
-          <div class="item-note-date">File size</div>
+<div
+    class="objects-main"
+    infinite-scroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="500"
+    [scrollWindow]="true"
+    (scrolled)="loadMoreObjects($event)"
+>
+    <w-dataView-nav
+        [showViewMode]="true"
+        [viewBy]="viewMode"
+        [sortBy]="sortBy"
+        [orderBy]="orderBy"
+        (sortComplete)="onSortComplete($event)"
+        (viewComplete)="onViewComplete($event)"
+    >
+        <ng-container *ngIf="leftToolbarActionsTmpl">
+            <ng-container *ngTemplateOutlet="leftToolbarActionsTmpl"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="!leftToolbarActionsTmpl">
+            <z-drive-shared-breadcrumb
+                [model]="breadcrumbs"
+                (breadcrumbEvent)="onBreadcrumbEvent($event)"
+            >
+            </z-drive-shared-breadcrumb>
+        </ng-container>
+    </w-dataView-nav>
+    <ng-container *ngIf="loaded; else templateloading">
+        <ng-container *ngIf="loaded && list?.length > 0; else templateNodata">
+            <w-dataView-selected
+                *ngIf="dataView.selectedDocuments?.length"
+                [selectedObjects]="dataView.selectedDocuments"
+                (clear)="dataView.container.clearSelection()" >
+                <ng-container *ngIf="selectedRightActionsTmpl">
+                    <ng-container *ngTemplateOutlet="selectedRightActionsTmpl"></ng-container>
+                </ng-container>
+
+                <ng-container *ngIf="!selectedRightActionsTmpl">
+                    <ul
+                        class="nav-selection-actions"
+                    >
+                        <ng-container *ngFor="let menu of menuActions">
+                            <li *ngIf="menu.active">
+                                <button
+                                    (click)="onMenuAction(menu.action)"
+                                    class="btn btn-icon"
+                                    type="button"
+                                >
+                                    <i [class]="menu.icon"></i>
+                                </button>
+                            </li>
+                        </ng-container>
+                        <li class="dropdown">
+                            <button
+                                class="btn btn-icon"
+                                type="button"
+                                data-toggle="dropdown"
+                            >
+                                <i
+                                    class="fa fa-ellipsis-v"
+                                    aria-hidden="true"
+                                ></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <ng-container *ngFor="let menu of otherActions">
+                                    <li *ngIf="menu.active">
+                                        <a
+                                            (click)="onMenuAction(menu.action)"
+                                            href="#"
+                                        >
+                                            <i [class]="menu.icon"></i>
+                                            {{ menu.text }}
+                                        </a>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </li>
+                    </ul>
+                </ng-container>
+
+            </w-dataView-selected>
+            <w-dataView
+                [data]="list"
+                [viewMode]="viewMode"
+                (loadMoreObjects)="loadMoreObjects($event)"
+                (selectCompleted)="onSelectCompleted()"
+                (dblClick)="onView($event)"
+                viewMode="grid"
+                sliderView="3"
+                #dataView
+            >
+                <ng-template #viewHeader>
+                    <div class="item-media-name">
+                        <span
+                            class="can-click"
+                            (click)="onSortComplete({sortBy: 'name', orderBy: 'desc'})"
+                        >
+                            Name
+                        </span>
+                    </div>
+                    <div class="item-note-owner">Owner</div>
+                    <div class="item-note-date">Last Modified</div>
+                    <div class="item-note-date">File size</div>
+                </ng-template>
+                <ng-template
+                    #viewBody
+                    let-item
+                >
+                    <div
+                        class="item-media-img"
+                        [ngClass]="{'item-note-icon': item.object_type === OBJECT_TYPE.FILE}"
+                    >
+                        <i
+                            *ngIf="item.object_type === OBJECT_TYPE.FOLDER"
+                            class="fa fa-folder"
+                        ></i>
+                        <ng-container *ngIf="item.object_type === OBJECT_TYPE.FILE && !item?.temp_thumbnail_url">
+                            <i class="fa fa-file-o"></i>
+                        </ng-container>
+                        <ng-container *ngIf="item.object_type === OBJECT_TYPE.FILE && item?.temp_thumbnail_url">
+                            <img
+                                [src]="item?.temp_thumbnail_url"
+                                alt
+                                draggable="false"
+                                class="img-center lazy-load"
+                            >
+                        </ng-container>
+                    </div>
+                    <div class="item-media-name">
+                        <span>{{ item.full_name || 'Untitled' }}</span>
+                    </div>
+                    <div class="item-note-owner">{{ item?.owner | username }}</div>
+                    <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
+                    <div class="item-note-size">{{ item.size || '--' }}</div>
+                </ng-template>
+            </w-dataView>
+        </ng-container>
+        <ng-template #templateNodata>
+            <div class="text-center">
+                <box-no-data
+                    [icon]="'fa fa-picture-o'"
+                    [subTitle]="'There is no photo'"
+                ></box-no-data>
+            </div>
         </ng-template>
-        <ng-template #viewBody let-item>
-          <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === OBJECT_TYPE.FILE}">
-            <i *ngIf="item.object_type === OBJECT_TYPE.FOLDER" class="fa fa-folder"></i>
-            <ng-container *ngIf="item.object_type === OBJECT_TYPE.FILE && !item?.temp_thumbnail_url">
-              <i class="fa fa-file-o"></i>
-            </ng-container>
-            <ng-container *ngIf="item.object_type === OBJECT_TYPE.FILE && item?.temp_thumbnail_url">
-              <img [src]="item?.temp_thumbnail_url" alt="" draggable="false" class="img-center lazy-load">
-            </ng-container>
-          </div>
-          <div class="item-media-name"><span>{{ item.full_name || 'Untitled' }}</span></div>
-          <div class="item-note-owner">{{ item?.owner | username }}</div>
-          <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
-          <div class="item-note-size">{{ item.size || '--' }}</div>
-        </ng-template>
-      </w-dataView>
     </ng-container>
-    <ng-template #templateNodata>
-      <div class="text-center">
-        <box-no-data [icon]="'fa fa-picture-o'" [subTitle]="'There is no photo'"></box-no-data>
-      </div>
+    <ng-template #templateloading>
+        <div class="text-center">
+            <box-loading></box-loading>
+        </div>
     </ng-template>
-  </ng-container>
-  <ng-template #templateloading>
-    <div class="text-center">
-      <box-loading></box-loading>
-    </div>
-  </ng-template>
 </div>

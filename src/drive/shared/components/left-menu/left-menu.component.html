@@ -27,8 +27,8 @@
         </ul>
       </div>
       <div class="menuleft-item-divider">
-        <div class="menuleft-item">
-          <a [routerLink]="['/my-drive']" routerLinkActive="active" (click)="showFolderTree = !showFolderTree"><i
+        <div class="menuleft-item" routerLinkActive="active">
+          <a [routerLink]="['/my-drive']" (click)="showFolderTree = !showFolderTree"><i
               class="fa fa-folder" aria-hidden="true"></i> My Drive</a>
         </div>
         <div class="well-folder-tree" [ngClass]="{'active': showFolderTree}">
@@ -39,7 +39,7 @@
         <div [routerLink]="['/favorites']" routerLinkActive="active" class="menuleft-item"><a href="#"><i
               class="fa fa-star" aria-hidden="true"></i> Favorite</a></div>
         <div class="menuleft-item"><a href="#"><i class="fa fa-plus" aria-hidden="true"></i> Shared with me</a></div>
-        <div class="menuleft-item"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i> Trash</a></div>
+        <div class="menuleft-item" routerLinkActive="active"><a [routerLink]="['/trashs']"  ><i class="fa fa-trash" aria-hidden="true"></i> Trash</a></div>
       </div>
 
     </div>

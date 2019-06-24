@@ -1,16 +1,20 @@
 import { DriveApiService } from './drive-api.service';
 import { Injectable } from '@angular/core';
+
 import { Observable, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { LocalStorageService } from 'angular-2-local-storage';
+
+
 import { ApiBaseService, CommonEventService } from '@shared/services';
 import { DriveStorageService } from './drive-storage.service';
 import { DriveModalService } from './drive-modal.service';
 import { DriveFolderService } from './drive-folder.service';
-import { DriveType } from '../config/drive-constants';
+import { DriveType, DEFAULT_CONTEXT, IDriveContext } from '../config/drive-constants';
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 
 const VIEW_MODE = 'drive_view_mode';
+
 @Injectable()
 export class DriveService {
   viewMode$: Observable<string>;
@@ -21,6 +25,7 @@ export class DriveService {
   data$: Observable<Array<DriveType>>;
 
   private nextUrl = '';
+  private _context: IDriveContext =  DEFAULT_CONTEXT;
 
   constructor(public localStorageService: LocalStorageService,
     private dataStorage: DriveStorageService,
@@ -46,6 +51,10 @@ export class DriveService {
 
   set currentFolder(folder) {
     this.dataStorage.currentFolder = folder;
+  }
+
+  set context(context: IDriveContext) {
+    this._context = Object.assign({}, DEFAULT_CONTEXT, context);
   }
 
   resetCurrentFolder() {
@@ -100,20 +109,55 @@ export class DriveService {
   async createFolder(payload): Promise<DriveFolder> {
     const parent = this.dataStorage.currentFolder ? { parent_id: this.dataStorage.currentFolder.id } : {};
     const res = await this.folderService.create({ ...payload, ...parent }).toPromise();
-    this.addOne(res.data);
+    if ( this._context.permission.edit) {
+      this.addOne(res.data);
+    }
     return <DriveFolder> res.data;
   }
 
   async updateFolder(payload): Promise<DriveFolder> {
     const res = await this.folderService.update(payload).toPromise();
-    this.updateOne(res.data);
+    if ( this._context.permission.edit) {
+      this.updateOne(res.data);
+    }
     return <DriveFolder> (res.data);
   }
 
   async moveFolder(payload) {
-    const res = await this.driveApi.update(payload).toPromise();
-    console.log('res: ', res);
-    this.dataStorage.deleteData(res.data);
+    try {
+      const res = await this.driveApi.update(payload).toPromise();
+      console.log('res: ', res);
+      this.dataStorage.deleteData(res.data);
+    } catch (err) {
+      console.warn('Encounter err: ', err);
+    }
+  }
+
+  async permanentDelete(body): Promise<void> {
+    try {
+      const res = await this.driveApi.permanentDelete(body).toPromise();
+      this.dataStorage.deleteData(res.data);
+    } catch (err) {
+      console.warn('Encounter err: ', err);
+    }
+  }
+
+  async restore(body) {
+    try {
+      const res = await this.driveApi.restore(body).toPromise();
+      this.dataStorage.deleteData(res.data);
+    } catch (err) {
+      console.warn('Encounter err: ', err);
+    }
+  }
+
+  async emptyAll() {
+   try {
+      const res = await this.driveApi.emptyAll().toPromise();
+      this.dataStorage.data = [];
+    } catch (err) {
+      console.warn('Encounter err: ', err);
+    }
   }
 
   loadMoreObjects() {

@@ -23,6 +23,10 @@ const routes: Routes = [
   {
     path: 'favorites',
     loadChildren: './favorites/favorites.module#FavoritesModule'
+  },
+  {
+    path: 'trashs',
+    loadChildren: './trashs/trashs.module#DriveTrashsModule'
   }
 ];
 
@@ -30,4 +34,4 @@ const routes: Routes = [
   imports: [WDriveHeaderModule, RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

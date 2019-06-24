@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy, ContentChild, TemplateRef } from '@angular/core';
 
 import { Router } from '@angular/router';
 
@@ -26,6 +26,10 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
   @Input() apiUrl = '';
   @Input() list: Array<DriveType> = [];
   @Input() reloadFavorites = false;
+  @Input() handleViewItem: Function;
+  @ContentChild('leftToolbarActions') leftToolbarActionsTmpl: TemplateRef<any>;
+  @ContentChild('selectedRightActions') selectedRightActionsTmpl: TemplateRef<any>;
+
 
   readonly tooltip: any = Constants.tooltip;
   readonly OBJECT_TYPE = driveConstants.OBJECT_TYPE;
@@ -118,6 +122,10 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
   }
 
   onView(item) {
+    if ( this.handleViewItem) {
+      this.handleViewItem(item);
+      return;
+    }
     console.log('on View: ', item);
 
     if (item.model === this.OBJECT_TYPE.FILE) {
@@ -253,10 +261,16 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
     this.fileDriveUploadService.download({});
   }
 
+  clearSelection() {
+    this.dataView.clearSelection();
+  }
+
+  get selectedObjects() { return this.dataView.selectedObjects };
+
   private urlWithSort({ url, sortBy, orderBy }) {
     const sortOption = `sort=${orderBy}&sort_name=${sortBy}`;
     return url.includes('?') ? `${url}&${sortOption}` : `${url}?${sortOption}`;
   }
 
-  private get selectedObjects() { return this.dataView.selectedObjects };
+
 }

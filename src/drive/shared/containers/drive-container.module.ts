@@ -6,8 +6,6 @@ import { DirectiveModule } from '@shared/shared/directive/directive.module';
 import { ApiBaseService } from '@shared/services';
 import { WDataViewModule } from '../components/w-dataView/w-dataView.module';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
-import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-confirm.module';
-import { ToastModule } from 'primeng/toast';
 import { WModalsModule } from '../components/modals/modals.module';
 import { WDriveBreadcrumbModule } from '../components/breadcrumb/breadcrumb.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -26,9 +24,7 @@ import { DriveContainerComponent } from './drive-container.component';
     WDataViewModule,
     BoxNoDataModule,
     BoxLoadingModule,
-    WthConfirmModule,
     DirectiveModule,
-    ToastModule,
     WModalsModule,
     WDriveBreadcrumbModule,
     InfiniteScrollModule,
@@ -39,9 +35,7 @@ import { DriveContainerComponent } from './drive-container.component';
     CommonModule,
     BoxNoDataModule,
     BoxLoadingModule,
-    WthConfirmModule,
     DirectiveModule,
-    ToastModule,
     WModalsModule,
 
     DriveContainerComponent
