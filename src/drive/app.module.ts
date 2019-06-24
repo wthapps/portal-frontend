@@ -49,6 +49,7 @@ import { SubscriptionService } from '@shared/common/subscription';
 import { ConfirmDialogModule, MessageService } from 'primeng/primeng';
 import { ToastsModule } from '@shared/shared/components/toast/toast-message.module';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { ZDriveShareProgressModule } from './shared/components/progress/drive-progress.module';
 
 @NgModule({
   imports: [
@@ -72,6 +73,7 @@ import { ToastsService } from '@shared/shared/components/toast/toast-message.ser
     PipeModule,
     DriveStoreModule,
     ConfirmDialogModule,
+    ZDriveShareProgressModule,
     ToastsModule,
     WthConfirmModule,
     BsModalModule

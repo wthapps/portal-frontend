@@ -10,7 +10,7 @@ import { ApiBaseService, CommonEventService } from '@shared/services';
 import { DriveStorageService } from './drive-storage.service';
 import { DriveModalService } from './drive-modal.service';
 import { DriveFolderService } from './drive-folder.service';
-import { DriveType, DEFAULT_CONTEXT, IDriveContext } from '../config/drive-constants';
+import { DriveType, DEFAULT_CONTEXT, IDriveContext, DEFAULT_PROGRESS, IDriveProgress } from '../config/drive-constants';
 import DriveFolder from '@shared/modules/drive/models/drive-folder.model';
 
 const VIEW_MODE = 'drive_view_mode';
@@ -23,9 +23,11 @@ export class DriveService {
   readonly apiUrl = 'drive/drive';
 
   data$: Observable<Array<DriveType>>;
+  progress$: Observable<IDriveProgress>;
 
   private nextUrl = '';
   private _context: IDriveContext =  DEFAULT_CONTEXT;
+  private progressSubject: BehaviorSubject<IDriveProgress> = new BehaviorSubject<IDriveProgress>(DEFAULT_PROGRESS);
 
   constructor(public localStorageService: LocalStorageService,
     private dataStorage: DriveStorageService,
@@ -38,6 +40,7 @@ export class DriveService {
     this.viewModeSubject.next(this.localStorageService.get(VIEW_MODE) || 'grid');
 
     this.data$ = this.dataStorage.data$;
+    this.progress$ = this.progressSubject.asObservable();
   }
 
   changeView(view: string) {
@@ -55,6 +58,11 @@ export class DriveService {
 
   set context(context: IDriveContext) {
     this._context = Object.assign({}, DEFAULT_CONTEXT, context);
+  }
+
+  set progress(progress: IDriveProgress) {
+    const currentProgress = this.progressSubject.getValue();
+    this.progressSubject.next(Object.assign({}, currentProgress, progress));
   }
 
   resetCurrentFolder() {

@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding, ViewChild, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DriveContainerComponent } from 'drive/shared/containers/drive-container.component';
-import { DriveType, driveConstants } from 'drive/shared/config/drive-constants';
+import { DriveType, driveConstants, IDriveProgress } from 'drive/shared/config/drive-constants';
 import { DriveService } from 'drive/shared/services/drive.service';
 import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { takeUntil } from 'rxjs/operators';
@@ -40,6 +40,8 @@ export class DriveTrashsComponent implements OnInit, OnDestroy {
     this.driveService.resetCurrentFolder();
     this.driveService.context = {permission: {edit: false}}
     this.container.loadObjects(this.apiUrl).then();
+
+    // TODO: Move this code section into drive container component
     this.fileDriveUploadService.onChange.pipe(
       takeUntil(this.destroySubject)
     ).subscribe(event => {
@@ -81,7 +83,7 @@ export class DriveTrashsComponent implements OnInit, OnDestroy {
       this.container.clearSelection();
 
       const message = `${objects.length} items restored`;
-      this.toastsService.info(message);
+      this.driveService.progress = <IDriveProgress>({open: true, textMessage: message});
     }) ();
   }
 
@@ -102,7 +104,7 @@ export class DriveTrashsComponent implements OnInit, OnDestroy {
           this.container.clearSelection();
 
           const message = `${selectedObjects.length} items deleted permanently`;
-          this.toastsService.info(message);
+          this.driveService.progress = <IDriveProgress>({open: true, textMessage: message});
         }) ();
 
       }});
@@ -121,7 +123,7 @@ export class DriveTrashsComponent implements OnInit, OnDestroy {
           await this.driveService.emptyAll();
           this.container.clearSelection();
 
-          this.toastsService.info('Trash emptied');
+          this.driveService.progress = <IDriveProgress>({open: true, textMessage: 'Trash emptied'});
         }) ();
 
       }});
