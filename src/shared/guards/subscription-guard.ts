@@ -6,7 +6,6 @@ import {
   RouterStateSnapshot,
   CanActivateChild
 } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { Constants } from '@shared/constant';
 import { SubscriptionService } from '../common/subscription/subscription.service';
 import { Observable } from 'rxjs';

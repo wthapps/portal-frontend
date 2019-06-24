@@ -10,10 +10,8 @@ import { Constants } from '../constant/config/constants';
 import {
   HttpClient,
   HttpHeaders,
-  HttpParams,
-  HttpResponse
+  HttpParams
 } from '@angular/common/http';
-import { RequestMethod, ResponseContentType } from '@angular/http';
 import { JsonConverterUtil } from '@shared/shared/utils/converters/json-converter.util';
 import { UrlConverterUtil } from '@shared/shared/utils/converters/url-converter.util';
 
@@ -146,7 +144,6 @@ export class ApiBaseService {
           }`;
       }
     }
-
     return throwError(error);
   }
 }
