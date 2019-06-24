@@ -21,6 +21,7 @@
         <ng-container *ngIf="!leftToolbarActionsTmpl">
             <z-drive-shared-breadcrumb
                 [model]="breadcrumbs"
+                [page]="page"
                 (breadcrumbEvent)="onBreadcrumbEvent($event)"
             >
             </z-drive-shared-breadcrumb>
@@ -144,6 +145,7 @@
                 ></box-no-data>
             </div>
         </ng-template>
+
     </ng-container>
     <ng-template #templateloading>
         <div class="text-center">

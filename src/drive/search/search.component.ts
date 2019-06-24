@@ -8,43 +8,39 @@ import { DriveContainerComponent } from 'drive/shared/containers/drive-container
 import { DriveType } from 'drive/shared/config/drive-constants';
 import { UserService } from '@shared/services';
 import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { UrlConverterUtil } from '@shared/shared/utils/converters/url-converter.util';
 
 @Component({
-  selector: 'drive-favorites',
-  templateUrl: './favorites.component.html',
-  styleUrls: ['./favorites.component.scss']
+  selector: 'drive-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss']
 })
-export class FavoritesComponent implements OnInit, OnDestroy {
+export class SearchComponent implements OnInit, OnDestroy {
   @HostBinding('class') class = 'main-page-body';
   @ViewChild(DriveContainerComponent) container: DriveContainerComponent;
   data$: Observable<Array<DriveType>>;
-  page: string = 'favorite';
-  breadcrumbs: any = [{ name: "Favorite", label: "Favorite" }];
-  public readonly apiUrl = 'drive/drive?favorite=true';
+  page: string = 'search';
+  breadcrumbs: any = [{ name: "Search results", label: "Search results" }];
+  public apiUrl = '';
+  public apiBaseUrl = 'drive/search';
   private destroySubject: Subject<any> = new Subject<any>();
 
   constructor(
     private driveService: DriveService,
     private userService: UserService,
+    private route: ActivatedRoute,
     private fileDriveUploadService: FileDriveUploadService, ) {
     this.data$ = driveService.data$;
   }
 
   ngOnInit(): void {
     this.driveService.resetCurrentFolder();
-    this.container.loadObjects(`${this.apiUrl}`);
-
-    // this.fileDriveUploadService.onDone.pipe(
-    //   takeUntil(this.destroySubject)
-    // ).subscribe(res => {
-    //   console.log(res);
-    //   this.driveService.addOne(res);
-    // });
-    // this.fileDriveUploadService.onChange.pipe(
-    //   takeUntil(this.destroySubject)
-    // ).subscribe(event => {
-    //   this.fileDriveUploadService.upload(event.target.files);
-    // });
+    
+    this.route.queryParams.subscribe(params => {
+      this.apiUrl = `${this.apiBaseUrl}${UrlConverterUtil.objectToUrl(params)}`;
+      this.container.loadObjects(`${this.apiUrl}`);
+    })
   }
 
   ngOnDestroy() {

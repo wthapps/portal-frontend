@@ -19,6 +19,8 @@ export class ZDriveharedBreadcrumbComponent implements OnInit, OnDestroy {
   @Output() breadcrumbEvent: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() permissions: any;
+  
+  @Input() page: any;
 
   constructor(private router: Router,
     private fileDriveUploadService: FileDriveUploadService
