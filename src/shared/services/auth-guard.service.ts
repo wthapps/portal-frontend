@@ -44,28 +44,24 @@ export class AuthGuard implements CanActivate, CanActivateChild {
               return false;
             }
             if (profile.deleted_at) {
-              const email = this.authService.user.email;
-              this.userService.deleteUserInfo();
-              this.authService.deleteAuthInfo();
-              location.href = `${Constants.baseUrls.myAccount}/account-deleted?email=${email}`;
+              location.href = `${Constants.baseUrls.myAccount}/account-deleted?email=${this.authService.user.email}`;
               return false;
             }
           }
           return true;
         })
       );
-    }
-    this.authService.redirectUrl = window.location.href;
-    let currentUrl = location.toString();
-
-    if (`${Constants.baseUrls}/` === currentUrl) {
-      this.router.navigate(['/login']);
     } else {
-      location.href = `${Constants.baseUrls.app}/login?returnUrl=${
-        window.location.href
-      }`;
-    }
+      console.log('redirect:::', this.authService.user);
+      if (location.href.indexOf(Constants.baseUrls.app) > -1) {
+        this.router.navigate(['/login']);
+        return false;
+      } else {
+        location.href = `${ Constants.baseUrls.app }/login?returnUrl=${ window.location.href }`;
+        return false;
+      }
 
-    return false;
+      return false;
+    }
   }
 }

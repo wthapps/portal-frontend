@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService, UserService } from '@shared/services';
 
 @Component({
   selector: 'app-account-deleted',
@@ -9,9 +10,11 @@ import { ActivatedRoute } from '@angular/router';
 export class AccountDeletedComponent implements OnInit {
   email: String = 'account@email.com';
 
-  constructor(route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute,  private authService: AuthService, private userService: UserService) {
     route.queryParamMap.forEach(paramMap => {
       this.email = paramMap.get('email');
+      this.userService.deleteUserInfo();
+      this.authService.deleteAuthInfo();
     });
   }
 

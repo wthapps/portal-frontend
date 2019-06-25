@@ -137,13 +137,6 @@ export class ApiBaseService {
   }
 
   protected handleError(error: any | any): any {
-    if (error.status === 401) {
-      if (window.location.href.indexOf('login') < 0) {
-        window.location.href = `${Constants.baseUrls.app}/login?returnUrl=${
-          window.location['href']
-          }`;
-      }
-    }
     return throwError(error);
   }
 }

@@ -349,9 +349,9 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   upload() {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
       ...this.options,
-      allowedFileTypes: this.allowedFileTypes,
       beforeCallBackUrl: this.beforeCallBackUrl,
       afterCallBackUrl: this.afterCallBackUrl,
+      store_on: 'photo',
       payload: this.payload,
     });
 
