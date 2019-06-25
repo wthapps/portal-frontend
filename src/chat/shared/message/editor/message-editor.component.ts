@@ -302,7 +302,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       selectedTab: 'photos',
       filter: 'all',
       allowCancelUpload: true,
-      allowedFileTypes: ['image/*', 'video/mp4', 'video/x-m4v', 'video/*'],
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/before_upload_file',
       afterCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/after_upload_file',
       payload: { group_id: this.conversation.id}
