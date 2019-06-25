@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, Input, OnDestroy, ContentChild, TemplateRef } from '@angular/core';
 
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { saveAs } from 'file-saver';
 
 import { Constants } from '@shared/constant';
 import { DriveService } from 'drive/shared/services/drive.service';
@@ -9,9 +12,7 @@ import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 import { WDataViewComponent } from 'drive/shared/components/w-dataView/w-dataView.component';
 import { driveConstants, DriveType } from './../config/drive-constants';
 import { DriveStorageService } from '../services/drive-storage.service';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
+import { DriveApiService } from '../services/drive-api.service';
 
 
 @Component({
@@ -80,6 +81,7 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
 
   constructor(
     private driveService: DriveService,
+    private driveApiService: DriveApiService,
     private dataStorage: DriveStorageService,
     private router: Router,
     private fileDriveUploadService: FileDriveUploadService,
@@ -212,8 +214,16 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
       }
         break;
       case 'download': {
-        this.selectedObjects.forEach(f => {
-          this.fileDriveUploadService.download(f);
+        // Download multiple file separately
+        // this.selectedObjects.forEach(f => {
+          // this.fileDriveUploadService.download(f);
+        // });
+
+        // Download multiple file as a single zip file
+        const objects = this.selectedObjects.map(({id, uuid, object_type}) => ({id, uuid, object_type}));
+        this.driveApiService.download(objects).toPromise().then(response => {
+          const blob = new Blob([response], { type: 'zip' });
+          saveAs(blob, `drive-download-${Date.now()}.zip`);
         });
       }
         break;
