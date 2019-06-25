@@ -135,6 +135,7 @@ export class ZMediaTrashComponent implements OnInit, OnDestroy,
     this.apiBaseService.post(`media/trashes/restore`, { objects: this.selectedObjects.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
       this.loadObjects();
     })
+    this.clearSelectedObjects();
   }
 
   delete() {
@@ -149,9 +150,8 @@ export class ZMediaTrashComponent implements OnInit, OnDestroy,
           })
         })
         this.apiBaseService.post(`media/trashes/really_destroy`, { objects: this.selectedObjects.map(e => { return { id: e.id, model: e.model } }) }).subscribe(res => {
-          // this.loadObjects();
-          this.selectedObjects.length = 0;
-        })
+        });
+        this.clearSelectedObjects();
       }
     })
   }
@@ -162,10 +162,9 @@ export class ZMediaTrashComponent implements OnInit, OnDestroy,
       acceptLabel: 'Delete',
       message: `All photos and videos in your Trash will be deleted permanently. This action can't be undone`,
       accept: () => {
-        let tmp = this.objects;
-        this.objects = [];
-        this.apiBaseService.post(`media/trashes/really_destroy`).subscribe(res => {
-        })
+        this.objects.length = 0;
+        this.clearSelectedObjects();
+        this.apiBaseService.post(`media/trashes/really_destroy`).toPromise();
       }
     })
   }
@@ -305,5 +304,9 @@ custom method please overwirte any method*/
         if (sub) sub.unsubscribe();
       })
     });
+  }
+
+  private clearSelectedObjects() {
+    this.selectedObjects.length = 0;
   }
 }
