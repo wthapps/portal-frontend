@@ -1,8 +1,0 @@
-<wth-modal-dock #modalDock>
-  <wth-modal-dock-header [done]="progress?.done" [hasCloseIcon]="progress?.hasCloseIcon"
-  [loading]="progress?.loading" [failed]="progress?.failed" [hasCollapse]=false>
-    <a *ngIf="progress?.enableAction" href="javascript:;" (click)="doEvent()" class="dock-action">{{progress?.actionText}}</a>
-    <span>{{ progress?.textMessage }}</span>
-  </wth-modal-dock-header>
-
-</wth-modal-dock>

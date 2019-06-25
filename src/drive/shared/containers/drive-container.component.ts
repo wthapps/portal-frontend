@@ -262,7 +262,8 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
   }
 
   clearSelection() {
-    this.dataView.clearSelection();
+    if (this.dataView)
+      this.dataView.clearSelection();
   }
 
   get selectedObjects() { return this.dataView.selectedObjects };

@@ -1,13 +1,13 @@
 import { Component, OnInit, HostBinding, ViewChild, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DriveContainerComponent } from 'drive/shared/containers/drive-container.component';
-import { DriveType, driveConstants, IDriveProgress } from 'drive/shared/config/drive-constants';
+import { DriveType, driveConstants } from 'drive/shared/config/drive-constants';
 import { DriveService } from 'drive/shared/services/drive.service';
 import { FileDriveUploadService } from '@shared/services/file-drive-upload.service';
 import { takeUntil } from 'rxjs/operators';
 import { DriveBreadcrumb } from 'drive/shared/components/breadcrumb/breadcrumb';
 import { WthConfirmService } from '@shared/services';
-import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { MessageService } from 'primeng/primeng';
 
 @Component({
   selector: 'drive-trashs',
@@ -30,7 +30,7 @@ export class DriveTrashsComponent implements OnInit, OnDestroy {
   constructor(
     private driveService: DriveService,
     private fileDriveUploadService: FileDriveUploadService,
-    private toastsService: ToastsService,
+    private messageService: MessageService,
     private wthConfirm: WthConfirmService
      ) {
     this.data$ = driveService.data$;
@@ -74,6 +74,10 @@ export class DriveTrashsComponent implements OnInit, OnDestroy {
       }});
   }
 
+  private displayProgress(textMessage: string) {
+    this.messageService.add({severity: 'info', detail: textMessage, key: 'progress'});
+  }
+
   private restore(items?) {
     const objects = items || this.compactSelectedObjects();
     console.log('Restore: ', objects);
@@ -82,8 +86,7 @@ export class DriveTrashsComponent implements OnInit, OnDestroy {
       await this.driveService.restore({objects: objects});
       this.container.clearSelection();
 
-      const message = `${objects.length} items restored`;
-      this.driveService.progress = <IDriveProgress>({open: true, textMessage: message});
+      this.displayProgress(`${objects.length} items restored`);
     }) ();
   }
 
@@ -103,8 +106,7 @@ export class DriveTrashsComponent implements OnInit, OnDestroy {
           await this.driveService.permanentDelete({objects: selectedObjects});
           this.container.clearSelection();
 
-          const message = `${selectedObjects.length} items deleted permanently`;
-          this.driveService.progress = <IDriveProgress>({open: true, textMessage: message});
+          this.displayProgress(`${selectedObjects.length} items deleted permanently`);
         }) ();
 
       }});
@@ -123,7 +125,7 @@ export class DriveTrashsComponent implements OnInit, OnDestroy {
           await this.driveService.emptyAll();
           this.container.clearSelection();
 
-          this.driveService.progress = <IDriveProgress>({open: true, textMessage: 'Trash emptied'});
+          this.displayProgress('Trash emptied');
         }) ();
 
       }});

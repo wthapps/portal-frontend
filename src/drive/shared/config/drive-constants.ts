@@ -14,36 +14,12 @@ interface Permission {
   edit: boolean;
 }
 interface IDriveContext {
-  permission: Permission
-};
-
-interface IDriveProgress {
-  hasCloseIcon?: boolean;
-  loading?: boolean;
-  open?: boolean;
-  done?: boolean;
-  enableAction?: boolean;
-  actionText?: String;
-  callback?: Function;
-  textMessage?: String;
-  failed?: boolean;
+  permission: Permission;
 }
 
 const DEFAULT_CONTEXT: IDriveContext = Object.freeze({
-  permission: {edit: true}
+  permission: { edit: true }
 });
 
-const DEFAULT_PROGRESS: IDriveProgress = {
-  hasCloseIcon: true,
-  loading: false,
-  open: false,
-  done: false,
-  enableAction: false,
-  actionText: 'String',
-  callback: null,
-  textMessage: '',
-  failed: false
-}
-
 const driveConstants: DriveConstants = new DriveConstants();
-export { driveConstants, IDriveContext, IDriveProgress, DEFAULT_CONTEXT, DEFAULT_PROGRESS };
+export { driveConstants, IDriveContext, DEFAULT_CONTEXT };

@@ -58,3 +58,31 @@
     }
   }
 }
+
+.progress-toast {
+  .ui-toast-message, .ui-toast-message-content, .ui-toast-summary, .ui-toast-detail {
+    background: #4A4A4A;
+  }
+
+  .ui-toast-message-content {
+    .ui-toast-detail {
+      font-weight: bold;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .ui-toast-close-icon {
+      cursor: pointer;
+      font-size: 18px;
+      display: inline-block;
+      color: #fff;
+      font-size: 18px;
+      top: unset;
+      float: right;
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+
+}
