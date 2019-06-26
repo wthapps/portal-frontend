@@ -18,7 +18,6 @@ const APPS = 'apps';
 export class AuthService {
   // store the URL so we can redirect after logging in
   loggedIn: boolean;
-  redirectUrl: string;
   user: any = null;
   jwt: string;
   EXP_TIME = 24 * 60 * 60 * 365 * 1000;

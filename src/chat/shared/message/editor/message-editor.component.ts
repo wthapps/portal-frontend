@@ -285,7 +285,8 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/before_upload_file',
       afterCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/after_upload_file',
       payload: { group_id: this.conversation.id },
-      module: 'chat'
+      module: 'chat',
+      storage_module: 'drive'
     });
   }
 
@@ -301,10 +302,9 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
       selectedTab: 'photos',
       filter: 'all',
       allowCancelUpload: true,
-      allowedFileTypes: ['image/*'],
       beforeCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/before_upload_file',
       afterCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/after_upload_file',
-      payload: { group_id: this.conversation.id }
+      payload: { group_id: this.conversation.id}
     });
 
     this.mediaSelectionService.selectedMedias$

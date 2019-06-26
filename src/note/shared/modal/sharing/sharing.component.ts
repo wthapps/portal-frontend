@@ -19,7 +19,7 @@ declare var $: any;
   styleUrls: ['sharing.component.scss']
 })
 
-export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('auto') auto: AutoComplete;
 
@@ -79,23 +79,6 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
 
   ngOnInit(): void {
 
-  }
-
-  ngAfterViewInit() {
-    $(document).ready(function() {
-      $('.dropdown').on('show.bs.dropdown', function() {
-        alert('The dropdown is about to be shown.');
-      });
-      $('.dropdown').on('shown.bs.dropdown', function() {
-        alert('The dropdown is now fully shown.');
-      });
-      $('.dropdown').on('hide.bs.dropdown', function(e) {
-        alert('The dropdown is about to be hidden.');
-      });
-      $('.dropdown').on('hidden.bs.dropdown', function() {
-        alert('The dropdown is now fully hidden.');
-      });
-    });
   }
 
   ngOnDestroy() {

@@ -148,10 +148,6 @@ export class CurrentSubscriptionComponent implements OnInit {
           accept: () =>  {
             this.accountService.delete(user.uuid).toPromise()
             .then(() => this.router.navigate(['/account-deleted'], {queryParams: {email: user.email}}))
-            .then(() => {
-              this.userService.deleteUserInfo();
-              this.authService.deleteAuthInfo();
-            });
           }});
       }
     });

@@ -855,6 +855,7 @@ export class ZNoteDetailEditComponent
     this.mediaSelectionService.open({
       allowSelectMultiple: true,
       photoOnly: true,
+      allowedFileTypes: ['image/*'],
       hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
       onBeforeUpload: (files) => {
         Object.keys(files).forEach(f_id => this.insertFakeImage(f_id));
