@@ -90,7 +90,7 @@
             <span>{{ item.name || 'Untitled' }}</span>
           </div>
           <div class="item-note-owner">
-            {{ item.user | username }}
+            {{ item?.owner | username }}
           </div>
           <div class="item-note-date">{{ (DATE_MAP[context?.sort?.field] ? item[context?.sort?.field] : item.updated_at)
             | timeFormat }}

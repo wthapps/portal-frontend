@@ -42,7 +42,7 @@ export function reducer(
     case note.NOTE_ADDED: {
       const hNote: any = {};
       hNote[action['payload']['id']] = action['payload'];
-      const notes = { ...state.notes, hNote };
+      const notes = { ...state.notes, ...hNote };
       return { ...state, notes: notes, currentNote: action['payload'] };
     }
     case note.MULTI_NOTES_ADDED: {

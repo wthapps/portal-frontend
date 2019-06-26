@@ -297,7 +297,6 @@ export class ZNoteDetailEditComponent
       fromEvent(this.customEditor, 'text-change')
     )
       .pipe(
-        skip(1),
         tap(() => {
           this.editStatus = this.EDIT_STATUS.editing;
         }),
@@ -1084,7 +1083,7 @@ export class ZNoteDetailEditComponent
       (this.editorElement && this.editorElement.innerHTML.length > 0 &&
         this.editorElement.innerHTML !== '<p><br></p>')
     ) {
-      if (!this.editorElement) {
+      if (!this.noteChanged || !this.editorElement) {
         this.onModalClose();
         return;
       }
