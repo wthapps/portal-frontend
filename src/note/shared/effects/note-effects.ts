@@ -34,12 +34,12 @@ export class NoteEffects {
     concatMap((payload: any) => this.noteService.create(payload)),
     withLatestFrom(this.store, (res: any, state: any) => {
       if (state.context.permissions.edit) {
-        return ({type: note.MULTI_NOTES_ADDED, payload: [res['data']]});
+        return ({type: note.NOTE_ADDED, payload: res['data']});
       } else {
-        return ({type: note.MULTI_NOTES_ADDED, payload: []});
+        return ({type: note.NOTE_ADDED, payload: {}});
       }
     }),
-    catchError(() => of({type: note.MULTI_NOTES_ADDED, payload: []}))
+    catchError(() => of({type: note.NOTE_ADDED, payload: {}}))
   );
 
   @Effect() updateNote = this.actions.pipe(

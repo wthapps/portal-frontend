@@ -1114,12 +1114,23 @@ export class ZNoteDetailEditComponent
    * Save post and change to EDIT mode
    */
   onFirstSave(): void {
-    this.store.dispatch(new note.Add({
-      ...this.form.value,
-      content: this.getValidHtml(),
-      parent_id: this.parentId
-    }))
-    this.editMode = Constants.modal.edit;
+    const payload = {
+        ...this.form.value,
+        content: this.getValidHtml(),
+        parent_id: this.parentId
+      };
+
+    (async () => {
+      const res = await this.noteService.create(payload).toPromise();
+      this.note = res.data;
+      if (this.context.permissions.edit) {
+        this.store.dispatch({type: note.NOTE_ADDED, payload: res['data']})
+      } else {
+        this.store.dispatch({type: note.NOTE_ADDED, payload: {}});
+      }
+      this.editMode = Constants.modal.edit;
+    }) ();
+
   }
 
   getValidHtml() {
