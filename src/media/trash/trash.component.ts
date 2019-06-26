@@ -123,6 +123,7 @@ export class ZMediaTrashComponent implements OnInit, OnDestroy,
     opts = { ...opts, model: 'Media::Trash' };
     this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
     this.selectedObjects.length = 0;
+    this.objects = [];
     this.apiBaseService.get('media/trashes', opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;

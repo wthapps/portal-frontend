@@ -68,12 +68,12 @@
 <w-grid-list #gridlist [title]="title" [sorting]="sorting" [scrollWindow]="false" [view]="viewMode" [objects]="objects"
   [filters]="filters" (event)="doListEvent($event)">
   <div footer-grid-list>
-    <box-loading *ngIf="links?.next"></box-loading>
+    <box-loading *ngIf="loading || links?.next"></box-loading>
   </div>
 </w-grid-list>
-<div class="page-body-content has-page-body-control" *ngIf="loading">
+<!-- <div class="page-body-content has-page-body-control" *ngIf="loading">
   <box-loading></box-loading>
-</div>
+</div> -->
 <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData"
   [icon]="iconNoData || 'fa fa-video-camera'" [subTitle]="subTitleNoData" class="box-no-data">
   <button *ngIf="actionNoData" class="btn btn-outline-primary" (click)="doListEvent({action: 'noData'})">

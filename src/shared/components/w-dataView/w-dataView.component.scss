@@ -50,7 +50,10 @@ $box-shadow: false;
     z-index: 9;
   }
   .item-media-img {
-    color: #BABABA;
+    color: #404040;
+    i {
+      font-size: 24px;
+    }
   }
   &.content-list {
     .form-checkbox {
