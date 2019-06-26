@@ -20,6 +20,8 @@ export class RecentsComponent implements OnInit, OnDestroy {
   data$: Observable<Array<DriveType>>;
   public readonly apiUrl = 'drive/drive?recents=true';
   private destroySubject: Subject<any> = new Subject<any>();
+  readonly page: string = 'favorite';
+  breadcrumbs: any = [{ name: "Recent", label: "Recent" }];
 
   constructor(
     private driveService: DriveService,

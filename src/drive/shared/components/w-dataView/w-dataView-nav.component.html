@@ -11,7 +11,7 @@
     </p-slider>
     <i class="fa fa-photo fz18"></i>
   </div>
-  <div class="btn-group">
+  <div *ngIf="enableSort" class="btn-group">
     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
       <ng-container *ngFor="let item of sortState">
         <span *ngIf="sortBy === item.key">{{item.value}}</span>
@@ -25,7 +25,7 @@
       </li>
     </ul>
   </div>
-  <button (click)="onSort(sortBy, (orderBy === 'desc' ? 'asc' : 'desc'))" class="btn btn-default" type="button">
+  <button *ngIf="enableSort" (click)="onSort(sortBy, (orderBy === 'desc' ? 'asc' : 'desc'))" class="btn btn-default" type="button">
     <i [ngClass]="{'fa-arrow-down': orderBy === 'desc'}" class="fa fa-arrow-up"></i>
   </button>
   <ng-container *ngIf="showViewMode">

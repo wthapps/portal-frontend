@@ -16,6 +16,7 @@ export class WDataViewNavComponent {
   @Input() sortBy = 'updated_at';
   @Input() orderBy = 'asc';
   @Input() viewBy = 'grid';
+  @Input() enableSort = true;
   @Output() sliderViewCompleted: EventEmitter<number> = new EventEmitter<number>();
   @Output() sortComplete: EventEmitter<SortDataView> = new EventEmitter<SortDataView>(null);
   @Output() viewComplete: EventEmitter<string> = new EventEmitter<string>(null);

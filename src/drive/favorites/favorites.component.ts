@@ -18,7 +18,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   @HostBinding('class') class = 'main-page-body';
   @ViewChild(DriveContainerComponent) container: DriveContainerComponent;
   data$: Observable<Array<DriveType>>;
-  page: string = 'favorite';
+  readonly page: string = 'favorite';
   breadcrumbs: any = [{ name: "Favorite", label: "Favorite" }];
   public readonly apiUrl = 'drive/drive?favorite=true';
   private destroySubject: Subject<any> = new Subject<any>();
@@ -33,18 +33,6 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.driveService.resetCurrentFolder();
     this.container.loadObjects(`${this.apiUrl}`);
-
-    // this.fileDriveUploadService.onDone.pipe(
-    //   takeUntil(this.destroySubject)
-    // ).subscribe(res => {
-    //   console.log(res);
-    //   this.driveService.addOne(res);
-    // });
-    // this.fileDriveUploadService.onChange.pipe(
-    //   takeUntil(this.destroySubject)
-    // ).subscribe(event => {
-    //   this.fileDriveUploadService.upload(event.target.files);
-    // });
   }
 
   ngOnDestroy() {

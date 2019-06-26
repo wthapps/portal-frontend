@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   @HostBinding('class') class = 'main-page-body';
   @ViewChild(DriveContainerComponent) container: DriveContainerComponent;
   data$: Observable<Array<DriveType>>;
-  page: string = 'search';
+  readonly page: string = 'search';
   breadcrumbs: any = [{ name: "Search results", label: "Search results" }];
   public apiUrl = '';
   public apiBaseUrl = 'drive/search';

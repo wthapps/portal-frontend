@@ -28,6 +28,7 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
   @Input() list: Array<DriveType> = [];
   @Input() reloadFavorites = false;
   @Input() page = 'my-drive';
+  @Input() enableSort = true;
   @Input() handleViewItem: Function;
   @ContentChild('leftToolbarActions') leftToolbarActionsTmpl: TemplateRef<any>;
   @ContentChild('selectedRightActions') selectedRightActionsTmpl: TemplateRef<any>;
