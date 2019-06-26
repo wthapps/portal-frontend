@@ -281,6 +281,7 @@ export class ZMediaAlbumDetailComponent
     this.loading = true;
     // opts = { ...opts, model: 'Media::Album' };
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
+    this.objects = [];
     this.apiBaseService.get(`media/albums/${input}/objects`, opts).toPromise().then(res => {
       this.objects = MediaList.map(res.data);
       this.cloneObjects = _.cloneDeep(this.objects);

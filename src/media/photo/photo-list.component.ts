@@ -118,8 +118,8 @@ export class ZMediaPhotoListComponent extends CommonEventHandler implements OnIn
 
   loadObjects(opts: any = {}) {
     this.loading = true;
-    // opts = { ...opts, model: 'Media::Photo' };
     this.sorting = { sort_name: opts.sort_name || 'created_at', sort: opts.sort || 'desc' };
+    this.objects = [];
     this.apiBaseService.get('media/media/index_combine', opts).subscribe(res => {
       this.objects = MediaList.map(res.data);
       this.links = res.meta.links;

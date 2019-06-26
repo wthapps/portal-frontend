@@ -344,6 +344,7 @@ export class AlbumListComponent implements OnInit,
   loadObjects(opts: any = {}) {
     this.loading = true;
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
+    this.objects = [];
     this.apiBaseService.get(`media/albums`, opts).subscribe(res => {
       this.objects = MediaList.map(res.data);
       this.links = res.meta.links;
