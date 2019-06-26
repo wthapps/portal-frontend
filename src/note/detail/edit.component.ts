@@ -297,7 +297,6 @@ export class ZNoteDetailEditComponent
       fromEvent(this.customEditor, 'text-change')
     )
       .pipe(
-        skip(1),
         tap(() => {
           this.editStatus = this.EDIT_STATUS.editing;
         }),
@@ -855,6 +854,7 @@ export class ZNoteDetailEditComponent
     this.mediaSelectionService.open({
       allowSelectMultiple: true,
       photoOnly: true,
+      allowedFileTypes: ['image/*'],
       hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
       onBeforeUpload: (files) => {
         Object.keys(files).forEach(f_id => this.insertFakeImage(f_id));
@@ -1083,7 +1083,7 @@ export class ZNoteDetailEditComponent
       (this.editorElement && this.editorElement.innerHTML.length > 0 &&
         this.editorElement.innerHTML !== '<p><br></p>')
     ) {
-      if (!this.editorElement) {
+      if (!this.noteChanged || !this.editorElement) {
         this.onModalClose();
         return;
       }
@@ -1114,12 +1114,23 @@ export class ZNoteDetailEditComponent
    * Save post and change to EDIT mode
    */
   onFirstSave(): void {
-    this.store.dispatch(new note.Add({
-      ...this.form.value,
-      content: this.getValidHtml(),
-      parent_id: this.parentId
-    }))
-    this.editMode = Constants.modal.edit;
+    const payload = {
+        ...this.form.value,
+        content: this.getValidHtml(),
+        parent_id: this.parentId
+      };
+
+    (async () => {
+      const res = await this.noteService.create(payload).toPromise();
+      this.note = res.data;
+      if (this.context.permissions.edit) {
+        this.store.dispatch({type: note.NOTE_ADDED, payload: res['data']})
+      } else {
+        this.store.dispatch({type: note.NOTE_ADDED, payload: {}});
+      }
+      this.editMode = Constants.modal.edit;
+    }) ();
+
   }
 
   getValidHtml() {

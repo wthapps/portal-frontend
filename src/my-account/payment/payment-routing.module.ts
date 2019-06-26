@@ -8,7 +8,6 @@ import { BillingListComponent } from '@account/payment/billing';
 import { SubscriptionUpgradeComponent } from './subscription/subscription-upgrade.component';
 import { SubscriptionAlertComponent } from './subscription/subscription-alert.component';
 import { TransactionDetailComponent } from '@account/payment/billing/transaction/transaction-detail.component';
-import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [

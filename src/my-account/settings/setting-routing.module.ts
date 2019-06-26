@@ -24,6 +24,18 @@ import { SubscriptionGuard } from '@shared/guards';
           { path: '', component: MySettingComponent },
           { path: '*', component: MySettingComponent }
         ]
+      },
+      {
+        path: '',
+        redirectTo: '/settings/profile',
+        pathMatch: 'full',
+        canActivate: [SubscriptionGuard]
+      },
+      {
+        path: '*',
+        redirectTo: '/settings/profile',
+        pathMatch: 'full',
+        canActivate: [SubscriptionGuard]
       }
     ])
   ],

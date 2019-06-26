@@ -10,8 +10,7 @@
     </p>
   </div>
   <div *ngIf="!userService.getSyncProfile()?.plan?.is_trial">
-    <p class="p-plan-info"><span>{{ userService.getSyncProfile().plan.name }}</span>
-      - Activated on {{ userService.getSyncProfile()?.plan_registered_at | date:'yMMMd' }}</p>
+    <p class="p-plan-info"><span></span></p>
     <p>
       <button (click)="cancelPlan()" class="btn btn-default2 btn-min">Downgrade</button>
     </p>

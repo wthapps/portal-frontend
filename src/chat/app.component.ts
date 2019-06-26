@@ -75,7 +75,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.chatService.initalize();
     this.handleOnlineOffline();
 
     this.visibilityService.hiddenState$.pipe(
@@ -142,7 +141,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     const online = navigator.onLine;
     this.setNetworkOnline(online);
     if (online) {
-      console.log('testing out of date data');
       this.getOutOfDateData();
       this.clearOfflineMessage();
     } else {

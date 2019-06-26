@@ -18,7 +18,6 @@ const APPS = 'apps';
 export class AuthService {
   // store the URL so we can redirect after logging in
   loggedIn: boolean;
-  redirectUrl: string;
   user: any = null;
   jwt: string;
   EXP_TIME = 24 * 60 * 60 * 365 * 1000;
@@ -40,22 +39,6 @@ export class AuthService {
 
     this.jwt = cookieService.get(Constants.cookieKeys.jwt);
     this.loggedIn = Boolean(cookieService.get(Constants.cookieKeys.loggedIn));
-
-    // if (this.jwt) {
-    //
-    //   this.api.post(`users/current_session/profile`, {jwt: this.jwt}).subscribe((response) => {
-    //     console.log('profile response::::');
-    //     this.loggedIn = true;
-    //     this._loggedIn$.next(this.loggedIn);
-    //     this.user = response.data;
-    //     this._user$.next(this.user);
-    //     this.storeLoggedInInfo();
-    //   }, (error) => {
-    //     this.loggedIn = false;
-    //     this._loggedIn$.next(this.loggedIn);
-    //     this.deleteLoggedInInfo();
-    //   });
-    // }
 
     if (this.loggedIn) {
       const profile = cookieService.get(Constants.cookieKeys.profile);

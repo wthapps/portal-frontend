@@ -98,19 +98,19 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
   }
 
   onDblClick(event: any) {
-    if (event.object_type === OBJECT_TYPE.FOLDER) {
-      this.dataView.container.clearSelection();
+    const object_type = (event.object_type === OBJECT_TYPE.FOLDER) ? 'folder' : 'note'
+
+    this.dataView.container.clearSelection();
 
       this.wthConfirm.confirm({
         acceptLabel: 'Restore',
         rejectLabel: 'Cancel',
-        message: `To view this folder, you'll need to restore it from your trash`,
-        header: 'This folder is in your trash',
+        message: `To view this ${object_type}, you'll need to restore it from your trash`,
+        header: `This ${object_type} is in your trash`,
         accept: () => {
           this.store.dispatch({ type: note.RESTORE, payload: [event] });
         }
       });
-    }
   }
 
   onMenuAction(action: string) {
@@ -172,6 +172,7 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
           header: 'Empty Trash',
           accept: () => {
             this.store.dispatch({ type: note.EMPTY_ALL });
+            this.dataView.clearSelection();
           }
         });
         break;

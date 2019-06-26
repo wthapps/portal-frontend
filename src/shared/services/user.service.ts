@@ -50,11 +50,9 @@ export class UserService {
     this.notificationSetting$ = this._notificationSetting.asObservable();
   }
 
-  login(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.post(path, body, { unauthen: true }).pipe(map(res => {
-      if (res) {
-        this.storeUserInfo(res);
-      }
+  getProfile(id: string): Observable<any> {
+    // public logout(path: string) {
+    return this.apiBaseService.get(`users/profile/${id}`).pipe(map(res => {
       return res;
     }));
   }

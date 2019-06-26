@@ -88,7 +88,6 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, After
 
     if (this.authService.isAuthenticated()) {
       this.countCommonNotification();
-      this.countChatNotification();
     }
 
     // Handle disconnected network use-case
@@ -147,8 +146,6 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, After
   }
 
   updateDisconnectedData() {
-    console.log('update disconnected data ...');
-
     if (!this.userService.validProfile()) {
       return;
     }
@@ -160,8 +157,6 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, After
         // get disconnected update notifications data
         this.connectionService.getDisconnectedNotifications();
       });
-
-    this.countChatNotification();
   }
 
   countCommonNotification(): Promise<any> {
@@ -170,18 +165,6 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, After
         this.connectionService.newNotifCount = res.data.connection_count;
         this.notificationService.newNotifCount = res.data.update_count;
       });
-  }
-
-  countChatNotification(): void {
-    // this.apiBaseService.get('chat/notifications/count')
-    //   .subscribe((res: any) => {
-    //     this.notificationCount = res.data.count;
-    //     this.commonEventService.broadcast({
-    //       channel: 'ChatNotificationComponent',
-    //       action: 'updateNotificationCount',
-    //       payload: this.notificationCount
-    //     })
-    //   });
   }
 
   subscribeChanneService() {

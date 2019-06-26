@@ -38,7 +38,8 @@ export class WUploader {
     beforeCallBackUrl: null,
     onBeforeUpload: null,
     maxFileSize: null,
-    module: 'chat' || 'social' || 'notes' || 'contacts' || 'media'
+    module: 'chat' || 'social' || 'notes' || 'contacts' || 'media',
+    storage_module: 'photo' || 'drive'
   }) {
     let onBeforeUpload = options.onBeforeUpload;
     if (!onBeforeUpload) {
@@ -88,6 +89,8 @@ export class WUploader {
       fieldName: 'file'
     });
 
+    console.log('storage_module:::', options.storage_module);
+
     this.uppy.on('file-added', (file) => {
       // data: File(7775842) { allow: true, validateErrors: Array(0), name: "400.pdf", lastModified: 1538536306875, lastModifiedDate: Wed Oct 03 2018 10: 11: 46 GMT + 0700(Indochina Time), … }
       // extension: "pdf"
@@ -107,6 +110,7 @@ export class WUploader {
         file_upload_id: file.id + '-' + new Date().getTime(),
         after_callback_url: options.afterCallBackUrl,
         before_callback_url: options.beforeCallBackUrl,
+        storage_module: options.storage_module || 'photo',
         payload: JSON.stringify({ ...options.payload, ...file.progress})
       };
       this.event$.next({action: 'file-added', payload: {file: file}});
