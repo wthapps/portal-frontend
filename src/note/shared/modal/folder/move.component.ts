@@ -33,6 +33,8 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   currentFolder: any = null;
   selectedObjects: any = [];
 
+  private breadscrumb: boolean;
+
   constructor(private fb: FormBuilder,
               private commonEventService: CommonEventService,
               private apiBaseService: ApiBaseService,
@@ -71,8 +73,9 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
     );
   }
 
-  open() {
+  open(breadcrumb: boolean = false) {
     this.folder = null;
+    this.breadscrumb = breadcrumb;
     this.modal.open();
   }
 
@@ -104,6 +107,8 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   }
 
   nextFolder(item: any, setFolder: boolean = true) {
+    let path = `note/folders/${item.id}`;
+
     if (setFolder) {
       if (this.selectedObjects[0].parent_id === item.id) {
         this.folder = null;
@@ -111,7 +116,13 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
         this.folder = item;
       }
     }
-    this.apiBaseService.get(`note/folders/${item.id}`).subscribe(
+
+    // if modal is opened from breadscrumb then update path to query folders
+    if (this.breadscrumb) {
+      path = item.parent_id ? `note/folders/${ item.parent_id }`: `note/folders`
+    }
+
+    this.apiBaseService.get(path).subscribe(
       (res: any) => {
         this.rootFolder = res.parent;
         this.listFolder = res.data;

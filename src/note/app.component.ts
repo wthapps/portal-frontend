@@ -184,9 +184,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.modal.open();
         break;
       case 'note:mixed_entity:open_move_to_folder_modal':
+        console.log('move to folder', event.payload);
         this.loadModalComponent(ZNoteSharedModalFolderMoveComponent);
         this.modal.selectedObjects = event.payload;
-        this.modal.open();
+        this.modal.open(event.breadcrumb);
         break;
 
       // TODO move all of below services to store effect
