@@ -9,9 +9,9 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { WCountriesModule } from '@shared/components/w-countries/w-countries.module';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
-import { Ng2HdModule } from '@shared/shared/ng2-hd';
+// import { Ng2HdModule } from '@shared/shared/ng2-hd';
 import { WthCommonModule } from '@wth/shared/common/wth-common.module';
-import { ComponentsModule } from '@wth/shared/components/components.module';
+// import { ComponentsModule } from '@wth/shared/components/components.module';
 import { ModalModule } from '@wth/shared/components/modal/modal.module';
 import { WMediaSelectionModule } from '@wth/shared/components/w-media-selection/w-media-selection.module';
 import { PartialModule } from '@wth/shared/partials';
@@ -66,10 +66,10 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     WthCommonModule,
 
     // custom component
-    Ng2HdModule,
+    // Ng2HdModule,
     ModalModule,
     WMediaSelectionModule,
-    ComponentsModule,
+    // ComponentsModule,
     FileModule,
     PartialModule,
     // PartialsProfileModule,
@@ -120,13 +120,13 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ZContactPipeModule,
 
     // custom component
-    Ng2HdModule,
+    // Ng2HdModule,
     ModalDockModule,
     ModalModule,
     FileModule,
     PartialModule,
     WMediaSelectionModule,
-    ComponentsModule,
+    // ComponentsModule,
     ZSharedMenuModule,
     BoxNoDataModule,
     WNavTabModule,
@@ -153,9 +153,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ZContactSharedActionsBarComponent,
     ZContactSharedHeaderComponent,
     ZContactSearchSharedToolbarComponent,
-
-    // // my profile
-    // ZMyProfileComponent,
 
     // modal here
     ContactAddGroupModalComponent,

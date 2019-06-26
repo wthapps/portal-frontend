@@ -1,7 +1,5 @@
 import { Component, OnInit, HostBinding, ViewChild, Input } from '@angular/core';
 import { ZContactService } from '../services/contact.service';
-import { ZContactShareImportContactComponent } from '../modal/import-contact/import-contact.component';
-import { ICloudOAuthComponent } from '../modal/import-contact/icloud/icloud-oauth.component';
 import { CommonEventService } from '../../../shared/services/common-event/common-event.service';
 
 import { Constants } from '../../../shared/constant/config/constants';
@@ -27,7 +25,7 @@ export class ZContactSharedToolbarComponent implements OnInit {
   readonly OTHER_CONTACTS = 'Other Contacts';
   readonly PROFILE = 'Profile';
   readonly PROFILE_TOOLTIP = 'This is your personal information area for different apps in WTHApps.';
-  
+
   constructor(
     public contactService: ZContactService,
     public location: Location,

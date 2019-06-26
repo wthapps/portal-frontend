@@ -1,84 +1,85 @@
 @import "../../../../assets/styles/global";
 
+:host /deep/ {
+  .pcard-edit-modal {
+    .modal-footer {
+      border-top-width: 1px !important;
+    }
+  } 
+}
+
+.card-edit-modal-body.show-more {
+  max-height: 420px;
+  overflow: hidden;
+}
+
 /* override model title */
 .modal-title, .modal-title input {
   display: block;
   width: 100%;
   padding-left: 5px;
 }
-.pcard-cover {
-  @media (max-width: $screen-xs-max) {
-    .media-avatar {
-      @include flex-direction(column);
-      text-align: center;
-      .media-avatar-img-wrap {
-        margin-bottom: 10px;
-        margin-right: 0;
-      }
+
+.pcard-info-edit {
+  .select-content {
+    @include flexbox;
+
+    .select-content-checkbox {
+      padding-right: 10px;
+    }
+
+    .select-content-value {
+      width: 100%;
     }
   }
-}
 
-.modal-body {
-  .pcard-cover {
-    margin-left: -$modal-inner-padding;
-    margin-right: -$modal-inner-padding;
-    margin-bottom: $modal-inner-padding;
-    padding: $modal-inner-padding;
+
+  .ui-chkbox-label {
+    font-weight: normal !important;
+  }
+
+  &.dl-horizontal {
+    dt, dd {
+      padding: 5px 0;
+    }
+  }
+
+  @media (min-width: $screen-sm) {
+    margin-left: 0;
+
+    &.dl-horizontal {
+      dt {
+        width: 90px;
+      }
+      
+      dd {
+        margin-left: 110px;
+      }
+    }
+
   }
 }
 
-.pcard-info-list {
-  dl {
-    margin-bottom: 0;
-    &:not(:last-child) {
+.custom-group {
+  @include flexbox;
+  padding-bottom: 10px;
+
+  @media (min-width: $screen-sm) {
+    .custom-label {
+      max-width: 130px;
+    }
+  
+    .custom-value {
+      @include flex(1);
+      padding-left: 10px;
+    }
+  }
+
+  @media (max-width: $screen-xs-max) {
+    @include flex-direction(column);
+
+    .custom-label {
       padding-bottom: 10px;
     }
   }
-  dd:not(:last-child) {
-    padding-top: 6px;
-    //margin-bottom: 10px;
-  }
 }
-
-.pcard-info {
-  @media (min-width: $screen-sm) {
-    dt {
-      float: left;
-      width: 145px;
-      clear: both;
-      .icon {
-        width: 40px;
-      }
-      button {
-        min-height: 34px;
-      }
-    }
-    dd {
-      margin-left: 150px;
-      padding-top: 6px;
-      &.not-first-item {
-        padding-top: 14px;
-      }
-    }
-  }
-}
-
-.pcard-info-form {
-  padding-left: 25px;
-  dt {
-    clear: both;
-    position: relative;
-    .ui-chkbox {
-      position: absolute;
-      left: -25px;
-      top: 2px;
-    }
-    & + dt {
-      margin-top: 10px;
-    }
-  }
-}
-
-
-

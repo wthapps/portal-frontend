@@ -1,0 +1,30 @@
+<div class="box-panel">
+  <h3 class="box-panel-title">Billing history</h3>
+  <ng-container *ngIf="transactions.length == 0">
+    No data
+  </ng-container>
+  <ng-container *ngIf="transactions.length > 0">
+    <p-table [value]="transactions">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>ID</th>
+          <th>&nbsp;</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-transaction>
+        <tr class="tr-middle">
+          <td>{{ transaction?.created_at | date: 'MMM dd yyyy' }}</td>
+          <td> {{ transaction?.description }}</td>
+          <td>{{ transaction?.amount | currency }} </td>
+          <td> <a [routerLink]="['/payment/billings/transactions', transaction?.str_id]"> {{ transaction.str_id }} </a></td>
+          <td>
+            <a class="btn btn-outline-default" href="javascript:void(0);" (click)="viewReceipt(transaction?.str_id)">View</a>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+</div>

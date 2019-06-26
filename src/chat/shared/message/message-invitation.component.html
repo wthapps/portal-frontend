@@ -1,0 +1,32 @@
+<ng-container *ngIf="conversation.status === 'sent_request' || conversation.status ==='pending'">
+  <div class="message-item-content-request">
+    <div class="media-avatar">
+      <div class="media-avatar-img avatar-sm">
+        <img [src]="conversation?.profile_image" alt="">
+      </div>
+      <div class="media-avatar-body">
+        <h4 class="media-avatar-heading">
+          <a href="javascript:void(0)">{{ conversation.name }}</a>
+        </h4>
+        <ng-container *ngIf="conversation.status === 'sent_request'; else pendingTemplate">
+          <p>Chat invitation is pending</p>
+        </ng-container>
+
+        <ng-template #pendingTemplate>
+          <p>{{ conversation.name }} sent you a chat invitation</p>
+          <div>
+            <button class="btn btn-outline-primary mr10" (click)="accept()">
+              <i class="fa fa-check"></i> Accept
+            </button>
+            <button type="button" class="btn btn-outline-default" (click)="decline()">
+              <i class="fa fa-times"></i> Decline
+            </button>
+          </div>
+        </ng-template>
+
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+

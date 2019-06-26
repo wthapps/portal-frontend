@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WNoteSelectionService } from '@shared/components/w-note-selection/w-note-selection.service';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -9,7 +10,17 @@ import { Component } from '@angular/core';
   styleUrls: ['home.component.scss']
 })
 export class HomeComponent {
+  selectedDocuments: any;
 
-  constructor() {
+  constructor(private noteSelectionService: WNoteSelectionService) {
+  }
+
+  onShowNoteSelections() {
+    this.noteSelectionService.open();
+  }
+
+  onSelectCompleted(event) {
+    console.log(event);
+    this.selectedDocuments = event;
   }
 }

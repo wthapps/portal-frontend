@@ -99,6 +99,9 @@
     }
 
   }
+  &.parent-detail{
+    top: $header-height;
+  }
   &.active-info {
     .page-over-full-info {
       right: 0;
@@ -395,4 +398,10 @@ $photo-box-img-owner: 150px;
     }
   }
 
+}
+
+.box-no-data {
+  position: absolute;
+  width: 100%;
+  top: 20%;
 }

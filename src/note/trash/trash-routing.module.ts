@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { ZNoteTrashComponent } from './trash.component';
 import { AuthGuard } from '@wth/shared/services';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -10,7 +11,7 @@ import { AuthGuard } from '@wth/shared/services';
       {
         path: 'trash',
         component: ZNoteTrashComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       }
     ])
   ],

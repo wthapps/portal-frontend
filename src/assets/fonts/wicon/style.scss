@@ -1,0 +1,149 @@
+@import "variables";
+
+@font-face {
+  font-family: '#{$icomoon-font-family}';
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?gnkpff');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?gnkpff#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?gnkpff') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?gnkpff') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?gnkpff##{$icomoon-font-family}') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="wicon-"], [class*=" wicon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: '#{$icomoon-font-family}' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.wicon-album {
+  &:before {
+    content: $wicon-album; 
+  }
+}
+.wicon-shared-with-me {
+  &:before {
+    content: $wicon-shared-with-me; 
+  }
+}
+.wicon-user {
+  &:before {
+    content: $wicon-user; 
+  }
+}
+.wicon-arrow-circle-o-down {
+  &:before {
+    content: $wicon-arrow-circle-o-down; 
+  }
+}
+.wicon-arrow-circle-o-up {
+  &:before {
+    content: $wicon-arrow-circle-o-up; 
+  }
+}
+.wicon-phone {
+  &:before {
+    content: $wicon-phone; 
+  }
+}
+.wicon-twitter {
+  &:before {
+    content: $wicon-twitter; 
+  }
+}
+.wicon-facebook {
+  &:before {
+    content: $wicon-facebook; 
+  }
+}
+.wicon-arrow-circle-left {
+  &:before {
+    content: $wicon-arrow-circle-left; 
+  }
+}
+.wicon-arrow-circle-right {
+  &:before {
+    content: $wicon-arrow-circle-right; 
+  }
+}
+.wicon-arrow-circle-up {
+  &:before {
+    content: $wicon-arrow-circle-up; 
+  }
+}
+.wicon-arrow-circle-down {
+  &:before {
+    content: $wicon-arrow-circle-down; 
+  }
+}
+.wicon-google-plus {
+  &:before {
+    content: $wicon-google-plus; 
+  }
+}
+.wicon-linkedin {
+  &:before {
+    content: $wicon-linkedin; 
+  }
+}
+.wicon-location-arrow {
+  &:before {
+    content: $wicon-location-arrow; 
+  }
+}
+.wicon-youtube {
+  &:before {
+    content: $wicon-youtube; 
+  }
+}
+.wicon-arrow-circle-o-right {
+  &:before {
+    content: $wicon-arrow-circle-o-right; 
+  }
+}
+.wicon-arrow-circle-o-left {
+  &:before {
+    content: $wicon-arrow-circle-o-left; 
+  }
+}
+.wicon-pinterest-p {
+  &:before {
+    content: $wicon-pinterest-p; 
+  }
+}
+.wicon-megaphone {
+  &:before {
+    content: $wicon-megaphone; 
+  }
+}
+.wicon-megaphone-mute {
+  &:before {
+    content: $wicon-megaphone-mute; 
+  }
+}
+.wicon-folder-shared {
+  &:before {
+    content: $wicon-folder-shared; 
+  }
+}
+.wicon-merge {
+  &:before {
+    content: $wicon-merge; 
+  }
+}
+.wicon-move-to-folder {
+  &:before {
+    content: $wicon-move-to-folder; 
+  }
+}
+

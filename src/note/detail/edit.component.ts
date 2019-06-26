@@ -2,17 +2,16 @@ import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild, View
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Observable ,  Subject ,  Subscription ,  of, fromEvent, merge, interval } from 'rxjs';
+import { fromEvent, interval, merge, Observable, of, Subject, Subscription } from 'rxjs';
 import {
-  takeUntil,
-  switchMap,
-  filter,
-  mergeMap,
-  map,
   debounceTime,
-  tap,
   distinctUntilChanged,
+  filter,
+  map,
   skip,
+  switchMap,
+  takeUntil,
+  tap,
   withLatestFrom
 } from 'rxjs/operators';
 
@@ -20,13 +19,14 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../shared/reducers/index';
 import * as note from '../shared/actions/note';
 import { Note } from '@shared/shared/models/note.model';
-import { Constants } from '@shared/constant/config/constants';
+import { Constants, hasEnoughPermission } from '@shared/constant/config/constants';
 import { PhotoUploadService } from '@shared/services/photo-upload.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiBaseService } from '@shared/services/apibase.service';
 import { ClientDetectorService } from '@shared/services/client-detector.service';
 import { PhotoService } from '@shared/services/photo.service';
-import * as Delta from 'quill-delta/lib/delta';
+import Delta from 'quill-delta';
+import DeltaOp from 'quill-delta/lib/op';
 import { CommonEventService, UserService } from '@wth/shared/services';
 import { ZNoteService } from '../shared/services/note.service';
 import { noteConstants } from '@notes/shared/config/constants';
@@ -44,7 +44,8 @@ import { SizePolicy } from '@shared/policies/size-policy';
 import { NoteChannelService } from '@shared/channels/note-channel.service';
 import { User } from '@shared/shared/models/user.model';
 import { MessageService } from 'primeng/api';
-import { ZNoteSharedSettingsService, NoteSetting } from '@notes/shared/services/settings.service';
+import { WUploader } from './../../shared/services/w-uploader';
+import { NoteSetting, ZNoteSharedSettingsService } from '@notes/shared/services/settings.service';
 
 const DEBOUNCE_MS = 2500;
 declare let _: any;
@@ -68,6 +69,7 @@ export class ZNoteDetailEditComponent
   hasSortBy = false;
   noteChanged = false;
   customEditor: any;
+
   readonly tooltip: any = Constants.tooltip;
   readonly EDIT_STATUS = {
     idle: 1,
@@ -97,12 +99,10 @@ export class ZNoteDetailEditComponent
   disabled = false;
   noSave = false;
 
-  private closeSubject: Subject<any> = new Subject<any>();
-  private noSaveSubject: Subject<any> = new Subject<any>();
   private destroySubject: Subject<any> = new Subject<any>();
+  private noSaveSubject: Subject<any> = new Subject<any>();
   private editMode = Constants.modal.add;
   private parentId: string;
-  private noSave$: Observable<any>;
   private defaultImg = Constants.img.default;
   private editorElement: any;
   private copiedFormat: any = {};
@@ -113,8 +113,10 @@ export class ZNoteDetailEditComponent
   private initRetry = 0; // number of times this component will try to init Quill editor, default max tries is 3
   resize: any;
   context$: any;
-  profile$: Observable<User>;
+  context;
+  profile: User;
   setting$: Observable<NoteSetting>;
+  setting: NoteSetting;
 
   private uploadSubscriptions: { [filename: string]: Subscription } = {};
 
@@ -135,105 +137,31 @@ export class ZNoteDetailEditComponent
     private messageService: MessageService,
     public noteSetting: ZNoteSharedSettingsService,
     public userService: UserService,
+    private uploader: WUploader,
     private commonEventService: CommonEventService
   ) {
     this.renderer.addClass(document.body, 'modal-open');
-    this.noSave$ = merge(
-      this.noSaveSubject.asObservable(),
-      this.destroySubject,
-      this.closeSubject
-    );
-    this.profile$ = this.userService.profile$;
-    this.setting$ = this.noteSetting.setting$;
+    this.profile = this.userService.getSyncProfile();
+    // this.setting$ = this.setting$;
+    this.noteSetting.setting$.pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe(setting => this.setting = setting)
+    ;
 
     const getOs: any = this.clientDetectorService.getOs();
     this.buttonControl = getOs.name === 7 ? '⌘' : 'ctrl';
+    this.initForm();
   }
 
   ngOnInit() {
-    this.assignFormValue(null);
     this.context$ = this.store.select('context');
-    this.commonEventService
-      .filter((e: any) => e.channel === 'noteActionsBar')
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe((e: any) => {
-        switch (e.action) {
-          case 'note:note_edit:close':
-            this.router.navigate([{ outlets: { detail: null } }], {
-              queryParamsHandling: 'preserve' , preserveFragment: true
-            });
-            break;
-          case 'note:note_edit:print':
-            this.print();
-            break;
-        }
-      });
+    this.handleCommonEventActions();
 
-      // Lock note if other user are editing ..
-      this.noteChannel.lock$.pipe(
-        filter(val => !!val),
-        distinctUntilChanged((p, q) => p.user_uuid === q.user_uuid),
-        takeUntil(this.destroySubject)
-      ).subscribe((user) => {
-        if (!user || Object.keys(user).length === 0) {
-          this.messageService.clear();
+    this.handleFileUploadActions();
 
-          if (this.note.permission !== 'view') {
-            this.customEditor.enable();
-            this.customEditor.focus();
-            this.disabled = false;
-          }
-          return;
-        }
-        const {user_uuid, user_name} = user;
-        if (user_uuid !== this.userService.getSyncProfile().uuid) {
-          this.customEditor.disable();
-          this.disabled = true;
-        }
+    this.handleLockAction();
 
-        if (user_name) {
-          this.messageService.add({severity: 'warn', detail: `User ${user_name} is editing`, life: 60000,
-            closable: false, sticky: true});
-        }
-      });
-
-      // Reload note if this note's content is updated by another user
-      this.noteChannel.reload$.pipe(
-        tap(() => this.editStatus = this.EDIT_STATUS.reloading),
-        switchMap(() =>
-        this.noteService.getNoteAvailable(this.route.snapshot.paramMap.get('id'))),
-        takeUntil(this.destroySubject)
-      ).subscribe(res => {
-        const noteContent = res.data;
-        this.note = noteContent;
-        this.store.dispatch(new note.NoteUpdated(this.note));
-
-        this.noSave = true;
-        this.updateFormValue(this.note);
-        // Reset content of elemenet div.ql-editor to prevent HTML data loss
-        if (document.querySelector('.ql-editor')) {
-          document.querySelector('.ql-editor').innerHTML = this.note.content;
-        }
-        _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400) ;
-      });
-  }
-
-  handleActionEvents(event) {
-    const {action} = event;
-
-    switch (action) {
-      case 'showComments': {
-        this.visibleTab = (this.visibleTab === 'comment') ? undefined : 'comment';
-        break;
-      }
-      case 'openAttactments': {
-        this.visibleTab = (this.visibleTab === 'attachment') ? undefined : 'attachment';
-        break;
-      }
-      default: {
-
-      }
-    }
+    this.handleReloadRealtime();
   }
 
   ngAfterViewInit() {
@@ -243,6 +171,7 @@ export class ZNoteDetailEditComponent
         withLatestFrom(this.context$),
         switchMap(([paramMap, ctx]: any) => {
           const noteId = paramMap.get('id');
+          this.context = ctx;
           this.editMode = noteId ? Constants.modal.edit : Constants.modal.add;
           if (!!noteId) {
             if (ctx.page === noteConstants.PAGE_TRASH) {
@@ -261,7 +190,9 @@ export class ZNoteDetailEditComponent
       )
       .subscribe(
         ([noteContent, currentFolder]: any) => {
-          if (!noteContent) { return; }
+          if (!noteContent) {
+            return;
+          }
 
           // Subscribe user to this note channel
           this.noteChannel.subscribe(noteContent.uuid || this.note.uuid);
@@ -273,19 +204,26 @@ export class ZNoteDetailEditComponent
           } catch (e) {
             if (this.initRetry < 3) {
               this.initQuill();
-              this.initRetry ++;
+              this.initRetry++;
             }
-            console.warn('exception: ', e );
+            console.warn('exception: ', e);
           }
-          if (currentFolder) { this.parentId = currentFolder.id; }
+          if (currentFolder && this.context.permissions.edit === true) {
+            this.parentId = currentFolder.id;
+          } else {
+            this.parentId = undefined;
+          }
           this.updateFormValue(this.note);
           // Reset content of elemenet div.ql-editor to prevent HTML data loss
           if (document.querySelector('.ql-editor')) {
             document.querySelector('.ql-editor').innerHTML = this.note.content;
+            this.updateWordCount();
           }
 
           this.broadcastViewing();
-          if (this.note.permission !== 'view') { this.registerAutoSave(); }
+          if (!this.canViewOnly(this.note)) {
+            this.registerAutoSave();
+          }
         },
         (error: any) => {
           if (error.status === 403) {
@@ -301,21 +239,40 @@ export class ZNoteDetailEditComponent
     );
   }
 
+
   ngOnDestroy() {
     // Clear lock modal
     this.noteChannel.idle(this.note.uuid);
     this.messageService.clear();
 
-    this.closeSubject.next('');
-    this.closeSubject.unsubscribe();
     this.destroySubject.next('');
-    this.destroySubject.unsubscribe();
+    this.destroySubject.complete();
 
 
-    if (this.timeInterval) { clearInterval(this.timeInterval); }
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
+    }
 
     // Unsubscribe user from this note channel
     this.noteChannel.unsubscribe(this.note.uuid);
+  }
+
+  handleActionEvents(event) {
+    const { action } = event;
+
+    switch (action) {
+      case 'showComments': {
+        this.visibleTab = (this.visibleTab === 'comment') ? undefined : 'comment';
+        break;
+      }
+      case 'openAttactments': {
+        this.visibleTab = (this.visibleTab === 'attachment') ? undefined : 'attachment';
+        break;
+      }
+      default: {
+
+      }
+    }
   }
 
   broadcastViewing() {
@@ -325,9 +282,9 @@ export class ZNoteDetailEditComponent
       interval(1000)
     ).pipe(
       // skip(1),
-      takeUntil(this.closeSubject)
+      takeUntil(this.destroySubject)
     ).subscribe(() => {
-      if (this.editStatus !== this.EDIT_STATUS.reloading && !this.disabled && this.note.permission !== 'view') {
+      if (this.editStatus !== this.EDIT_STATUS.reloading && !this.disabled && !this.canViewOnly(this.note)) {
         this.viewing();
       }
     });
@@ -340,10 +297,11 @@ export class ZNoteDetailEditComponent
       fromEvent(this.customEditor, 'text-change')
     )
       .pipe(
-        skip(1),
-        tap(() => { this.editStatus = this.EDIT_STATUS.editing; }),
+        tap(() => {
+          this.editStatus = this.EDIT_STATUS.editing;
+        }),
         debounceTime(DEBOUNCE_MS),
-        takeUntil(this.closeSubject)
+        takeUntil(this.destroySubject)
       )
       .subscribe(() => {
         this.noteChanged = true;
@@ -359,15 +317,10 @@ export class ZNoteDetailEditComponent
       });
   }
 
-  // editing() {
-  //   this.editStatus = this.EDIT_STATUS.editing;
-
-  //   this.noteChannel.editing(this.note.uuid);
-  //   this.checkIdle();
-  // }
-
   viewing() {
-    if (!this.noteChannel) { return; }
+    if (!this.noteChannel) {
+      return;
+    }
     this.noteChannel.editing(this.note.uuid);
     this.checkIdle();
   }
@@ -388,24 +341,155 @@ export class ZNoteDetailEditComponent
           this.addHyperLink(range, ctx);
           return true;
         }
+      },
+      tab: {
+        key: 'Tab',
+        handler(range, context) {
+          if (context.format.table) { return true; }
+          this.quill.history.cutoff();
+          const delta = new Delta()
+            .retain(range.index)
+            .delete(range.length)
+            .insert('\t', context.format);
+          this.quill.updateContents(delta, Quill.sources.USER);
+          this.quill.history.cutoff();
+          this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+          return false;
+        },
+      },
+      'checklist enter': {
+        key: 'Enter',
+        collapsed: true,
+        format: { list: 'checked' },
+        handler(range, ctx) {
+          const [line, offset] = this.quill.getLine(range.index);
+          console.log('inside checklist enter', range, ctx, line, offset);
+          // const formats = extend({}, line.formats(), { list: 'checked' });
+          const formats = {...line.formats(), ...ctx.format, list: 'checked'};
+          const delta = new Delta()
+            .retain(range.index)
+            .insert('\n', formats)
+            .retain(line.length() - offset - 1)
+            .retain(1, { list: 'unchecked' });
+          this.quill.updateContents(delta, Quill.sources.USER);
+          this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+          this.quill.scrollIntoView();
+        },
+      },
+      'header enter': {
+        key: 'Enter',
+        collapsed: true,
+        format: ['header'],
+        suffix: /^$/,
+        handler(range, context) {
+          const [line, offset] = this.quill.getLine(range.index);
+          const delta = new Delta()
+            .retain(range.index)
+            .insert('\n', context.format)
+            .retain(line.length() - offset - 1)
+            .retain(1, { header: null });
+          this.quill.updateContents(delta, Quill.sources.USER);
+          this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+          this.quill.scrollIntoView();
+        },
+      },
+      'list autofill': {
+        key: ' ',
+        shiftKey: null,
+        collapsed: true,
+        format: {
+          list: false,
+          'code-block': false,
+          blockquote: false,
+          header: false,
+          table: false,
+        },
+        prefix: /^\s*?(\d+\.|-|\*|\[ ?\]|\[x\])$/,
+        handler(range, context) {
+          if (this.quill.scroll.query('list') == null) { return true; }
+          const { length } = context.prefix;
+          const [line, offset] = this.quill.getLine(range.index);
+          if (offset > length) { return true; }
+          let value;
+          switch (context.prefix.trim()) {
+            case '[]':
+            case '[ ]':
+              value = 'unchecked';
+              break;
+            case '[x]':
+              value = 'checked';
+              break;
+            case '-':
+            case '*':
+              value = 'bullet';
+              break;
+            default:
+              value = 'ordered';
+          }
+          this.quill.insertText(range.index, ' ', context.format, Quill.sources.USER);
+          this.quill.history.cutoff();
+          const delta = new Delta()
+            .retain(range.index - offset)
+            .delete(length + 1)
+            .retain(line.length() - 2 - offset)
+            .retain(1, { list: value });
+          this.quill.updateContents(delta, Quill.sources.USER);
+          this.quill.history.cutoff();
+          this.quill.setSelection(range.index - length, Quill.sources.SILENT);
+          return false;
+        },
+      },
+      custom_backspace: {
+        key: 8,
+        collapsed: true,
+        altKey: null, ctrlKey: null, metaKey: null, shiftKey: null,
+        // prefix: /^.?$/,
+        handler: (range, ctx) => {
+          this.handleBackspace(range, ctx);
+          return;
+        }
+      }, custom_backspace_range: {
+        key: 8,
+        collapsed: false,
+        altKey: null, ctrlKey: null, metaKey: null, shiftKey: null,
+        prefix: /^.?$/,
+        handler: (range) => {
+          this.handleDeleteRange(range);
+          return;
+        }
+      }, custom_delete: {
+        key: 46,
+        collapsed: true,
+        altKey: null, ctrlKey: null, metaKey: null, shiftKey: null,
+        // suffix: /^.?$/,
+        handler: (range, ctx) => {
+          this.handleDelete(range, ctx);
+          return;
+        }
+      }, custom_delete_range: {
+        key: 46,
+        collapsed: false,
+        altKey: null, ctrlKey: null, metaKey: null, shiftKey: null,
+        suffix: /^.?$/,
+        handler: (range) => {
+          this.handleDeleteRange(range);
+          return;
+        }
       }
     };
-
-    const Font = Quill.import('formats/font');
-    Font.whitelist = [
-      'gotham',
+    const FontAttributor = Quill.import('attributors/class/font');
+    FontAttributor.whitelist = [
       'georgia',
       'helvetica',
       'lato',
-      'courier-new',
-      'times-new-roman',
+      'couriernew',
+      'timesnewroman',
       'trebuchet',
       'verdana'
     ];
 
     const Size = Quill.import('attributors/style/size');
     Size.whitelist = ['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt'];
-    // Size.whitelist = ['8px', '10px', '12px', '14px', '18px', '24px', '36px'];
 
     const BlockEmbed = Quill.import('blots/block/embed');
 
@@ -415,10 +499,11 @@ export class ZNoteDetailEditComponent
     DividerBlot.blotName = 'divider';
     DividerBlot.tagName = 'hr';
 
-    Quill.register(Font, true);
+    Quill.register(FontAttributor, true);
     Quill.register(Size, true);
     Quill.register(DividerBlot);
     this.extendClipboard(this);
+    // this.extendKeyboard(this);
     Quill.register('modules/counter', Counter, true);
     Quill.register('modules/customImage', CustomImage, true);
 
@@ -458,14 +543,15 @@ export class ZNoteDetailEditComponent
       scrollingContainer: '#scrolling-container'
     };
 
-    if (this.note.permission === 'view') {
+    if (this.canViewOnly(this.note)) {
       modules.modules.imageResize = null;
       modules.placeholder = '';
     }
     this.customEditor = new Quill('#quill-editor', modules);
-    if (this.note.permission === 'view') { this.customEditor.disable(); }
-    if (!this.note.permission || this.note.permission !== 'view') {
-      $('#quill-toolbar').show();
+    if (this.canViewOnly(this.note)) {
+      this.enable(false);
+    } else {
+      this.enable(true);
     }
 
     this.editorElement = document.querySelector('div.ql-editor');
@@ -480,44 +566,34 @@ export class ZNoteDetailEditComponent
     this.registerSelectionChange();
     //  Format quill based on default setting
     setTimeout(() => this.applyDefaultFormat(), 500);
+
+    // Temporarily hide select components when finish initilize component
+    setTimeout(() => $('.vh').removeClass('vh'), 1000);
+  }
+
+  enable(enabled = true) {
+    if (enabled) {
+      this.customEditor.enable();
+      $('#quill-toolbar').show();
+    } else {
+      this.customEditor.disable();
+      $('#quill-toolbar').hide();
+    }
+    this.disabled = !enabled;
   }
 
 
   applyDefaultFormat() {
     // Default font, size setting
-    const {font, font_size} = this.noteSetting.setting;
+    const { font, font_size } = this.setting;
 
     const range = this.customEditor.getSelection(true);
     if (this.customEditor.getLength() <= 1) {
-      console.log('this editor is blank', this.customEditor);
-      this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
-      this.customEditor.setSelection(range.index, 1, Quill.sources.SILENT);
       this.customEditor.format('font', font);
       this.customEditor.format('size', font_size);
     } else {
-      // // Insert a blank character in case default font differ from first character's format
-      // const firstFormat = this.customEditor.getFormat(1);
-      // const f_font = firstFormat.font;
-      // const f_size = firstFormat.size;
-      // if (f_font !== font || f_size !== font_size) {
-      //   this.customEditor.insertText(range.index, ' ', Quill.sources.USER);
-      //   this.customEditor.setSelection(range.index, 1, Quill.sources.SILENT);
-      //   this.customEditor.format('font', font);
-      //   this.customEditor.format('size', font_size);
-      // }
-
       this.customEditor.setSelection(range, Quill.sources.SILENT);
-      // this.customEditor.format('font', font);
-      // this.customEditor.format('size', font_size);
     }
-
-    // // Unhighlight font, size setting by removing ql.active class
-    // const font_els = document.querySelectorAll('.ql-font > .ql-active');
-    // font_els.forEach(f => f.classList.remove('ql-active'));
-
-    // const size_els = document.querySelectorAll('.ql-size > .ql-active');
-    // size_els.forEach(f => f.classList.remove('ql-active'));
-
 
     this.noSaveSubject.next('');
   }
@@ -549,15 +625,33 @@ export class ZNoteDetailEditComponent
             }
           }
 
-          if (e.defaultPrevented || !this.quill.isEnabled()) { return; }
+          if (e.defaultPrevented || !this.quill.isEnabled()) {
+            return;
+          }
           const range = this.quill.getSelection();
+          const { font, size} = this.quill.getFormat();
+          // Filter font, size property only
+          const copyFormat = {};
+          copyFormat['font'] = font || self.setting.font;
+          copyFormat['size'] = size || self.setting.font_size;
+
+
           let delta = new Delta().retain(range.index);
           const scrollTop = this.quill.scrollingContainer.scrollTop;
           this.container.focus();
           this.quill.selection.update(Quill.sources.SILENT);
           setTimeout(() => {
             if (dataClipboard1[0].match('text/*')) {
-              delta = delta.concat(this.convert()).delete(range.length);
+              const conv = this.convert();
+              const ops = conv.ops.map( o => {
+                const attributes = {...o.attributes, ...copyFormat};
+                return {...o, attributes};
+              });
+              if (Object.keys(copyFormat).length > 0) {
+                delta = delta.concat({...conv, ops}).delete(range.length);
+              } else {
+                delta = delta.concat(conv).delete(range.length);
+              }
               this.quill.updateContents(delta, Quill.sources.USER);
               this.quill.setSelection(
                 delta.length() - range.length,
@@ -571,7 +665,7 @@ export class ZNoteDetailEditComponent
                 let randId = `img_${new Date().getTime()}`;
                 self.insertFakeImage(randId);
                 ids.push(randId);
-                // let file = e.target['result'];
+
                 const files = [fileClipboard];
                 self.photoUploadService
                   .uploadPhotos(files)
@@ -611,6 +705,87 @@ export class ZNoteDetailEditComponent
     });
   }
 
+  handleDelete(range, context) {
+    const quill = this.customEditor;
+    // Check for astral symbols
+    const length = /^[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(context.suffix) ? 2 : 1;
+    if (range.index >= quill.getLength() - length) { return; }
+    let formats = {}, nextLength = 0;
+    const [line, ] = quill.getLine(range.index);
+    if (context.offset >= line.length() - 1) {
+      const [next, ] = quill.getLine(range.index + 1);
+      if (next) {
+        const curFormats = line.formats();
+        const nextFormats = quill.getFormat(range.index, 1);
+        formats = DeltaOp.attributes.diff(curFormats, nextFormats) || {};
+        nextLength = next.length();
+      }
+    }
+    quill.deleteText(range.index, length, Quill.sources.USER);
+    if (Object.keys(formats).length > 0) {
+      quill.formatLine(range.index + nextLength - 1, length, formats, Quill.sources.USER);
+    }
+
+    this.addDefaultFormat();
+  }
+
+  handleBackspace(range, context) {
+    const quill = this.customEditor;
+    if (range.index === 0 || quill.getLength() <= 1) { return; }
+    const [line, ] = quill.getLine(range.index);
+    let formats = {};
+    if (context.offset === 0) {
+      const [prev, ] = quill.getLine(range.index - 1);
+      if (prev != null && prev.length() > 1) {
+        const curFormats = line.formats();
+        const prevFormats = quill.getFormat(range.index - 1, 1);
+        formats = DeltaOp.attributes.diff(curFormats, prevFormats) || {};
+      }
+    }
+    // Check for astral symbols
+    const length = /[\uD800-\uDBFF][\uDC00-\uDFFF]$/.test(context.prefix) ? 2 : 1;
+    quill.deleteText(range.index - length, length, Quill.sources.USER);
+    if (Object.keys(formats).length > 0) {
+      quill.formatLine(range.index - length, length, formats, Quill.sources.USER);
+    }
+    quill.focus();
+
+    this.addDefaultFormat();
+  }
+
+  handleDeleteRange(range) {
+    const quill = this.customEditor;
+    const lines = quill.getLines(range);
+    let formats = {};
+    if (lines.length > 1) {
+      const firstFormats = lines[0].formats();
+      const lastFormats = lines[lines.length - 1].formats();
+      formats = DeltaOp.attributes.diff(lastFormats, firstFormats) || {};
+    }
+    quill.deleteText(range, Quill.sources.USER);
+    if (Object.keys(formats).length > 0) {
+      quill.formatLine(range.index, 1, formats, Quill.sources.USER);
+    }
+    quill.setSelection(range.index, Quill.sources.SILENT);
+    quill.focus();
+
+    this.addDefaultFormat();
+  }
+
+  addDefaultFormat() {
+    // Appy default font, size format after deleting texts
+    const { font, font_size } = this.setting;
+    const format = this.customEditor.getFormat();
+    if (!format.font) {
+      this.customEditor.format('font', font);
+    }
+    if (!format.size) {
+      this.customEditor.format('size', font_size);
+    }
+
+    console.log('Current format: ', format);
+  }
+
   addHyperLink(range, ctx) {
     const [line, offset] = this.customEditor.getLine(range.index);
     const link = ctx.prefix.split(' ').pop();
@@ -620,8 +795,8 @@ export class ZNoteDetailEditComponent
       new Delta()
         .retain(range.index - link.length)
         .delete(link.length)
-        .insert(link, { link: fullUrl })
-        .insert(' ')
+        .insert(link, { ...ctx.format, link: fullUrl })
+        .insert(' ', ctx.format)
     );
     this.customEditor.history.cutoff();
     this.customEditor.setSelection(range.index + 1, Quill.sources.SILENT);
@@ -648,7 +823,8 @@ export class ZNoteDetailEditComponent
       'i',
       {
         class: 'fa fa-spinner fa-spin big-icon',
-        id: id
+        id: id,
+        'data-id': id
       },
       Quill.sources.USER
     );
@@ -675,8 +851,22 @@ export class ZNoteDetailEditComponent
   }
 
   selectInlinePhotos4Note() {
-    this.mediaSelectionService.open();
-    this.mediaSelectionService.setMultipleSelection(true);
+    this.mediaSelectionService.open({
+      allowSelectMultiple: true,
+      photoOnly: true,
+      allowedFileTypes: ['image/*'],
+      hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
+      onBeforeUpload: (files) => {
+        Object.keys(files).forEach(f_id => this.insertFakeImage(f_id));
+      },
+      onAfterUploaded: ({ file, resp, uploadURL }) => {
+        const fileId = file.id;
+        $(`i[data-id='${fileId}']`).after(
+          `<img src="${resp.data.url}" data-id="${resp.data.id}" />`
+        );
+        $(`i[data-id='${fileId}']`).remove();
+      }
+    });
 
     const close$: Observable<any> = merge(
       this.mediaSelectionService.open$,
@@ -690,25 +880,6 @@ export class ZNoteDetailEditComponent
         );
       });
 
-    const ids: string[] = [];
-    this.mediaSelectionService.uploadingMedias$
-      .pipe(
-        map(([file, dataUrl]) => [file]),
-        mergeMap((files: any[]) => {
-          const randId = `img_${new Date().getTime()}`;
-          this.insertFakeImage(randId);
-          ids.push(randId);
-          return this.photoUploadService.uploadPhotos(files);
-        }),
-        takeUntil(close$)
-      )
-      .subscribe((res: any) => {
-        const randId = ids.shift();
-        $(`i#${randId}`).after(
-          `<img src="${res.data.url}" data-id="${res.data.id}" />`
-        );
-        $(`i#${randId}`).remove();
-      });
   }
 
   copyFormat() {
@@ -771,7 +942,6 @@ export class ZNoteDetailEditComponent
         this.customEditor.formatLine(sIndex, sLength, this.copiedFormat);
         this.copiedFormat = {};
         this.isCopied = false;
-      } else {
       }
     });
   }
@@ -801,26 +971,10 @@ export class ZNoteDetailEditComponent
     }
   }
 
-  open(
-    options: any = {
-      mode: Constants.modal.add,
-      note: undefined,
-      parent_id: undefined
-    }
-  ) {
-    this.assignFormValue(this.note);
-    this.parentId = _.get(options, 'parent_id');
-    this.modal.open();
-    this.noSaveSubject.next('');
-    this.editMode = options.mode;
-
-    this.updateCurrentNote();
-  }
-
   updateCurrentNote(): void {
     this.store
       .select(fromRoot.getCurrentNote)
-      .pipe(takeUntil(merge(this.closeSubject, this.destroySubject)))
+      .pipe(takeUntil(merge(this.destroySubject)))
       .subscribe((note2: Note) => {
         if (note2 !== undefined) {
           this.updateFormValue(note2);
@@ -828,35 +982,27 @@ export class ZNoteDetailEditComponent
       });
   }
 
-  assignFormValue(data?: Note) {
+  initForm(data?: Note) {
     this.form = this.fb.group({
-      name: [_.get(data, 'name', '')],
-      // 'content': [_.get(data, 'content', ''), Validators.compose([Validators.required])],
+      name: [_.get(data, 'name', 'Untitled')],
       tags: [_.get(data, 'tags', [])],
       attachments: [_.get(data, 'attachments', [])]
     });
 
     this.name = this.form.controls['name'];
-    // this.content = this.form.get('content');
     this.tags = this.form.controls['tags'];
     this.attachments = this.form.controls['attachments'];
-    this.note = Object.assign({}, new Note(), data);
   }
 
   updateFormValue(data: Note) {
-    this.form.controls['name'].setValue(_.get(data, 'name', ''));
-    this.form.controls['tags'].setValue(_.get(data, 'tags', []));
-    this.form.controls['attachments'].setValue(_.get(data, 'attachments', []));
+    this.form.patchValue(data);
 
-    this.name = this.form.controls['name'];
-    // this.content = this.form.get('content');
-    this.tags = this.form.controls['tags'];
-    this.attachments = this.form.controls['attachments'];
     this.note = Object.assign({}, new Note(), data);
   }
 
   undo() {
     this.customEditor.history.undo();
+    this.addDefaultFormat();
   }
 
   redo() {
@@ -893,46 +1039,38 @@ export class ZNoteDetailEditComponent
     }
   }
 
-  selectFiles(event: any) {
-    const files = event.target.files;
-    if (files.length === 0) {
-      return;
-    }
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35, {only: /video\//g})]);
-    this.note.attachments = [
-      ...this.note.attachments,
-      ...filesAddedPolicy.filter(file => file.allow === true)
-    ];
+  onSelectFiles() {
+    this.uploader.open('FileInput', '.w-uploader-file-input-container', {
+      allowedFileTypes: null,
+      module: 'note'
+    });
+  }
 
-    for (let i = 0; i < files.length; i++) {
-      const f = files[i];
-      const sub = this.fileUploaderService
-        .uploadGenericFile(f)
-        .subscribe((response: any) => {
-          if (!response.error) {
-            this.note.attachments = this.note.attachments.map(att => {
-              if (att.name === response.data.full_name && !att.uuid) {
-                return response.data;
-              }
-              return att;
-            });
-            this.form.controls['attachments'].setValue(this.note.attachments);
-          }
-        });
+  handleFileUploadActions(): void {
+    this.uploader.event$.pipe(
+      takeUntil(this.destroySubject)
+    ).subscribe(event => {
+      const { action, payload } = event;
+      const { file, resp } = payload;
+      switch (action) {
+        case 'file-added': {
+          this.note.attachments.push(file);
+        }
+        break;
+        case 'success': {
+          this.note.attachments = this.note.attachments.map(att => {
+            return (att.id === file.id) ? resp.data : att;
+          });
+          this.form.controls['attachments'].setValue(this.note.attachments);
 
-      this.uploadSubscriptions[f.name] = sub;
-    }
-    const filesNotAllow = filesAddedPolicy.filter(file => file.allow === false);
-    if (filesNotAllow.length > 0) {
-      this.commonEventService.broadcast({
-        channel: 'LockMessage',
-        payload: filesNotAllow
-      });
-    }
+          break;
+        }
+      }
+    });
   }
 
   selectPhotos() {
-    this.mediaSelectionService.open({ allowSelectMultiple: true });
+    this.mediaSelectionService.open({photoOnly: true, allowSelectMultiple: true });
 
     this.selectPhotos4Attachments();
   }
@@ -945,27 +1083,18 @@ export class ZNoteDetailEditComponent
       (this.editorElement && this.editorElement.innerHTML.length > 0 &&
         this.editorElement.innerHTML !== '<p><br></p>')
     ) {
-      if (!this.editorElement) { return; }
+      if (!this.noteChanged || !this.editorElement) {
+        this.onModalClose();
+        return;
+      }
 
       if (this.editMode === Constants.modal.add) {
-        if (this.note.permission !== 'view') {
-          this.store.dispatch(
-            new note.Add({
-              ...value,
-              parent_id: this.parentId,
-              content: this.editorElement.innerHTML
-            })
-          );
+        if (!this.canViewOnly(this.note)) {
+          this.onFirstSave();
         }
       } else {
-        if (this.note.permission !== 'view') {
-          this.store.dispatch(
-            new note.Update({
-              ...value,
-              id: this.note.id,
-              content: this.editorElement.innerHTML
-            })
-          );
+        if (!this.canViewOnly(this.note)) {
+          this.updateNote();
         }
       }
     }
@@ -977,28 +1106,35 @@ export class ZNoteDetailEditComponent
       ? { ...options, queryParamsHandling: 'merge' }
       : { queryParamsHandling: 'merge' };
     this.router.navigate([{ outlets: { detail: null } }], qOptions);
-    this.closeSubject.next('');
+    this.destroySubject.next('');
     this.renderer.removeClass(document.body, 'modal-open');
   }
 
   /**
    * Save post and change to EDIT mode
    */
-  async onFirstSave() {
-      const res = await this.noteService
-        .create({
-          ...this.form.value,
-          content: this.editorElement.innerHTML,
-          parent_id: this.parentId
-        })
-        .toPromise();
-        this.note = res.data;
-        this.editMode = Constants.modal.edit;
-        this.store.dispatch(new note.MultiNotesAdded([res['data']]));
+  onFirstSave(): void {
+    const payload = {
+        ...this.form.value,
+        content: this.getValidHtml(),
+        parent_id: this.parentId
+      };
 
-        // return await this.router.navigate([
-        //   { outlets: { detail: ['notes', this.note.id] } }
-        // ]);
+    (async () => {
+      const res = await this.noteService.create(payload).toPromise();
+      this.note = res.data;
+      if (this.context.permissions.edit) {
+        this.store.dispatch({type: note.NOTE_ADDED, payload: res['data']})
+      } else {
+        this.store.dispatch({type: note.NOTE_ADDED, payload: {}});
+      }
+      this.editMode = Constants.modal.edit;
+    }) ();
+
+  }
+
+  getValidHtml() {
+    return this.editorElement.innerHTML.replace(/<span class="ql-cursor">[^<>]*<\/span>/, '');
   }
 
   download(file: any) {
@@ -1026,14 +1162,14 @@ export class ZNoteDetailEditComponent
   print() {
     const editor: any = document.querySelector('div.ql-editor');
 
-    if (!document.querySelector('.printable')) {
+    if (!document.querySelector('.visible-print-block')) {
       $('body').after(
-        '<div class="printable ql-container ql-snow"><div class="ql-editor"></div><div/>'
+        '<div class="visible-print-block ql-container ql-snow"><div class="ql-editor"></div><div/>'
       );
     }
-    document.querySelector('.printable > .ql-editor').innerHTML =
+    document.querySelector('.visible-print-block > .ql-editor').innerHTML =
       editor.innerHTML;
-    const printable: any = document.querySelector('.printable > .ql-editor');
+    const printable: any = document.querySelector('.visible-print-block > .ql-editor');
     printable.innerHTML = editor.innerHTML;
     window.print();
   }
@@ -1051,8 +1187,25 @@ export class ZNoteDetailEditComponent
     this.form.controls['name'].setValue(event);
   }
 
+  private canViewOnly(note: Note): boolean {
+    return this.editMode === Constants.modal.edit &&  !hasEnoughPermission(note.permission, 'edit'); // 'view', 'download'
+  }
+
   private selectPhotos4Attachments() {
-    this.mediaSelectionService.open({ allowSelectMultiple: true });
+    this.mediaSelectionService.open({
+      allowSelectMultiple: true,
+      photoOnly: true,
+      hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
+      onBeforeUpload: (files) => {
+        this.note.attachments.push(...Object.values(files));
+        this.form.controls['attachments'].setValue(this.note.attachments);
+      },
+      onAfterUploaded: ({ file, resp, uploadURL }) => {
+        const index = _.indexOf(this.note.attachments, file);
+        this.note.attachments[index] = resp.data;
+        this.form.controls['attachments'].setValue(this.note.attachments);
+      }
+    });
 
     const close$: Observable<any> = merge(
       this.mediaSelectionService.open$,
@@ -1065,32 +1218,21 @@ export class ZNoteDetailEditComponent
         this.form.controls['attachments'].setValue(this.note.attachments);
       });
 
-    this.mediaSelectionService.uploadingMedias$
-      .pipe(map(([file, dataUrl]) => [file]), takeUntil(close$))
-      .subscribe((files: any) => {
-        this.note.attachments.push(...files);
-        _.forEach(files, (file: any) => {
-          const sub = this.photoUploadService.uploadPhotos(files).subscribe(
-            (response: any) => {
-              const index = _.indexOf(this.note.attachments, file);
-              this.note.attachments[index] = response.data;
-              this.form.controls['attachments'].setValue(this.note.attachments);
-            },
-            (err: any) => {
-              console.log('Error when uploading files ', err);
-            }
-          );
+  }
 
-          this.uploadSubscriptions[file.name] = sub;
-        });
-      });
+  private updateWordCount(): void {
+    const count = Counter.count($('.ql-editor').text() );
+    $('#counter').text(count);
   }
 
   private async updateNote() {
-    if (!this.note.id || !this.editorElement) { return; }
+    if (!this.note.id || !this.editorElement) {
+      return;
+    }
     const noteObj: any = Object.assign({}, this.note, this.form.value, {
-      content: this.editorElement.innerHTML
+      content: this.getValidHtml()
     });
+    noteObj.attachments = noteObj.attachments.filter(a => a.uuid && a.source !== 'FileInput');
     this.store.dispatch(new note.Update(noteObj));
     return Promise.resolve();
   }
@@ -1101,9 +1243,81 @@ export class ZNoteDetailEditComponent
     }
 
     this.timeout = setTimeout(() => {
-      console.log('Goes idle now for note channel: ', this.note.uuid);
       this.noteChannel.idle(this.note.uuid);
     }, DEBOUNCE_MS);
+  }
+
+  private handleCommonEventActions(): void {
+    this.commonEventService
+      .filter((e: any) => e.channel === 'noteActionsBar')
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe((e: any) => {
+        switch (e.action) {
+          case 'note:note_edit:close':
+            this.router.navigate([{ outlets: { detail: null } }], {
+              queryParamsHandling: 'preserve', preserveFragment: true
+            });
+            break;
+          case 'note:note_edit:print':
+            this.print();
+            break;
+        }
+      });
+  }
+
+  private handleReloadRealtime(): void {
+    // Reload note if this note's content is updated by another user
+    this.noteChannel.reload$.pipe(
+      tap(() => this.editStatus = this.EDIT_STATUS.reloading),
+      switchMap(() =>
+        this.noteService.getNoteAvailable(this.route.snapshot.paramMap.get('id'))),
+      takeUntil(this.destroySubject)
+    ).subscribe(res => {
+      const noteContent = res.data;
+      this.note = noteContent;
+      this.store.dispatch(new note.NoteUpdated(this.note));
+
+      this.noSave = true;
+      this.updateFormValue(this.note);
+      // Reset content of elemenet div.ql-editor to prevent HTML data loss
+      if (document.querySelector('.ql-editor')) {
+        document.querySelector('.ql-editor').innerHTML = this.note.content;
+        this.updateWordCount();
+      }
+      _.delay(() => this.editStatus = this.EDIT_STATUS.saved, 400);
+    });
+  }
+
+  private handleLockAction(): void {
+    // Lock note if other user are editing ..
+    this.noteChannel.lock$.pipe(
+      filter(val => !!val),
+      distinctUntilChanged((p, q) => p.user_uuid === q.user_uuid),
+      takeUntil(this.destroySubject)
+    ).subscribe((user) => {
+      this.messageService.clear();
+      if (!user || Object.keys(user).length === 0) {
+        if (!this.canViewOnly(this.note)) {
+          this.enable();
+          this.customEditor.focus();
+        }
+        return;
+      }
+      const { user_uuid, user_name } = user;
+      if (user_uuid !== this.profile.uuid) {
+        this.enable(false);
+      }
+
+      if (user_name) {
+        this.messageService.add({
+          severity: 'warn',
+          detail: `<i class="fa fa-lock mr5" aria-hidden="true"></i><strong>${user_name}</strong> is editing`,
+          life: 60000,
+          closable: false,
+          sticky: true
+        });
+      }
+    });
   }
 
 }

@@ -8,27 +8,14 @@
   <div class="panel-body">
 
     <dl class="dl-horizontal">
-      <dt>Title</dt>
-      <dd>{{ data?.occupation || 'None' }}</dd>
-    </dl>
-    <dl class="dl-horizontal">
-      <dt>Company</dt>
-      <dd>{{ data?.company || 'None' }}</dd>
-    </dl>
-    <dl class="dl-horizontal">
       <dt>Gender</dt>
       <dd>{{ constants.sex[data?.sex] || 'None' }}</dd>
-    </dl>
-    <dl class="dl-horizontal">
+      <dt>Nationality</dt>
+      <dd>{{ (data?.nationality | countryCode2Value: (countries$ | async)) || 'None' }}</dd>
       <dt>Birthday</dt>
       <dd *ngIf="data?.birthday">{{ (data?.birthday | timeFormat) || 'None' }}</dd>
       <dd *ngIf="!data?.birthday">None</dd>
-    </dl>
-    <dl class="dl-horizontal">
-      <dt>Nationality</dt>
-      <dd>{{ getCountryName((countries$ | async), data?.nationality) || 'None' }}</dd>
-    </dl>
-    <dl class="dl-horizontal">
+
       <dt>About</dt>
       <dd>
         {{ data?.about || 'None'}}
@@ -44,33 +31,6 @@
       <h4 class="modal-title text-left">Basic Information</h4>
     </bs-modal-header>
     <bs-modal-body>
-
-      <div class="form-group">
-        <label>Title</label>
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="media media-form">
-              <div class="media-body">
-                <input type="text" name="name" class="form-control" [formControl]="occupation"/>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Company</label>
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="media media-form">
-              <div class="media-body">
-                <input type="text" name="name" class="form-control" [formControl]="company"/>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="form-group">
         <label>Gender</label>
         <div class="row">

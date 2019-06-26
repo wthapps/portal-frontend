@@ -10,10 +10,6 @@ export const MULTI_NOTES_ADDED = '[Notes] Multi Added';
 export const DELETE = '[Note] Delete';
 export const MULTI_DELETE = '[Note] Multi-Delete';
 export const NOTES_DELETED = '[Notes] Deleted';
-export const SELECT = '[Note] Select';
-export const SELECT_ONE = '[Note] Select One';
-export const SELECT_ALL = '[Note] Select All';
-export const DESELECT_ALL = '[Note] Deselect All';
 export const CHANGE_SORT_ORDER = '[Note] Change Sort Order';
 export const LOAD = '[Note] Load';
 export const LOAD_SUCCESS = '[Note] Load Success';
@@ -134,49 +130,12 @@ export class NotesDeleted implements Action {
   }
 }
 
-export class Select implements Action {
-  readonly type = SELECT;
-
-  constructor(public payload: any) {
-  }
-}
-
-export class SelectOne implements Action {
-  readonly type = SELECT_ONE;
-
-  constructor(public payload: {id: number, object_type: string, parent_id: number}) {
-  }
-}
-
-export class DeSelectAll implements Action {
-  readonly type = DESELECT_ALL;
-}
-
-export class SelectAll implements Action {
-  readonly type = SELECT_ALL;
-}
-
-export class ChangeSortOrder implements Action {
-  readonly type = CHANGE_SORT_ORDER;
-
-  constructor(public payload: string) {
-
-  }
-}
-
 export class InitLoad implements Action {
   readonly type = INIT_LOAD;
 }
 
 export class InitLoadDone implements Action {
   readonly type = INIT_LOAD_DONE;
-}
-
-export class ChangeViewMode implements Action {
-  readonly type = CHANGE_VIEW_MODE;
-
-  constructor(public payload: string) {
-  }
 }
 
 export class Undo implements Action {

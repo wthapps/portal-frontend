@@ -14,6 +14,7 @@ import { ZContactEditComponent } from './contact-edit/contact-edit.component';
 import { ZContactListComponent } from './contact-list/contact-list.component';
 import { ZContactRoutingModule } from './contact-routing.module';
 import { CardModule } from '@contacts/shared/card';
+import { UserCardModule } from '@shared/user/card';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { CardModule } from '@contacts/shared/card';
 
     CoreModule,
     CardModule,
+    UserCardModule,
     WthCommonModule,
   ],
   declarations: [

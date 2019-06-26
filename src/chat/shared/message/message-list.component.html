@@ -1,26 +1,41 @@
-<ng-container *ngIf="contactItem">
-  <div #listEl scrollToBottom [detectChange]="contactItem.group_id" class="message-wrapper" infiniteScrollDistance="1" infiniteScrollUpDistance="2"
-    infiniteScroll [scrollWindow]="false" (scrolled)="scrollDown()" (scrolledUp)="onLoadMore()">
-    <ng-container *ngIf="(currentMessages); else loadingBlock">
+<ng-container *ngIf="conversation">
+  <!--TODO: fix scrollup like below link-->
+  <!--https://embed.plnkr.co/DrEDetYnZkFxR7OWWrxS/-->
+  <div #listEl class="message-wrapper"
+       infiniteScroll
+       [infiniteScrollDistance]="1"
+       [infiniteScrollUpDistance]="0.2"
+       [scrollWindow]="false"
+       (scrolledUp)="loadMoreMessages()"
+       (scrolled)="scrollDown()"
+    >
+    <ng-container *ngIf="loadingMore$|async">
+      <div class="text-center">
+        Updating message....
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!(loading$ | async); else loadingBlock">
       <div class="message-item-wrapper">
-        <ng-container *ngIf="currentMessages?.length>0;else templateNodata">
-          <!-- <div class="message-item-dv" *ngFor="let message of currentMessages; trackBy: message?.id"> -->
-          <div class="message-item-dv" *ngFor="let message of currentMessages">
-            <message-item [message]="message" [byMe]="currentUser.id == message.user_id" [prevMessage]="getPrevMessage(message)" [contactItem]="contactItem"
-              [emojiMap]="emojiMap$ | async" (onAddContact)="onAddContact($event)" (event)="doEvent($event)"></message-item>
+        <ng-container *ngIf="messages?.length > 0; else templateNodata">
+           <div class="message-item-dv" *ngFor="let message of messages; trackBy: trackById">
+            <message-item [message]="message"
+                          [byMe]="message.user_id === currentUser.id"
+                          [emojiMap]="emojiMap$ | async"
+                          (onChat)="createChat($event)"
+                          (onViewProfile)="viewProfile($event)"
+                          (event)="doEvent($event)"></message-item>
           </div>
         </ng-container>
       </div>
-      <ng-template #templateNodata>
+      <!-- <ng-template #templateNodata>
         <box-no-data [title]="'Welcome to a new conversation'" [subTitle]="'Let start sharing your messages'"></box-no-data>
-      </ng-template>
+      </ng-template> -->
 
     </ng-container>
     <ng-template class="message-item-wrapper" #loadingBlock>
-      <box-loading class="message-item-dv"></box-loading>
+      <box-loading class="message-item-dv" iconClass="fa-2x"></box-loading>
     </ng-template>
   </div>
-  <!-- <z-chat-share-item-request *ngIf="!contactItem.active && currentMessages && currentUser?.uuid !== currentMessages[0]?.display?.uuid" [message]="currentMessages"></z-chat-share-item-request> -->
 </ng-container>
 <z-chat-share-request-contact #request></z-chat-share-request-contact>
 <lock-upload-modal></lock-upload-modal>

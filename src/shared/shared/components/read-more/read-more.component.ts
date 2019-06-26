@@ -12,22 +12,22 @@ import { Component, Input, OnChanges } from '@angular/core';
 })
 
 export class ReadMoreComponent implements OnChanges {
-  @Input() limit: number = 120;
-  @Input() content: string = '';
-  @Input() readmore: string = ' VIEW MORE';
-  @Input() readless: string = ' VIEW LESS';
+  @Input() limit = 120;
+  @Input() content = '';
+  @Input() readmore = ' VIEW MORE';
+  @Input() readless = ' VIEW LESS';
 
-  shaveContent: string = '';
-  showMore: boolean = false;
+  shaveContent = '';
+  showMore = false;
 
   ngOnChanges(data: any): void {
     // if(this.content)
     //   return;
     this.content = this.content.replace(/(\r\n|\n\r|\r|\n)/g, ' <br> ');
-    let value = this.content;
+    const value = this.content;
     let limit = this.limit;
     // let trail = this.readmore;
-    let words = value.split(/\s+/);
+    const words = value.split(/\s+/);
     if (words.length > Math.abs(limit)) {
       if (limit < 0) {
         limit *= -1;

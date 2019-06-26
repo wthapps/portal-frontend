@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from '@shared/components/modal/modal.module';
 import { TooltipModule } from 'primeng/primeng';
 import { MessageEditorComponent } from './message-editor.component';
+import { WNoteSelectionModule } from '@shared/components/w-note-selection/w-note-selection.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { MessageEditorComponent } from './message-editor.component';
 
     MiniEditorModule,
     ChatNoteListModule,
-    PipeModule
+    PipeModule,
+    WNoteSelectionModule
   ],
   declarations: [MessageEditorComponent],
   exports: [
@@ -35,4 +37,5 @@ import { MessageEditorComponent } from './message-editor.component';
   ],
   providers: []
 })
-export class ZChatMessageEditorModule {}
+export class ZChatMessageEditorModule {
+}

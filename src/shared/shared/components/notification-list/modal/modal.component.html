@@ -1,10 +1,10 @@
 <bs-modal [cssClass]="'modal-notification-list-setting'" #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
   <bs-modal-header [showDismiss]="true">
-    <h4 class="modal-title"><i class="fa fa-cog"></i> Settings</h4>
+    <h4 class="modal-title"> Notification settings</h4>
   </bs-modal-header>
   <bs-modal-body>
     <p class="text-faded">Allow notification updates from</p>
-    <div class="form-group">
+    <!-- <div class="form-group">
       <div class="inputSwitch-wrap">
         <p-inputSwitch [(ngModel)]="social"></p-inputSwitch>
         <span>Social</span>
@@ -15,17 +15,23 @@
         <p-inputSwitch [(ngModel)]="chat"></p-inputSwitch>
         <span>Chat</span>
       </div>
-    </div>
+    </div> -->
     <div class="form-group">
       <div class="inputSwitch-wrap">
-        <p-inputSwitch [(ngModel)]="note"></p-inputSwitch>
-        <span>Note</span>
+        <p-inputSwitch [(ngModel)]="contact"></p-inputSwitch>
+        <span><i class="icon-zone-contact"></i> Contacts</span>
       </div>
     </div>
     <div class="form-group">
       <div class="inputSwitch-wrap">
         <p-inputSwitch [(ngModel)]="media"></p-inputSwitch>
-        <span>Media</span>
+        <span><i class="icon-zone-media"></i> Photos</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="inputSwitch-wrap">
+        <p-inputSwitch [(ngModel)]="note"></p-inputSwitch>
+        <span><i class="icon-zone-note"></i> Notes</span>
       </div>
     </div>
   </bs-modal-body>

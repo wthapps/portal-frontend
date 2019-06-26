@@ -7,6 +7,7 @@ export class Message {
   content_type: string;
   group_id: number;
   user: any;
+  owner;
   group: any; //this is conversation that message belongs to
   is_quote: boolean;
   sending_status: number;
@@ -16,6 +17,9 @@ export class Message {
   created_at: string;
   updated_at: string;
   client_id: string;
+  file_id: number;
+  file_type: string;
+
 
   constructor(obj?: any) {
     this.id = (obj && obj.id) || 0;
@@ -27,11 +31,14 @@ export class Message {
     this.group = (obj && obj.group) || null;
     this.group_id = (obj && obj.group_id) || null;
     this.user = (obj && obj.user) || null;
+    this.owner = (obj && obj.owner) || null;
     this.is_quote = (obj && obj.is_quote) || false;
     this.sending_status = (obj && obj.sending_status) || 1;
     this.status = (obj && obj.status) || 'sending';
     this.client_id = (obj && obj.client_id) || '';
     this.deleted = (obj && obj.deleted) || false;
     this.meta_data = (obj && obj.meta_data) || {};
+    this.file_id = (obj && obj.file_id) || null;
+    this.file_type = (obj && obj.file_type) || null;
   }
 }

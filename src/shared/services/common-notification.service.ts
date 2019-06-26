@@ -167,7 +167,7 @@ export class CommonNotificationInterface {
 
   markAsRead(notification: any) {
     // Mark this notification as read
-    if (notification && !notification.is_read) {
+    if (notification) {
       this.toggleReadStatus(notification);
     }
   }
@@ -206,15 +206,13 @@ export class CommonNotificationInterface {
       });
   }
 
-  getLatestNotifications(): Promise<any> {
+  getLatestNotifications(): void {
     if (
-      this.initLoad &&
-      this.loadingDone &&
       !(this.authService.loggedIn && this.authService.user)
     ) {
-      return Promise.reject(new Error('user does not log in yet'));
-    } // Only load once at first time
-    return this.api
+      throw new Error('user does not log in yet');
+    }
+    this.api
       .get(`${this.url}/get_latest`, { sort_name: 'created_at' })
       .toPromise()
       .then(
@@ -243,13 +241,10 @@ export class CommonNotificationInterface {
       );
   }
 
-  isLoadingDone() {
-    return this.loadingDone;
-  }
-
   getMoreNotifications() {
     // if(this.loadingDone) {
-    if (this.isLoadingDone() || this.nextLink === undefined) {
+    if (this.loadingDone || !this.nextLink) {
+      this.loadingDone = true;
       return;
     }
     if (!(this.authService.loggedIn && this.authService.user)) { return; }

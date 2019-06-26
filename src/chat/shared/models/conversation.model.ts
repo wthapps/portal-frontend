@@ -24,8 +24,6 @@ class ChatGroup {
   member_count: 2;
   name: string;
   updated_at: string;
-  users_json: BasicUser[];
-  users_name: string
   uuid: string
 }
 

@@ -1,14 +1,14 @@
 <ng-template #objectActionsTemplate>
   <ul class="page-body-control-menu" *ngIf="hasSelectedObjects">
     <li>
-      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="restore()" pTooltip="{{ tooltip.restore}}"
-        tooltipPosition="bottom">
+      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="restore()"
+        pTooltip="{{ tooltip.restore}}" tooltipPosition="bottom">
         <i class="fa fa-history"></i>
       </a>
     </li>
     <li>
-      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="delete()" pTooltip="{{ tooltip.delete}}"
-        tooltipPosition="bottom">
+      <a class="btn btn-default" href="javascript:void(0);" draggable="false" (click)="delete()"
+        pTooltip="{{ tooltip.delete}}" tooltipPosition="bottom">
         <i class="fa fa-trash"></i>
       </a>
     </li>
@@ -30,30 +30,43 @@
     </ul>
   </div>
 </ng-template>
-<w-toolbar #toolbar [viewMode]="viewMode" [selectedObjects]="selectedObjects" [objectActionsTemplate]="objectActionsTemplate"
-  [leftAddActionsTemplate]="leftAddActionsTemplate" (event)="doToolbarEvent($event)">
+
+<ng-template #leftSubMenuTemplate>
+  <ul class="page-body-control-menu">
+    <li class="divider">
+      <a class="btn btn-default" href="javascript:;" (click)="deSelect()" draggable="false"
+        pTooltip="{{ tooltip.close }}" tooltipPosition="bottom">
+        <i class="fa fa-times"></i>
+      </a>
+    </li>
+    <li class="hidden-xs hidden-sm">
+      <span class="btn btn-text">{{ selectedObjects.length }} selected</span>
+    </li>
+  </ul>
+</ng-template>
+<w-toolbar #toolbar [viewMode]="viewMode" [selectedObjects]="selectedObjects"
+  [objectActionsTemplate]="objectActionsTemplate" [leftActionsTemplate]="leftSubMenuTemplate"
+  (event)="doToolbarEvent($event)">
 </w-toolbar>
 
-<w-grid-list #gridlist [sorting]="sorting" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)"
-  (selectedObjectsChanged)="selectedObjectsChanged($event)">
+<w-grid-list #gridlist [title]="title" [sorting]="sorting" [view]="viewMode" [objects]="objects"
+  [titleActions]="[{icon: 'fa fa-trash', title: 'Empty Trash', action: 'emptyTrash'}]" [filters]="filters"
+  (event)="doListEvent($event)" (selectedObjectsChanged)="selectedObjectsChanged($event)">
   <div footer-grid-list>
     <box-loading *ngIf="links?.next"></box-loading>
   </div>
 </w-grid-list>
 <!--loading icon-->
-<div class="page-body-content has-page-body-control gray-light" *ngIf="loading">
+<div class="page-body-content has-page-body-control" *ngIf="loading">
   <box-loading></box-loading>
 </div>
-<box-no-data *ngIf="objects && objects.length == 0" [title]="'There are no files in Trash!'" [icon]="'fa fa-trash'"
-  style="margin-top: 50px; display: block;">
-  <div>
-    Move files you want to permanently delete to Trash.
-  </div>
-  <div>
-    Click "Empty Trash" from the Trash's menu to permanently
-  </div>
-  <div>
-    deleted these files
-  </div>
+<box-no-data class="box-no-data" *ngIf="objects && objects.length == 0" [title]="'There are no files in Trash!'"
+  [icon]="'fa fa-trash'" style="margin-top: 50px; display: block;">
+  <h4>
+    Move photos or videos you want to permanently delete to Trash.
+  </h4>
+  <h4>
+    Click "Empty Trash" from the Trash's menu to permanently deleted these files.
+  </h4>
 </box-no-data>
 <div #modalContainer></div>

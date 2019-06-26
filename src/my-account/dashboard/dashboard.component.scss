@@ -1,43 +1,24 @@
-
 @import "../../assets/styles/global";
 
-.dashboard {
-  text-align: center;
-  padding-top:30px;
-}
-
-.flex-container {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  justify-content: center;
-  margin-left: -30px;
-  .flex-item {
-    width: 144px;
-    height: 110px;
-    //margin: 8px;
-    a {
-      color: $text-color-light;
+.dashboard-content {
+  max-width: 600px;
+  margin: 30px auto;
+  a {
+    color: $text-color;
+    display: block;
+    border-radius: 4px;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 20px;
+    &:hover {
+      background-color: #eee;
+      text-decoration: none;
+    }
+    span {
       display: block;
-      border-radius: 4px;
-      text-align: center;
-      padding: 10px;
-      &:hover{
-        background-color: #eee;
-        color: $text-color;
-        text-decoration: none;
-      }
-      i {
-        font-size: 48px;
-        line-height: 48px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
-      span {
-        display: block;
-        font-weight: bold;
-        font-size: 16px
-      }
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 15px;
     }
   }
 }

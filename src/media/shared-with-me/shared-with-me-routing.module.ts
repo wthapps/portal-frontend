@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { AuthGuard } from '@wth/shared/services';
 import { ZMediaSharedWithMeComponent } from './shared-with-me.component';
 import { ZMediaSharingDetailComponent } from '@media/shared-by-me/sharing-detail.component';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -10,12 +11,12 @@ import { ZMediaSharingDetailComponent } from '@media/shared-by-me/sharing-detail
       {
         path: 'shared-with-me',
         component: ZMediaSharedWithMeComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       },
       {
         path: 'shared-with-me/:id',
         component: ZMediaSharingDetailComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, SubscriptionGuard]
       }
     ])
   ],

@@ -32,11 +32,17 @@ import { KeysPipe } from '@shared/shared/pipe/keys.pipe';
 import { StripHtmlPipe } from '@shared/shared/pipe/strip-html.pipe';
 import { MaxCountPipe } from '@wth/shared/shared/pipe/max-count.pipe';
 import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.pipe';
+import { UsernamePipe } from './username.pipe';
+import { CountryCode2ValuePipe } from './country-code-2-value.pipe';
+import { TrimPipe } from './trim.pipe';
+import { ObjectValuesPipe } from './object-values.pipe';
+import { HtmlToPlaintextPipe } from '@shared/shared/pipe/html-to-plaintext.pipe';
 
 @NgModule({
   imports: [CommonModule],
   declarations: [
     AddFirstCharacterPipe,
+    CountryCode2ValuePipe,
     GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,
@@ -56,6 +62,7 @@ import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.
     TimeFormatPipe,
     LinkifyPipe,
     FreeSpacePipe,
+    ObjectValuesPipe,
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
     PhoneCodeOnlyFlagPipe,
@@ -64,10 +71,14 @@ import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.
     MaxCountPipe,
     StripHtmlPipe,
     PhoneCodeToDisplayCodePipe,
-    KeysPipe
+    TrimPipe,
+    UsernamePipe,
+    KeysPipe,
+    HtmlToPlaintextPipe
   ],
   exports: [
     AddFirstCharacterPipe,
+    CountryCode2ValuePipe,
     GroupByMapPipe,
     GroupByPipe,
     GroupByObjectTypePipe,
@@ -88,6 +99,7 @@ import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.
     LinkifyPipe,
     FreeSpacePipe,
     StripHtmlPipe,
+    ObjectValuesPipe,
     PhoneCodeCountriesPipe,
     PhoneCodeFlagPipe,
     PhoneCodeOnlyFlagPipe,
@@ -95,7 +107,10 @@ import { AddFirstCharacterPipe } from '@shared/shared/pipe/with-first-character.
     MapToIterablePipe,
     MaxCountPipe,
     PhoneCodeToDisplayCodePipe,
-    KeysPipe
+    TrimPipe,
+    UsernamePipe,
+    KeysPipe,
+    HtmlToPlaintextPipe
   ],
   providers: []
 })

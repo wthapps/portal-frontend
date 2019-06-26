@@ -12,21 +12,8 @@ import { ZNotePublicViewComponent } from '@notes/detail/public-view.component';
 
 @NgModule({
   imports: [ModalModule, ZNoteMyNoteRoutingModule, ZNoteSharedModule],
-  declarations: [
-    ZNoteMyNoteComponent,
-    // ZNoteMyNoteFoldersComponent,
-    // ZNoteMyNoteNotesComponent
-    ZNotePublicViewComponent
-    // ZNoteCreateComponent,
-    // ZNoteEditComponent
-  ],
-  exports: [
-    ZNoteMyNoteComponent
-    // ZNoteMyNoteFoldersComponent,
-    // ZNoteMyNoteNotesComponent
-    // ZNoteCreateComponent,
-    // ZNoteEditComponent
-  ],
+  declarations: [ZNoteMyNoteComponent, ZNotePublicViewComponent],
+  exports: [ZNoteMyNoteComponent],
   providers: []
 })
 export class ZNoteMyNoteModule {}

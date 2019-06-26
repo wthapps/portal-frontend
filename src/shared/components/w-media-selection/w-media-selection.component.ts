@@ -7,13 +7,13 @@ import { BsModalComponent } from 'ng2-bs3-modal';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { Media } from '@shared/shared/models/media.model';
 
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { WUploader } from '@shared/services/w-uploader';
+import Media from '@shared/modules/photo/models/media.model';
 
 @Component({
   selector: 'w-media-selection',
@@ -45,21 +45,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     {
       name: 'Albums',
       link: 'albums',
-      icon: 'fa fa-file-photo-o',
-      number: null,
-      type: 'tab'
-    },
-    {
-      name: 'Videos',
-      link: 'videos',
-      icon: 'fa fa-video-camera',
-      number: null,
-      type: 'tab'
-    },
-    {
-      name: 'Playlists',
-      link: 'playlists',
-      icon: 'fa fa-file-video-o',
+      icon: 'wthico-album',
       number: null,
       type: 'tab'
     },
@@ -67,13 +53,6 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       name: 'Favourites',
       link: 'favourites',
       icon: 'fa fa-star',
-      number: null,
-      type: 'tab'
-    },
-    {
-      name: 'Shared with me',
-      link: 'shared_with_me',
-      icon: 'fw fw-shared-with-me',
       number: null,
       type: 'tab'
     }
@@ -86,8 +65,17 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   multipleSelection$: Observable<boolean>;
   view$: Observable<string>;
   initLoading = true;
+  sortName = 'created_at';
+  sortDirection = 'desc';
+  photoOnly = true;
 
-  currentTab: string; // upload, photos, albums, albums_detail, favourites, shared_with_me
+  currentTab: string; // upload, photos, albums, albums_detail, favourites
+  readonly tabNameMap = {
+    photos: 'Photos',
+    albums: 'Albums',
+    albums_detail: '',
+    favourites: 'Favourites'
+  };
 
   nextLink: string;
   isLoading: boolean;
@@ -117,6 +105,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   private beforeCallBackUrl: any;
   private afterCallBackUrl: any;
   private payload: any;
+  private options;
   private sub: any;
 
   constructor(
@@ -154,7 +143,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  open(options: any = {return: false}) {
+  open(options: any = { return: false }) {
     console.log('open media select modal:::', options);
     this.currentTab = options.selectedTab; // 'upload', 'photos';
     this.tabsFilter = this.tabs.filter((t: any) => {
@@ -175,9 +164,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     } else {
       this.allowedFileTypes = options.allowedFileTypes;
     }
+    this.photoOnly = options.photoOnly;
     this.beforeCallBackUrl = options.beforeCallBackUrl;
     this.afterCallBackUrl = options.afterCallBackUrl;
     this.payload = options.payload;
+    this.options = options;
 
     if (options.filter) {
       this.filter = options.filter;
@@ -191,7 +182,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     this.modal.open().then();
   }
 
-  close(options: any = {return: false}) {
+  close(options: any = { return: false }) {
     this.mediaSelectionService.close();
     this.modal.close().then();
   }
@@ -201,38 +192,43 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   async onSubFilter(subFilter: 'photo' | 'album') {
-    this.subFilter = subFilter;
-    await this.tabAction({link: this.currentTab});
+    await this.tabAction({ link: this.currentTab }, subFilter);
   }
 
   async getObjects(override?: boolean) {
-    if (this.nextLink && !this.isLoading) {
-      this.isLoading = true;
-      const res = await this.mediaSelectionService.getMedias(this.nextLink, override).toPromise();
-      this.nextLink = res.meta.links.next;
+    try {
+      if (this.nextLink && !this.isLoading) {
+        this.isLoading = true;
+        const res = await this.mediaSelectionService.getMedias(this.nextLink, override).toPromise();
+        this.nextLink = res.meta.links.next;
+        this.isLoading = false;
+        this.initLoading = false;
+        return res;
+      } else {
+        this.isLoading = false;
+        this.initLoading = false;
+        return Promise.resolve(null);
+      }
+    } catch (e) {
+      console.warn('exception: ', e);
       this.isLoading = false;
-      this.initLoading = false;
-      return res;
-    } else {
-      this.initLoading = false;
-      return Promise.resolve(null);
+      return Promise.reject(e);
     }
   }
 
-  async tabAction(event: any = {link: this.currentTab}) {
+  async tabAction(event: any = { link: this.currentTab }, subFilter: 'photo' | 'album' | undefined = 'photo') {
     this.mediaSelectionService.clear();
     this.currentTab = event.link;
     this.initLoading = true;
+    this.subFilter = subFilter;
 
     if (this.currentTab !== 'upload') {
       this.nextLink = this.buildNextLink();
       const objects = await this.getObjects(true);
       console.log('objects: ', objects);
 
-      if (this.currentTab === 'albums' || this.currentTab === 'playlists'
-        || this.currentTab === 'favourites' || this.currentTab === 'shared_with_me'
-        || this.currentTab === 'search') {
-        this.objectListService.setObjectsDisabled(['album', 'Media::Playlist', 'Common::Sharing']);
+      if (this.currentTab === 'albums' || this.currentTab === 'favourites' || this.currentTab === 'search') {
+        this.objectListService.setObjectsDisabled(['album', 'Common::Sharing']);
       } else {
         this.objectListService.setObjectsDisabled([]);
       }
@@ -240,21 +236,16 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   onTabBack() {
-    const all = ['album', 'Common::Sharing', 'Media::Playlist'];
+    const all = ['album', 'Common::Sharing'];
     if (this.currentTab === 'albums_detail') {
       this.currentTab = 'albums';
       this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'favourites_detail') {
       this.currentTab = 'favourites';
-      this.objectListService.setObjectsDisabled(all);
-    } else if (this.currentTab === 'shared_with_me_detail') {
-      this.currentTab = 'shared_with_me';
+      // this.subFilter = 'photo';
       this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'search') {
       this.currentTab = 'photos';
-    } else if (this.currentTab === 'playlist_detail') {
-      this.currentTab = 'playlists';
-      this.objectListService.setObjectsDisabled(all);
     } else if (this.currentTab === 'search_detail') {
       this.currentTab = 'search';
       this.objectListService.setObjectsDisabled(all);
@@ -278,15 +269,11 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   }
 
   onCompleteDoubleClick(item: Media) {
-    if (item.object_type === 'Media::Album' || item.object_type === 'Media::Playlist' || item.model === 'Common::Sharing') {
+    if (item.object_type === 'Media::Album' || item.model === 'Common::Sharing') {
       if (this.currentTab === 'albums') {
         this.currentTab = 'albums_detail';
       } else if (this.currentTab === 'favourites') {
         this.currentTab = 'favourites_detail';
-      } else if (this.currentTab === 'playlists') {
-        this.currentTab = 'playlist_detail';
-      } else if (this.currentTab === 'shared_with_me') {
-        this.currentTab = 'shared_with_me_detail';
       } else if (this.currentTab === 'search') {
         this.currentTab = 'search_detail';
       }
@@ -296,6 +283,7 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
       this.nextLink = this.buildNextLink();
       this.objectListService.setObjectsDisabled([]);
 
+      this.initLoading = true;
       this.getObjects(true);
     } else {
       this.onInsert();
@@ -305,6 +293,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
   async onCompleteSort(event: any) {
     if (event) {
       this.nextLink = this.buildNextLink() + `&sort=${event.sortOrder}&sort_name=${event.sortBy}`;
+      this.sortName = event.sortBy;
+      this.sortDirection = event.sortOrder;
       const mediaParent = this.mediaParent;
       this.mediaSelectionService.clear();
       this.mediaSelectionService.setMediaParent(mediaParent);
@@ -358,9 +348,10 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   upload() {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
-      allowedFileTypes: this.allowedFileTypes,
+      ...this.options,
       beforeCallBackUrl: this.beforeCallBackUrl,
       afterCallBackUrl: this.afterCallBackUrl,
+      store_on: 'photo',
       payload: this.payload,
     });
 
@@ -376,8 +367,8 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
     const { action, payload } = event;
     switch (action) {
       case 'sort': {
-        const {sort_name, sort_direction} = payload;
-        this.onCompleteSort({sortOrder: sort_direction, sortBy: sort_name});
+        const { sort_name, sort_direction } = payload;
+        this.onCompleteSort({ sortOrder: sort_direction, sortBy: sort_name });
         break;
       }
     }
@@ -385,56 +376,44 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
 
   private buildNextLink() {
     let urlAPI = '';
-    console.log(this.currentTab);
+    const modelFilter = this.photoOnly ? 'model=Media::Photo' : '1=1';
 
     switch (this.currentTab) {
       case 'photos':
-        urlAPI = this.filter === 'all' ? 'media/media/index_combine?model=Media::Photo' : `media/photos?active=1`;
+        urlAPI = this.filter === 'all' ? `media/media/index_combine?${modelFilter}` : `media/photos?active=1`;
         break;
       case 'albums':
-        urlAPI = `media/albums?active=1`;
-        break;
-      case 'videos':
-        urlAPI = `media/videos?active=1`;
-        break;
-      case 'playlists':
-        urlAPI = `media/playlists?active=1`;
-        break;
-      case 'playlist_detail':
-        urlAPI = `media/playlists/${this.mediaParent.id}/videos?active=1`;
+        urlAPI = `media/albums?active=1&${modelFilter}`;
         break;
       case 'albums_detail':
-        urlAPI = this.filter === 'all' ? `media/albums/${this.mediaParent.uuid}/objects?model=Media::Album` :
-         `media/photos?active=1&album=${this.mediaParent.id}`;
+        urlAPI = this.filter === 'all' ? `media/albums/${this.mediaParent.uuid}/objects?${modelFilter}` :
+          `media/photos?active=1&album=${this.mediaParent.id}`;
         break;
       case 'favourites':
         if (this.filter === 'all') {
           urlAPI = `media/favorites?active=1`;
           if (this.subFilter === 'photo') {
             // tslint:disable-next-line:max-line-length
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Video&filter[or][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Video`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Video&filter[or][object_type]=Media::Photo&filter[or][object_type]=Media::Video`;
           } else if (this.subFilter === 'album') {
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][sharing_type]=Media::Album`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Common::Sharing&${modelFilter}`;
           }
         }
         if (this.filter === 'photo') {
           // tslint:disable-next-line:max-line-length
-          urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Album&filter[or][sharing_type]=Media::Album&filter[or][sharing_type]=Media::Photo`;
+          urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Album&filter[or][object_type]=Media::Album&filter[or][object_type]=Media::Photo`;
           if (this.subFilter === 'photo') {
             // tslint:disable-next-line:max-line-length
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][sharing_type]=Media::Photo`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Photo&filter[or][object_type]=Media::Photo`;
           } else if (this.subFilter === 'album') {
-            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][sharing_type]=Media::Album`;
+            urlAPI = `media/favorites?filter[where][object_type]=Media::Album&filter[or][object_type]=Common::Sharing&${modelFilter}`;
           }
         }
         break;
       case 'favourites_detail':
         switch (this.mediaParent.model) {
-          case 'Media::Playlist':
-            urlAPI = `media/playlists/${this.mediaParent.uuid}/videos`;
-            break;
           case 'Media::Album':
-            urlAPI = `media/media/${this.mediaParent.uuid}/objects?model=Media::Album`;
+            urlAPI = `media/albums/${this.mediaParent.uuid}/objects?${modelFilter}`;
             break;
           case 'Common::Sharing':
             urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;
@@ -444,28 +423,13 @@ export class WMediaSelectionComponent implements OnInit, OnDestroy {
             break;
         }
         break;
-      case 'shared_with_me':
-        if (this.filter === 'all') { urlAPI = `media/sharings/shared_with_me?active=1`; }
-        if (this.filter === 'photo') {
-        urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Photo&filter[or][sharing_type]=Media::Album`;
-        }
-        if (this.filter === 'video') {
-        urlAPI = `media/sharings/shared_with_me?filter[where][sharing_type]=Media::Video&filter[or][sharing_type]=Media::Playlist`;
-        }
-        break;
-      case 'shared_with_me_detail':
-        urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;
-        break;
       case 'search':
-        urlAPI = `media/search?active=1&q=${this.searchText}&filter=${this.filter}`;
+        urlAPI = `media/search?active=1&q=${this.searchText}&filter=${this.filter}&${modelFilter}`;
         break;
       case 'search_detail':
         switch (this.mediaParent.model) {
-          case 'Media::Playlist':
-            urlAPI = `media/playlists/${this.mediaParent.uuid}/videos`;
-            break;
           case 'Media::Album':
-            urlAPI = `media/media/${this.mediaParent.uuid}/objects?model=Media::Album`;
+            urlAPI = `media/media/${this.mediaParent.uuid}/objects?${modelFilter}`;
             break;
           case 'Common::Sharing':
             urlAPI = `media/sharings/${this.mediaParent.uuid}/objects`;

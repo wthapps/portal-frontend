@@ -1,35 +1,48 @@
 <div class="wrapper">
-  <w-header class="header" [user]="authService.user$ | async" [loggedIn]="authService.loggedIn$ | async" [hasSearch]="false">
-    <chat-shared-header class="header-nav-left"></chat-shared-header>
-  </w-header>
-  <main class="main">
-    <w-left-menu [hideFooter]="true">
-      <z-chat-share-sidebar></z-chat-share-sidebar>
-    </w-left-menu>
-    <div class="main-page-body">
-      <router-outlet></router-outlet>
-      <router-outlet name="modal"></router-outlet>
-    </div>
-  </main>
-  <wth-toast></wth-toast>
-  <wth-loading></wth-loading>
-  <wth-confirm></wth-confirm>
-  <z-chat-share-add-contact></z-chat-share-add-contact>
-  <contact-list-modal></contact-list-modal>
-  <wth-zone-report></wth-zone-report>
+    <w-header
+        class="header"
+        [user]="authService.user$ | async"
+        [loggedIn]="authService.loggedIn$ | async"
+        [hasSearch]="false"
+    >
+        <chat-shared-header class="header-nav-left"></chat-shared-header>
+    </w-header>
+    <main class="main">
+        <w-left-menu [hideFooter]="true">
+            <z-chat-share-sidebar></z-chat-share-sidebar>
+        </w-left-menu>
+        <div class="main-page-body">
+            <router-outlet></router-outlet>
+            <router-outlet name="modal"></router-outlet>
+        </div>
+    </main>
+    <wth-toast></wth-toast>
+    <wth-loading></wth-loading>
+    <wth-confirm></wth-confirm>
+    <w-contact-selection></w-contact-selection>
+    <contact-list-modal></contact-list-modal>
+    <wth-zone-report></wth-zone-report>
 </div>
 <h-file-select-crop [useNewPhotoSelect]="true"></h-file-select-crop>
 <w-media-selection></w-media-selection>
-<wth-introduction #introduction [after]="{chat: true}" [data]="[
+<wth-introduction
+    #introduction
+    [after]="{chat: true}"
+    [data]="[
   {
     title: 'Welcome to WTH!Chat',
-    icon: '../../assets/icons/chat-50x50.png',
-    content: 'WTH!Chat allows you send message to your friends and family'
+    icon: 'icon-zone-lg-chat',
+    content: 'WTH!Chat allows you send message to your friends and family.'
   }
-  ]">
+  ]"
+>
 </wth-introduction>
 
-<div class="w-uploader-file-input-container">
-</div>
+<div class="w-uploader-file-input-container"></div>
 
 <app-wth-emoji></app-wth-emoji>
+<card-user></card-user>
+<w-chat-card-detail-modal
+    #cardDetailModal
+    [card]="profile$ | async"
+></w-chat-card-detail-modal>

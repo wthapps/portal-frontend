@@ -7,6 +7,12 @@
     -webkit-background-size: 24px 24px;
     background-size: 24px 24px;
   }
+  &.has-no-edit {
+    border-color: transparent;
+    @include box-shadow(none);
+    cursor: pointer;
+    @include text-overflow;
+  }
 }
 
 .form-control-block {
@@ -72,6 +78,9 @@
     &:before {
       content: "\f058";
       color: $alert-success-text;
+    }
+    .form-control {
+      border-color: $input-border;
     }
   }
   .hideShowPassword-toggle {
@@ -296,9 +305,10 @@ textarea {
 }
 
 .form-checkbox {
-  border: 2px solid #ffffff;
+  border: 1px solid #666;
   background-color: #ffffff;
   color: #ffffff;
+  cursor: pointer;
   width: 20px;
   height: 20px;
   text-align: center;

@@ -1,10 +1,11 @@
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChatMessageService } from './../../services/chat-message.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { filter, map, takeUntil, distinctUntilChanged, tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
 
 import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { Constants, STORE_CONVERSATIONS } from '@shared/constant';
@@ -12,11 +13,18 @@ import { ChatService } from '@chat/shared/services/chat.service';
 import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
 import { ApiBaseService, AuthService, ChatCommonService, UserService } from '@shared/services';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { ChatConversationService } from '@chat/shared/services/chat-conversation.service';
+import { ChatContactService } from '@chat/shared/services/chat-contact.service';
+import { User } from '@shared/shared/models';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
+import { AppState, ConversationActions } from '@chat/store';
+import { MemberService } from '@chat/shared/services';
+import { MessageActions } from '@chat/store/message';
+import * as ConversationSelectors from '@chat/store/conversation/conversation.selectors';
+import { MessageEventService } from '@chat/shared/message';
 
 
 @Component({
@@ -26,9 +34,10 @@ import { ChatConversationService } from '@chat/shared/services/chat-conversation
   encapsulation: ViewEncapsulation.None
 })
 export class MessageAssetsComponent implements OnInit, OnDestroy {
-  @Input() chatContactList: { [partner_id: string]: any } = {};
-  conversation: any;
+  @Input() conversation: any;
+  @Output() onViewProfile: EventEmitter<any> = new EventEmitter<any>();
   tooltip: any = Constants.tooltip;
+
 
   tabMember: WTab = {
     name: 'Members',
@@ -61,6 +70,12 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     }
   ];
 
+  readonly validTypeMap = {
+    'photos': ['Media::Photo', 'Media::Video'],
+    'notes': ['Note::Note'],
+    'files': ['Common::GenericFile']
+  };
+
 
   tabsMember: WTab[] = [this.tabMember, ...this.tabsPhoto];
   tabs: WTab[] = [];
@@ -70,10 +85,12 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   profileUrl: any;
 
   medias$: Observable<Array<any>>;
+  medias: Array<any>;
   nextLink: string;
   isLoading: boolean;
-  members: Array<any> = [];
-  conversations$: any;
+  users: any = [];
+  selectedIds = {};
+  currentUser: User;
   readonly noteUrl: any = `${Constants.baseUrls.note}/notes/public`;
   private destroy$ = new Subject<any>();
   private pageSize = 30;
@@ -83,16 +100,22 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     public userService: UserService,
     public authService: AuthService,
     private wthConfirmService: WthConfirmService,
-    private addContactService: ZChatShareAddContactService,
     private messageAssetsService: MessageAssetsService,
     private objectListService: WObjectListService,
     private chatConversationService: ChatConversationService,
+    private chatContactService: ChatContactService,
     private apiBaseService: ApiBaseService,
     private chatCommonService: ChatCommonService,
+    private chatMessageService: ChatMessageService,
     private store: Store<any>,
     private router: Router,
+    private contactSelectionService: ContactSelectionService,
+    private store$: Store<AppState>,
+    private memberService: MemberService,
+    private messageEventService: MessageEventService,
   ) {
     this.profileUrl = this.chatService.constant.profileUrl;
+    this.currentUser = userService.getSyncProfile();
     this.messageAssetsService.open$.subscribe(
       (res: any) => {
         if (res) {
@@ -100,9 +123,38 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.messageAssetsService.medias$.pipe(
+      takeUntil(this.destroy$))
+    .subscribe(media => this.medias = media);
+
+    this.chatMessageService.getCurrentMessages().pipe(takeUntil(this.destroy$))
+    .subscribe(({data, meta}) => {
+      if (data && this.currentTab !== 'members') {
+        const filteredData = data.filter(msg => msg.file && this.validTypeMap[this.currentTab].includes(msg.file_type) );
+
+        this.messageAssetsService.mergeData(filteredData);
+      }
+    });
   }
 
   ngOnInit() {
+
+    this.contactSelectionService.onSelect$.pipe(
+      filter((event: any) => event.eventName === 'ADD_MEMBER'),
+      map((event: any) => event.payload.data),
+      takeUntil(this.destroy$)
+    ).subscribe(payload => {
+      this.addMembers(payload);
+    });
+
+    this.store$.pipe(
+      select(ConversationSelectors.selectJoinedConversationId),
+      filter(conversationId => conversationId !== null),
+      takeUntil(this.destroy$)
+    ).subscribe(conversationId => {
+      this.messageAssetsService.close();
+      }
+    );
   }
 
   ngOnDestroy() {
@@ -111,62 +163,63 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
   }
 
   open() {
-    // this.chatService.getContactSelectAsync()
-    //   .subscribe((res: any) => {
-    //     this.conversation = res;
-    //     if (this.conversation && this.conversation.group_type === 'couple') {
-    //       this.tabs = this.tabsPhoto;
-    //     } else {
-    //       this.tabs = this.tabsMember;
-    //     }
-    //     this.tabAction(this.tabs[0]);
-      // });
-
-    this.chatConversationService.getStoreSelectedConversation().pipe(
-      distinctUntilChanged((p, q) => p.id === q.id)
-    ).subscribe(sc => {
-      this.conversation = sc;
-      if (this.conversation && this.conversation.group_type === 'couple') {
-        this.tabs = this.tabsPhoto;
-      } else {
-        this.tabs = this.tabsMember;
-      }
-      this.tabAction(this.tabs[0]);
-    });
-
-    this.medias$ = this.messageAssetsService.medias$;
     this.objectListService.setMultipleSelection(false);
+    if (this.conversation && this.conversation.group_type === 'couple') {
+      this.tabs = this.tabsPhoto;
+    } else {
+      this.tabs = this.tabsMember;
+    }
+    this.tabAction(this.tabs[0]);
   }
 
   tabAction(event: WTab) {
     this.currentTab = event.link;
     if (this.currentTab !== 'members') {
-      this.isLoading = false;
-      this.nextLink = this.buildNextLink();
-      if (this.nextLink) {
-        this.getObjects(true);
-      } else {
-        this.messageAssetsService.clear();
-      }
+      this.loadMessagesByType(this.currentTab);
     } else {
       this.isLoading = true;
-      this.conversations$ = this.store.select(STORE_CONVERSATIONS);
+      this.apiBaseService.get('chat/conversations/' + this.conversation.uuid + '/members').pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(res => {
+        this.users = res.data;
+      });
     }
+  }
+
+  onClickItem(item) {
+    const { id } = item;
+    this.selectedIds = { [id]: true };
+  }
+
+  delete(message: any) {
+    this.messageEventService.delete({ message: message });
+  }
+
+  viewProfile(user: any) {
+    this.onViewProfile.emit(user);
   }
 
   onClose() {
     this.messageAssetsService.close();
   }
 
-  onSelect(user: any) {
-    this.chatService.selectContactByPartnerId(user.id);
+  createChat(user: any) {
+    this.store$.dispatch(new ConversationActions.Create({users: [user]}));
   }
 
-  onRemoveMember(user: any) {
-    this.chatService.removeFromConversation(this.conversation, user.id).then((response: any) => {
-      console.log(response);
-      // const conversation = response.data.own_group_user.group;
-      // this.members = conversation.users_json;
+  addMembers(users: any) {
+    this.memberService.add(this.conversation.uuid, {users: users}).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(response => {
+      this.users.push(...response.data);
+    });
+  }
+
+  removeMember(user: any) {
+    this.memberService.remove(this.conversation.uuid, {user: user}).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe(response => {
+      this.users = this.users.filter(u => u.id !== user.id);
     });
   }
 
@@ -222,30 +275,17 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onCompleteDoubleClick(event: any) {
-    console.log('show photo, note, file:', event); // show photo, note, file
-  }
-
   view(item: any) {
     switch (item.file_type) {
       case 'Media::Photo':
       case 'Media::Video':
-        this.router.navigate([{
-          outlets: {
-            modal: [
-              'preview',
-              item.file.uuid,
-              {
-                object: 'conversation',
-                parent_uuid: this.conversation.group.uuid,
-                only_preview: true
-              }
-            ]
-          }
-        }], { queryParamsHandling: 'preserve', preserveFragment: true });
+        this.messageEventService.preview({message: item});
         break;
       case 'Note::Note':
         window.open(`${this.noteUrl}/${item.uuid}`);
+        break;
+      default:
+        this.messageEventService.download({message: item});
         break;
     }
   }
@@ -254,17 +294,27 @@ export class MessageAssetsComponent implements OnInit, OnDestroy {
     console.log('download:item:::', item);
   }
 
+  loadMessagesByType(type: string) {
+    this.isLoading = false;
+    this.nextLink = this.buildNextLink();
+    if (this.nextLink) {
+      this.getObjects(true);
+    } else {
+      this.messageAssetsService.clear();
+    }
+  }
+
   private buildNextLink() {
     let urlAPI = '';
     switch (this.currentTab) {
       case 'photos':
-        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=photo&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.uuid}/resources?qt=photo&per_page=${this.pageSize}`;
         break;
       case 'notes':
-        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=note&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.uuid}/resources?qt=note&per_page=${this.pageSize}`;
         break;
       default:
-        urlAPI = `chat/conversations/${this.conversation.group.uuid}/resources?qt=file&per_page=${this.pageSize}`;
+        urlAPI = `chat/conversations/${this.conversation.uuid}/resources?qt=file&per_page=${this.pageSize}`;
         break;
     }
     return urlAPI;

@@ -1,4 +1,5 @@
-@import '../../../shared/scss/global';
+@import '../../../assets/styles/global';
+
 :host {
   display: block;
   & /deep/ {
@@ -8,6 +9,10 @@
       font-weight: normal;
     }
   }
+}
+
+.bdr1 {
+  border-right: 1px solid #cccccc !important;
 }
 
 .inline-block {

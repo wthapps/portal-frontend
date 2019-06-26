@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthGuard } from '@shared/services';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -8,23 +10,36 @@ import { RouterModule } from '@angular/router';
          (do not place feature module routes here, use an own -routing.module.ts in the feature instead)
        */
       {
-        path: '',
-        redirectTo: '/settings/profile',
-        pathMatch: 'full'
+        path: 'notifications',
+        loadChildren:
+          './notifications/notifications.module#MyNotificationModule'
       },
       {
-        path: 'contact',
-        loadChildren: './contact-us/contact.module#ContactUsModule'
+        path: 'payment',
+        loadChildren: './payment/payment.module#MyPaymentModule'
       },
-      // {
-      //   path: 'dashboard',
-      //   children: [
-      //     {
-      //       path: '',
-      //       loadChildren: './dashboard/dashboard.module#DashboardModule'
-      //     }
-      //   ]
-      // }
+      {
+        path: 'account-deleted',
+        loadChildren:
+          './account-deleted/account-deleted.module#AccountDeletedModule'
+      },
+      {
+        path: 'users',
+        loadChildren:
+          './users/user.module#UserModule'
+      },
+      {
+        path: '',
+        redirectTo: '/settings/profile',
+        pathMatch: 'full',
+        canActivate: [AuthGuard, SubscriptionGuard]
+      },
+      {
+        path: '*',
+        redirectTo: '/settings/profile',
+        pathMatch: 'full',
+        canActivate: [AuthGuard, SubscriptionGuard]
+      }
     ])
   ],
   exports: [RouterModule]

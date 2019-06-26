@@ -1,70 +1,54 @@
 @import "../../../../assets/styles/global";
 
 .chat-message-container {
-  padding: 10px;
-  // background-color: #ffffff;
-  background-color: #E9EDF1;
-  // border-top: 1px solid $line;
-  @media (min-width: $screen-sm-min) {
-    padding: 10px 30px 15px 30px;
-  }
-
-  .fileinput-button {
+  > form {
+    margin: 0;
+    width: 1000px;
+    max-width: 100%;
     position: relative;
-    overflow: hidden;
-    display: inline-block;
-    input {
+    background-color: #ffffff;
+    border: 1px solid $line;
+    border-radius: 5px;
+    padding: 2px;
+    @media (min-width: $screen-sm-min) {
+      margin: 20px auto;
+    }
+
+    .chat-message-action {
       position: absolute;
-      top: 0;
-      right: 0;
-      margin: 0;
-      opacity: 0;
-      -ms-filter: 'alpha(opacity=0)';
-      font-size: 200px !important;
-      direction: ltr;
-      cursor: pointer;
-    }
-  }
+      top: 1px;
+      right: 2px;
 
-  .wth-emoji {
-    cursor: pointer;
-  }
+      .btn {
 
-  form {
-    max-width: 1000px;
-    margin: auto;
-    position: relative;
-  }
-  .mini-editor{
-    .ql-editor {
-      padding-right: 124px;
-      min-height: 40px;
-      padding: 12px 15px;
-    }
-    .ui-editor-content {
-      border-color: #E9EDF1;
-      background-color: white;
-    }
-  }
+        &:hover,
+        &:focus {
+          background-color: #e6e5e5;
+        }
+      }
 
-  .chat-message-action {
-    position: absolute;
-    top: 5px;
-    right: 0;
-    .btn {
-      -webkit-border-radius: 0;
-      -moz-border-radius: 0;
-      border-radius: 0;
-      padding: 6px 10px;
+      .chat-message-action-send {
+
+        &:hover,
+        &:focus {
+          color: $theme-color;
+        }
+      }
     }
-    .chat-message-action-send {
-      @include border-right-radius($btn-border-radius-base);
+
+    .mini-editor {
+      margin-right: 120px;
+      overflow: auto;
+      max-height: 118px;
     }
-    i {
-      font-size: 20px;
-      color: gray;
+
+    .ql-container.ql-snow {
+      border-width: 0;
     }
+  }
+  @media (max-width: $screen-xs-max) {
+    padding: 10px;
+    border-top: 1px solid $line;
+    background-color: #ffffff;
   }
 }
-
-

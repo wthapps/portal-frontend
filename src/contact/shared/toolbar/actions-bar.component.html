@@ -1,33 +1,39 @@
 
 <ul class="page-body-control-menu pull-right">
-  <li *ngIf="showAddToContacts">
+  <li *ngIf="inContactBook && showAddToContacts">
     <a href="javascript:void(0);" class="btn btn-default" (click)="addToMyContacts(contacts)" pTooltip="{{ tooltip.addToContacts }}"
       tooltipPosition="bottom">
       <i class="fa fa-user-plus" aria-hidden="true"></i>
     </a>
   </li>
-  <li *ngIf="contactService.selectedObjects.length > 1 && showMergeContacts">
+  <li *ngIf="!inContactBook && contacts?.length > 0">
+    <a href="javascript:void(0);" class="btn btn-default" (click)="importToContact(data)" pTooltip="{{ tooltip.importToContact }}"
+      tooltipPosition="bottom">
+      <i class="fa fa-user-plus" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li *ngIf="inContactBook && contactService.selectedObjects.length > 1 && showMergeContacts">
     <a href="javascript:;" class="btn btn-default" (click)="mergeContacts()" pTooltip="{{ tooltip.mergeContacts }}"
       tooltipPosition="bottom">
       <!--<img alt="" width="30" src="assets/images/icons/merge_icon.svg">-->
       <i class="wthico-merge" aria-hidden="true"></i>
     </a>
   </li>
-  <li *ngIf="showFavorite">
+  <li *ngIf="inContactBook && showFavorite">
     <a href="javascript:;" class="btn btn-default" (click)="emitEvent({action: 'favourite', payload: data})" pTooltip="{{ tooltip.favourite }}"
       tooltipPosition="bottom">
       <i class="fa" [ngClass]="toggleFavourite ? 'fa-star' : 'fa-star-o'"></i>
     </a>
   </li>
 
-  <li class="hidden-xs" *ngIf="showEdit">
+  <li class="hidden-xs" *ngIf="inContactBook && showEdit">
     <a href="javascript:void(0);" class="btn btn-default" (click)="emitEvent({action: 'edit_contact', payload: data})"
       pTooltip="Edit Contact">
       <i class="fa fa-pencil"></i>
     </a>
   </li>
 
-  <li class="dropdown action" *ngIf="!isStranger">
+  <li class="dropdown action" *ngIf="inContactBook && !isStranger">
     <a href="javascript:;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
       tooltipPosition="bottom">
       <i class="fa fa-ellipsis-v"></i>

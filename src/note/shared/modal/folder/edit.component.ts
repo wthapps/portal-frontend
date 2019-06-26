@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
@@ -7,7 +7,9 @@ import { ApiBaseService } from '@shared/services/apibase.service';
 import { Store } from '@ngrx/store';
 import * as note from '../../actions/note';
 import * as folder from '../../actions/folder';
-import { withLatestFrom } from 'rxjs/operators';
+import * as context from '../../reducers/context';
+import { withLatestFrom, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 declare var $: any;
 declare var _: any;
@@ -18,7 +20,7 @@ declare var _: any;
   styleUrls: ['edit.component.scss']
 })
 
-export class ZNoteSharedModalFolderEditComponent implements OnInit {
+export class ZNoteSharedModalFolderEditComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
 
   titleModal = 'New Folder';
@@ -29,6 +31,9 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
   currentFolder: any = {};
   breadcrumb = false;
   mode = 'add';
+  context;
+
+  private destroySubject: Subject<any> = new Subject();
 
   constructor(private fb: FormBuilder, private commonEventService: CommonEventService,
     private apiBaseService: ApiBaseService, private store: Store<any>) {
@@ -37,10 +42,16 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
     });
 
     this.name = this.form.controls['name'];
+    this.store.select(context.getContext).pipe(takeUntil(this.destroySubject)).subscribe(ctx => this.context = ctx);
   }
 
   ngOnInit(): void {
     this.name.setValue(this.folder.name);
+  }
+
+  ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
 
@@ -65,8 +76,10 @@ export class ZNoteSharedModalFolderEditComponent implements OnInit {
         this.modal.close();
       });
     } else {
-      if (this.currentFolder) {
+      if (this.currentFolder && this.context.permissions.edit === true) {
         this.folder.parent_id = this.currentFolder.id;
+      } else {
+        this.folder.parent_id = undefined;
       }
       this.apiBaseService.post('note/folders', this.folder)
         .pipe(

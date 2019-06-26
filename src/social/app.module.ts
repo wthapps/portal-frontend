@@ -26,6 +26,7 @@ import { PostModule } from '@social/shared/second-routes/post';
 import { MiniEditorModule } from '@shared/shared/components/mini-editor/mini-editor.module';
 import { ZSocialPhotoModule } from '@social/shared/second-routes/photo/photo.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { SocialStoreModule } from '@social/store';
 
 @NgModule({
   imports: [
@@ -41,6 +42,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     // Ng2HdModule,
     PostModule,
     ZSocialPhotoModule,
+
+    // Store
+    SocialStoreModule,
+
     ScrollToModule.forRoot(),
     ZSocialSharedModule.forRoot(),
     SharedServicesModule.forRoot(),

@@ -31,7 +31,7 @@ interface SortOption {
 @Injectable()
 export class ZContactService extends BaseEntityService<any> {
   selectedObjects: any[] = [];
-  contacts: Array<any> = new Array<any>();
+  contacts: Array<Contact> = new Array<Contact>();
   mergingObjects: any[] = [];
   mergedObjects: any[] = [];
   page = 1;
@@ -42,7 +42,7 @@ export class ZContactService extends BaseEntityService<any> {
 
   listenToList: any;
   listenToItem: any;
-  contacts$: Observable<any[]>;
+  contacts$: Observable<Contact[]>;
   initLoad$: Observable<boolean>;
   orderDesc$: Observable<boolean>;
   sortOption$: Observable<SortOption>;
@@ -134,8 +134,17 @@ export class ZContactService extends BaseEntityService<any> {
       });
   }
 
+  importContact(user): Promise<any> {
+    return this.apiBaseService.post('contact/wcontacts/import_contact', user).toPromise();
+  }
+
+  /// uuids: user uuid list
+  importContacts(uuids): Promise<any> {
+    return this.apiBaseService.post('contact/wcontacts/import_contacts', {uuids}).toPromise();
+  }
+
   getSettings(): Observable<any> {
-    return this.apiBaseService.post(`contact/wcontacts2/settings`);
+    return this.apiBaseService.post(`contact/wcontacts/get_settings`);
   }
 
   resetPageNumber() {
@@ -275,6 +284,10 @@ export class ZContactService extends BaseEntityService<any> {
 
   viewContactDetail(contact: Contact, isWthContact = false): Promise<any> {
     return this.router.navigate(['contacts', contact.id, 'view', {wth: isWthContact}]);
+  }
+
+  editContact(contactId): Promise<any> {
+    return this.router.navigate(['contacts', contactId, 'edit']);
   }
 
   updateMultiple(body: any): Observable<any> {
@@ -544,17 +557,22 @@ export class ZContactService extends BaseEntityService<any> {
     } else { this.notifyContactsObservers(); }
   }
 
+  addLocalContacts(contacts: Contact[]): void {
+    this.contacts.unshift(...contacts);
+    this.notifyContactsObservers();
+  }
+
   createCallback(contact: any): void {
     this.contacts.unshift(contact);
     this.notifyContactsObservers();
   }
 
-  private updateCallback(contact: any): void {
+  updateCallback(contact: any): void {
     if (contact && contact.length === 0) {
       return;
     }
     this.contacts = _.map(this.contacts, (ct: any) => {
-      return (contact.id === ct.id) ? contact : ct;
+      return (contact.id === ct.id) ? {...contact} : ct;
     });
 
     _.forEach(this.selectedObjects, (selected: any, index: number) => {

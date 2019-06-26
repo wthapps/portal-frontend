@@ -77,14 +77,13 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
 
   viewAllNotifications() {
     // Close mini notification dropdown box in the header
-    $('.navbar-nav-notification').removeClass('open');
+    $('.header-nav-notification').removeClass('open');
 
     // Navigate to notification page of social module
-    if (this.navigateService.inSameModule([Constants.baseUrls.note,
-       Constants.baseUrls.social, Constants.baseUrls.media, Constants.baseUrls.contact])) {
+    if (this.navigateService.inSameModule([Constants.baseUrls.myAccount])) {
       this.navigateService.navigateTo(['/notifications'], {type: this.type});
     } else {
-      this.navigateService.navigateOrRedirect('notifications', 'social');
+      this.navigateService.navigateOrRedirect('notifications', 'my');
     }
   }
 
@@ -118,6 +117,8 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
       this.getMoreNotifications();
     }
     this.markAsSeen();
+
+    this.hideActionsMenu();
   }
 
   markAsSeen() {
@@ -126,6 +127,24 @@ export class NotificationDropDownComponent implements OnInit, AfterViewInit {
     } else {
       this.notificationService.markAsSeen();
     }
+  }
+
+  markAllAsRead() {
+    if (this.type === 'connection') {
+      this.connectionService.markAllAsRead();
+    } else {
+      this.notificationService.markAllAsRead();
+    }
+  }
+
+  hideActionsMenu(e?: any) {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    $('#nav-notification-list')
+      .find('ul.dropdown-menu')
+      .hide();
   }
 
   onSelectedTab(tab: string) {

@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 
@@ -17,9 +18,9 @@ import { InvitationCreateModalComponent } from '@shared/shared/components/invita
 import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-add-group/contact-add-group-modal.component';
 import { CommonEvent } from '@shared/services';
 import { CardService } from '@contacts/shared/card';
-import { Observable } from 'rxjs';
 import { CardEditModalComponent } from '@contacts/shared/card/components';
 import { ProfileService } from '@shared/user/services';
+import { PUBLIC, BUSINESS, NONE } from '@contacts/shared/card/card.constant';
 
 declare var _: any;
 
@@ -61,11 +62,18 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
 
   contact: Contact = new Contact(DEFAULT_CONTACT_PARAMS);
   card$: Observable<any>;
-  emails = [];
+  emails: String[] = [];
+  business_cards = [];
+  public_cards = [];
   mode = 'view';
   pageTitle: string;
+  saving = false;
 
   readonly tooltip: any = Constants.tooltip;
+  readonly mediaType = Constants.mediaType;
+  readonly PUBLIC = PUBLIC;
+  readonly BUSINESS = BUSINESS;
+  readonly NONE = NONE;
   formValid = false;
   _contact: any = _contact;
   hasBack = false;
@@ -73,6 +81,8 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   isWthContact = false;
   readonly urls = Constants.baseUrls;
   readonly avatarDefault: any = Constants.img.avatar;
+  readonly BIZ_CARD = `Business Cards help you share private contact information with other users`;
+  readonly PUBLIC_CARD = `All the information in your Public Profile card will be public`;
   private destroySubject: Subject<any> = new Subject();
 
   constructor(
@@ -104,6 +114,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
       const id = paramMap.get('id');
       this.mode = paramMap.get('mode') || 'create';
       this.isWthContact = paramMap.get('wth') && paramMap.get('wth') === 'true';
+      this.saving = false;
 
       if (this.mode === 'view') {
         this.hasBack = true;
@@ -118,7 +129,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
       }
 
       if (this.mode === 'view') {
-        this.pageTitle = 'Contact details';
+        this.pageTitle = '';
         this.hasBack = true;
       } else if (this.mode === 'create') {
         this.pageTitle = 'Create contact';
@@ -169,14 +180,13 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
           .then(ct => this.router.navigate(['contacts']));
         break;
 
-      case 'edit_contact':
-        this.router
-          .navigate(['contacts/', this.contact.id, 'edit'])
-          .then();
+      case 'edit_contact': {
+      const id = this.contact.id || this.route.snapshot.paramMap.get('id');
+        this.contactService.editContact(id);
         this.hasBack = false;
         this.mode = 'edit';
         break;
-
+      }
       case 'tag':
         this.modal.open({
           mode: 'edit',
@@ -206,7 +216,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
               response.data.id,
               { mode: 'view' }
             ]);
-          });
+          }, error => { this.saving = true; this.toastsService.danger('Something wrong happens. Please retry'); });
         break;
       case 'contact:contact:update':
         const item = event.payload.item || event.payload.selectedObjects || this.contactService.selectedObjects;
@@ -217,31 +227,28 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
               'Contact has been just updated successfully!'
             );
             this.location.back();
-          });
+          }, error => { this.saving = true; this.toastsService.danger('Something wrong happens. Please retry'); });
         break;
-      case 'contact:contact:remove_email':
+      case 'contact:contact:remove_email': {
+        const { value } = event.payload;
         _.remove(this.emails, email => {
-          return email.value === event.payload.value;
+          return email === value;
         });
-        break;
-      case 'contact:contact:edit_email':
-        this.contactService
-          .checkEmails({ emails_attributes: [event.payload.item] })
-          .subscribe(response => {
-            const currentEmails = _.map(event.payload.emails, 'value.value');
-            _.remove(this.emails, e => {
-              return currentEmails.indexOf(e.value) < 0;
-            });
 
-            // this.emails = this.emails.concat(response.data);
-            const emails = _.map(this.emails, 'value');
-            response.data.forEach(email => {
-              if (emails.indexOf(email.value) < 0) {
-                this.emails = this.emails.concat(email);
-              }
-            });
-          });
+        const user_ids = this.public_cards.reduce((acc, card) => (card.email === value ? [...acc, card.id] : acc), []);
+        this.public_cards = this.public_cards.filter(card => card.email !== value && !user_ids.includes(card.user_id));
+        this.business_cards = this.business_cards.filter(card => card.email !== value && !user_ids.includes(card.user_id));
         break;
+      }
+      case 'contact:contact:edit_email': {
+        const emails = event.payload.emails;
+
+        this.public_cards = this.public_cards.filter(card => emails.includes(card.email));
+        const user_ids = this.public_cards.map(card => card.id);
+        this.business_cards = this.business_cards.filter(card => user_ids.includes(card.user_id));
+        this.checkEmails([event.payload.item.value]);
+        break;
+      }
     }
   }
 
@@ -250,7 +257,7 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
       data: [
         {
           contactId: this.contact.id,
-          email: email.value,
+          email: email,
           fullName: this.contact.name
         }
       ]
@@ -267,6 +274,10 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
+  trackByCard(index, card) {
+    return card ? card.id : index;
+  }
+
   viewCard(card: any) {
     if (card.card_type === 'business') {
       this.card$ = this.cardService.getItem();
@@ -281,20 +292,24 @@ export class ZContactEditPageComponent implements OnInit, OnDestroy {
   private get(id: number) {
     this.contactService.getIdLocalThenNetwork(id).subscribe(ct => {
       this.contact = Object.assign({}, ct);
-      const emails = this.contact.emails.filter(email => email.value !== '');
-      if (emails.length > 0) {
-        this.contactService
-          .checkEmails({ emails_attributes: emails })
-          .subscribe(response => {
-            this.emails = response.data;
-          });
-      }
+      this.public_cards = this.contact.public_cards;
+      this.business_cards = this.contact.business_cards;
+      this.contactService.updateCallback(this.contact);
+    });
+  }
+
+  private checkEmails(emails): void {
+
+    this.contactService
+    .checkEmails({ emails })
+    .subscribe(response => {
+      this.public_cards = _.uniqBy(this.public_cards.concat(response.public_cards), 'id');
+      this.business_cards = _.uniqBy(this.business_cards.concat(response.business_cards), 'id');
     });
   }
 
   private getWthContact(id: number) {
     this.contactService.getWthContact(id).subscribe(res => {
-      console.log('get WTH Contact: ', res);
       this.contact = res.data;
     });
   }

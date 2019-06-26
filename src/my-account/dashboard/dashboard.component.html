@@ -1,49 +1,46 @@
 <div class="dashboard">
-  <div>
-    <div class="w-apps-container">
-      <div class="header-nav-apps">
-        <ul class="flex-container nowrap">
-          <li class="flex-item">
-            <a [href]="urls.social">
-              <i class="wthicon wthicon-social-lg"></i>
-              <span>Social</span>
-            </a>
-          </li>
-          <li class="flex-item">
-            <a [href]="urls.chat">
-              <i class="wthicon wthicon-chat-lg"></i>
-              <span>Chat</span>
-            </a>
-          </li>
-          <li class="flex-item">
-            <a [href]="urls.media">
-              <i class="wthicon wthicon-pictures-lg"></i>
-              <span>Photos</span>
-            </a>
-          </li>
-          <li class="flex-item">
-            <a [href]="urls.contact">
-              <i class="wthicon wthicon-contacts-lg"></i>
-              <span>Contacts</span>
-            </a>
-          </li>
-          <li class="flex-item">
-            <a [href]="urls.note">
-              <i class="wthicon wthicon-notes-lg"></i>
-              <span>Notes</span>
-            </a>
-          </li>
-          <li class="flex-item">
-            <a [routerLink]="['/']">
-              <i class="fa fa-cogs mt0 mb10"></i>
-              <span>Settings</span>
-            </a>
-          </li>
-        </ul>
+  <div class="container">
+    <div class="dashboard-content">
+      <div class="row">
+        <div class="col-xs-6 col-lg-4">
+          <a [href]="urls.chat">
+            <i class="icon-zone-xl-chat"></i>
+            <span>Chat</span>
+          </a>
+        </div>
+        <div class="col-xs-6 col-lg-4">
+          <a [href]="urls.contact">
+            <i class="icon-zone-xl-contact"></i>
+            <span>Contacts</span>
+          </a>
+        </div>
+        <div class="col-xs-6 col-lg-4">
+          <a [href]="urls.media">
+            <i class="icon-zone-xl-media"></i>
+            <span>Photos</span>
+          </a>
+        </div>
+        <div class="col-xs-6 col-lg-4">
+          <a [href]="urls.note">
+            <i class="icon-zone-xl-note"></i>
+            <span>Notes</span>
+          </a>
+        </div>
+        <div class="col-xs-6 col-lg-4">
+          <a [href]="urls.myAccount">
+            <i class="icon-zone-xl-settings"></i>
+            <span>Settings</span>
+          </a>
+        </div>
+        <!--<div class="col-xs-6 col-lg-4">
+          <a [href]="urls.myAccount + '/dashboard'">
+            <i class="icon-zone-xl-dashboard"></i>
+            <span>Dashboard</span>
+          </a>
+        </div>-->
       </div>
     </div>
   </div>
-
 </div>
 
 

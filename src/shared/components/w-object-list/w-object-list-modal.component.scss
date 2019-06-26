@@ -18,16 +18,20 @@
 }
 
 .modal-selection {
+  .modal-content {
+    overflow: hidden;
+  }
   .modal-body {
     padding: 0;
   }
   .modal-selection-toolbar {
-    padding: 5px 15px;
+    padding: 0 15px;
     position: relative;
     background-color: #ffffff;
     @include clearfix;
-    @include box-shadow($box-shadow-bottom-sm);
+    // @include box-shadow($box-shadow-bottom-sm);
     .modal-selection-toolbar-left {
+      margin-bottom: 5px;
       ul {
         margin: 0;
         li {
@@ -60,6 +64,7 @@
 
   .wobject-selected-bar {
     @include border-top-radius(5px);
+    border: 1px solid #cccccc;
   }
 
   @media (min-width: $screen-sm-min) {

@@ -9,11 +9,11 @@ import { ChatMonthDayYearPipe } from './chat-month-day-year.pipe';
 import { ChatGroupCouplePipe } from './chat-group-couple.pipe';
 import { ChatGroupMultiplePipe } from './chat-group-multiple.pipe';
 import { ChatGroupBlackListPipe } from './chat-group-black-list.pipe';
-import { ChatGroupNamePipe } from './chat-group-name.pipe';
-import { ChatGroupMembersPipe } from './chat-group-members.pipe';
 import { ChatGroupRecentPipe } from './chat-group-recent.pipe';
 import { ChatGroupFavoritePipe } from './chat-group-favorite.pipe';
 import { ChatGroupHistoryPipe } from './chat-group-history.pipe';
+import { MessageDisplayPipe } from '@chat/shared/pipe/message-display.pipe';
+import { MessageNotificationPipe } from '@chat/shared/pipe/message-notification.pipe';
 
 @NgModule({
   imports: [CommonModule],
@@ -22,15 +22,15 @@ import { ChatGroupHistoryPipe } from './chat-group-history.pipe';
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,
     ChatGroupBlackListPipe,
-    ChatGroupNamePipe,
     ChatUserNewPipe,
-    ChatGroupMembersPipe,
     ChatGroupSentRequestPipe,
     ChatGroupPendingPipe,
     ChatUserOnlinePipe,
     ChatGroupRecentPipe,
     ChatGroupFavoritePipe,
-    ChatGroupHistoryPipe
+    ChatGroupHistoryPipe,
+    MessageDisplayPipe,
+    MessageNotificationPipe
   ],
   exports: [
     CommonModule,
@@ -39,15 +39,15 @@ import { ChatGroupHistoryPipe } from './chat-group-history.pipe';
     ChatGroupCouplePipe,
     ChatGroupMultiplePipe,
     ChatGroupBlackListPipe,
-    ChatGroupNamePipe,
     ChatUserNewPipe,
-    ChatGroupMembersPipe,
     ChatGroupSentRequestPipe,
     ChatGroupPendingPipe,
     ChatUserOnlinePipe,
     ChatGroupRecentPipe,
     ChatGroupFavoritePipe,
-    ChatGroupHistoryPipe
+    ChatGroupHistoryPipe,
+    MessageDisplayPipe,
+    MessageNotificationPipe
   ],
   providers: []
 })

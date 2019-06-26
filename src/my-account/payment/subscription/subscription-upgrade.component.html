@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="box-panel">
+    <div class="row">
+      <div class="col-sm-10 col-sm-offset-1">
+        <h3 class="box-panel-title">Upgrade account</h3>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row pb20">
+    <div class="col-sm-5 col-sm-offset-1">
+      <div class="box-panel">
+        <h4 class="">1. Choose your space</h4>
+        <div>
+          <div class="list-group-radio">
+
+            <ng-container *ngFor="let storage of storages">
+              <div class="list-group-radio-item" [ngClass]="{'item-disabled' : storage.id < currentStorage?.id}">
+                <p-radioButton name="storageSelection"
+                               [disabled]="storage.id < currentStorage?.id"
+                               [value]="storage?.id"
+                               label="{{ storage?.name }} {{ storage?.price | currency }} per month {{ subscription?.status === 'ACTIVATING' && subscription?.storage?.id === storage?.id ? ' - current': '' }}"
+                               [(ngModel)]="selectedStorageId"
+                                (onClick)="selectStorage(storage)">
+                </p-radioButton>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <h4>2. Choose payment method</h4>
+        <ng-container *ngIf="paymentMethod">
+          <div class="card">
+            <div class="card-body">
+              <div class="media media-center">
+                <div class="media-left">
+                  <img [src]="'assets/images/card/' + paymentMethod?.pm_json?.image">
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">Ending in {{ paymentMethod?.pm_json?.last_4 }}</h4>
+                  <p class="text-muted"> {{ paymentMethod?.pm_json?.expiration_month }}/{{ paymentMethod?.pm_json?.expiration_year }} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!paymentMethod">
+          <span>Click on below button to add payment method</span>
+        </ng-container>
+
+        <div class="pt20">
+          <button (click)="openPaymentMethodModal()" type="button" class="btn btn-outline-default">
+            {{ paymentMethod ? 'Change' : 'Add' }} payment method
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col-sm-5">
+      <div class="card">
+        <div class="card-body">
+          <h3>WTH PRO</h3>
+          <h4> {{ selectedStorage?.price | currency }} per month </h4>
+          <p class="text-muted">Charged monthly</p>
+          <ul>
+            <li>Full access to all WTH!Zone apps and services</li>
+            <li> {{ selectedStorage?.name }} of cloud storage and able to add more space</li>
+            <li>Can add and manage Sub Account</li>
+          </ul>
+          <hr class="">
+          <span>
+            You'll be charged monthly including application taxes until you cancel your subscription.
+            Previous charges won't be refunded when you canceled unless it's legally required.
+            Your payment data is encrypted and secure. All amounts shown are in USD
+            Not refunds for subscription canceled between billing cycles.
+          </span>
+          <p class="pt10 pb10">
+            <p-checkbox [(ngModel)]="checked" binary="true"></p-checkbox>
+            I agree to the WTHApps <a [href]="termsOfServiceUrl">Terms of Services</a> and the Automatic Renewal terms above
+          </p>
+
+          <button class="btn btn-block btn-primary" (click)="upgrade()"
+                  [disabled]="!checked || !paymentMethod || (subscription?.status === 'ACTIVATING' && selectedStorage?.id === subscription?.storage?.id)">
+            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+            Complete upgrade
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<payment-method-add-modal #addModal (onCompleted)="savePaymentMethod($event)"></payment-method-add-modal>
+<subscription-alert-modal #alertModal ></subscription-alert-modal>
+
+
+
+

@@ -11,29 +11,34 @@
     <!--<dt sticky [sticky-offset-top]="114"><span>{{ objects.key }}</span></dt>-->
     <dt><span>{{ objects.key }}</span></dt>
     <dd *ngFor="let item of objects.value; trackBy: trackByItem " [ngClass]="{active: item.selected}">
-      <div class="contact-dl-input">
-        <i (click)="onChecked(item)" class="fa fa-check"></i>
-      </div>
-      <div class="contact-dl-name" (click)="onItemSelected(item)">
-        <figure class="avatar-xs mr10">
-          <img class="img-circle" alt="" [src]="item.profile_image">
-        </figure>
-        <div class="name"><span> {{ item | contactNamePipe: contactsSortBy}} </span></div>
-      </div>
-      <div class="contact-dl-email">
-        <p class="m0" *ngFor="let email of item.emails">{{ email.value }}</p>
-      </div>
-      <div class="contact-dl-phone">
-        <p class="m0" *ngFor="let phone of item.phones">{{ phone.value }}</p>
-      </div>
-      <div class="contact-dl-action">
-        <z-contact-shared-actions-bar [data]="item" [contacts]="[item]" [showQuickInvitation]="item.wthapps_user == null" [showNumber]="false"
-          [showSocial]="item | isContactInternal" [showChat]="item | isContactInternal" [showInvitation]="item | canInvite "
-          [showEdit]="!isStranger" [showFavorite]="!isStranger" [isStranger]="isStranger" [showAddToContacts]="!item.my_contact"
-          [toggleFavourite]="item | contactHasGroup:'favourite'" [toggleBlacklist]="item | contactHasGroup:'blacklist'"
-          (eventOut)="doActionsToolbar($event)">
-        </z-contact-shared-actions-bar>
-      </div>
+      <ng-container *ngIf="item | contactDisplayPipe as itemDisplay">
+          <div class="contact-dl-input">
+              <i (click)="onChecked(item)" class="fa fa-check"></i>
+            </div>
+            <div class="contact-dl-name" (click)="onItemSelected(item)">
+              <figure class="avatar-xs mr10">
+                <img class="img-circle" alt="" [src]="itemDisplay?.profile_image">
+              </figure>
+              <div class="name"><span> {{ itemDisplay | contactNamePipe: contactsSortBy}} </span></div>
+            </div>
+            <div class="contact-dl-email">
+              <p class="m0" *ngIf="item?.emails?.length > 0">{{ item?.emails[0].value }}</p>
+            </div>
+            <div class="contact-dl-phone">
+              <p class="m0" *ngIf="item?.phones?.length > 0">{{ item?.phones[0].value }}</p>
+            </div>
+            <div class="contact-dl-action">
+              <z-contact-shared-actions-bar [data]="item" [contacts]="[item]" [showQuickInvitation]="item.wthapps_user == null" [showNumber]="false"
+              [inContactBook]="inContactBook"
+              [showSocial]="item | isContactInternal" [showChat]="item | isContactInternal" [showInvitation]="item | canInvite "
+                [showEdit]="!isStranger" [showFavorite]="!isStranger" [isStranger]="isStranger" [showAddToContacts]="!item.my_contact"
+                [toggleFavourite]="item | contactHasGroup:'favourite'" [toggleBlacklist]="item | contactHasGroup:'blacklist'"
+                (eventOut)="doActionsToolbar($event)">
+              </z-contact-shared-actions-bar>
+            </div>
+      </ng-container>
+      
+      
     </dd>
   </dl>
 </ng-container>

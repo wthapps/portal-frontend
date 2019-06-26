@@ -11,6 +11,8 @@ import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
 import { PartialModule } from '@shared/partials';
+import { WDataViewModule } from '../w-dataView/w-dataView.module';
+import { LocalStorageModule } from 'angular-2-local-storage';
 
 @NgModule({
   imports: [
@@ -18,21 +20,18 @@ import { PartialModule } from '@shared/partials';
     BsModalModule,
     WObjectListModule,
     PipeModule,
+    LocalStorageModule.forRoot({
+      prefix: 'my-app',
+      storageType: 'localStorage'
+    }),
     BoxNoDataModule,
     BoxLoadingModule,
     PartialModule,
-    WNavTabModule
+    WNavTabModule,
+    WDataViewModule
   ],
-  declarations: [
-    WNoteSelectionComponent
-  ],
-  exports: [
-    WNoteSelectionComponent
-  ],
-  providers: [
-    DatePipe,
-    WNoteSelectionService
-  ]
+  declarations: [WNoteSelectionComponent],
+  exports: [WNoteSelectionComponent],
+  providers: [DatePipe, WNoteSelectionService]
 })
-export class WNoteSelectionModule {
-}
+export class WNoteSelectionModule {}

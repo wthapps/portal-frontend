@@ -14,6 +14,7 @@ import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
+import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -35,19 +36,15 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     PartialModule,
     WNavTabModule
   ],
-  declarations: [
-    WMediaSelectionComponent
-  ],
-  exports: [
-    WMediaSelectionComponent
-  ],
+  declarations: [WMediaSelectionComponent],
+  exports: [WMediaSelectionComponent],
   providers: [
+    WMediaSelectionService,
     DatePipe,
     {
       provide: DROPZONE_CONFIG,
       useValue: DEFAULT_DROPZONE_CONFIG
     }
-  ],
+  ]
 })
-export class WMediaSelectionModule {
-}
+export class WMediaSelectionModule {}

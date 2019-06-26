@@ -12,7 +12,6 @@ export class ProfileService {
   private _profile = new Subject<any>();
   private _myProfile = new Subject<any>();
 
-  private url = 'zone/social_networkd/users/';
   private newUrl = 'account/profiles';
   constructor(private apiBaseService: ApiBaseService,
               private userService: UserService,
@@ -33,8 +32,9 @@ export class ProfileService {
     });
   }
 
-  getMyProfile() {
-    return this.apiBaseService.get(`${this.newUrl}/my_profile`).subscribe(response => {
+  getMyProfile(): Promise<any> {
+    return this.apiBaseService.get(`${this.newUrl}/my_profile`).toPromise()
+    .then(response => {
       this._myProfile.next(response.data.attributes);
     });
   }
@@ -47,14 +47,9 @@ export class ProfileService {
   }
 
   updateProfile(profile: any) {
-    // return this.apiBaseService.patch(`${this.newUrl}/${profile.uuid}`, profile).subscribe(response => {
-    //   this.setProfile(response.data.attributes);
-    //   this.toastService.success('You updated profile successfully!');
-    // });
-    this.apiBaseService.put(`zone/social_network/users/${profile.uuid}`, profile).subscribe((response: any) => {
-      // this.setProfile(response.data);
+    this.userService.update(profile).subscribe((response: any) => {
       this._myProfile.next(response.data);
-        this.toastService.success('You updated profile successfully!');
+      this.toastService.success('You updated profile successfully!');
     });
   }
 

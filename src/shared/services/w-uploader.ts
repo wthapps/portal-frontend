@@ -36,9 +36,17 @@ export class WUploader {
     maxNumberOfFiles: null,
     afterCallBackUrl: null,
     beforeCallBackUrl: null,
+    onBeforeUpload: null,
     maxFileSize: null,
-    module: 'chat' || 'social' || 'notes' || 'contacts' || 'media'
+    module: 'chat' || 'social' || 'notes' || 'contacts' || 'media',
+    storage_module: 'photo' || 'drive'
   }) {
+    let onBeforeUpload = options.onBeforeUpload;
+    if (!onBeforeUpload) {
+    onBeforeUpload = (files) => this.event$.next({ action: 'before-upload', payload: { files: files}});
+    }
+
+    const onAfterUploaded = options.onAfterUploaded;
 
     const opts: any = {
       autoProceed: true,
@@ -47,8 +55,8 @@ export class WUploader {
         maxNumberOfFiles: options.maxNumberOfFiles,
         maxFileSize: options.maxFileSize
       },
-      onBeforeFileAdded: (currentFile, files) => this.event$.next({ action: 'before-file-added', payload: { file: currentFile } }),
-      onBeforeUpload: (files) => { this.event$.next({ action: 'before-upload', payload: { files: files } }) },
+      onBeforeFileAdded: (currentFile, files) => this.event$.next({ action: 'before-file-added', payload: { file: currentFile, files } }),
+      onBeforeUpload,
     };
 
     this.uppy = Core(opts);
@@ -81,6 +89,8 @@ export class WUploader {
       fieldName: 'file'
     });
 
+    console.log('storage_module:::', options.storage_module);
+
     this.uppy.on('file-added', (file) => {
       // data: File(7775842) { allow: true, validateErrors: Array(0), name: "400.pdf", lastModified: 1538536306875, lastModifiedDate: Wed Oct 03 2018 10: 11: 46 GMT + 0700(Indochina Time), … }
       // extension: "pdf"
@@ -96,7 +106,13 @@ export class WUploader {
       // type: "application/pdf"
       // add more files that you need to pass to server here
       file.meta = {
-        ...file.meta, file_upload_id: file.id + '-' + new Date().getTime(), after_callback_url: options.afterCallBackUrl, before_callback_url: options.beforeCallBackUrl, payload: JSON.stringify({ ...options.payload, ...file.progress})};
+        ...file.meta,
+        file_upload_id: file.id + '-' + new Date().getTime(),
+        after_callback_url: options.afterCallBackUrl,
+        before_callback_url: options.beforeCallBackUrl,
+        storage_module: options.storage_module || 'photo',
+        payload: JSON.stringify({ ...options.payload, ...file.progress})
+      };
       this.event$.next({action: 'file-added', payload: {file: file}});
     });
 
@@ -132,7 +148,11 @@ export class WUploader {
     this.uppy.on('upload-success', (file, resp, uploadURL) => {
       // upload uploaded value
       this.uppy.setFileMeta(file.id);
-      this.event$.next({action: 'success', payload: {file: file, resp: resp, uploadURL: uploadURL}});
+      this.event$.next({action: 'success', payload: {file, resp, uploadURL}});
+
+      if (onAfterUploaded) {
+        onAfterUploaded({file, resp, uploadURL});
+      }
     });
 
     this.uppy.on('complete', (result) => {
@@ -212,7 +232,7 @@ export class WUploader {
     }
   }
 
-  fileUpload(fileInput: any) {
+  fileUpload(fileInput: any, onUploadedCallback?) {
 
     // const imagePreview = document.querySelector('.upload-preview')
 
@@ -238,6 +258,10 @@ export class WUploader {
       const uploadedFileData = JSON.stringify(data);
       console.log('uploaded file data:::', uploadedFileData);
 
+
+      if (onUploadedCallback) {
+        onUploadedCallback({file, resp: data});
+      }
       // set hidden field value to the uploaded file data so that it's submitted with the form as the attachment
       // var hiddenInput = fileInput.parentNode.querySelector('.upload-hidden');
       // hiddenInput.value = uploadedFileData;

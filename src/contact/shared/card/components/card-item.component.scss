@@ -13,3 +13,11 @@
   }
 }
 
+.card {
+  .card-body {
+    .media-avatar-body, .card-name {
+      @include text-overflow();
+    }
+  }
+}
+

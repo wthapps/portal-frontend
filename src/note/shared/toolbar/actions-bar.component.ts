@@ -10,21 +10,22 @@ import {
 } from '@angular/core';
 
 
-import { Constants } from '@shared/constant/config/constants';
-import { ZNoteService } from '../services/note.service';
-import { CommonEventService } from '@shared/services/common-event/common-event.service';
+import {Constants, hasEnoughPermission} from '@shared/constant/config/constants';
+import {ZNoteService} from '../services/note.service';
+import {CommonEventService} from '@shared/services/common-event/common-event.service';
 import * as note from '../actions/note';
 import * as context from '../reducers/context';
-import { WthConfirmService } from '@shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService } from '@shared/services/apibase.service';
-import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { UrlService } from '@shared/services';
-import { NoteConstants, noteConstants } from '@notes/shared/config/constants';
-import { Router } from '@angular/router';
+import {WthConfirmService} from '@shared/shared/components/confirmation/wth-confirm.service';
+import {ApiBaseService} from '@shared/services/apibase.service';
+import {Store} from '@ngrx/store';
+import {Subject} from 'rxjs';
+import {UrlService} from '@shared/services';
+import {NoteConstants, noteConstants} from '@notes/shared/config/constants';
+import {Router} from '@angular/router';
 
 declare var _: any;
 declare let saveAs: any;
+
 // declare let printJS: any;
 
 @Component({
@@ -50,7 +51,7 @@ export class ZNoteSharedActionBarComponent
   disableDropDown: any = false;
   detectMenu: any = false;
 
-  actionsMenu: any = {
+  readonly DEFAULT_ACTIONS_MENU =  {
     attachments: {
       show: true,
       needPermission: 'view',
@@ -62,17 +63,17 @@ export class ZNoteSharedActionBarComponent
       title: 'Attachments',
       iconClass: 'fa fa-paperclip'
     },
-    chat: {
-      show: true,
-      needPermission: 'view',
-      inDropDown: false,
-      action: this.showComments.bind(this),
-      class: 'btn btn-default',
-      tooltip: this.tooltip.chat,
-      tooltipPosition: 'bottom',
-      title: 'Chat',
-      iconClass: 'fa fa-comment'
-    },
+    // chat: {
+    //   show: false,
+    //   needPermission: 'view',
+    //   inDropDown: false,
+    //   action: this.showComments.bind(this),
+    //   class: 'btn btn-default',
+    //   tooltip: this.tooltip.chat,
+    //   tooltipPosition: 'bottom',
+    //   title: 'Chat',
+    //   iconClass: 'fa fa-comment'
+    // },
     favourite: {
       show: true,
       needPermission: 'view',
@@ -112,9 +113,14 @@ export class ZNoteSharedActionBarComponent
       action: this.edit.bind(this),
       title: 'Edit'
     },
+    divider: {
+      show: true,
+      inDropDown: true,
+      divider: true
+    },
     copy: {
       show: true,
-      needPermission: 'edit',
+      needPermission: 'owner',
       inDropDown: true, // Inside dropdown list
       action: this.makeACopy.bind(this),
       title: 'Make copy',
@@ -132,11 +138,12 @@ export class ZNoteSharedActionBarComponent
       needPermission: 'owner',
       inDropDown: true, // Inside dropdown list
       action: this.moveToFolder.bind(this),
-      title: 'Move to folder'
+      title: 'Move to folder',
+      iconClass: 'wicon-move-to-folder'
     },
     print: {
       show: true,
-      needPermission: 'view',
+      needPermission: 'download',
       inDropDown: true, // Inside dropdown list
       action: this.print.bind(this),
       title: 'Print',
@@ -144,7 +151,7 @@ export class ZNoteSharedActionBarComponent
     },
     exportPdf: {
       show: true,
-      needPermission: 'view',
+      needPermission: 'download',
       inDropDown: true, // Inside dropdown list
       action: this.exportPdf.bind(this),
       title: 'Export as PDF',
@@ -158,6 +165,7 @@ export class ZNoteSharedActionBarComponent
       title: 'Stop Sharing'
     }
   };
+  actionsMenu: any = {...this.DEFAULT_ACTIONS_MENU};
   attactments: any;
 
   constructor(
@@ -190,13 +198,15 @@ export class ZNoteSharedActionBarComponent
     this.outEvent.emit({action: 'openAttactments'});
   }
 
-  showComments() {
-    console.log('open chat ...');
-    this.outEvent.emit({action: 'showComments'});
-  }
+  // showComments() {
+  //   console.log('open chat ...');
+  //   this.outEvent.emit({action: 'showComments'});
+  // }
 
-  validatePermission(objects) {
+  validatePermission(objects: any[]) {
     this.urls = this.urlService.parse();
+
+    this.resetActionsMenu();
     /*====================================
     [Position] validate
     ====================================*/
@@ -206,24 +216,25 @@ export class ZNoteSharedActionBarComponent
     /*====================================
     [Permission] validate
     ====================================*/
-    const permissonValidateObjects = (action, objs) => {
+    const permissonValidateObjects = (action, object) => {
       // check permission in each objects
-      objs.map((object: any) => {
-        // if permission is view turn off all acions edit
-        if (
-          object.permission === 'view' &&
-          (action.needPermission === 'edit' || action.needPermission === 'owner')
-        ) {
-          action.show = false;
-        }
-        if (object.permission === 'edit' && action.needPermission === 'owner') {
-          action.show = false;
-        }
-      });
+      if (
+        !hasEnoughPermission(object.permission, action.needPermission)
+      ) {
+        action.show = false;
+      }
+      if (object.permission === 'edit' && action.needPermission === 'owner') {
+        action.show = false;
+      }
     };
-    Object.keys(this.actionsMenu).map((action: any) =>
-      permissonValidateObjects(this.actionsMenu[action], objects)
+
+    if (objects.length === 1) {
+      Object.keys(this.actionsMenu).forEach((action: any) =>
+      permissonValidateObjects(this.actionsMenu[action], objects[0])
     );
+    } else {
+      // Not supported
+    }
 
     /*====================================
     [Path And Page] validate (shared-with-me, shared-by-me)
@@ -298,8 +309,12 @@ export class ZNoteSharedActionBarComponent
     Object.keys(this.actionsMenu).map((action: any) =>
       permissonValidateFavourites(this.actionsMenu[action], objects)
     );
-    if (allFavorite) { this.actionsMenu.favourite.iconClass = 'fa fa-star'; }
-    if (!allFavorite) { this.actionsMenu.favourite.iconClass = 'fa fa-star-o'; }
+    if (allFavorite) {
+      this.actionsMenu.favourite.iconClass = 'fa fa-star';
+    }
+    if (!allFavorite) {
+      this.actionsMenu.favourite.iconClass = 'fa fa-star-o';
+    }
 
     // After All
     this.disableDropDown = true;
@@ -430,13 +445,9 @@ export class ZNoteSharedActionBarComponent
     const obj: any = this.selectedObjects[0];
     const parentPath: string =
       obj.permission === 'owner' ? '/my-note' : '/shared-with-me';
-      const path: string = obj.parent_id
+    const path: string = obj.parent_id
       ? `${parentPath}/folders/${obj.parent_id}`
       : parentPath;
-    this.store.dispatch({
-      type: note.SELECT_ONE,
-      payload: obj
-    });
     this.commonEventService.broadcast({
       channel: 'noteLeftMenu',
       action: 'expanded',
@@ -470,11 +481,15 @@ export class ZNoteSharedActionBarComponent
       };
     });
     this.apiBaseService
-      .post('note/mixed_entities/favourites', { objects: objects })
+      .post('note/mixed_entities/favourites', {objects: objects})
       .subscribe((res: any) => {
         this.selectedObjects = res.data;
         this.validatePermission(this.selectedObjects);
         this.store.dispatch(new note.MultiNotesUpdated(res.data));
-    });
+      });
+  }
+
+  private resetActionsMenu() {
+    this.actionsMenu = {...this.DEFAULT_ACTIONS_MENU};
   }
 }

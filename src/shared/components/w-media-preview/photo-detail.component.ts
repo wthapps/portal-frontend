@@ -8,30 +8,26 @@ import * as Cropper from 'cropperjs';
 import {
   ApiBaseService,
   PhotoService,
-  UrlService
+  UrlService,
+  CommonEventService
 } from '@wth/shared/services';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@shared/constant';
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/config/constants';
 import { DoublyLinkedLists } from '@shared/data-structures/link-list/doubly-linked-lists';
-import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
-import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
-import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
-import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
 import { Subject } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { MediaAdditionalListMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin, MediaListDetailMixin } from '@shared/modules/photo/mixins';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
 
 @Mixins([MediaAdditionalListMixin, SharingModalMixin, MediaDownloadMixin, MediaModalMixin, AlbumAddMixin, MediaPreviewMixin,
-   MediaListDetailMixin])
+  MediaListDetailMixin])
 @Component({
   selector: 'photo-detail',
   templateUrl: './item-detail.component.html',
@@ -63,6 +59,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
   subCreateAlbum: any;
   returnUrls: any;
   model: any;
+  disableMoreAction: any;
   sharings: any = [];
   listIds: DoublyLinkedLists;
   destroy$ = new Subject();
@@ -100,6 +97,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     public urlSerive: UrlService,
     public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
+    public commonEventService: CommonEventService,
     public location: Location) {
     this.showMenuAction = true;
   }
@@ -109,7 +107,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     this.returnUrls = this.route.snapshot.queryParams.returnUrls;
     this.route.params.pipe(
       withLatestFrom(this.route.queryParams)
-      ).subscribe(([p, params]) => {
+    ).subscribe(([p, params]) => {
       this.model = this.route.snapshot.queryParams.model || _.get(this.object, 'object_type', 'Media::Photo');
       this.apiBaseService.get(`media/media/${p.id}`, { model: this.model }).toPromise()
         .then(res => {
@@ -141,13 +139,15 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
               this.apiBaseService.get(`media/media/ids_combine`, query).toPromise()
                 .then(res2 => {
                   if (res2.data) {
-                    this.listIds = new DoublyLinkedLists(res2.data.map(d => ({id: d.uuid, model: d.model})));
+                    this.listIds = new DoublyLinkedLists(res2.data.map(d => ({ id: d.uuid, model: d.model })));
                     this.listIds.setCurrent(this.object.uuid);
                   }
                 });
             }
           }
         });
+      this.disableMoreAction = (Object.keys(this.menuActions)
+        .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
     });
   }
 
@@ -254,7 +254,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
     if (object.object_type === 'album') {
       this.router.navigate([`/albums/${object.uuid}`]);
     }
-    if (object.object_type === 'sharing') {
+    if (object.model === 'Common::Sharing') {
       this.router.navigate([`/shared/${object.uuid}`]);
     }
   }
@@ -291,7 +291,7 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
       },
       favorite: {
         active: true,
-        permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
         inDropDown: false, // Outside dropdown list
         action: () => {
           this.apiBaseService.post(`media/favorites/toggle`, {
@@ -369,9 +369,9 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
         action: () => {
           this.showDetailsInfo = !this.showDetailsInfo;
           this.apiBaseService.get(`media/object/${this.object.id}/sharings`,
-           { model: _.get(this.object, 'object_type', 'Media::Photo') }).subscribe(res => {
-            this.sharings = res.data;
-          });
+            { model: _.get(this.object, 'object_type', 'Media::Photo') }).subscribe(res => {
+              this.sharings = res.data;
+            });
         },
         class: 'btn btn-default',
         liclass: '',
@@ -413,14 +413,16 @@ export class PhotoDetailComponent implements OnInit, OnDestroy,
 
   onPrev() {
     this.listIds.prev();
-    this.router.navigate([`../${this.listIds.current.data.id}`], { queryParams: { model: this.listIds.current.data.model },
-      relativeTo: this.route, queryParamsHandling: 'merge'});
+    this.router.navigate([`../${this.listIds.current.data.id}`], {
+      queryParams: { model: this.listIds.current.data.model },
+      relativeTo: this.route, queryParamsHandling: 'merge'
+    });
   }
 
   onNext() {
     this.listIds.next();
     this.router.navigate([`../${this.listIds.current.data.id}`],
-     { queryParams: { model: this.listIds.current.data.model}, relativeTo: this.route, queryParamsHandling: 'merge' });
+      { queryParams: { model: this.listIds.current.data.model }, relativeTo: this.route, queryParamsHandling: 'merge' });
   }
 
   back: () => void;

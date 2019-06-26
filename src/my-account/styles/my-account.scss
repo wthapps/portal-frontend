@@ -1,1 +1,24 @@
 @import '../../assets/styles/wth-style';
+
+div[data-braintree-id="number-field-group"] label {
+  width: 100%;
+}
+
+/* Hide initial dropin ui */
+.braintree-methods braintree-methods-initial {
+  display: none;
+}
+
+.braintree-show-methods .braintree-sheet--active .braintree-sheet {
+  border-color: #b5b5b5;
+  border-width: 1px;
+}
+
+/* Alert icons */
+.icon-success {
+  color: $input-color-active;
+}
+
+.icon-error {
+  color: $theme-color;
+}

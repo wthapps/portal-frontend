@@ -4,16 +4,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { BsModalComponent } from 'ng2-bs3-modal';
 
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/takeUntil';
-import { LoadingService } from '../../../shared/components/loading/loading.service';
-import { ApiBaseService } from '../../../services/apibase.service';
 import { CommonEventService } from '../../../services/common-event/common-event.service';
 import { CustomValidator } from '@shared/shared/validator/custom.validator';
 import { WModalService } from '@shared/modal/w-modal-service';
-
-
 @Component({
   selector: 'w-user-cover-info',
   templateUrl: 'cover-info.component.html',
@@ -33,11 +26,14 @@ export class CoverInfoComponent implements OnDestroy {
 
   destroySubject: Subject<any> = new Subject<any>();
 
-  userForm = this.fb.group({
-    firstName: ['', [Validators.required, CustomValidator.blanked]],
-    lastName: ['', [Validators.required, CustomValidator.blanked]],
-    nickName: [''],
-  });
+  // userForm = this.fb.group({
+  //   firstName: ['', [Validators.required, CustomValidator.blanked]],
+  //   lastName: ['', [Validators.required, CustomValidator.blanked]],
+  //   nickName: [''],
+  //   company: [''],
+  //   occupation: [''],
+  //   headline: [''],
+  // });
 
   constructor(
     private fb: FormBuilder,
@@ -56,32 +52,32 @@ export class CoverInfoComponent implements OnDestroy {
     this.onOpenModal.emit({modalName: 'NameEditModal', user: this.user});
   }
 
-  get f() {
-    return this.userForm.controls;
-  }
+  // get f() {
+  //   return this.userForm.controls;
+  // }
 
-  onSubmit(values: any): void {
+  // onSubmit(values: any): void {
 
-  }
+  // }
 
   changeProfileImage(event: any): void {
     this.onChangeAvatar.emit(this.user);
   }
 
-  private createUserForm(nameOnly: boolean): FormGroup {
-    if (nameOnly) {
-      return this.fb.group({
-        firstName: ['', [Validators.required, CustomValidator.blanked]],
-        lastName: ['', [Validators.required, CustomValidator.blanked]],
-      });
-    } else {
-      return this.fb.group({
-        firstName: ['', [Validators.required, CustomValidator.blanked]],
-        lastName: ['', [Validators.required, CustomValidator.blanked]],
-        nickName: [''],
-      });
-    }
-  }
+  // private createUserForm(nameOnly: boolean): FormGroup {
+  //   if (nameOnly) {
+  //     return this.fb.group({
+  //       firstName: ['', [Validators.required, CustomValidator.blanked]],
+  //       lastName: ['', [Validators.required, CustomValidator.blanked]],
+  //     });
+  //   } else {
+  //     return this.fb.group({
+  //       firstName: ['', [Validators.required, CustomValidator.blanked]],
+  //       lastName: ['', [Validators.required, CustomValidator.blanked]],
+  //       nickName: [''],
+  //     });
+  //   }
+  // }
 
 
 }

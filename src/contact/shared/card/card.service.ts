@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { Observable ,  Subject ,  BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { ApiBaseService, BaseEntityService } from '../../../shared/services';
 import { _wu } from '../../../shared/shared/utils/utils';
-import { Contact } from '../../contact/contact.model';
-import { MaxLengthPipe } from '../../../shared/shared/pipe/max-length.pipe';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 declare var _: any;
@@ -19,7 +16,7 @@ export const MY_CONTACTS = 'contacts';
 export class CardService extends BaseEntityService<any> {
 
   items$: Observable<any[]>;
-  item$: Observable<boolean>
+  item$: Observable<boolean>;
   selectedAll$: Observable<boolean>;
   sharedCardNum$: Observable<number>;
 
@@ -56,8 +53,8 @@ export class CardService extends BaseEntityService<any> {
   }
 
 
-  getCards() {
-    this.getAll().subscribe(response => {
+  getCards(): Promise<any> {
+    return this.getAll().toPromise().then(response => {
       const cards = response.data.map(c => c.attributes);
       this.setCards(cards);
     });
@@ -81,7 +78,7 @@ export class CardService extends BaseEntityService<any> {
   }
 
   createCard(card: any) {
-    this.create({card: card}).subscribe(response => {
+    this.create(card).subscribe(response => {
       const newCard = response.data.attributes;
       this.setCard(newCard);
       this.setCards([newCard, ...this.itemsSubject.getValue()]);
@@ -90,15 +87,9 @@ export class CardService extends BaseEntityService<any> {
 
   updateCard(card: any) {
     this.apiBaseService.patch(`${this.url}/${card.uuid}`, card).subscribe(response => {
-      this.setCard(response.data.attributes);
-      const items = this.itemsSubject.getValue();
-      items.forEach(item => {
-        if (item.uuid === response.data.attributes.uuid) {
-          item.card_name = response.data.attributes.card_name;
-          item.profile_image = response.data.attributes.profile_image;
-          return;
-        }
-      });
+      const updatedCard = response.data.attributes;
+      this.setCard(updatedCard);
+      const items = this.itemsSubject.getValue().map(item => item.uuid === updatedCard.uuid ? updatedCard : item);
       this.setCards(items);
       this.toastService.success('You updated card successfully!');
     });
@@ -125,8 +116,8 @@ export class CardService extends BaseEntityService<any> {
     });
   }
 
-  exportCard(card: any) {
-    console.log('your are exporting card:::', card);
+  exportCard({card, type}) {
+    console.log('your are exporting card:::', card, type);
   }
 
   deleteCard(card: any) {

@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
 import { fadeInAnimation } from '../../shared/shared/animations/route.animation';
 import { ScrollToConfigOptions, ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 import { Observable } from 'rxjs';
@@ -13,6 +13,7 @@ import { FaqCategoryService } from '@portal/faq/faq-category.service';
   selector: 'sd-faq',
   templateUrl: 'faq.component.html',
   styleUrls: ['faq.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   animations: [fadeInAnimation]
 })
 export class FaqComponent implements OnInit {

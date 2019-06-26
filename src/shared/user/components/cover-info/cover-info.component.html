@@ -30,9 +30,11 @@
           <div class="z-heading" [title]="user?.name">
             <div class="z-name"> {{ user?.name }}</div>
           </div>
-          <div class="z-shared-info">
-            <ul>
+          <div>
+            <ul class="list-unstyled">
               <li>{{ user?.nickname }}</li>
+              <li>{{ user?.company }},  {{ user?.occupation }}</li>
+              <li>{{ user?.headline }} </li>
             </ul>
           </div>
           <div class="z-shared-description"></div>

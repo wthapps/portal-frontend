@@ -1,0 +1,78 @@
+<div class="header-intro pb0">
+  <div class="container">
+    <h2><span>CONTACT US</span></h2>
+  </div>
+</div>
+
+<section class="page-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <p>If you have interested in our business or having any issue ideas that you want to share, feel free to drop us a message</p>
+        <p class="pb20">We try to reply to all within 3 to 5 business days. If we don't get back to you - please make sure gave us your correct email address!</p>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group" [ngClass]="{'has-error': (!first_name.valid && first_name.touched)}">
+                <label for="first_name">First Name</label>
+                <input [formControl]="first_name" type="text" class="form-control" id="first_name"
+                       placeholder="Your first name">
+                <div *ngIf="!first_name.valid && first_name.touched">
+                  <span *ngIf="!first_name.valid && first_name.errors.required" class="help-block">First name is required</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group" [ngClass]="{'has-error': (!last_name.valid && last_name.touched)}">
+                <label for="last_name">Last Name</label>
+                <input [formControl]="last_name" type="text" class="form-control" id="last_name"
+                       placeholder="Your last name">
+                <div *ngIf="!last_name.valid && last_name.touched">
+                    <span *ngIf="!last_name.valid && last_name.errors.required"
+                          class="help-block">Last name is required</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{'has-error': (!email.valid && email.touched)}">
+            <label for="email">Email address</label>
+            <input [formControl]="email" type="email" class="form-control" id="email" placeholder="Email address">
+            <div *ngIf="!email.valid && email.touched">
+              <span *ngIf="!email.valid && email.errors.required" class="help-block">An email is required</span>
+              <span *ngIf="!email.errors.required && email.errors.emailFormat"
+                    class="help-block">Email is not valid</span>
+            </div>
+
+          </div>
+          <div class="form-group" [ngClass]="{'has-error': (!subject.valid && subject.touched)}">
+            <label for="subject">Subject</label>
+            <input [formControl]="subject" type="text" class="form-control" id="subject" placeholder="Your idea or issue">
+            <div *ngIf="!subject.valid && subject.touched">
+              <span *ngIf="!subject.valid && subject.errors.required" class="help-block">A subject is required</span>
+            </div>
+          </div>
+
+          <div class="form-group" [ngClass]="{'has-error': (!content.valid && content.touched)}">
+            <label for="content">Message</label>
+            <textarea rows="3" [formControl]="content" type="text" class="form-control" id="content"
+                      placeholder="Explain your idea or issue"></textarea>
+            <div *ngIf="!content.valid && content.touched">
+              <span *ngIf="!content.valid && content.errors.required" class="help-block">A message is required</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <re-captcha #ReCaptchaComponent (captchaResponse)="handleCorrectCaptcha($event)"
+                        [site_key]="siteKey"></re-captcha>
+          </div>
+
+          <button [disabled]="!form.valid || !recaptchaState" type="submit" class="btn btn-outline-primary btn-min mr20">
+            Send
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

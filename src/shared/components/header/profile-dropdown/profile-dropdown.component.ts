@@ -1,24 +1,25 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Constants } from '@shared/constant';
 import { User } from '@shared/shared/models';
 import { AuthService } from '@wth/shared/services';
+
 
 @Component({
   selector: 'profile-dropdown',
   templateUrl: './profile-dropdown.component.html',
   styleUrls: ['./profile-dropdown.component.scss']
 })
-export class ProfileDropDownComponent implements OnInit {
+export class ProfileDropDownComponent {
   @Input() user: User;
+  @Input() subscription: any;
+
   readonly tooltip: any = Constants.tooltip;
   readonly urls: any = Constants.baseUrls;
   readonly defaultAvatar: string = Constants.img.avatar;
+  readonly upgradeUrl = `${Constants.baseUrls.myAccount}/payment/subscription/upgrade`;
+  readonly TRIAL_STATUS = ['TRIALING', 'EXPIRED'];
 
   constructor(private authService: AuthService) {
-  }
-
-  ngOnInit() {
-
   }
 
   logout() {

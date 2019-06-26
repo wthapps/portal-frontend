@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { HrefDirective } from '@shared/shared/directive/href.directive';
-import { ImgAlignDirective } from '@shared/shared/directive/img-align.directive';
+import { HrefDirective } from './href.directive';
+import { ImgAlignDirective } from './img-align.directive';
 import { AutofocusInputDirective } from './autofocus.directive';
 import { DisplayAsHtmlDirective } from './display-as-html.directive';
 import { ImgFullDirective } from './img-full.directive';
@@ -9,6 +9,7 @@ import { CommentAutoHeightDirective } from './comment-autoheight.directive';
 import { ShiftEnterDirective } from './shiftEnter.directive';
 import { ContentEditableDirective } from './contenteditable.directive';
 import { ScrollDirectiveModule } from './scroll/scroll.directive.module';
+import { ClickElseWhereDirective } from './click-else-where.directive';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ScrollDirectiveModule } from './scroll/scroll.directive.module';
     CommentAutoHeightDirective,
     ShiftEnterDirective,
     ContentEditableDirective,
-    HrefDirective
+    HrefDirective,
+    ClickElseWhereDirective
   ],
   exports: [
     ScrollDirectiveModule,
@@ -37,7 +39,8 @@ import { ScrollDirectiveModule } from './scroll/scroll.directive.module';
     CommentAutoHeightDirective,
     ShiftEnterDirective,
     ContentEditableDirective,
-    HrefDirective
+    HrefDirective,
+    ClickElseWhereDirective
   ]
 })
 export class DirectiveModule {

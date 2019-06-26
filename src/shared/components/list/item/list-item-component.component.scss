@@ -1,0 +1,9 @@
+@import "../../../../assets/styles/global";
+
+:host {
+  padding: 10px;
+  @include flexbox;
+  @include flex-direction(row);
+  @include align-items(center);
+  flex-wrap: wrap;
+}

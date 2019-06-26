@@ -11,7 +11,7 @@ import { noteConstants, NoteConstants } from '@notes/shared/config/constants';
   selector: 'z-note-recent',
   templateUrl: 'recent.component.html'
 })
-export class ZNoteRecentComponent implements OnInit {
+export class ZNoteRecentComponent implements OnInit, OnDestroy {
   noteConstants: NoteConstants = noteConstants;
 
   constructor(private store: Store<any>) {}
@@ -27,8 +27,21 @@ export class ZNoteRecentComponent implements OnInit {
         pathTitle: 'Recent',
         permissions: this.noteConstants.PAGE_PERMISSIONS.RECENT,
         noData: this.noteConstants.NO_DATA.RECENT,
+        // viewMode: 'list',
         sort: {
           field: 'accessed_date',
+          desc: true
+        }
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch({
+      type: context.SET_CONTEXT,
+      payload: {
+        sort: {
+          field: 'name',
           desc: false
         }
       }

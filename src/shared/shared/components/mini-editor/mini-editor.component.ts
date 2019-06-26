@@ -48,6 +48,12 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
     @Input() debug: string;
     @Input() isDisabled = true;
 
+     /** this will remove image/video/audio
+     * input value must be array of below values
+     * 'img', 'video', 'audio', 'picture', 'source'
+     */
+    @Input() htmlResourcesFilter = null;
+
     @Output() onInit: EventEmitter<any> = new EventEmitter();
 
     value: string;
@@ -68,6 +74,7 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
         const defaultModule  = {toolbar: toolbarElement};
         const modules = this.modules ? {...defaultModule, ...this.modules} : defaultModule;
 
+        console.log('modules:::', modules);
         this.extendClipboard(this);
 
         this.quill = new Quill(editorElement, {
@@ -105,6 +112,15 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
           this.onKeyUp.emit({keyCode: KEYCODE.escape});
         }.bind(this));
 
+        // Quill clipboard
+        if (this.htmlResourcesFilter && this.htmlResourcesFilter.length > 0) {
+          this.htmlResourcesFilter.forEach((filterTag: string) => {
+            this.quill.clipboard.addMatcher(filterTag, function (node, delta) {
+              return new Delta();
+            });
+          });
+        }
+
         this.quill.on('text-change', (delta, oldContents, source) => {
             if (source === 'user') {
                 let html = editorElement.children[0].innerHTML;
@@ -136,11 +152,15 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
         this.onInit.emit({
             editor: this.quill
         });
+
+      if (this.isDisabled) {
+        this.quill.disable();
+      }
     }
 
     ngOnChanges(changes: SimpleChanges) {
       if (!this.quill) {
-      return;
+        return;
       }
       if (changes['isDisabled'] !== undefined) {
         this.readonly = changes['isDisabled'].currentValue;
@@ -160,6 +180,7 @@ export class MiniEditorComponent implements AfterViewInit, OnChanges, ControlVal
 
             const dataClipboard1 = e.clipboardData.types;
             let fileClipboard: any;
+
             if (dataClipboard1[0].match('Files')) {
               if (e.clipboardData.items[0].type.match('image/*')) {
                 fileClipboard = e.clipboardData.items[0].getAsFile();

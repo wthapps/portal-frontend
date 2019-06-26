@@ -92,3 +92,33 @@ $wobject-checkbox: 30px;
     }
   }
 }
+.sortbar-wrap {
+  margin: 0 0 15px;
+  @media (min-width: $screen-sm-min) {
+    margin-top: -15px;
+    margin-bottom: 0;
+  }
+}
+
+.sortbar-slider {
+  padding: 7px 0;
+  margin-right: 30px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  .sortbar-slider-in {
+    display: inline-block;
+    width: 90px;
+    margin: 0 15px;
+
+  }
+}
+.grid-list-head {
+  margin: 20px 0px;
+}
+.dropdown {
+  a {
+    color: inherit;
+  }
+}

@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
-import { WNoteSelectionService } from '@shared/components/w-note-selection/w-note-selection.service';
-import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { Media } from '@shared/shared/models/media.model';
-import { Note } from '@shared/shared/models/note.model';
-import { BsModalComponent } from 'ng2-bs3-modal';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import { WDataViewComponent } from '../w-dataView/w-dataView.component';
+import { Constants } from '@shared/constant';
 import { Observable } from 'rxjs';
+import { WNoteSelectionService } from '@shared/components/w-note-selection/w-note-selection.service';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { takeUntil } from 'rxjs/operators';
+import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { Note } from '@shared/shared/models/note.model';
 
 @Component({
   selector: 'w-note-selection',
@@ -18,54 +18,52 @@ import { takeUntil } from 'rxjs/operators';
 
 export class WNoteSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
+  @ViewChild('dataView') dataView: WDataViewComponent;
+  @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
+
+  tooltip: any = Constants.tooltip;
+  data$: Observable<any>;
+
+  title: string;
+  breadcrumb: Note[];
+  searchShow: boolean;
+  searchText = '';
+  viewMode = 'grid';
+
   tabs: WTab[] = [
     {
-      name: 'My Note',
-      link: 'my_note',
+      name: 'My Notes',
+      link: 'parent_id=null',
       icon: 'icon-zone-note',
       number: null,
       type: 'tab'
     },
     {
       name: 'Favourites',
-      link: 'favourites',
+      link: 'parent_id=null&favourite=true&owner=true',
       icon: 'fa fa-star',
-      number: null,
-      type: 'tab'
-    },
-    {
-      name: 'Shared with me',
-      link: 'shared_with_me',
-      icon: 'fw fw-shared-with-me',
       number: null,
       type: 'tab'
     }
   ];
-  currentTab = 'my_note'; // my_note, favourites, shared_with_me
 
-  // search
-  searchShow: Boolean = false;
-  searchText: string;
+  currentTab = this.tabs[0].link;
 
-  // end search
-  view$: Observable<string>;
-  notes$: Observable<Note[]>;
-  selectedNotes$: Observable<Media[]>;
-  isLoading: boolean;
-  url: string;
-  next: any;
+  parentID: number;
+  // TODO Replace this one by dataView.selectedDocuments when supporting share Folder
+  // It only shares Note right now
+  selectedObjects: Array<any> = [];
 
-  constructor(private noteSelectionService: WNoteSelectionService,
-              private objectListService: WObjectListService) {
-    this.notes$ = this.noteSelectionService.notes$;
-    this.selectedNotes$ = this.objectListService.selectedObjects$;
-    this.view$ = this.objectListService.view$;
+  constructor(private dataService: WNoteSelectionService) {
+    this.data$ = this.dataService.data$;
+    this.updateTitle();
   }
 
   ngOnInit(): void {
-    this.noteSelectionService.open$
+    this.dataService.open$
       .pipe(takeUntil(componentDestroyed(this)))
       .subscribe((res: any) => {
+        console.log(res);
         if (res) {
           this.open();
         }
@@ -77,68 +75,110 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
 
   open() {
     this.modal.open().then();
-    this.url = '/note/v1/mixed_entities?parent_id=null';
-    this.next = this.url;
-    this.initView();
-    this.getData();
+    this.getDataAsync().then();
   }
 
-  initView() {
-    this.objectListService.setSortOrderGroup('asc');
+  close() {
+    this.dataService.close();
   }
 
-  getData() {
-    this.isLoading = true;
-    this.noteSelectionService.getData(this.url)
-      .subscribe(
-        (res: any) => {
-          if (res && res.meta) {
-            this.next = res.meta.links.next;
-            this.url = this.next;
-          }
-        },
-        err => console.log(err),
-        () => this.isLoading = false
-      );
+  async getDataAsync() {
+    await this.dataService.getData(this.currentTab, this.parentID).toPromise();
   }
 
-  onCompleteLoadMore(event: boolean) {
-    if (event && this.next) {
-      this.getData();
-    }
+  async getParentDataAsync(id) {
+    const res = await this.dataService.getParent(id).toPromise();
+    this.breadcrumb = res.data;
   }
 
-  /**
-   * Search
-   * @param e
-   */
-  onSearchEnter(e: any) {
-    this.searchText = e.search;
+  onLoadMoreCompleted(event: any) {
+    console.log(event);
   }
 
-  onSearchEscape(e?: any) {
-    if (e) {
-      this.searchShow = false;
-      this.searchText = null;
-    }
+  onSortComplete(event: any) {
+    this.dataService.sort(event);
   }
 
-  /**
-   * end Search
-   */
+  onViewComplete(event: any) {
+    this.viewMode = event;
+    this.dataView.viewMode = event;
+    this.dataView.container.update();
+    this.dataView.updateView();
+  }
 
   tabAction(event: any) {
-    this.noteSelectionService.clear();
+    if (this.currentTab === event.link) {
+      return false;
+    }
     this.currentTab = event.link;
+    this.updateTitle();
+    this.getRootData();
+  }
+
+  onBreadcrumb(id?: any) {
+    if (!id) {
+      this.getRootData();
+    } else {
+      this.getFolderContent(id);
+    }
+  }
+
+  onDblClick(event: Note) {
+    if (event.object_type === 'Note::Folder') {
+      this.parentID = event.id;
+      this.getFolderContent(event.id);
+    }
+  }
+
+  onSelectCompleted(objects: Array<any>) {
+    let hasFolder = false;
+    this.dataView.selectedObjects.forEach(object => {
+      if (object.object_type === 'Note::Folder') {
+        hasFolder = true;
+        return;
+      }
+    });
+    this.selectedObjects = hasFolder ? [] : this.dataView.selectedObjects;
+  }
+
+  onSearchEnter(event: any) {
+    this.searchText = event.search;
+    this.title = 'Search results';
+    this.dataService.search(this.searchText);
+  }
+
+  onSearchEscape(event: any) {
+    this.searchShow = false;
+    this.searchText = '';
+    this.updateTitle();
+    this.dataService.getByParams(this.currentTab);
+    console.log('current tab:::', this.currentTab);
   }
 
   onInsert() {
-    this.noteSelectionService.setSelectedNotes(this.objectListService.getSelectedObjects());
-    this.noteSelectionService.clear();
+    this.selectCompleted.emit(this.selectedObjects);
+    this.modal.close().then();
   }
 
-  dismiss(event: any): void {
-    console.log('Post Photo Select Component DISMISSED', event);
-    this.noteSelectionService.clear();
+  private updateTitle() {
+    const result = this.tabs.find(tab => tab.link === this.currentTab);
+    this.title = result.name;
+  }
+
+  private getFolderContent(id: any) {
+    this.parentID = id;
+    this.dataService.clear();
+    this.getDataAsync().then();
+    this.getParentDataAsync(id).then();
+    if (this.dataView && this.dataView.container) {
+      this.dataView.container.clearSelection();
+    }
+  }
+
+  private getRootData() {
+    this.dataService.clear();
+    this.breadcrumb = null;
+    this.parentID = null;
+    this.getDataAsync().then();
   }
 }

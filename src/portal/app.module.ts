@@ -18,13 +18,15 @@ import { PoliciesModule } from './policies/policies.module';
 import { PricingModule } from './pricing/pricing.module';
 import { ProductsModule } from './products/products.module';
 import { RecoveryModule } from './recovery/recovery.module';
-import { RegisterModule } from './register/register.module';
+// import { RegisterModule } from './register/register.module';
 import { SubscribeModule } from './sub_unsub/subscribe.module';
 import { SupportModule } from './support/support.module';
 import { NotificationModule } from './notifications/notifications.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { FaqModule } from '@portal/faq/faq.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { PortalStoreModule } from '@portal/store';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,11 +44,14 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     PricingModule,
     ProductsModule,
     RecoveryModule,
-    RegisterModule,
+    // RegisterModule,
     SubscribeModule,
     SupportModule,
     NotificationModule,
     FaqModule,
+
+    // Store
+    PortalStoreModule,
 
     PortalSharedModule.forRoot(),
     CoreModule.forRoot(),
@@ -59,7 +64,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    GoogleAnalyticsService
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: WthInterceptor,

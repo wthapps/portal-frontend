@@ -17,14 +17,14 @@ export class ZNoteSharedSettingsService {
     setting$: Observable<NoteSetting>;
     private settingSubject: BehaviorSubject<NoteSetting> = new BehaviorSubject<NoteSetting>(DEFAULT_SETTING);
 
-    private url = 'note/settings';
+    private url = 'note/wsettings';
 
     constructor(private api: ApiBaseService) {
         this.setting$ = this.settingSubject.asObservable();
     }
 
     getSettings(): Observable<any> {
-        return this.api.get(this.url);
+        return this.api.post(`${this.url}/get_setting`);
     }
 
     updateSettings(body): Observable<any> {

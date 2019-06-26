@@ -9,7 +9,7 @@ export class NoteConstants extends ConstantsBase {
   PAGE_NOTE_EDIT: any = 'NOTE_EDIT';
   PAGE_NOTE_FAVOURITE: any = 'NOTE_FAVOURITE';
   PAGE_SEARCH: any = 'NOTE_SEARCH';
-  PAGE_TRASH: string = 'NOTE_TRASH';
+  PAGE_TRASH = 'NOTE_TRASH';
 
   /*
     edit: Can add new items to current list
@@ -33,7 +33,7 @@ export class NoteConstants extends ConstantsBase {
       enableEdit: true
     },
     RECENT: {
-      edit: false,
+      edit: true,
       enableEdit: true
     },
     SEARCH: {
@@ -94,12 +94,12 @@ export class NoteConstants extends ConstantsBase {
   };
 
   FONTS = [
-    { name: 'Gotham', value: 'gotham' },
+    // { name: 'Gotham', value: 'gotham' },
     { name: 'Georgia', value: 'georgia' },
     { name: 'Helvetica', value: 'helvetica' },
-    { name: 'Courier New', value: 'courier-new' },
+    { name: 'Courier New', value: 'couriernew' },
     { name: 'Lato', value: 'lato' },
-    { name: 'Times New Roman', value: 'times-new-roman' },
+    { name: 'Times New Roman', value: 'timesnewroman' },
     { name: 'Trebuchet', value: 'trebuchet' },
     { name: 'Verdana', value: 'verdana' }
   ];

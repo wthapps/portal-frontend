@@ -1,8 +1,6 @@
-import { Component, Input, OnDestroy, EventEmitter, Output, OnInit } from '@angular/core';
-import { NoteBreadcrumb } from './breadcrumb';
-import { Router } from '@angular/router';
-import { Observable } from "rxjs";
-import * as context from '../reducers/context';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {NoteBreadcrumb} from './breadcrumb';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'z-note-shared-breadcrumb',
@@ -48,7 +46,9 @@ export class ZNoteSharedBreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   onClick(item: any) {
-    if (item) { this.router.navigate([item.routerLink]); }
+    if (item) {
+      this.router.navigate([item.routerLink]);
+    }
   }
 
   onMenu(event: string) {

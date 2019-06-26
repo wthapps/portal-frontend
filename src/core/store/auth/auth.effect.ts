@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { User } from '@wth/shared/shared/models';
 import { Observable, of } from 'rxjs';
@@ -33,29 +33,27 @@ export class AuthEffects {
    * Login effect
    */
   @Effect()
-  login$: Observable<Action> = this.actions$
-    .ofType(actions.ActionTypes.LOGIN)
-    .pipe(
-      map((action: actions.Login) => action.payload),
-      switchMap(state => {
-        return this.authApiClient.login(state)
-          .map(user => new actions.LoginSuccess(new User(user)))
-          .catch(error => of(new actions.LoginFail()));
-      })
-    );
+  login$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOGIN),
+    map((action: actions.Login) => action.payload),
+    switchMap(state => {
+      return this.authApiClient.login(state)
+        .map(user => new actions.LoginSuccess(new User(user)))
+        .catch(error => of(new actions.LoginFail()));
+    })
+  );
 
   /**
    * Logout effect
    */
   @Effect()
-  logout$: Observable<Action> = this.actions$
-    .ofType(actions.ActionTypes.LOGOUT)
-    .pipe(
-      map((action: actions.Logout) => null),
-      switchMap(state => {
-        return this.authApiClient.logout()
-          .map(() => new actions.LogoutSuccess())
-          .catch(error => of(new actions.LogoutFail()));
-      })
-    );
+  logout$: Observable<Action> = this.actions$.pipe(
+    ofType(actions.ActionTypes.LOGOUT),
+    map((action: actions.Logout) => null),
+    switchMap(state => {
+      return this.authApiClient.logout()
+        .map(() => new actions.LogoutSuccess())
+        .catch(error => of(new actions.LogoutFail()));
+    })
+  );
 }

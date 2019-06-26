@@ -12,9 +12,7 @@ import { ZMediaPhotoModule } from './photo/photo.module';
 import { ZMediaFavoriteModule } from './favourites/favourites.module';
 import { ZMediaSharedWithMeModule } from './shared-with-me/shared-with-me.module';
 import { ZMediaSearchModule } from './search/search.module';
-import { ZMediaMyProfileModule } from './my-profile/my-profile.module';
 import { ZMediaSharingModule } from './shared-by-me/sharing.module';
-import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,14 +25,9 @@ import { appStore, appEffects } from './shared/store';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ServiceModule } from '@media/shared/service/service.module';
-import { MediaRenameModalComponent } from '@wth/shared/shared/components/photo/modal/media/media-rename-modal.component';
-import { SharingModalComponent } from '@wth/shared/shared/components/photo/modal/sharing/sharing-modal.component';
-import { TaggingModalComponent } from '@wth/shared/shared/components/photo/modal/tagging/tagging-modal.component';
 
-import { AddToAlbumModalComponent } from '@wth/shared/shared/components/photo/modal/photo/add-to-album-modal.component';
-import { PhotoEditModalComponent } from '@wth/shared/shared/components/photo/modal/photo/photo-edit-modal.component';
 import { AlbumDetailInfoComponent } from '@media/album/album-detail-info.component';
-import { ZMediaVideoModule } from '@media/video/video.module';
+// import { ZMediaVideoModule } from '@media/video/video.module';
 import { SharingDetailInfoComponent } from '@media/shared-by-me/sharing-detail-info.component';
 import { PhotoHtmlModule } from '@media/html/photo-html.module';
 import {
@@ -46,10 +39,18 @@ import { WMediaPreviewModule } from '@shared/components/w-media-preview/media-pr
 import { ZMediaTrashModule } from '@media/trash/trash.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { LocalStorageModule } from 'angular-2-local-storage';
+import { MediaRenameModalComponent } from '@shared/modules/photo/components/modal/media/media-rename-modal.component';
+import { SharingModalComponent } from '@shared/modules/photo/components/modal/sharing/sharing-modal.component';
+import { TaggingModalComponent } from '@shared/modules/photo/components/modal/tagging/tagging-modal.component';
+import { AddToAlbumModalComponent } from '@shared/modules/photo/components/modal/photo/add-to-album-modal.component';
+import { PhotoEditModalComponent } from '@shared/modules/photo/components/modal/photo/photo-edit-modal.component';
+import { PhotoStoreModule } from '@media/store';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
+import { GuardModule } from '@shared/guards';
 
 @NgModule({
   imports: [
-    LocalStorageModule.withConfig({
+    LocalStorageModule.forRoot({
       prefix: 'my-app',
       storageType: 'localStorage'
     }),
@@ -64,8 +65,7 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     ZMediaSharedWithMeModule,
     ZMediaSharingModule,
     ZMediaSearchModule,
-    ZMediaMyProfileModule,
-    ZMediaVideoModule,
+    // ZMediaMyProfileModule,
     WMediaPreviewModule,
     PhotoHtmlModule,
     ZMediaTrashModule,
@@ -73,14 +73,19 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     AppRoutingModule,
     ModalModule,
     ServiceModule,
+
+    GuardModule,
+
+    // Store
+    PhotoStoreModule,
+
     ZMediaSharedModule.forRoot(),
     CoreModule.forRoot(),
-    SharedModule.forRoot(),
     SharedServicesModule.forRoot(),
     StoreModule.forRoot(appStore),
     EffectsModule.forRoot(appEffects),
     ServiceWorkerModule.register('/ngsw-worker.js', {
-      enabled: false
+      enabled: true
     }),
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
@@ -91,7 +96,8 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    GoogleAnalyticsService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -107,4 +113,4 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     SharingDetailInfoComponent
   ]
 })
-export class AppModule {}
+export class AppModule { }

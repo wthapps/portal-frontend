@@ -1,6 +1,8 @@
 @import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins';
 
 @import 'variables';
+@import '../fonts/font-awesome/scss/custom-variables';
 @import 'general/mixin';
+@import 'general/sizing';
 @import 'partials/constants';
 @import 'partials/colors';

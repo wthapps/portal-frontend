@@ -1,0 +1,35 @@
+<div class="box-panel">
+  <h3 class="box-panel-title">Payment method</h3>
+  <p>Any payment method you saved on WTHApps will be listed here for your convenience. <br>
+    For further information please visit our <a [href]="termsOfServiceUrl" target="_blank">Terms of Service</a>. </p>
+  <ng-container *ngIf="!paymentMethod">
+    <button (click)="openModal()" class="btn btn-outline-primary" type="button">
+      <i class="fa fa-plus"></i> Add payment method
+    </button>
+  </ng-container>
+  <ng-container *ngIf="paymentMethod">
+    <ng-container *ngIf="loaded">
+      <div class="card mb20">
+        <div class="card-body">
+          <div class="media media-center">
+            <div class="media-left">
+              <img [src]="'assets/images/card/' + paymentMethod?.pm_json?.image">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">Ending in {{ paymentMethod?.pm_json?.last_4 }}</h4>
+              <p class="text-muted"> {{ paymentMethod?.pm_json?.expiration_month }}/{{ paymentMethod?.pm_json?.expiration_year }} </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button (click)="openModal()" class="btn btn-outline-primary" type="button">
+        Change payment method
+      </button>
+    </ng-container>
+  </ng-container>
+</div>
+
+<payment-method-add-modal #addModal (onCompleted)="savePaymentMethod($event)"></payment-method-add-modal>
+
+
+

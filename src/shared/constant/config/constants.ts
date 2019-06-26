@@ -13,7 +13,8 @@ export class ConstantsBase {
     cdn: Config.CDN
   };
   cdn: any = Config.CDN;
-  currentVersion = '2018 WTHApps - v1.8.0';
+  googleAnalyticsId = Config.GOOGLE_ANALYTICS_ID;
+  currentVersion = '2018 WTHApps - v1.16.0';
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
@@ -92,9 +93,9 @@ export class ConstantsBase {
       name: 'My Notes',
       value: 'My notes',
       link: '/my-note',
-      icon: 'icon-zone-note'
+      icon: 'fa fa-sticky-note'
     },
-    { name: 'Settings', value: 'settings', icon: 'fa fa-cog'},
+    { name: 'Settings', value: 'settings', icon: 'fa fa-cog' },
     { name: 'Recent', value: 'recent', link: '/recent', icon: 'fa fa-clock-o' },
     {
       name: 'Favourite',
@@ -125,8 +126,8 @@ export class ConstantsBase {
 
   contactMenuItems: any = [
     {
-      name: 'All Contacts',
-      value: 'all contacts',
+      name: 'My Contacts',
+      value: 'my contacts',
       link: '/list',
       icon: 'fa fa-address-book-o',
       hasMenu: false
@@ -201,7 +202,7 @@ export class ConstantsBase {
     // { name: 'Videos', link: '/videos', icon: 'fa fa-video-camera' },
     // { name: 'Playlists', link: '/playlists', icon: 'fa fa-file-video-o' },
 
-    { name: 'Favourites', link: '/favourites', icon: 'fa fa-star' },
+    { name: 'Favorites', link: '/favorites/photos', icon: 'fa fa-star' },
     {
       name: 'Shared with me',
       link: '/shared-with-me',
@@ -241,7 +242,7 @@ export class ConstantsBase {
   };
 
   urls: any = {
-    default: `${Config.SUB_DOMAIN.MYACCOUNT}/dashboard` ,
+    default: `${Config.SUB_DOMAIN.MYACCOUNT}/dashboard`,
     zoneSoPosts: 'zone/social_network/posts',
     zoneSoComments: 'zone/social_network/comments',
     zoneSoMyPosts: 'zone/social_network/my_posts',
@@ -468,6 +469,7 @@ export class ConstantsBase {
     addPhoto: 'Add photo',
     addPhotos: 'Add photos',
     addVideos: 'Add videos',
+    addItems: 'Add items',
     addMorePhotos: 'Add more photos',
     addTag: 'Add Tag',
     addToAlbum: 'Add to album',
@@ -483,7 +485,9 @@ export class ConstantsBase {
     create: 'Create',
     crop: 'Crop',
     delete: 'Delete',
+    deleteMessage: 'Delete this message',
     download: 'Download',
+    downloadPhoto: 'Download photo',
     edit: 'Edit',
     emoticons: 'Emoticons',
     favourite: 'Favourite',
@@ -493,6 +497,7 @@ export class ConstantsBase {
     hide: 'Hide',
     info: 'Info',
     information: 'Information',
+    importToContact: 'Import to contact',
     listView: 'List view',
     markAsRead: 'Mark as read',
     markAsUnread: 'Mark as unread',
@@ -600,3 +605,16 @@ export const MODEL_TYPE = {
   photo: 'Media::Photo',
   video: 'Media::Video'
 };
+
+export const PERMISSION_SCORE = {
+  'view': 1,
+  'download': 2,
+  'edit': 3,
+  'full': 4,
+  'owner': 5
+};
+
+export const hasEnoughPermission = (permission: string, target: string) => {
+  return PERMISSION_SCORE[permission] >= PERMISSION_SCORE[target];
+}
+

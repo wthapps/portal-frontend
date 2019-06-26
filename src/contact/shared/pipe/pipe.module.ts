@@ -6,16 +6,18 @@ import { ZContactInternalUser } from './internal-user.pipe';
 import { ZContactIsAll } from '@contacts/shared/pipe/is-all.pipe';
 import { CanInvitePipe } from '@contacts/shared/pipe/can-invite.pipe';
 import { ContactNamePipe } from './contact-name.pipe';
-import { ContactAddressPipe } from './contact-address.pipe';
+import { UserPipeModule } from '@shared/user/pipe/user-pipe.module';
+import { UserAddressPipe } from '@shared/user/pipe';
+import { ContactDisplayPipe } from './contact-display.pipe';
 
 @NgModule({
-  imports: [PipeModule],
+  imports: [PipeModule, UserPipeModule],
   declarations: [
     ZContactHasGroup,
     ZContactIsAll,
     ZContactInternalUser,
     CanInvitePipe,
-    ContactAddressPipe,
+    ContactDisplayPipe,
     ContactNamePipe
   ],
   exports: [
@@ -23,7 +25,8 @@ import { ContactAddressPipe } from './contact-address.pipe';
     ZContactIsAll,
     ZContactInternalUser,
     CanInvitePipe,
-    ContactAddressPipe,
+    UserAddressPipe,
+    ContactDisplayPipe,
     ContactNamePipe
   ]
 })

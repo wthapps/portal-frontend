@@ -11,28 +11,27 @@ import { Router } from '@angular/router';
 
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService } from '@shared/services';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
 import { mediaConstants } from '@media/shared/config/constants';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { MediaBasicListMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin } from '@shared/modules/photo/mixins';
+import { SharingModalResult, SharingEditParams } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import Album from '@shared/modules/photo/models/album.model';
+import MediaList from '@shared/modules/photo/models/list-functions/media-list.model';
+import Sharing from '@shared/modules/photo/models/sharing.model';
 
 declare var _: any;
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaModalMixin, MediaDownloadMixin, AlbumCreateMixin])
 @Component({
   templateUrl: '../shared/list/list.component.html',
-  styleUrls: [ './album-list.component.scss' ],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./album-list.component.scss']
 })
 export class AlbumListComponent implements OnInit,
   MediaBasicListMixin,
@@ -41,13 +40,13 @@ export class AlbumListComponent implements OnInit,
   AlbumCreateMixin,
   MediaModalMixin {
   // display objects on screen
-  objects: any;
+  objects: Array<Album> = [];
   // tooltip to introduction
   readonly tooltip: any = Constants.tooltip;
 
   // check has selected objects
   hasSelectedObjects = false;
-  selectedObjects: any = [];
+  selectedObjects: Array<Album> = [];
   favoriteAll = false;
   links: any;
   subOpenShare: any;
@@ -59,23 +58,25 @@ export class AlbumListComponent implements OnInit,
   modalRef: any;
   readonly iconNoData: any = 'wthico-album gray';
   readonly titleNoData: any = 'There are no albums!';
-  readonly subTitleNoData: any = 'Try to create an album';
-  readonly actionNoData: any = 'Create Album';
+  readonly subTitleNoData: any = 'User "New" button to create new albums.';
   sorting: any;
   endLoading: any;
   subCreateAlbum: any;
+  disableMoreAction: boolean;
+  title: string = 'Albums';
+  filters: any = [];
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
   openCreateAlbumModal: (selectedObjects: any) => void;
-  openModalShare: (input?: any) => void;
-  onSaveShare: (e: any) => void;
-  onEditShare: (e: SharingModalResult, sharing: any) => void;
-  selectedObjectsChanged: (objectsChanged?: any) => void;
+  // openModalShare: (input?: any) => void;
+  // onSaveShare: (e: any) => void;
+  // selectedObjectsChanged: (objectsChanged?: any) => void;
 
   toggleFavorite: (items?: any) => void;
 
   deleteObjects: (term: any) => void;
   loadingEnd: () => void;
+  deSelect: () => void;
 
   loadMoreObjects: (input?: any) => void;
 
@@ -86,6 +87,8 @@ export class AlbumListComponent implements OnInit,
 
   onDoneAlbum: (e: any) => void;
 
+  downloadMedia: (media: any) => void;
+
   constructor(
     public apiBaseService: ApiBaseService,
     public router: Router,
@@ -95,11 +98,11 @@ export class AlbumListComponent implements OnInit,
     public objectListService: WObjectListService,
     public localStorageService: LocalStorageService,
     public mediaCreateModalService: MediaCreateModalService,
+    public commonEventService: CommonEventService,
     public resolver: ComponentFactoryResolver
   ) {
   }
 
-  downloadMedia: (media: any) => void;
 
   ngOnInit() {
     this.loadObjects();
@@ -115,10 +118,20 @@ export class AlbumListComponent implements OnInit,
       case 'selectedObjectsChanged':
         if (this.selectedObjects.length > 1) {
           this.menuActions.edit.active = false;
+          this.menuActions.preview.active = false;
+          this.menuActions.share.active = false;
+          this.menuActions.shareMobile.active = false;
+          this.menuActions.download.active = false;
         } else {
           this.menuActions.edit.active = true;
+          this.menuActions.preview.active = true;
+          this.menuActions.share.active = true;
+          this.menuActions.shareMobile.active = true;
+          this.menuActions.download.active = true;
         }
         this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
+        this.disableMoreAction = (Object.keys(this.menuActions)
+          .filter(el => (this.menuActions[el].inDropDown && this.menuActions[el].active && !this.menuActions[el].mobile)).length === 0);
         break;
       default:
         break;
@@ -126,13 +139,38 @@ export class AlbumListComponent implements OnInit,
   }
 
   shareSelectedObject() {
-    this.openModalShare([this.selectedObjects[0].sharing_object]);
-    const sub = this.sharingModalService.update$.subscribe(res => {
-      if (!this.selectedObjects[0].sharing_object) {
-        this.selectedObjects[0].sharing_object = res.sharing_object;
-      }
-      sub.unsubscribe();
-    })
+    this.openModalShare(this.selectedObjects);
+  }
+
+  selectedObjectsChanged(objectsChanged: any = this.objects) {
+    if (this.objects) {
+      this.selectedObjects = MediaList.map(this.objects.filter(v => v.selected == true));
+      this.hasSelectedObjects = this.selectedObjects.length > 0;
+      this.favoriteAll = this.selectedObjects.every(s => s.favorite);
+      this.commonEventService.broadcast({
+        channel: 'ZMediaSharedLeftMenuComponent',
+        action: 'updateSelectedObjects',
+        payload: this.selectedObjects
+      })
+      this.onListChanges({ action: 'selectedObjectsChanged', payload: objectsChanged });
+    }
+  }
+
+  openModalShare: (data) => void;
+
+  onSaveShare(sharing: Sharing) {
+    if (MediaList.isSingleAlbum(this.selectedObjects)) {
+      this.selectedObjects[0].sharing_id = sharing.id;
+      this.selectedObjects[0].recipients_count = sharing.recipients_count;
+      this.objects = this.objects.map(e => {
+        if (e.id == this.selectedObjects[0].id) {
+          e.sharing_id = this.selectedObjects[0].sharing_id;
+          e.recipients_count = this.selectedObjects[0].recipients_count;
+        }
+        return e;
+      });
+    }
+    this.toastsService.success("success");
   }
 
   getMenuActions() {
@@ -171,6 +209,7 @@ export class AlbumListComponent implements OnInit,
           this.shareSelectedObject();
         },
         class: '',
+        mobile: true,
         liclass: 'visible-xs-block',
         tooltip: this.tooltip.share,
         title: 'Share',
@@ -240,6 +279,7 @@ export class AlbumListComponent implements OnInit,
           this.deleteObjects('albums');
         },
         class: '',
+        mobile: true,
         liclass: 'visible-xs-block',
         title: 'Delete',
         tooltip: this.tooltip.delete,
@@ -289,13 +329,12 @@ export class AlbumListComponent implements OnInit,
   }
 
   doEvent(event) {
-    const {action} = event;
-    console.log('doEvent action: ', action);
+    const { action } = event;
     switch (action) {
       case 'noData': {
         this.openCreateAlbumModal([]);
       }
-      break;
+        break;
     }
   }
 
@@ -305,8 +344,9 @@ export class AlbumListComponent implements OnInit,
   loadObjects(opts: any = {}) {
     this.loading = true;
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
+    this.objects = [];
     this.apiBaseService.get(`media/albums`, opts).subscribe(res => {
-      this.objects = res.data;
+      this.objects = MediaList.map(res.data);
       this.links = res.meta.links;
       this.loading = false;
       this.loadingEnd();
@@ -314,7 +354,7 @@ export class AlbumListComponent implements OnInit,
   }
 
   viewDetail(uuid: string) {
-    this.router.navigate([`/albums/${uuid}`], {queryParams: {returnUrls: ['/', '/albums']}});
+    this.router.navigate([`/albums/${uuid}`], { queryParams: { returnUrls: ['/', '/albums'] } });
   }
 
   onAfterEditModal() {

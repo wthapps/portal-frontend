@@ -1,0 +1,14 @@
+@import "../../../assets/styles/global";
+
+.breadcrumb {
+  .btn-group {
+    .btn {
+      color: $btn-default-color;
+      max-width: 150px;
+      @include text-overflow;
+      @media (min-width: $screen-sm-min) {
+        max-width: 250px;
+      }
+    }
+  }
+}

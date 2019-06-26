@@ -50,11 +50,9 @@ export class UserService {
     this.notificationSetting$ = this._notificationSetting.asObservable();
   }
 
-  login(path: string, body: string): Observable<Response> {
-    return this.apiBaseService.post(path, body, { unauthen: true }).pipe(map(res => {
-      if (res) {
-        this.storeUserInfo(res);
-      }
+  getProfile(id: string): Observable<any> {
+    // public logout(path: string) {
+    return this.apiBaseService.get(`users/profile/${id}`).pipe(map(res => {
       return res;
     }));
   }
@@ -70,10 +68,35 @@ export class UserService {
   /*
    * `sign up` new an account.
    */
-  signup(path: string, body: string): Observable<Response> {
+  signup(path: string, body: string): Observable<any> {
     return this.apiBaseService.post(path, body, { unauthen: true }).pipe(map(res => {
       if (res) {
         this.storeUserInfo(res);
+      }
+      return res;
+    }));
+  }
+
+  /*
+   * `sendConfirmationEmail` to user.
+   */
+  sendConfirmationEmail(): Observable<any> {
+    return this.apiBaseService.post('users/confirmation').pipe(map(res => {
+      if (res) {
+        this.storeUserInfo(res);
+      }
+      return res;
+    }));
+  }
+
+  /*
+   * `confirmEmail` of user.
+   */
+  confirmEmail(token: string): Observable<any> {
+    return this.apiBaseService.get(`users/confirmation?confirmation_token=${ token }`).pipe(map(res => {
+      const profile = res.data.attributes;
+      if (profile) {
+        this.updateProfile(profile);
       }
       return res;
     }));
@@ -137,6 +160,7 @@ export class UserService {
 
     this.loggedIn = false;
     this.profile = null;
+    this.setProfile(this.profile);
   }
 
   getDefaultPayment(): Observable<Response> {
@@ -160,18 +184,29 @@ export class UserService {
   }
 
   validProfile() {
-    const profile = this._profile.getValue();
-    return profile && Object.keys(profile).length > 0;
+    return this.cookieService.get(Constants.cookieKeys.loggedIn) && this.cookieService.get(Constants.cookieKeys.profile);
+  }
+
+  isProfileUpdated(): boolean {
+    if (this.cookieService.get(Constants.cookieKeys.loggedIn) && this.cookieService.get(Constants.cookieKeys.profile)) {
+      const currentProfile = this.getSyncProfile();
+      const latestProfile = JSON.parse(this.cookieService.get(Constants.cookieKeys.profile));
+      return currentProfile.uuid !== latestProfile.uuid;
+    } else return false;
   }
 
   updateProfile(profile: any) {
-    this.cookieService.put(
-      Constants.cookieKeys.profile,
-      JSON.stringify(profile),
-      this.cookieOptionsArgs
-    );
-    this.windowService.setItem({ profile: profile });
-    this.setProfile(profile);
+    const updatedProfile = this.profile;
+
+    // just update current attributes that is storing in cookie
+    for (const prop in updatedProfile) {
+      if (profile.hasOwnProperty(prop)) {
+        updatedProfile[prop] = profile[prop];
+      }
+    }
+    this.cookieService.put(Constants.cookieKeys.profile, JSON.stringify(updatedProfile), this.cookieOptionsArgs);
+    this.windowService.setItem({ profile: updatedProfile });
+    this.setProfile(updatedProfile);
     // this.soUserProfile = {...this._soProfile.getValue(), profile_image: profile.profile_image};
   }
 

@@ -1,51 +1,52 @@
 import { Injectable } from '@angular/core';
-import { ApiBaseService, StorageService, UserService } from '@shared/services';
-import { CONVERSATION_SELECT, STORE_MESSAGES } from '@shared/constant';
-import { of } from 'rxjs';
+import { UserService, ApiBaseService } from '@shared/services';
+import { STORE_MESSAGES } from '@shared/constant';
+import { of, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { CHAT_MESSAGES_SET, CHAT_MESSAGES_CURRENT_SET, CHAT_MESSAGES_CURRENT_ADD, CHAT_MESSAGES_CURRENT_MORE, CHAT_MESSAGES_CURRENT_TIMEOUT } from '@core/store/chat/messages.reducer';
-import { take, withLatestFrom, concatMap, map } from 'rxjs/operators';
+import { CHAT_MESSAGES_CURRENT_SET, CHAT_MESSAGES_CURRENT_ADD, CHAT_MESSAGES_CURRENT_MORE,
+  CHAT_MESSAGES_CURRENT_TIMEOUT } from '@core/store/chat/messages.reducer';
+import { take, withLatestFrom, map } from 'rxjs/operators';
 import { ChatConversationService } from './chat-conversation.service';
-import { CHAT_SELECTED_CONVERSATION_SET } from '@core/store/chat/selected-conversation.reducer';
 import { CHAT_CONVERSATIONS_SET } from '@core/store/chat/conversations.reducer';
 import { v4 as uuid } from 'uuid';
 import { Conversations } from '@shared/shared/models/chat/conversations.model';
 
 @Injectable()
 export class ChatMessageService {
-  constructor(private apiBaseService: ApiBaseService,
+  constructor(private api: ApiBaseService,
     private store: Store<any>,
     private userService: UserService,
     private chatConversationService: ChatConversationService) {}
 
-  create(groupId: any = null, data: any, option: any = {}) {
-    return this.apiBaseService
+  create(groupId: any = null, data: any) {
+    return this.api
       .post('zone/chat/message', { group_id: groupId, data: data }).toPromise();
   }
 
   createTextMessage(message: any, option: any = {}) {
-    of(message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([message, sc]) => {
-      let id: any = uuid();
-      const data: any = { status: 'pending', client_id: id, group_id: sc.group_id, message_type: 'text', message: message, user_id: this.userService.getSyncProfile().id };
+    of(message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map((message:any, sc:any) => {
+      const id: any = uuid();
+      const data: any = { status: 'pending', client_id: id, group_id: sc.group_id, message_type: 'text',
+       message: message, user_id: this.userService.getSyncProfile().id };
       // add pending message
       this.addCurrentMessages({ message: data});
       setTimeout(() => {
-        this.store.dispatch({ type: CHAT_MESSAGES_CURRENT_TIMEOUT, payload: data })
-      }, 5000)
-      this.create(sc.group_id, { message: message, type: 'text', client_id: id}, option);
+        this.store.dispatch({ type: CHAT_MESSAGES_CURRENT_TIMEOUT, payload: data });
+      }, 8000);
+      this.create(sc.group_id, { message: message, type: 'text', client_id: id});
       return sc;
-    })).toPromise().then(sc => {
-      // move first list
-      this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe((conversations: Conversations) => {
-        this.chatConversationService.updateStoreConversations(conversations);
-      })
-    });
+    })).toPromise().then(() => {
+        // move first list
+        this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe((conversations: Conversations) => {
+          this.chatConversationService.updateStoreConversations(conversations);
+        });
+      });
   }
 
   createFileMessage(file: any) {
     this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(sc => {
       if (sc) {
-        this.apiBaseService
+        this.api
           .post('zone/chat/message', {
             data: {
               type: 'file',
@@ -53,64 +54,76 @@ export class ChatMessageService {
               object: file.object_type
             },
             group_id: sc.group_id
-          }).subscribe(res => {
-              // handel in channel
-          })
+          }).subscribe(() => {
+            });
       }
     });
   }
   createMediaMessage(media: any) {
-    return of(media).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([media, sc]) => {
-      this.apiBaseService
+    return of(media).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()),
+    map((md:any, sc:any) => {
+      this.api
         .post('zone/chat/message', {
           data: {
             type: 'file',
-            id: media.id,
-            object: media.object_type
+            id: md.id,
+            object: md.object_type
           },
           group_id: sc.group_id
-        }).subscribe(res => {
-
-        })
+        }).subscribe(() => {
+          });
     }));
   }
 
   getMessages(groupId: number, options: any = {}): Promise<any> {
-    return this.apiBaseService.get('zone/chat/message/' + groupId, options).toPromise().then(res => {
-      this.store.dispatch({type: CHAT_MESSAGES_CURRENT_SET, payload: res})
+    return this.api.get('zone/chat/message/' + groupId, options).toPromise().then(res => {
+      this.store.dispatch({type: CHAT_MESSAGES_CURRENT_SET, payload: res});
       return res;
-    })
+    });
   }
 
-  loadMoreMessages(){
+  /**
+   *
+   * @param conversationId
+   * @param id
+   * Descritpion: calling delete message api, updating local data operation will be done later by
+   * action cable handler later. Reference chat_actions.ts: chat_send_message handler
+   */
+  deleteMessage(conversationId: number, id: number): Observable<any> {
+    return this.api.delete(
+      `zone/chat/conversations/${conversationId}/messages/${id}`
+    );
+  }
+
+  loadMoreMessages() {
     this.store.select(STORE_MESSAGES).pipe(take(1)).subscribe(s => {
-      if (s.meta.links.next){
-        this.apiBaseService.get(s.meta.links.next).toPromise().then(res => {
+      if (s.meta.links.next) {
+        this.api.get(s.meta.links.next).toPromise().then(res => {
           this.store.dispatch({
             type: CHAT_MESSAGES_CURRENT_MORE, payload: {
               data: res.data,
               meta: res.meta
             }
-          })
-        })
+          });
+        });
       }
     });
   }
 
-  getCurrentMessages(){
+  getCurrentMessages(): Observable<any> {
     return this.store.select(STORE_MESSAGES);
   }
 
-  addCurrentMessages(res: any){
-    of(res.message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([data, sc]) => {
+  addCurrentMessages(res: any) {
+    of(res.message).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map((data:any, sc:any) => {
       // update deleted and hide conversation to show, move to first
       this.chatConversationService.getStoreConversations().pipe(take(1)).subscribe((conversations: Conversations) => {
         conversations.data = conversations.data.map(c => {
-          if(c.group_id == data.group_id && c.deleted) {
+          if (c.group_id === data.group_id && c.deleted) {
             c.deleted = false;
           }
           return c;
-        })
+        });
         // move to first
         conversations.moveToFirstByGroupId(data.group_id);
         this.store.dispatch({
@@ -119,13 +132,12 @@ export class ChatMessageService {
       });
 
       // check current group chat and add message into
-      if (data.group_id == sc.group_id) {
+      if (data.group_id === sc.group_id) {
         this.store.dispatch({
           type: CHAT_MESSAGES_CURRENT_ADD, payload: {data: data}
         });
       }
-    })).toPromise().then(res => {
-
-    })
+    })).toPromise().then(() => {
+      });
   }
 }

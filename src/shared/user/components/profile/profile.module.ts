@@ -17,7 +17,6 @@ import { WModalService } from '@shared/modal';
 import { ProfileService } from '@shared/user/services';
 import { NameEditModalComponent } from '@shared/user/components/cover-info/name-edit-modal.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -27,7 +26,7 @@ import { NameEditModalComponent } from '@shared/user/components/cover-info/name-
     BsModalModule,
     AutoCompleteModule,
     RadioButtonModule,
-    
+
     CoverInfoModule,
     BasicInfoModule,
     ContactInfoModule,
@@ -35,21 +34,9 @@ import { NameEditModalComponent } from '@shared/user/components/cover-info/name-
     PipeModule,
     ProfileRouting
   ],
-  declarations: [
-    ProfileComponent,
-    
-  ],
-  exports: [
-    ProfileComponent,
-  ],
-  providers: [
-    ProfileService,
-    WModalService,
-  ],
-  entryComponents: [
-    NameEditModalComponent,
-  ]
+  declarations: [ProfileComponent],
+  exports: [ProfileComponent],
+  providers: [ProfileService, WModalService],
+  entryComponents: [NameEditModalComponent]
 })
-
-export class ProfileModule {
-}
+export class ProfileModule {}

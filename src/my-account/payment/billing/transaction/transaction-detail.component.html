@@ -1,0 +1,44 @@
+<div class="box-panel">
+  <h3 class="box-panel-title">Transaction details</h3>
+  <div class="card">
+    <div class="card-body" id="print-section">
+      <h3>Transaction Id: {{ trans_id }}</h3>
+      <hr class="card-line">
+      <h4>Transaction Information</h4>
+      <dl class="dl-horizontal">
+        <dt>Transaction Date</dt>
+        <dd>{{ transaction?.created_at | date:'MMM dd yyyy' }} {{ transaction?.created_at | date:'H:mm:ss' }}</dd>
+        <dt>Description</dt>
+        <dd> {{ transaction?.description }} </dd>
+        <dt>Amount</dt>
+        <dd>{{ transaction?.amount | currency }} CAD</dd>
+      </dl>
+      <hr class="card-line">
+      <h4>Payment Method</h4>
+      <dl class="dl-horizontal">
+        <dt>Card Type</dt>
+        <dd>{{ transaction?.subscription_json?.payment_method?.card_type }}</dd>
+        <dt>Card Ending With</dt>
+        <dd>xxxx-xxxx-xxxx-{{ transaction?.subscription_json?.payment_method?.last_4 }}</dd>
+        <dt>Expiration</dt>
+        <dd> {{ transaction?.subscription_json?.payment_method?.expiration_month }}/{{ transaction?.subscription_json?.payment_method?.expiration_year }}</dd>
+      </dl>
+      <hr class="card-line">
+      <h4>Billing Information</h4>
+      <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>{{ transaction?.subscription_json?.user?.first_name }} {{ transaction?.subscription_json?.user?.last_name }}</dd>
+        <dt>Email</dt>
+        <dd>{{ transaction?.subscription_json?.user?.email }}</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="mt20 mb20">
+    <a [routerLink]="['/payment/billings']" class="btn btn-outline-default mr10" href="#">Back</a>
+    <a (click)="printTransaction()" class="btn btn-outline-default" href="#"><i class="fa fa-print"></i> Print</a>
+<!--    <button class="btn btn-outline-default"-->
+<!--            [useExistingCss]="true"-->
+<!--            printSectionId="print-section"-->
+<!--            ngxPrint><i class="fa fa-print"></i> Print</button>-->
+  </div>
+</div>

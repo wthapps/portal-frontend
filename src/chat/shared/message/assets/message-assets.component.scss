@@ -68,15 +68,15 @@ $message-assets-width: 400px;
     .wobject-grid .wobject-item, .wobject-timeline .wobject-item {
       @include box-shadow(none);
       .wobject-box-name {
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
         border-radius: 5px;
         border: 1px solid $line;
         .media-body a {
-          display: block;
+          @include text-overflow();
           width: 317px;
-          text-overflow: ellipsis;
-          overflow: hidden;
+
+          &.note-title {
+            display: block;
+          }
         }
       }
     }
@@ -120,6 +120,146 @@ $message-assets-width: 400px;
   }
 }
 
+.row-img {
+  &.grid {
+    .row-img-item {
+      width: 50%;
+      float: left;
+    }
+  }
+}
+
+.message-assets-list {
+  overflow: auto;
+  padding-top: 20px;
+
+  .message-assets-item {
+    margin-bottom: 10px;
+    padding: 0px 10px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &.photo-item {
+      -webkit-box-flex: 0;
+      -ms-flex: 0 45%;
+      flex: 0 45%;
+      padding: 10px;
+      margin: 10px;
+      width: 50%;
+    }
+
+    &.active {
+      border-color: $color-inverse;
+    }
+
+    .message-assets-item-header {
+      margin-top: 2px;
+      .action {
+        color: $text-color;
+        padding-right: 5px;
+        cursor: pointer;
+        z-index: 1;
+      }
+    }
+
+    .message-assets-item-body {
+      padding: 10px;
+      margin-bottom: 2px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      overflow: hidden;
+      cursor: pointer;
+
+      .media {
+        margin: 0px 10px;
+
+        .media-body {
+          a {
+            display: block;
+          }
+        }
+      }
+
+      a {
+        width: 317px;
+        text-decoration: none;
+        color: $text-color;
+        @include text-overflow();
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // overflow: hidden;
+      }
+
+      .wobject-box-title-note {
+        display: block;
+        @include text-overflow();
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // overflow: hidden;
+      }
+
+      .wobject-box-content-note {
+        max-height: 60px;
+        overflow: hidden;
+        position: relative;
+        color: #9b9b9b;
+        &:after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 20px;
+          z-index: 2;
+          @include gradient-vertical(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1), 0%, 100%)
+        }
+      }
+
+      .message-assets-item-img {
+        max-height: 100px;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        margin: -10px -10px 0 -10px;
+        padding-bottom: 75%;
+        display: block;
+
+        img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          width: 100%;
+        }
+
+        i {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          font-size: 40px;
+          color: #ffffff;
+          width: 40px;
+          height: 40px;
+          display: inline-block;
+        }
+      }
+
+      .photo-box-name {
+        @include text-overflow();
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // overflow: hidden;
+        margin-top: 5px;
+      }
+    }
+
+  }
+}
+
 body {
   &.open-chat-message-assets {
     .page-body-content {
@@ -132,4 +272,3 @@ body {
     }
   }
 }
-

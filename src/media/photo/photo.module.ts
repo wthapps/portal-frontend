@@ -4,7 +4,6 @@ import { ZMediaSharedModule } from '../shared/shared.module';
 
 import { ZMediaPhotoListComponent } from './photo-list.component';
 import { ZMediaPhotoRoutingModule } from './photo-routing.module';
-import { SharedModule } from '@wth/shared/shared.module';
 import { CoreModule } from '@wth/core/core.module';
 import { PhotoService } from '@wth/shared/services';
 import { ModalModule } from '@wth/shared/modals/modals.module';
@@ -20,7 +19,6 @@ import { WMediaPreviewModule } from '@shared/components/w-media-preview/media-pr
 
     ZMediaSharedModule,
     ModalModule,
-    SharedModule,
     CoreModule,
     WGridListModule,
     WMediaPreviewModule,

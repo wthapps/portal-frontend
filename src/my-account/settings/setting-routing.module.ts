@@ -1,6 +1,4 @@
-import { DeleteAccountComponent } from '@account/settings/delete-account/delete-account.component';
 import { SettingsPasswordComponent } from '@account/settings/password/password.component';
-import { MyStorageComponent } from '@account/settings/storage/storage.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -9,6 +7,7 @@ import { MyAccountComponent } from './account/account.component';
 import { MyPreferencesComponent } from './preferences/preferences.component';
 import { MyProfileComponent } from './profile/profile.component';
 import { MySettingComponent } from './setting.component';
+import { SubscriptionGuard } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -16,21 +15,30 @@ import { MySettingComponent } from './setting.component';
       {
         path: 'settings',
         component: MySettingComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, SubscriptionGuard],
         children: [
-          { path: 'storage', component: MyStorageComponent },
           { path: 'preferences', component: MyPreferencesComponent },
           { path: 'account', component: MyAccountComponent },
           { path: 'profile', component: MyProfileComponent },
           { path: 'password', component: SettingsPasswordComponent },
-          { path: 'delete-account', component: DeleteAccountComponent },
           { path: '', component: MySettingComponent },
           { path: '*', component: MySettingComponent }
         ]
+      },
+      {
+        path: '',
+        redirectTo: '/settings/profile',
+        pathMatch: 'full',
+        canActivate: [SubscriptionGuard]
+      },
+      {
+        path: '*',
+        redirectTo: '/settings/profile',
+        pathMatch: 'full',
+        canActivate: [SubscriptionGuard]
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class MySettingRoutingModule {
-}
+export class MySettingRoutingModule {}

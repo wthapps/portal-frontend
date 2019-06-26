@@ -1,37 +1,34 @@
-<div *ngIf="data" class="media-avatar">
-  <div *ngIf="displayAvatar" class="media-avatar-img-wrap">
+<div class="media-avatar">
+  <div class="media-avatar-img-wrap">
     <div class="media-avatar-img avatar-{{ size }} avatar-chat">
-      <img *ngIf="data.group.group_type == 'couple'" [src]="data.display.image" alt="">
-      <img *ngIf="data.group.group_type == 'multiple'" [src]="data.group.profile_image" alt="">
-
+      <img [src]="data.profile_image" alt="">
     </div>
-    <span *ngIf="data.display?.id" class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}">
+    <span *ngIf="data.id" class="media-avatar-status mr3" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}">
       <i *ngIf="isPending" class="fa fa-question-circle"></i>
     </span>
   </div>
-  <div *ngIf="displayUserName" class="media-avatar-body">
-    <div class="text-bold text-1-line" *ngIf="data.group.group_type == 'couple'">
-      <p>{{ data.display.name }}</p>
-    </div>
-    <div class="text-bold text-1-line" *ngIf="data.group.group_type == 'multiple'">
-      <p>{{ data.group.name }}</p>
-    </div>
+  <div class="media-avatar-body">
+    <ng-container *ngIf="displayUserName">
+      <div class="text-bold text-1-line">
+        <p>{{ data.name }}</p>
+      </div>
+    </ng-container>
     <ng-container *ngIf="!displayAvatar">
 
-      <ng-container *ngIf="data.group.group_type == 'couple'">
+      <ng-container *ngIf="data.group_type == 'couple'">
         <div *ngIf="isPending">
           <!-- <span class="media-avatar-status"><i class="fa fa-question-circle"></i></span> -->
           Pending request
         </div>
         <div *ngIf="!isPending">
-          <span class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>
+          <!--<span class="media-avatar-status" [ngClass]="{'online': usersOnlineItem?.includes(data.display?.id)}"></span>-->
           <span *ngIf="usersOnlineItem?.includes(data.display?.id)">Online</span>
           <span *ngIf="!usersOnlineItem?.includes(data.display?.id)">Offline</span>
         </div>
       </ng-container>
 
-      <ng-container *ngIf="data.group.group_type == 'multiple'">
-        {{ data.group?.users_json?.length }} members
+      <ng-container *ngIf="data.group_type == 'multiple'">
+        {{ data.members_count }} members
       </ng-container>
 
     </ng-container>

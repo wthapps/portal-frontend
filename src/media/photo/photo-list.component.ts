@@ -1,4 +1,5 @@
-import {Component, OnInit, ComponentFactoryResolver, OnDestroy, ViewContainerRef, ViewChild} from '@angular/core';
+import { GoogleAnalyticsService } from './../../shared/services/analytics/google-analytics.service';
+import { Component, OnInit, ComponentFactoryResolver, OnDestroy, ViewContainerRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -9,24 +10,22 @@ import {
 } from '../shared/store/media/media.actions';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
-import { ApiBaseService, CommonEventService, CommonEventHandler } from '@shared/services';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
+import { ApiBaseService, CommonEventService, CommonEventHandler, CommonEvent } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
-import { AlbumCreateMixin } from '@shared/mixin/album/album-create.mixin';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { WUploader } from '@shared/services/w-uploader';
 import { mediaConstants } from '@media/shared/config/constants';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { MediaBasicListMixin, AlbumAddMixin, AlbumCreateMixin, MediaDownloadMixin, MediaModalMixin } from '@shared/modules/photo/mixins';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import MediaList from '@shared/modules/photo/models/list-functions/media-list.model';
+import Media from '@shared/modules/photo/models/media.model';
 
 
 declare var _: any;
@@ -36,22 +35,21 @@ const MAX_CONCURRENT_FILES = 4;
   moduleId: module.id,
   selector: 'me-photo-list',
   templateUrl: '../shared/list/list.component.html'
-  // templateUrl: 'photo-list.component.html'
 })
 export class ZMediaPhotoListComponent extends CommonEventHandler implements OnInit, OnDestroy,
-SharingModalMixin,
-MediaBasicListMixin,
-AlbumAddMixin,
-AlbumCreateMixin,
-MediaDownloadMixin,
-MediaModalMixin {
+  SharingModalMixin,
+  MediaBasicListMixin,
+  AlbumAddMixin,
+  AlbumCreateMixin,
+  MediaDownloadMixin,
+  MediaModalMixin {
   currentQuery: string;
   tooltip: any = Constants.tooltip;
   type = 'photo';
   path = 'media/media';
-  objects: any;
+  objects: Array<Media>;
   links: any;
-  selectedObjects: any = [];
+  selectedObjects: Array<Media> = [];
   favoriteAll: any;
   hasSelectedObjects: boolean;
   loading: boolean;
@@ -68,11 +66,15 @@ MediaModalMixin {
   modalRef: any;
   endLoading: any;
   menuActions: any;
-  sorting: any =  {sort_name: 'Date', sort: 'desc'};
+  sorting: any = { sort_name: 'created_at', sort: 'desc' };
   destroy$ = new Subject();
   channel = 'ZMediaPhotoListComponent';
-
-  private sub: any;
+  title: string = 'Photos';
+  filters: any = [];
+  // ============
+  titleNoData: any = 'There are no items!';
+  subTitleNoData: any = 'Drop photos or videos or use "New" button to upload photos and videos.';
+  iconNoData: any = 'fa fa-photo';
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -88,17 +90,19 @@ MediaModalMixin {
     public commonEventService: CommonEventService,
     public confirmService: WthConfirmService,
     public localStorageService: LocalStorageService,
+    private googleAnalytics: GoogleAnalyticsService,
     private uploader: WUploader
   ) {
     super(commonEventService);
   }
+  deSelect: () => void;
 
   ngOnInit() {
     this.loadObjects();
-    this.sub = this.commonEventService.filter(e => e.channel === 'WUploaderStatus').pipe(
+    this.commonEventService.filter(e => e.channel === 'WUploaderStatus').pipe(
       takeUntil(this.destroy$)).subscribe((event: any) => {
-      this.doListEvent(event);
-    });
+        this.doListEvent(event);
+      });
     this.menuActions = this.getMenuActions();
     this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
@@ -108,12 +112,16 @@ MediaModalMixin {
     this.destroy$.complete();
   }
 
+  reLoadObjects(event: CommonEvent) {
+    this.loadObjects();
+  }
+
   loadObjects(opts: any = {}) {
     this.loading = true;
-    opts = {...opts, model: 'Media::Photo'};
-    this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
+    this.sorting = { sort_name: opts.sort_name || 'created_at', sort: opts.sort || 'desc' };
+    this.objects = [];
     this.apiBaseService.get('media/media/index_combine', opts).subscribe(res => {
-      this.objects = res.data;
+      this.objects = MediaList.map(res.data);
       this.links = res.meta.links;
       this.loading = false;
       this.loadingEnd();
@@ -142,12 +150,7 @@ MediaModalMixin {
 custom method please overwirte any method*/
   // tslint:disable-next-line:member-ordering
   openCreateAlbumModal: (selectedObjects: any) => void;
-  onDoneAlbum(e: any) {
-    this.apiBaseService.post(`media/albums`, {name: e.parents[0].name, description: e.parents[0].description,
-       photos: e.children.map(el => el.id)}).subscribe(res => {
-      this.router.navigate(['albums', res.data.uuid]);
-    });
-  }
+  onDoneAlbum: (e: any) => void;
   /* ================================== */
 
   /* AlbumAddMixin This is album add methods, to
@@ -157,11 +160,11 @@ custom method please overwirte any method*/
   onAddToAlbum(e: any) {
     this.apiBaseService
       .post(`media/albums/${e.parents[0].id}/photos`, {
-          photos: this.selectedObjects
-        })
-        .toPromise().then(res => {
-          this.toastsService.success('You just added to Album success');
-        });
+        photos: this.selectedObjects
+      })
+      .toPromise().then(res => {
+        this.toastsService.success('You just added to Album success');
+      });
   }
   // tslint:disable-next-line:member-ordering
   onAddedToAlbum: (data: any) => void;
@@ -232,11 +235,9 @@ custom method please overwirte any method*/
   toggleFavorite: (input?: any) => void;
   viewDetail(id: any) {
     const model = this.selectedObjects[0].object_type;
-    const data: any = { returnUrls: '/photos', preview: true, model: model};
-    // if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
+    const data: any = { returnUrls: '/photos', preview: true, model: model };
     if (this.selectedObjects && this.selectedObjects.length > 1) { data.objects = this.selectedObjects.map(s => `${s.uuid},${s.object_type}`); }
-    this.router.navigate([`/photos/${id}`], {queryParams: data});
-    // this.router.navigate([`/videos/${id}`], {queryParams: data});
+    this.router.navigate([`/photos/${id}`], { queryParams: data });
   }
 
   // ============= MediaListMixin ===============
@@ -356,20 +357,6 @@ custom method please overwirte any method*/
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-plus-square'
       },
-      download: {
-        active: true,
-        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
-        inDropDown: true, // Outside dropdown list
-        action: () => {
-          this.downloadMedia(this.selectedObjects);
-        },
-        class: '',
-        liclass: '',
-        title: 'Download',
-        tooltip: this.tooltip.info,
-        tooltipPosition: 'bottom',
-        iconClass: 'fa fa-download'
-      },
       edit: {
         active: true,
         permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
@@ -382,7 +369,22 @@ custom method please overwirte any method*/
         title: 'Edit Information',
         tooltip: this.tooltip.edit,
         tooltipPosition: 'bottom',
-        iconClass: 'fa fa-edit'
+        iconClass: 'fa fa-pencil'
+      },
+      download: {
+        active: true,
+        permission: mediaConstants.SHARING_PERMISSIONS.OWNER,
+        inDropDown: true, // Outside dropdown list
+        action: () => {
+          this.downloadMedia(this.selectedObjects);
+          this.googleAnalytics.eventEmitter('photos', 'download');
+        },
+        class: '',
+        liclass: '',
+        title: 'Download',
+        tooltip: this.tooltip.info,
+        tooltipPosition: 'bottom',
+        iconClass: 'fa fa-download'
       },
       deleteMobile: {
         active: true,

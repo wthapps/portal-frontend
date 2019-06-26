@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { Media } from '@shared/shared/models/media.model';
+import Media from '@shared/modules/photo/models/media.model';
 
 @Component({
   selector: 'w-object-toolbar-selected',
@@ -20,7 +20,7 @@ import { Media } from '@shared/shared/models/media.model';
               </button>
             </li>
             <li>
-              <span class="btn btn-text">{{ selectedObjects?.length }} selected</span>
+              <span class="selected-items">{{ selectedObjects?.length }} selected</span>
             </li>
           </ul>
 
@@ -42,13 +42,13 @@ export class WObjectToolbarSelectedComponent implements AfterViewInit, OnDestroy
 
 
   constructor(private objectListService: WObjectListService,
-              private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {
   }
 
   clearSelected() {
     this.objectListService.clear();
-    this.event.emit({action: 'close'});
+    this.event.emit({ action: 'close' });
   }
 
   ngAfterViewInit() {

@@ -1,0 +1,157 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="false">
+    <div class="modal-header-nav">
+      <div class="card-title" *ngIf="card">
+          <h4 class="modal-title">{{ card?.card_type === BUSINESS ? card?.card_name : PUBLIC_PROFILE }} </h4>
+      </div>      
+      <ul class="modal-header-navbar" *ngIf="card" >
+        <li *ngIf="card.is_owner">
+          <button (click)="onEdit()" type="button" class="btn btn-default btn-default-no-border">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+        </li>
+        <li class="dropdown" *ngIf="!cardActions">
+          <button class="btn btn-default btn-default-no-border" type="button" data-toggle="dropdown">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li *ngIf="card.is_owner && card.card_type === BUSINESS">
+              <a href="javascript:;" (click)="onShare()">
+                <i class="fa fa-share-alt" aria-hidden="true"></i> Share
+              </a>
+            </li>
+            <li>
+                <a href="javascript:;" role="button" (click)="goToChat(card)"><i class="fa fa-comments-o" aria-hidden="true"></i> Send message</a>
+            </li>
+            <!-- <li>
+              <a href="javascript:void(0);" (click)="onExport(EXPORT_TYPE.csv)"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to CSV</a>
+            </li>
+            <li>
+              <a href="javascript:void(0);" (click)="onExport(EXPORT_TYPE.vcard)"><i class="fa fa-cloud-download" aria-hidden="true"></i> Export to v-card</a>
+            </li> -->
+            <li *ngIf="card.is_owner && card.card_type === BUSINESS">
+              <a href="javascript:void(0);" (click)="onDelete()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown" *ngIf="cardActions">
+            <ng-content select=".card-actions"></ng-content>
+
+        </li>
+        <li>
+          <button type="button" (click)="close()" class="btn btn-default btn-default-no-border">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </bs-modal-header>
+
+  <bs-modal-body>
+    <div class="pcard-cover" *ngIf="card">
+      <div class="media-avatar align-items-center">
+        <div class="media-avatar-img-wrap">
+          <ng-container *ngIf="card.is_owner && card.card_type ==='business' else readonlyCard">
+            <div class="media-avatar-img avatar-md" (click)="onEdit(true)">
+              <img [src]="card?.profile_image" [alt]="card?.first_name + ' ' + card?.last_name">
+              <span class="w-user-avatar-cover">
+                <i class="fa fa-camera"></i>
+              </span>
+            </div>
+          </ng-container>
+          <ng-template #readonlyCard>
+            <div class="media-avatar-img avatar-md">
+              <img *ngIf="card" [src]="card?.profile_image" [alt]="card?.first_name + ' ' + card?.last_name">
+            </div>
+          </ng-template>
+        </div>
+        <div class="media-avatar-body">
+          <p class="card-owner-name m0"> {{ card?.first_name + ' ' + card?.last_name }} </p>
+          <p class="card-company m0"><span *ngIf="(card?.company | trim).length > 0">{{ card?.company }} <span *ngIf="card?.occupation">, </span> </span> <span> {{ card?.occupation }} </span></p>
+          <p class="card-company">
+            {{ card?.headline}}
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <dl class="dl-horizontal pcard-info">
+          <ng-container *ngIf="card?.emails?.length > 0">
+            <dt>Emails</dt>
+            <ng-container *ngFor="let item of card.emails; trackBy:trackByFn">
+                <dd>
+                    <a [href]="'mailto:' + item.value">{{ item.value }}</a><span class="text-fade">&nbsp; &bull; {{ item.category }} </span>
+                </dd>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="card?.phones?.length > 0">
+            <dt>
+                Phones    
+            </dt>
+            <ng-template ngFor let-item [ngForOf]="card.phones" let-i="index" [ngForTrackBy]="trackByFn">
+                <dd> {{ item.country_alpha_code|phoneDialCode }} {{ item.value }} <span class="text-fade">&nbsp; &bull; {{ item.category }} </span> </dd>
+            </ng-template>
+      
+            </ng-container>
+
+        <ng-container *ngIf="card?.addresses?.length > 0">
+            <dt>Addresses</dt>  
+          <ng-container *ngFor="let item of card.addresses; trackBy:trackByFn">
+              <dd>
+                  <span [innerHTML]="item | userAddress"></span> <span class="text-fade">&nbsp; &bull; {{ item.category }} </span>
+              </dd>
+            </ng-container>    
+        </ng-container>
+
+
+      <ng-container *ngIf="card?.media?.length > 0">
+          <dt>
+              URLs  
+          </dt>
+        <ng-template ngFor let-item [ngForOf]="card.media" let-i="index" [ngForTrackBy]="trackByFn">
+              <dd><a [href]="item.value">{{ item.value }}</a> <span class="text-fade">&nbsp; &bull; {{ item.category }} </span></dd>
+          </ng-template>
+        </ng-container>
+
+        <ng-container *ngIf="card?.sex">
+            <dt>Gender</dt>   
+            <dd>{{ SEX[card?.sex] || NONE }}</dd>
+          </ng-container>
+  
+          <ng-container *ngIf="card?.nationality">
+              <dt>
+                Nationality
+              </dt>
+              <dd>
+                {{ card?.nationality | countryCode2Value: (countryService.countriesCode$ | async)}}
+              </dd>
+          </ng-container>
+
+          <ng-container *ngIf="card?.birthday">
+            <dt>Birthday</dt>   
+            <dd>{{ (card?.birthday | timeFormat) || NONE }}</dd>
+          </ng-container>
+  
+            <ng-container *ngIf="card?.about && card?.show_about">
+                <dt>
+                  About
+                </dt>
+                <dd>
+                    {{ card?.about || NONE }}
+                </dd>
+            </ng-container>
+  
+        <ng-container *ngIf="card?.custom_fields?.length > 0">
+            <ng-template ngFor let-item [ngForOf]="card.custom_fields" let-i="index" >
+              <dt>
+                  {{ item?.label }}
+                </dt>
+                <dd> {{ item?.value }} </dd>
+            </ng-template>
+          </ng-container>
+    </dl>
+  </bs-modal-body>
+</bs-modal>
+

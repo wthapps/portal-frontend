@@ -1,4 +1,187 @@
-<form action="" class="note-editor-wrap">
+<div class="note-editor-wrap">
+  <div class="note-editor-header hidden-print">
+    <div class="note-editor-header-actions">
+      <a href="#" class="icon-zone-md-note"></a>
+    </div>
+    <div class="note-editor-header-content">
+      <div class="d-flex">
+        <div class="body">
+          <div class="hidden-xs">
+            <h4 class="ml5">{{ note?.name ? note?.name : 'Untitled' }}</h4>
+          </div>
+          <div class="visible-xs-block">
+            <h4>
+              {{ note?.name ? note?.name : 'Untitled' }}
+            </h4>
+          </div>
+        </div>
+        <div class="actions">
+          <button (click)="handleActionEvents('openAttactments')" class="btn btn-default" type="button">
+            <i class="fa fa-paperclip"></i>
+          </button>
+        </div>
+      </div>
+      <div class="text-fade small ml5">
+                <span>Last edited on {{ note?.updated_at | date: 'MMM dd' }}
+                    <span class="text-bold fz16 ml5 mr5">·</span> {{ note?.user?.uuid === profile?.uuid ? 'me' : ''}}
+                    <a href="#" *ngIf="note?.user?.uuid !== profile?.uuid"> {{ note?.user?.name }}</a>
+                </span>
+        <span class="text-bold fz16 ml5 mr5">·</span>
+        <span id="counter"></span>
+      </div>
+    </div>
+  </div>
+  <div class="note-editor-content hidden-print" [ngClass]="{'show-aside': !!visibleTab}">
+    <div class="note-editor-toolbar">
+      <div class="ql-toolbar ql-snow">
+        <div class="ql-formats">
+          <i class="fa fa-eye"></i> View only
+        </div>
+      </div>
+    </div>
+    <div class="note-editor-body" id="scrolling-container">
+      <div id="quill-editor" class="ql-font-{{setting?.font}}" [ngStyle]="{'font-size': setting?.font_size}"
+           [attr.data-size]="setting?.font_size"></div>
+    </div>
+    <div class="note-editor-aside ">
+      <ng-container *ngIf="visibleTab === 'attachment'">
+        <div class="note-editor-aside-header">
+          <h4>
+            <i class="fa fa-paperclip"></i> Attachment ({{ note?.attachments?.length || 0 }})
+          </h4>
+          <a (click)="visibleTab = undefined" href="#" class="btn btn-default">
+            <i class="fa fa-close text-fade"></i>
+          </a>
+        </div>
+        <div class="note-editor-aside-body">
+          <div class="btn-toolbar mb15" role="toolbar">
+            <div *ngIf="note?.attachments?.length > 0 && note?.permission !== 'view'" class="btn-group" role="group">
+              <button (click)="downloadAttachments()" type="button" class="btn btn-outline-default">
+                <i class="fa fa-download"></i> Download all
+              </button>
+            </div>
+          </div>
+          <div class="note-editor-aside-content">
+            <table class="table table-middle wth-table table-hover"
+                   *ngIf="note.attachments && note.attachments.length > 0">
+              <thead>
+              <tr>
+                <th class="can-click" (click)="onSort('name')">
+                  Name
+                  <i *ngIf="hasSortBy" class="fa"
+                     [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
+                </th>
+                <th>&nbsp;</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let att of note.attachments">
+                <td [ngClass]="{'can-click': ['photo', 'Media::Photo'].includes(att.object_type)}"
+                    (click)="fileAttachmentClick(att)">
+                  <i *ngIf="att.thumbnail_url &&  ['photo', 'Media::Photo'].includes(att.object_type)"
+                     class="fa fa-picture-o"></i>
+                  <i *ngIf="att.thumbnail_url &&  !(['photo', 'Media::Photo'].includes(att.object_type))"
+                     class="fa fa-file"></i>
+                  <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+                  {{ att.name + '.' + att?.extension | maxLength: 30 }}
+                  <p class="text-fade">{{ att.size | bytes:3 }}</p>
+                </td>
+                <td class="text-right">
+                  <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
+                    <i class="fa fa-download"></i>
+                  </button>
+                  <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button"
+                          [disabled]="note.permission == 'view'">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="visibleTab === 'comment'">
+        <div class="note-editor-aside-header">
+          <h4>
+            <i class="fa fa-comment" aria-hidden="true"></i> Comment
+          </h4>
+          <a (click)="visibleTab = undefined" href="#" class="btn btn-default">
+            <i class="fa fa-close text-fade"></i>
+          </a>
+        </div>
+        <div class="note-editor-aside-comment">
+          <div class="user-row">
+            <div class="user-avatar">
+              <div class="user-avatar-img">
+                <img alt=""
+                     src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1542958923.jpg">
+              </div>
+            </div>
+            <div class="user-body">
+
+            </div>
+          </div>
+        </div>
+        <div class="note-editor-aside-body">
+          <div class="note-comment-list">
+            <div class="user-row">
+              <div class="user-avatar">
+                <div class="user-avatar-img">
+                  <img alt=""
+                       src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1542958923.jpg">
+                </div>
+              </div>
+              <div class="user-body">
+                <div class="user-name">
+                  <a href="#">Jack Gmail1</a> <span>·</span> 1 day ago
+                </div>
+                <div class="user-content">Lorem ipsum dolor sit amet</div>
+                <div class="user-reply"><a href="#">Reply</a> <span>·</span> <a href="">2 Replies</a>
+                </div>
+              </div>
+            </div>
+            <div class="user-row">
+              <div class="user-avatar">
+                <div class="user-avatar-img">
+                  <img alt=""
+                       src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1542958923.jpg">
+                </div>
+              </div>
+              <div class="user-body">
+                <div class="user-name">
+                  <a href="#">Jack Gmail1</a> <span>·</span> 1 day ago
+                </div>
+                <div class="user-content">Lorem ipsum dolor sit amet</div>
+                <div class="user-reply"><a href="#">Reply</a> <span>·</span> <a href="">2 Replies</a>
+                </div>
+
+                <div class="user-row align-items-start">
+                  <div class="user-avatar">
+                    <div class="user-avatar-img">
+                      <img alt=""
+                           src="https://cdn-apps-test.wthapps.com/users/8e208ba8-3227-40e3-b8f0-1c18fc277516/photos/profile/profile_nghiatran_1542958923.jpg">
+                    </div>
+                  </div>
+                  <div class="user-body">
+                    <div class="user-name">
+                      <a href="#">Jack Gmail1</a> <span>·</span> 1 day ago
+                    </div>
+                    <div class="user-content">Lorem ipsum dolor sit amet</div>
+                    <div class="user-reply"><a href="#">Reply</a> <span>·</span> <a href="">2
+                      Replies</a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<form action="" class="note-editor-wrap-2">
   <div class="note-editor-header">
     <h4>{{note?.name ? note?.name : 'Untitled'}}</h4>
   </div>
@@ -31,7 +214,8 @@
     </div>
 
     <div class="btn-group ml10">
-      <button class="btn btn-outline-default" [disabled]="note?.attachments?.length === 0" (click)="downloadAttachments()">
+      <button class="btn btn-outline-default" [disabled]="note?.attachments?.length === 0 && note?.permission !== 'view'"
+              (click)="downloadAttachments()">
         <i class="fa fa-download"></i> Download all
       </button>
     </div>
@@ -39,42 +223,48 @@
   </div>
   <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-toolbar"></div>
   <div class="note-editor-content">
-    <div class="note-editor-body" id="scrolling-container">
+    <div class="note-editor-body" id="scrolling-container-1">
       <div class="container" id="quill-container-wrapper">
         <!--<div id="quill-content-body" style="position: relative; padding: 0">-->
-        <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-editor"></div>
+        <div [ngClass]="{'hidden': currentTab !== 'note'}" id="quill-editor-1"></div>
         <div [ngClass]="{'hidden': currentTab !== 'attachment'}" class="attachment-list-wrap">
-          <table class="table table-middle wth-table table-hover" *ngIf="note?.attachments && note?.attachments.length > 0">
+          <table class="table table-middle wth-table table-hover"
+                 *ngIf="note?.attachments && note?.attachments.length > 0">
             <thead>
-              <tr>
-                <th class="can-click" (click)="onSort('name')">
-                  Name
-                  <i *ngIf="hasSortBy" class="fa" [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
-                </th>
-                <th>File size</th>
-                <th>Date Modified</th>
-                <th>&nbsp;</th>
-              </tr>
+            <tr>
+              <th class="can-click" (click)="onSort('name')">
+                Name
+                <i *ngIf="hasSortBy" class="fa"
+                   [ngClass]="{'fa-arrow-up': !orderDesc, 'fa-arrow-down': orderDesc }"></i>
+              </th>
+              <th>File size</th>
+              <th>Date Modified</th>
+              <th>&nbsp;</th>
+            </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let att of note.attachments">
-                <td [ngClass]="{'can-click': att.object_type == 'Media::Photo'}" (click)="fileAttachmentClick(att)">
-                  <i *ngIf="att.thumbnail_url && att.object_type == 'Media::Photo'" class="fa fa-picture-o"></i>
-                  <i *ngIf="att.thumbnail_url && att.object_type !== 'Media::Photo'" class="fa fa-file"></i>
-                  <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
-                  {{ att.name }}
-                </td>
-                <td>{{ att.size | bytes:3 }}</td>
-                <td>{{ (att.updated_at || att.created_at) | date: 'MMM dd yyyy' }}</td>
-                <td class="text-right">
-                  <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
-                    <i class="fa fa-download"></i>
-                  </button>
-                  <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button" [disabled]="true">
-                    <i class="fa fa-trash-o"></i>
-                  </button>
-                </td>
-              </tr>
+            <tr *ngFor="let att of note.attachments">
+              <td [ngClass]="{'can-click': att.object_type == 'Media::Photo'}"
+                  (click)="fileAttachmentClick(att)">
+                <i *ngIf="att.thumbnail_url && att.object_type == 'Media::Photo'"
+                   class="fa fa-picture-o"></i>
+                <i *ngIf="att.thumbnail_url && att.object_type !== 'Media::Photo'"
+                   class="fa fa-file"></i>
+                <i *ngIf="!att.thumbnail_url" class="fa fa-spinner fa-pulse fa-fw"></i>
+                {{ att.name }}
+              </td>
+              <td>{{ att.size | bytes:3 }}</td>
+              <td>{{ (att.updated_at || att.created_at) | date: 'MMM dd yyyy' }}</td>
+              <td class="text-right">
+                <button class="btn btn-sm btn-default" type="button" (click)="download(att)">
+                  <i class="fa fa-download"></i>
+                </button>
+                <button (click)="cancelUpload(att)" class="btn btn-sm btn-default" type="button"
+                        [disabled]="true">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </td>
+            </tr>
             </tbody>
           </table>
         </div>

@@ -3,9 +3,11 @@
     <button *ngIf="mode === 'create'" type="reset" class="btn btn-outline-default btn-min" [routerLink]="['/contacts']">Cancel
     </button>
 
-    <button class="btn btn-outline-primary btn-min ml10" type="button" *ngIf="mode === 'create' || mode === 'edit'"
-            [disabled]="!contactEdit?.name?.valid && !contactEdit?.family_name?.valid"
-            (click)="contactEdit.onSubmit(contactEdit?.form?.value)" > {{ mode === 'edit' ? 'Save' : 'Create' }}
+    <button class="btn btn-outline-primary btn-min ml10" [disabled]="saving" type="button" *ngIf=" mode === 'edit'"
+            (click)="saving = true; contactEdit.onSubmit(contactEdit?.form?.value)" > {{ !saving ? 'Save' : 'Saving' }}
+    </button>
+    <button class="btn btn-outline-primary btn-min ml10" [disabled]="saving" type="button" *ngIf="mode === 'create'"
+            (click)="saving = true; contactEdit.onSubmit(contactEdit?.form?.value)" > {{ !saving ? 'Create' : 'Creating' }}
     </button>
 
     <button *ngIf="mode === 'edit'" type="reset" class="btn btn-outline-default btn-min ml10" (click)="goBack()">Cancel
@@ -32,35 +34,31 @@
     </div>
     <div class="contact-edit-aside">
 
-      <h4>WTH Profile</h4>
-      <div class="card-list row">
-        <div class="col-sm-12 mb15" >
-          <card-item *ngIf="contact && contact.profile" [card]="contact.profile" (view)="viewCard($event)"></card-item>
-          <div *ngIf="contact && !contact.profile">
-            There is no WTH Profile
-          </div>
-        </div>
-      </div>
-
-      <h4 class="regular-email">Business Cards</h4>
-      <div class="card-list row">
-        <ng-container *ngIf="contact && contact.cards && contact.cards.length > 0 else noData">
-          <ng-template ngFor let-c [ngForOf]="contact.cards">
-            <!--<ng-container *ngIf="c.card_type === 'business'">-->
-            <div class="col-sm-12 mb15">
-              <card-item [card]="c" (view)="viewCard($event)"></card-item>
+      <ng-container *ngIf="public_cards?.length > 0">
+        <h4>Public Profile
+            <button class="btn btn-default" [pTooltip]="PUBLIC_CARD" tooltipPosition="bottom">
+              <i class="fa fa-info-circle text-fade"></i>
+            </button>
+          </h4>
+        <div class="card-list row">
+            <div class="col-sm-12 mb15" *ngFor="let card of public_cards; trackBy: trackByCard">
+              <card-item [card]="card" (view)="viewCard($event)"></card-item>
             </div>
-            <!--</ng-container>-->
-          </ng-template>
-        </ng-container>
-        <ng-template #noData>
-          <box-no-data [icon]="'fa fa-address-card xs'"
-                       [title]="'There are no Cards!'"
-                       [subTitle]="'Business cards this person shared with you'">
-          </box-no-data>
-        </ng-template>
-      </div>
+        </div>
+      </ng-container>
 
+      <ng-container *ngIf="business_cards?.length > 0">
+        <h4>Business Cards
+            <button class="btn btn-default" [pTooltip]="BIZ_CARD"
+                    tooltipPosition="bottom"><i class="fa fa-info-circle text-fade"></i></button>
+          </h4>
+    
+          <div class="card-list row">
+              <div class="col-sm-12 mb15" *ngFor="let card of business_cards; trackBy: trackByCard">
+                  <card-item [card]="card" (view)="viewCard($event)"></card-item>
+                </div>
+          </div>
+    </ng-container>
     </div>
   </div>
 

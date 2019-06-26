@@ -1,29 +1,44 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Input, OnChanges, AfterViewInit, AfterContentInit, DoCheck, AfterViewChecked } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+  Input,
+  OnChanges,
+  AfterViewInit,
+  EventEmitter,
+  Output
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { Subject, Subscription,  Observable, from, merge } from 'rxjs';
-import { filter, take, takeUntil, mergeMap } from 'rxjs/operators';
+import { Subject, Subscription, Observable, from, merge } from 'rxjs';
+import { filter, take, takeUntil, mergeMap, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { ChatService, CONCURRENT_UPLOAD } from '../../services/chat.service';
 import { Message } from '../../models/message.model';
-import { Constants, FORM_MODE, CONVERSATION_SELECT, CHAT_MESSAGES_GROUP_ } from '@wth/shared/constant';
-import { ApiBaseService, WMessageService, StorageService, PhotoUploadService, CommonEventService, CommonEventHandler } from '@wth/shared/services';
+import { Constants, FORM_MODE } from '@wth/shared/constant';
+import {
+  ApiBaseService,
+  WMessageService,
+  StorageService,
+  PhotoUploadService,
+  CommonEventService,
+  CommonEventHandler
+} from '@wth/shared/services';
 import { ZChatEmojiService } from '@wth/shared/shared/emoji/emoji.service';
 import { WMediaSelectionService } from '@wth/shared/components/w-media-selection/w-media-selection.service';
 import { MiniEditorComponent } from '@wth/shared/shared/components/mini-editor/mini-editor.component';
 import { noteConstants } from '@notes/shared/config/constants';
-import { ChatNoteListModalComponent } from '@shared/components/note-list/chat-module/modal/note-list-modal.component';
 import { WUploader } from '@shared/services/w-uploader';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { LongMessageModalComponent } from '@shared/components/modal/long-message-modal.component';
-import { StripHtmlPipe } from './../../../../shared/shared/pipe/strip-html.pipe';
 import { ChatMessageService } from '@chat/shared/services/chat-message.service';
-
-
-declare var $: any;
-declare var _: any;
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
+import { MessageEventService } from '@chat/shared/message';
+import { WNoteSelectionComponent } from '@shared/components/w-note-selection/w-note-selection.component';
+import { StripHtmlPipe } from '@shared/shared/pipe/strip-html.pipe';
 
 @Component({
   selector: 'message-editor',
@@ -33,11 +48,16 @@ declare var _: any;
 })
 export class MessageEditorComponent extends CommonEventHandler implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @ViewChild('miniEditor') editor: MiniEditorComponent;
-  @ViewChild('noteList') notesListModal: ChatNoteListModalComponent;
+  @ViewChild('noteList') notesListModal: WNoteSelectionComponent;
   @ViewChild('longMessageModal') longMessageModal: LongMessageModalComponent;
-  @Input() isDisabled = false;
-  @Input() contactSelect;
+  @Input() isDisabled = true;
+  @Input() conversation;
   @Input() maxLengthAllow = 2000;
+
+  @Output() onCreate: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onUpdate: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onError: EventEmitter<any> = new EventEmitter<any>();
+
   channel = 'MessageEditorComponent';
 
   readonly tooltip: any = Constants.tooltip;
@@ -55,9 +75,8 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   destroy$ = new Subject();
 
   private close$: Observable<any>;
-  private currentFileId: string;
-  private uploadingMessages: {[id: string]: Message} = {};
-  private uploadedFiles: {[id: string]: any} = {};
+  private uploadingMessages: { [id: string]: Message } = {};
+  private uploadedFiles: { [id: string]: any } = {};
   private stripHtml: StripHtmlPipe;
   private sub: Subscription;
 
@@ -68,13 +87,14 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     private store: Store<any>,
     private storage: StorageService,
     private fb: FormBuilder,
-    private addContactService:  ZChatShareAddContactService,
     private messageService: WMessageService,
     private chatMessageService: ChatMessageService,
     public commonEventService: CommonEventService,
     private uploadService: PhotoUploadService,
     private uploader: WUploader,
-    private emojiService: WTHEmojiService
+    private emojiService: WTHEmojiService,
+    private contactSelectionService: ContactSelectionService,
+    private messageEventService: MessageEventService
   ) {
     super(commonEventService);
     this.createForm();
@@ -96,21 +116,69 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     ).subscribe(event => {
       this.sendFileEvent(event);
     });
+
+    this.contactSelectionService.onSelect$.pipe(
+      filter((event: any) => event.eventName === 'SHARE_CONTACT'),
+      map((event: any) => event.payload.data),
+      takeUntil(this.destroy$)
+    ).subscribe((contacts: any) => {
+      this.createMessage('contacts', contacts);
+    });
+
   }
 
   ngOnChanges(changes: any) {
-    if (changes && changes.contactSelect && changes.contactSelect.currentValue && changes.contactSelect.currentValue.blacklist) {
+    if (changes && changes.conversation && changes.conversation.currentValue && changes.conversation.currentValue.blacklist) {
       this.setPlaceholder(this.placeholderBl);
     } else {
       this.setPlaceholder(this.placeholder);
     }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
+    this.focus();
+
+    // Edit message
+    this.messageEventService.edit$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+      this.editMessage(payload.message);
+    });
+
+    // Copy message
+    this.messageEventService.copy$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+      this.copyMessage(payload.message);
+    });
+
+    // Quote message
+    this.messageEventService.quote$.pipe(takeUntil(this.destroy$)).subscribe((payload: any) => {
+      this.quoteMessage(payload.message);
+    });
+  }
+
+  editMessage(message: any) {
+    this.updateAttributes({
+      message: message,
+      mode: FORM_MODE.EDIT
+    });
     this.focus();
   }
 
-  noteSelectOpen() {
+  copyMessage(message: any) {
+    // this.updateAttributes({
+    //   message: message,
+    //   mode: FORM_MODE.CREATE
+    // });
+    this.focus();
+  }
+
+  quoteMessage(message: any) {
+    this.updateAttributes({
+      message: message,
+      mode: FORM_MODE.CREATE
+    });
+    this.focus();
+  }
+
+  openNotesSelection() {
     this.notesListModal.open();
   }
 
@@ -147,7 +215,7 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   handleKeyUp(e: any) {
     if (e.keyCode === 13) {
-      this.validateAndSend();
+      this.send();
     } else if (e.keyCode === 27) {
       this.cancelEditingMessage();
       return;
@@ -165,9 +233,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
   updateAttributes(attributes: any) {
     if ('message' in attributes) {
       this.message = attributes.message;
-      if (this.message.message_type === 'text') {
-        this.setEditor(this.message);
-      }
     }
     if ('appendedMessage' in attributes) {
       this.appendedMessages.push(attributes.appendedMessage);
@@ -181,7 +246,9 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   focus() {
     // set background color #ffd when editing
-    this.editor.focus();
+    if (this.editor) {
+      this.editor.focus();
+    }
   }
 
   cancelEditingMessage() {
@@ -191,50 +258,35 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     this.resetEditor();
   }
 
-  validateAndSend() {
-    if (!this.messageService.notEmptyHtml(this.message.message)) {
-      return;
-    }
-    if (this.stripHtml.transform(this.message.message).length > this.maxLengthAllow ) {
-        // console.error('Chat messages exceed maximum length of ', this.maxLengthAllow);
-        this.longMessageModal.open();
-        return;
-    }
-    this.send();
-  }
-
   handleImagePaste(file) {
-    const { type} = file;
-      const message = new Message({
-        message: 'Sending file.....',
-        message_type: 'file',
-        content_type: type,
-        meta_data: {}
-      });
+    const { name, type } = file;
+    const message = new Message({
+      message: name,
+      message_type: 'file',
+      content_type: type,
+    });
 
-    const fakeMessage = this.chatMessageService.create(this.contactSelect.group_id, message);
-    const uploadedMessage = this.uploadService.uploadPhotos([file]).toPromise();
-    Promise.all([fakeMessage, uploadedMessage]).then(([fake, uploaded]) => {
-    const updateMessage = {...fake.data, file: uploaded['data'], content_type: type};
-    this.messageService.update(updateMessage).toPromise();
+    this.uploadService.uploadPhotos([file]).subscribe(response => {
+      this.sendMessage({...message, file_id: response.data.id, file_type: response.data.object_type, content_type: type})
     });
   }
 
-  shareContacts() {
-    this.commonEventService.broadcast({
-      channel: 'ZChatShareAddContactComponent',
-      action: 'open',
-      payload: {option: 'shareContacts'}
-    })
+  openContactsSelection() {
+    this.contactSelectionService.open({
+      type: 'SHARE_CONTACT',
+      title: 'Select Contacts',
+      searchable: false
+    });
   }
 
-  openAddFile(){
+  openAddFile() {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
       allowedFileTypes: null,
-      beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
-      afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
-      payload: {group_id: this.contactSelect.group_id},
-      module: 'chat'
+      beforeCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/before_upload_file',
+      afterCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/after_upload_file',
+      payload: { group_id: this.conversation.id },
+      module: 'chat',
+      storage_module: 'drive'
     });
   }
 
@@ -243,34 +295,77 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     this.editor.addEmoj(`${e.replace(/\\/gi, '')}`);
   }
 
-  onChangeValue(event: any) {
-    // console.log('changing.............', event.target.innerHtml);
-  }
-
-  onOpenSelectPhotos() {
+  openPhotosSelection() {
     this.mediaSelectionService.open({
       allowSelectMultiple: true,
-      hiddenTabs: ['videos', 'playlists'], allowCancelUpload: true,
-      beforeCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/before_upload_file',
-      afterCallBackUrl: Constants.baseUrls.apiUrl + 'zone/chat/message/after_upload_file',
-      payload: { group_id: this.contactSelect.group_id },
-  });
+      hiddenTabs: ['videos', 'playlists'],
+      selectedTab: 'photos',
+      filter: 'all',
+      allowCancelUpload: true,
+      beforeCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/before_upload_file',
+      afterCallBackUrl: Constants.baseUrls.apiUrl + 'chat/messages/after_upload_file',
+      payload: { group_id: this.conversation.id}
+    });
 
     this.mediaSelectionService.selectedMedias$
       .pipe(takeUntil(this.close$), filter((items: any[]) => items.length > 0))
       .subscribe(photos => {
-        this.chooseDone(photos);
+        this.createMessage('photos', photos);
       });
   }
+
+  createMessage(messageType: string, payload: any) {
+    const messages = [];
+    switch (messageType) {
+      case 'photos':
+        const photos = payload;
+        photos.forEach(p => {
+          messages.push(new Message({
+            message_type: 'file',
+            file_id: p.id,
+            file_type: p.object_type
+          }));
+        });
+        break;
+      case 'notes':
+        const notes = payload;
+
+        this.notesListModal.close();
+        notes.forEach(note => {
+          messages.push(new Message({
+            message_type: 'file',
+            file_id: note.id,
+            file_type: note.object_type
+          }));
+        });
+        break;
+      case 'contacts':
+        const contacts = payload;
+        contacts.forEach(contact => {
+          messages.push(new Message({
+            message_type: 'share_contact_message',
+            file_id: contact.id,
+            file_type: '::User'
+          }));
+        });
+        break;
+    }
+
+    messages.forEach(message => {
+      this.sendMessage(message);
+    });
+
+  }
+
 
   chooseDone(allMedia: any[]) {
     // Create multiple chat messages in batches of CONCURRENT_UPLOAD (default value is 2)
     from(allMedia).pipe(
       mergeMap(media => this.chatMessageService.createMediaMessage(media),
-      (valueFromSource, valueFromInner) => {
-        return valueFromInner;
-      },
-      CONCURRENT_UPLOAD
+        (valueFromSource, valueFromInner) => {
+          return valueFromInner;
+        },
+        CONCURRENT_UPLOAD
       )
     ).subscribe((val) => {
       // send message channel will do it
@@ -327,27 +422,43 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
     if (!this.uploadingMessages[fileId] || !this.uploadedFiles[fileId]) {
       return;
     }
-    const uploadingMessage = {...this.uploadingMessages[fileId], file: this.uploadedFiles[fileId]};
+    const uploadingMessage = { ...this.uploadingMessages[fileId], file: this.uploadedFiles[fileId] };
     this.messageService.update(uploadingMessage).toPromise().then(response => {
       delete this.uploadingMessages[fileId];
       delete this.uploadedFiles[fileId];
     });
   }
 
-  private send() {
-    if (this.mode === FORM_MODE.EDIT) {
-      this.chatService
-        .updateMessage(this.message.group_id, this.message)
-        .subscribe((response: any) => {
-          this.mode = FORM_MODE.CREATE;
-          this.resetEditor();
-        });
-    } else {
-      this.messageService.scrollToBottom();
-      this.chatMessageService.createTextMessage(this.message.message);
+  private validateMessage(): boolean {
+    if (!this.messageService.notEmptyHtml(this.message.message)) {
+      return false;
+    }
+    if (this.stripHtml.transform(this.message.message).length > this.maxLengthAllow) {
+      this.longMessageModal.open();
+      return false;
+    }
+    return true;
+  }
 
+  private send() {
+    if (!this.validateMessage()) {
+      return;
+    }
+    if (this.mode === FORM_MODE.EDIT) {
+      this.messageEventService.update({ message: this.message });
+      this.mode = FORM_MODE.CREATE;
+      this.resetEditor();
+    } else {
+      this.sendMessage(this.message);
       this.resetEditor();
     }
+  }
+
+  private sendMessage(message: any) {
+    this.onCreate.emit({
+      ...message,
+      group_id: this.conversation.id
+    });
   }
 
   private buildQuoteMessage(message: any): string {
@@ -361,11 +472,6 @@ export class MessageEditorComponent extends CommonEventHandler implements OnInit
 
   private resetEditor() {
     this.message = new Message();
-    this.setEditor(this.message);
     this.focus();
-  }
-
-  private setEditor(message: Message) {
-    // $(this.messageEditorId).html(message.message)
   }
 }

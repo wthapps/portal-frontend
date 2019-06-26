@@ -1,4 +1,4 @@
-<div class="btn-group header-nav-profile">
+<div class="btn-group header-nav-profile" id="dropdown-menu-profile">
   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false">
@@ -21,12 +21,24 @@
           <p class="media-heading">{{ user?.first_name }}
             {{ user?.last_name }}</p>
           <small class="text-fade">{{ user?.email }}</small>
-          <div class="navbar-nav-plan m">
-            <p class="media-heading bold">{{ user?.plan?.name }}</p>
-            <a [href]="urls.myAccount + '/billing/plan'" class="btn btn-primary" *ngIf="user?.plan?.is_trial">
-              <i class="fa fa-arrow-circle-up"></i> Upgrade
-            </a>
+          <div>
           </div>
+          <ng-container *ngIf="user && subscription">
+            <div class="navbar-nav-plan m">
+              <p class="media-heading bold">
+                <a [href]="urls.myAccount + '/payment/subscription'">
+                  {{ TRIAL_STATUS.includes(subscription?.status) ? 'TRIAL' : subscription?.plan?.name }}
+                </a>
+                <small class="text-muted" *ngIf="subscription?.status ==='TRIALING'"> - {{ subscription?.time_left }} </small>
+              </p>
+              <a [href]="upgradeUrl" class="btn btn-primary" *ngIf="TRIAL_STATUS.includes(subscription?.status)">
+                Upgrade account
+              </a>
+              <a [href]="upgradeUrl" class="btn btn-primary" *ngIf="'CANCELED' === subscription?.status">
+                Renew subscription
+              </a>
+            </div>
+          </ng-container>
         </div>
       </div>
     </li>

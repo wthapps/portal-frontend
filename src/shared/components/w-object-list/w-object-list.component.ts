@@ -9,7 +9,7 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import * as DragSelect from 'dragselect/dist/DragSelect.js';
 
 import { WObjectListService } from './w-object-list.service';
-import { Media } from '@shared/shared/models/media.model';
+import Media from '@shared/modules/photo/models/media.model';
 
 declare let _: any;
 
@@ -26,6 +26,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   @Input() scrollWindow: Boolean = false;
   @Input() isLoading: Boolean = false;
   @Input() viewMode = 'grid';
+  @Input() allowDrag = true;
   @Output() completeLoadMore: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   @Output() completeSort: EventEmitter<any> = new EventEmitter<any>(null);
   @Output() completeDoubleClick: EventEmitter<any> = new EventEmitter<any>(null);
@@ -100,7 +101,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   ngAfterContentChecked(): void {
-    if (this.hasMultipleSelection) {
+    if (this.hasMultipleSelection && this.allowDrag) {
       if (this.dragSelect) {
         this.dragSelect.start();
         this.dragSelect.addSelectables(document.getElementsByClassName('wobject-drag'));
@@ -139,6 +140,11 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onMultiSelected(item: any) {
+    if (item.object_type === 'Media::Album') {
+      this.completeDoubleClick.emit(item);
+      return;
+    }
+
     if (!this.hasMultipleSelection) {
       this.objectListService.clear();
       this.objectListService.addItem(
@@ -187,6 +193,11 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   onClick(item: any) {
+    if (item.object_type === 'Media::Album') {
+      this.completeDoubleClick.emit(item);
+      return;
+    }
+
     if (!this.hasMultipleSelection) {
       this.objectListService.clear();
       this.objectListService.addItem(
@@ -247,7 +258,7 @@ export class WObjectListComponent implements OnDestroy, OnChanges, AfterContentC
   }
 
   isActive(item: any) {
-    return (_.find(this.selectedObjects, {'id': item.id}) || item.selected);
+    return (_.find(this.selectedObjects, { 'id': item.id }) || item.selected);
   }
 
   isSelected(item: any) {

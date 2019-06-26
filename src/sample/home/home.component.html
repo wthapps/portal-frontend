@@ -1,3 +1,8 @@
-<div>
-  Sample home directory
+<div class="p50">
+  <button (click)="onShowNoteSelections()" class="btn btn-primary">Show note</button>
 </div>
+<div class="p50">
+  {{ selectedDocuments | json }}
+</div>
+
+<w-note-selection (selectCompleted)="onSelectCompleted($event)"></w-note-selection>

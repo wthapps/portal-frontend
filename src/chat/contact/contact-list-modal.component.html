@@ -6,35 +6,28 @@
     <h4 class="modal-title"> Contacts </h4>
   </bs-modal-header>
   <bs-modal-body>
-    <div class="d-flex justify-content-between" *ngIf="!showSearch">
+    <div class="d-flex justify-content-between">
       <w-nav-tab [tabs]="tabs" [setTabActive]="selectedTab" (currentTab)="selectCurrentTab($event)"></w-nav-tab>
-      <!-- <button type="button" class="btn btn-default" pTooltip="Find Contacts" tooltipPosition="top" (click)="displaySearch()">
-        <i class="fa fa-user-plus"></i>
-      </button> -->
     </div>
-    <textbox-search *ngIf="showSearch" [placeholder]="'Find WTHApps users'" [showSearchClearText]="true" [search]="keyword" (onEscapeEvent)="hideSearch($event)"
-      (onEnterEvent)="search($event)" (onKeyUpEvent)="handleKeyUp($event)">
-    </textbox-search>
-
       <div class="list-group" *ngIf="contacts">
         <div class="list-group-item" *ngIf="(!loading && contacts.length === 0);else templateData">
-          <box-no-data [icon]="'fa fa-user-plus'" [subTitle]="'Search for new chat contacts'">
-          </box-no-data>
+          <box-no-data [icon]="'fa fa-address-book-o'" [subTitle]="noDataText"></box-no-data>
         </div>
         <ng-template #templateData>
           <w-user-chat class="list-group-item" *ngFor="let contact of contacts" [user]="contact" [size]="'xs'">
-            <button *ngIf="!contact.new" class="btn btn-default" type="button" [pTooltip]="tooltip.sendRequest"
+            <button *ngIf="!contact.new" class="btn btn-default" type="button" [pTooltip]="tooltip.chat"
             tooltipPosition="top" tooltipZIndex="1055" (click)="createConversation(contact)">
               <i class="fa fa-comments-o"></i>
             </button>
 
             <!--show actions for new person-->
-            <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="sendRequest(contact)" [pTooltip]="tooltip.sendRequest"
-              tooltipPosition="top" tooltipZIndex="1055">
+            <button *ngIf="contact.new && !contact.blacklist" class="btn btn-default" (click)="createConversation(contact)"
+                    [pTooltip]="tooltip.sendRequest" tooltipPosition="top" tooltipZIndex="1055">
               <i class="fa fa-comments-o"></i>
             </button>
-            <w-user-actions #chatContactActions [contact]="contact" [profileUrl]="profileUrl" (onConversate)="createConversation($event)"
-              (onToggleBlacklist)="toggleBlacklist($event)" (onReport)="report($event)" (onRemove)="remove($event)"></w-user-actions>
+            <w-user-actions #chatContactActions [user]="contact"
+                            (onViewProfile)="viewProfile($event)"
+                            (onChat)="createConversation($event)"></w-user-actions>
           </w-user-chat>
         </ng-template>
       </div>
@@ -42,4 +35,3 @@
   </bs-modal-body>
 
 </bs-modal>
-<z-chat-share-request-contact #request></z-chat-share-request-contact>

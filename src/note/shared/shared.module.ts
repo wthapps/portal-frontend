@@ -1,16 +1,9 @@
-import { PartialModule } from './../../shared/partials/partial.module';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Ng2HdModule } from '@shared/shared/ng2-hd/ng2-hd.module';
-import { ZNoteSharedToolBarComponent } from './toolbar/toolbar.component';
 import { ZNoteSharedActionBarComponent } from './toolbar/actions-bar.component';
-import { NoteListComponent } from './list/note-list.component';
-import { NoteItemComponent } from './list/item/note-item.component';
-import { FolderItemComponent } from './list/item/folder-item.component';
 
 import { ZNoteService } from './services/note.service';
-import { ZNoteSharedModalNoteViewComponent } from './modal/note/view.component';
 
 import { ZNoteSharedModalFolderEditComponent } from './modal/folder/edit.component';
 import { ZNoteSharedModalFolderMoveComponent } from './modal/folder/move.component';
@@ -18,7 +11,6 @@ import { ZNoteSharedModalFolderMoveComponent } from './modal/folder/move.compone
 import { ZNoteSharedModalSharingComponent } from './modal/sharing/sharing.component';
 import { ZFolderService } from './services/folder.service';
 import { MixedEntityService } from './mixed-enity/mixed-entity.service';
-import { ZNoteSharedTrashActionBarComponent } from './toolbar/trash/trash-actions-bar.component';
 import { ZNoteSharedBreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { ZNoteSharedLeftMenuComponent } from './toolbar/left-menu.component';
 import { ZNoteSharedHeaderComponent } from './header/header.component';
@@ -29,70 +21,61 @@ import { ZNoteSharedSettingModule } from './modal/settings/settings.module';
 import { ZNoteSharedSettingsService } from './services/settings.service';
 import { WthCommonModule } from '@shared/common/wth-common.module';
 import { ModalDockModule } from '@shared/shared/components/modal/dock.module';
-import { FileModule } from '@shared/shared/components/file/file.module';
 import { WMediaSelectionModule } from '@shared/components/w-media-selection/w-media-selection.module';
 import { ComponentsModule } from '@shared/components/components.module';
-// import { ZSharedMenuModule } from '@shared/shared/components/menu/menu.module';
 import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
 import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
-import { TagInputModule } from 'ngx-chips';
-import {
-  InputSwitchModule,
-  CheckboxModule,
-  TooltipModule,
-  RadioButtonModule,
-  AutoCompleteModule,
-  PanelMenuModule,
-  CalendarModule
-} from 'primeng/primeng';
+
+import { InputSwitchModule, CheckboxModule, TooltipModule, RadioButtonModule, AutoCompleteModule, PanelMenuModule } from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from '@shared/components/modal/modal.module';
+import { WModalsModule } from '../../sample/shared/components/modals/modals.module';
+import { FolderSortPipe } from './pipes/folder-sort.pipe';
+import { WBreadcrumbsModule } from '@shared/components/w-breadcrumbs/w-breadcrumbs.module';
+import { WDataViewModule } from '@shared/components/w-dataView/w-dataView.module';
+import { PartialModule } from '@shared/partials';
+
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
 
 @NgModule({
   imports: [
-    Ng2HdModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    ZNoteSharedSettingModule,
     WthCommonModule,
 
     // custom component
     ModalDockModule,
     ModalModule,
-    FileModule,
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
-    // ZSharedMenuModule,
     BoxNoDataModule,
     WNavTabModule,
+    WDataViewModule,
+    WModalsModule,
+    ZNoteSharedSettingModule,
 
     // third party libs
-    TagInputModule,
     InputSwitchModule,
     CheckboxModule,
     RadioButtonModule,
     AutoCompleteModule,
-    CalendarModule,
     PanelMenuModule,
-    TooltipModule
+    TooltipModule,
+    WBreadcrumbsModule
   ],
   declarations: [
-    ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
-    NoteListComponent,
-    NoteItemComponent,
-    FolderItemComponent,
     ZNoteContainerComponent,
 
-    ZNoteSharedModalNoteViewComponent,
+    // Custom note pipes
+    FolderSortPipe,
+
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
-    ZNoteSharedTrashActionBarComponent,
     ZNoteSharedModalSharingComponent,
     ZNoteSharedBreadcrumbComponent,
     ZNoteSharedHeaderComponent,
@@ -102,12 +85,11 @@ import { ModalModule } from '@shared/components/modal/modal.module';
   ],
   exports: [
     WthCommonModule,
-    ModalModule,
 
     // custom component
+    WDataViewModule,
     ModalDockModule,
     ModalModule,
-    FileModule,
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
@@ -115,29 +97,23 @@ import { ModalModule } from '@shared/components/modal/modal.module';
     WNavTabModule,
     ZNoteSharedSettingModule,
 
+    // Custom note pipes
+    FolderSortPipe,
+
     // third party libs
-    TagInputModule,
     InputSwitchModule,
     CheckboxModule,
     RadioButtonModule,
     AutoCompleteModule,
-    CalendarModule,
     PanelMenuModule,
     TooltipModule,
-    // WCountriesModule,
 
-    ZNoteSharedToolBarComponent,
     ZNoteSharedActionBarComponent,
-    NoteListComponent,
-    NoteItemComponent,
-    FolderItemComponent,
     ZNoteSharedHeaderComponent,
     ZNoteContainerComponent,
 
-    ZNoteSharedModalNoteViewComponent,
     ZNoteSharedModalFolderEditComponent,
     ZNoteSharedModalFolderMoveComponent,
-    ZNoteSharedTrashActionBarComponent,
     ZNoteSharedModalSharingComponent,
     ZNoteSharedBreadcrumbComponent,
     ZNoteShareProgressComponent,

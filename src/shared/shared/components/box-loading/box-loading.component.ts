@@ -6,5 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['box-loading.component.scss']
 })
 export class BoxLoadingComponent {
-  @Input() outClass: string = '';
+  @Input() boxClass = '';
+  @Input() iconClass = 'fa-4x';
 }

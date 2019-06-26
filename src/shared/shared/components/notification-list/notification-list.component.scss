@@ -1,6 +1,18 @@
 @import "../../../../assets/styles/global";
 
+.notification-item {
+  &:last-child {
+    .dropdown-menu {
+      bottom: 100%;
+      top: auto !important;
+    }
+  }
+}
+
 .notification-list {
+  .unread {
+    background-color: #f5f5f5;
+  }
   .noti-item {
     @include flexbox();
     border-top: 1px solid $line;
@@ -17,10 +29,9 @@
 
     .noti-item-content {
       @include flex(1);
-      @include flexbox();
       @include align-items(center);
       line-height: 1.2;
-      padding: 5px 5px 5px 0;
+      padding: 10px 5px 5px 0;
       .help-block {
         margin: 3px 0 0;
       }
@@ -30,11 +41,28 @@
         margin-top: 0;
         margin-bottom: 0;
       }
-      br {
-        display: none;
-      }
       p {
         margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .noti-item-content-text {
+        .user-name {
+          color: #4a4a4a;
+        }
+      }
+      .message-content p i {
+        top: 1px;
+      }
+    }
+    .noti-item-content-inner {
+      a {
+        display: inline-block;
+        margin: 3px 0;
+        position: relative;
+        z-index: 20;
       }
     }
     .noti-item-action {
@@ -73,12 +101,12 @@
   }
 }
 
-#notiItemMenuEl {
-  position: absolute;
-  z-index: 1100;
-  .dropdown-menu {
-    display: block;
-    left: auto;
-    right: 100%;
-  }
-}
+// #notiItemMenuEl {
+//   position: absolute;
+//   z-index: 1100;
+//   .dropdown-menu {
+//     display: block;
+//     left: auto;
+//     right: 100%;
+//   }
+// }

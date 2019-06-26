@@ -26,6 +26,7 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
   @Input() showInvitation = false;
   @Input() showQuickInvitation = false;
   @Input() showAddToContacts = false;
+  @Input() inContactBook = true;
   @Input() showFavorite = true;
   @Input() isStranger = false;
   // Toggle
@@ -65,5 +66,10 @@ export class ZContactSharedActionsBarComponent implements EmitEventMixin {
         this.toastsService.success('You added others to your contacts successful!');
       }
     });
+  }
+
+  importToContact(data) {
+    const contacts = this.contactService.selectedObjects.length > 0 ? this.contactService.selectedObjects : [data];
+    this.emitEvent({action: 'import_contacts', payload: contacts});
   }
 }

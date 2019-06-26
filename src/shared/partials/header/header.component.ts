@@ -1,13 +1,17 @@
-import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { ChannelService } from '../../channels/channel.service';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
 import { User } from '@wth/shared/shared/models';
 import { SwUpdate } from '@angular/service-worker';
 import { ConversationApiCommands } from '@shared/commands/chat/coversation-commands';
 import { Constants } from '@shared/constant';
-import { ApiBaseService, AuthService, NotificationService, WTHNavigateService, CommonEventHandler, CommonEventService } from '@shared/services';
+import { ApiBaseService, AuthService, NotificationService, CommonEventHandler, CommonEventService, UserService, WTHNavigateService } from '@shared/services';
 import { PageVisibilityService } from '@shared/services/page-visibility.service';
 import { Subscription } from 'rxjs/Subscription';
+import { WebsocketService } from '@shared/channels/websocket.service';
+import { SubscriptionService } from '@shared/common/subscription';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 declare var $: any;
 declare var _: any;
@@ -21,7 +25,7 @@ declare var _: any;
   styleUrls: ['header.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class HeaderComponent extends CommonEventHandler implements OnInit, OnDestroy {
+export class HeaderComponent extends CommonEventHandler implements OnInit, AfterViewInit, OnDestroy {
   @Input() user: User;
   @Input() loggedIn: boolean;
   @Input() hasSearch: Boolean = true;
@@ -38,10 +42,15 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
   readonly urls: any = Constants.baseUrls;
   type = 'update'; // update , connection
   notificationCount = 0;
+  subscription: any;
+  subscription$: Observable<any>;
+
+  subscriptionSub: Subscription;
 
   private hiddenSubscription: Subscription;
 
   @HostListener('document:click', ['$event'])
+
   clickedOutside($event: any) {
     // here you can hide your menu
     this.showSearchMobile = false;
@@ -56,23 +65,29 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
     private visibilityService: PageVisibilityService,
     public connectionService: ConnectionNotificationService,
     public commonEventService: CommonEventService,
-    public notificationService: NotificationService
+    public notificationService: NotificationService,
+    private userService: UserService,
+    private wthNavigate: WTHNavigateService,
+    private websocketService: WebsocketService,
+    private subscriptionService: SubscriptionService
   ) {
     super(commonEventService);
+
+    this.subscription$ = this.subscriptionService.subscription$;
   }
 
   ngOnInit(): void {
-    if (!this.swUpdate.isEnabled) {
+    // if (!this.swUpdate.isEnabled) {
       this.subscribeChanneService();
-    } else {
-      this.swUpdate.checkForUpdate()
-        .then((res) => {
-          this.subscribeChanneService();
-        });
-    }
+    // } else {
+    //   this.swUpdate.checkForUpdate()
+    //     .then((res) => {
+    //       this.subscribeChanneService();
+    //     });
+    // }
 
     if (this.authService.isAuthenticated()) {
-      this.countCommonNotification().then(() => this.countChatNotification());
+      this.countCommonNotification();
     }
 
     // Handle disconnected network use-case
@@ -84,9 +99,31 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
     });
   }
 
+  ngAfterViewInit (): void {
+    if (this.authService.isAuthenticated()) {
+      this.subscriptionService.getCurrent().subscribe(response => {
+        this.subscription = response.data.attributes;
+      });
+    }
+  }
   ngOnDestroy(): void {
     this.channelService.unsubscribe();
     this.hiddenSubscription.unsubscribe();
+    this.subscriptionSub.unsubscribe();
+  }
+
+  onSignup(): void {
+    this.wthNavigate.navigateOrRedirect(
+      `signup`,
+      'portal'
+    );
+  }
+
+  onLogin(): void {
+    this.wthNavigate.navigateOrRedirect(
+      `login`,
+      'portal'
+    );
   }
 
   handleOnlineOffline() {
@@ -109,18 +146,17 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
   }
 
   updateDisconnectedData() {
-    console.log('update disconnected data ...');
-
+    if (!this.userService.validProfile()) {
+      return;
+    }
     // connection / update notitications count
     this.countCommonNotification()
-    .then(() => {
-      // get disconnected connection notifications data
-      this.notificationService.getDisconnectedNotifications();
-      // get disconnected update notifications data
-      this.connectionService.getDisconnectedNotifications();
-    });
-
-    this.countChatNotification();
+      .then(() => {
+        // get disconnected connection notifications data
+        this.notificationService.getDisconnectedNotifications();
+        // get disconnected update notifications data
+        this.connectionService.getDisconnectedNotifications();
+      });
   }
 
   countCommonNotification(): Promise<any> {
@@ -131,23 +167,14 @@ export class HeaderComponent extends CommonEventHandler implements OnInit, OnDes
       });
   }
 
-  countChatNotification(): void {
-    this.apiBaseService
-      .addCommand(ConversationApiCommands.notificationsCount())
-      .subscribe((res: any) => {
-        this.notificationCount = res.data.count;
-        this.commonEventService.broadcast({
-          channel: 'ChatNotificationComponent',
-          action: 'updateNotificationCount',
-          payload: this.notificationCount
-        })
-      });
-  }
-
   subscribeChanneService() {
     this.channelService.subscribe();
+    if (this.authService.isAuthenticated()) {
+      this.websocketService.createSocket({token: this.authService.user.uuid});
+      // connect user channel
+      this.websocketService.connectUserChannel(this.authService.user.uuid);
+    }
   }
-
   onShowSideBar(event: Event) {
     event.preventDefault();
     event.stopPropagation();

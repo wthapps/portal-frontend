@@ -46,12 +46,12 @@ import {
 import { ZSharedReportModule } from '@shared/shared/components/zone/report/report.module';
 import { PipeModule } from '@shared/shared/pipe/pipe.module';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
-import { PartialsPhotoModule } from '@shared/shared/components/photo/photo.module';
 import { ZSocialMembersComponent } from '@social/friends/members.component';
 import { ZSocialShareCommunityFormEditComponent } from '@social/shared/form/edit-community.component';
 import { ZSocialShareCommunityFormPreferenceComponent } from '@social/shared/form/preferences-community.component';
 import { SoStorageService } from './services/social-storage.service';
 import { ZSocialSharedSettingsComponent } from './modal/settings/settings.component';
+import { PartialsPhotoModule } from '@shared/modules/photo/components/photo.module';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.

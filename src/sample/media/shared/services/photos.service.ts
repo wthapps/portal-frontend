@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { ApiBaseService } from '@wth/shared/services';
 import { Observable, BehaviorSubject, from } from 'rxjs';
 import { tap, map, distinctUntilChanged, catchError } from 'rxjs/operators';
-import { Media } from '@shared/shared/models/media.model';
 import { DatePipe } from '@angular/common';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
+import Media from '@shared/modules/photo/models/media.model';
 
 declare let _: any;
 
@@ -12,11 +12,11 @@ declare let _: any;
 export class MPhotosService {
   apiUrl = 'media/media/index_combine';
 
-  data$: Observable<Media[]>;
-  private dataSubject: BehaviorSubject<Media[]> = new BehaviorSubject<Media[]>(null);
+  data$: Observable<any[]>;
+  private dataSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(null);
 
   constructor(private api: ApiBaseService,
-              private datePipe: DatePipe) {
+    private datePipe: DatePipe) {
     this.data$ = this.dataSubject.asObservable().pipe(distinctUntilChanged());
     // this.getData().pipe(shareReplay(1)).subscribe();
   }
@@ -63,7 +63,7 @@ export class MPhotosService {
     }).pipe(
       tap((res: any) => {
         const newData = this.dataSubject.getValue();
-        res.data.map((v: Media) => {
+        res.data.map((v: any) => {
           const index = _.findIndex(newData, { id: v.id });
           newData[index].favorite = v.favorite;
         });
@@ -72,7 +72,7 @@ export class MPhotosService {
     );
   }
 
-  update(item: Media) {
+  update(item: any) {
     return this.api.put(`media/photos/${item.id}`, item);
   }
 

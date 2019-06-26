@@ -1,29 +1,30 @@
-import { Component, OnDestroy, OnInit, ViewContainerRef, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import {
+  Component, OnDestroy, OnInit, ViewContainerRef, ViewChild,
+  ComponentFactoryResolver, ContentChild, Output, EventEmitter
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { combineLatest } from 'rxjs/operators/combineLatest';
+import { Subject } from 'rxjs';
 import * as Cropper from 'cropperjs';
 
 import {
-  ApiBaseService, WthConfirmService,
+  ApiBaseService, WthConfirmService, CommonEventService,
 } from '@wth/shared/services';
 import { Constants } from '@shared/constant';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
-import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/config/constants';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
-import { PlaylistAddMixin } from '@shared/mixin/playlist/playlist-add.mixin';
-import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
-import { MediaPreviewMixin } from '@shared/mixin/media-preview.mixin';
 import { DoublyLinkedListsV2 } from '@shared/data-structures/link-list/doubly-linked-lists-v2';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { Subject } from 'rxjs';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { MediaDownloadMixin, MediaModalMixin, MediaAdditionalListMixin, MediaPreviewMixin } from '@shared/modules/photo/mixins';
+import { PlaylistAddMixin } from '@shared/modules/photo/mixins/playlist/playlist-add.mixin';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+
 
 const MODEL_MAP = {
   'photo': '::Media::Photo',
@@ -50,7 +51,6 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
   readonly tooltip: any = Constants.tooltip;
   menuActions: any = {};
   selectedObjects: any;
-  showMenuAction = true;
   showDetailsInfo: any = false;
   modalIns: any;
   modalRef: any;
@@ -73,12 +73,14 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
   destroy$ = new Subject();
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
+  @ContentChild('menuAction') menuAction;
+  @Output() parentLoad: EventEmitter<any> = new EventEmitter();
 
   validateActions: (menuActions: any, role_id: number) => any;
   openModalShare: (input: any) => void;
   onEditShare: (e: SharingModalResult, sharing: any) => void;
 
-  downloadMedia: (media: any) => void;
+  downloadMedia: (media: any, options?: any) => void;
   loadModalComponent: (component: any) => void;
 
   openEditModal: (object: any) => void;
@@ -97,20 +99,17 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
     public confirmService: WthConfirmService,
     public mediaAddModalService: MediaAddModalService,
     public mediaCreateModalService: MediaCreateModalService,
+    public commonEventService: CommonEventService,
     public location: Location) { }
 
   ngOnInit() {
     this.menuActions = this.getMenuActions();
-    this.route.data.subscribe(data => {
-      this.showMenuAction = (data['show_menu_action'] !== undefined) ? data['show_menu_action'] : true;
-    });
 
     this.route.paramMap.pipe(
       combineLatest(this.route.queryParams)
     ).subscribe(([p, _]) => {
       const parent_object = p.get('object');
       const options = { model: MODEL_MAP[parent_object] };
-      this.showMenuAction = !p.get('only_preview');
 
       // uuid will be required for parent object type 'post' or 'conversation'
       if (p.get('parent_uuid')) {
@@ -122,23 +121,27 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
           this.menuActions.favorite.iconClass = this.object.favorite ? 'fa fa-star' : 'fa fa-star-o';
 
           // reload video
-          if ($('#video')[0]) $('#video')[0].load();
+          if ($('#video')[0]) { $('#video')[0].load(); }
           this.validateActions(this.menuActions, this.object.permission.role_id);
         })
         .then(() => {
           if (!this.listIds) {
             const query: any = { model: MODEL_MAP[this.route.snapshot.paramMap.get('object')] };
-            if (p.get('parent_uuid')) query.parent_uuid = p.get('parent_uuid');
+            if (p.get('parent_uuid')) { query.parent_uuid = p.get('parent_uuid'); }
             this.apiBaseService.get(`media/media/relating_objects`, query).toPromise()
               .then(res2 => {
                 if (res2.data) {
-                  if (res2.data.length === 0)
-                  return;
-                  this.listIds = new DoublyLinkedListsV2(res2.data.map(d => ({uuid: d.uuid, model: d.model})));
-                  const {uuid, model} = this.object;
-                  this.listIds.setCurrent({uuid, model});
+                  if (res2.data.length === 0) {
+                    return;
+                  }
+                  this.listIds = new DoublyLinkedListsV2(res2.data.map(d => ({ uuid: d.uuid, model: d.model, parent: d.parent })));
+                  const { uuid, model } = this.object;
+                  this.listIds.setCurrent({ uuid, model });
+                  this.parentLoad.emit(this.listIds.current.data.parent);
                 }
               });
+          } else {
+            this.parentLoad.emit(this.listIds.current.data.parent);
           }
           this.returnUrl = p.get('returnUrl') || this.returnUrl;
         });
@@ -169,8 +172,9 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
     this.modalIns.event.subscribe(e => {
       switch (e.action) {
         case 'editInfo':
-          if (this.route.snapshot.queryParamMap.get('object') !== 'video')
-          return;
+          if (this.route.snapshot.queryParamMap.get('object') !== 'video') {
+            return;
+          }
           this.apiBaseService.put(`media/videos/${this.object.id}`,
             {
               name: e.params.selectedObject.name,
@@ -197,10 +201,10 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
   }
 
   infoAlbumClick(object) {
-    if (object.object_type === 'Media::Playlist') {
+    if (object.model === 'Media::Playlist') {
       this.router.navigate([`/playlists/${object.uuid}`]);
     }
-    if (object.object_type === 'sharing') {
+    if (object.model === 'Common::Sharing') {
       this.router.navigate([`/shared/${object.uuid}`]);
     }
   }
@@ -301,7 +305,7 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
         permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          this.downloadMedia([this.object]);
+          this.downloadMedia([this.object], null);
         },
         class: '',
         liclass: '',
@@ -327,6 +331,10 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
     };
   }
 
+  download(options: any = null) {
+    this.downloadMedia([this.object], options);
+  }
+
   // onPrev: (term) => void;
   // onNext: (term) => void;
   onPrev() {
@@ -338,7 +346,7 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
   onNext() {
     this.listIds.next();
     // const params = { ...this.route.snapshot.params, id: this.listIds.current.data.uuid };
-    const {id, ...restParams} = this.route.snapshot.params;
+    const { id, ...restParams } = this.route.snapshot.params;
     this.router.navigate(['../', this.listIds.current.data.uuid, restParams], { relativeTo: this.route, queryParamsHandling: 'merge' });
   }
 
@@ -348,10 +356,11 @@ export class ZMediaPreviewComponent implements OnInit, OnDestroy,
       this.router.navigate([this.returnUrl]);
     } else {
       const outlet = this.route.snapshot.outlet;
-      if (outlet !== 'primary')
-        this.router.navigate([{ outlets: { [outlet]: null}}]);
-      else
+      if (outlet !== 'primary') {
+        this.router.navigate([{ outlets: { [outlet]: null } }]);
+      } else {
         this.location.back();
+      }
     }
   }
 

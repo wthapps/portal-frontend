@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError,  Observable ,  BehaviorSubject } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, filter, tap } from 'rxjs/operators';
 
 
 
@@ -36,7 +36,7 @@ export class CountryService {
 
   initialLoad() {
     this.getCountries().toPromise()
-      .then((data: any[]) => { this.countriesCodeSubject.next(data);});
+      .then((data: any[]) => { this.countriesCodeSubject.next(data); });
   }
 
   /**
@@ -51,15 +51,17 @@ export class CountryService {
   }
 
   getCountry(code: string): Observable<ICountry> {
-    return this.getCountries().pipe(
+    return this.countriesCode$.pipe(
+      tap(console.log),
+      filter(val => val.length > 1),
       map((products: ICountry[]) => products.find(p => p.code === code)),
       catchError(this.handleError));
   }
 
   getCountryNameToCode(name: any, dataCountries: any) {
     if (dataCountries) {
-      let phoneName = name.split(' (+');
-      let phoneCode = _.find(dataCountries, ['name', phoneName[0]]);
+      const phoneName = name.split(' (+');
+      const phoneCode = _.find(dataCountries, ['name', phoneName[0]]);
       return phoneCode.code;
     } else {
       return name;
@@ -68,7 +70,7 @@ export class CountryService {
 
   getCountryCodeToName(code: any, dataCountries: any) {
     if (dataCountries) {
-      let objName = _.find(dataCountries, ['code', code]);
+      const objName = _.find(dataCountries, ['code', code]);
       return objName.name + ' (' + objName.dial_code + ')';
     } else {
       return name;
@@ -81,7 +83,7 @@ export class CountryService {
   private handleError(error: any) {
     // In a real world app, we might use a remote logging infrastructure
     // We'd also dig deeper into the error to get a better message
-    let errMsg = (error.message) ? error.message :
+    const errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     console.error(errMsg); // log to console instead
     return throwError(errMsg);

@@ -1,0 +1,11 @@
+@import "../../assets/styles/global";
+
+.my-notification-container {
+  padding-top: 20px;
+  padding-bottom: 10px;
+
+  @media (max-width: $screen-xs-max) {
+    padding: 5px;
+  }
+
+}

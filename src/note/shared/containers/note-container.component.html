@@ -1,65 +1,183 @@
-<z-note-shared-toolbar [selectedObjects]="(selectedObjects$ | async)" [page]="'MY_NOTE'">
-  <!-- <pre>
-    {{userService.getSyncProfile() | json}}
-  </pre> -->
-  <ng-container *ngIf="(selectedObjects$ | async) as selectedObjects">
-    <div class="btn-group" [ngClass]="{'hidden-xs': selectedObjects.length>0}">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false" [disabled]="!(context$ | async).permissions.enableEdit">
-        <i class="fa fa-plus visible-xs" aria-hidden="true"></i> <span class="hidden-xs">New</span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-sm">
-        <li><a (click)="onNewNote()" href="javascript:;"><i class="icon-zone-note"></i> New note</a></li>
-        <li><a (click)="onFolder()" href="javascript:;"><i class="fa fa-folder-o"></i> New folder</a></li>
+<div class="objects-main">
+  <w-dataView-nav [showViewMode]="true"
+                  [enableSort]="enableSort"
+                  [sortBy]="context?.sort?.field"
+                  [orderBy]="context?.sort?.desc ? 'desc' : 'asc'"
+                  [viewBy]="context?.viewMode"
+                  [sortState]="sortState"
+                  (sortComplete)="onSortComplete($event)"
+                  (viewComplete)="onViewComplete($event)">
+
+    <w-breadcrumbs *ngIf="breadcrumbs && breadcrumbs.length > 0" [data]="breadcrumbs">
+      <ng-template #viewMenu let-item>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:open_note_add_modal', payload: {parent_id: item.id}})"
+             href="#">
+            <i class="fa fa-sticky-note-o"></i> New note
+          </a>
+        </li>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:folder:create'})" href="javascript:;">
+            <i class="fa fa-folder"></i> New folder
+          </a>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_sharing_modal', payload: [item]})"
+             href="#">
+            <i class="fa fa-share-alt"></i> Sharing
+          </a>
+        </li>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:delete', payload: [item]})"
+             href="#">
+            <i class="fa fa-trash-o"></i> Delete</a>
+        </li>
+        <li>
+          <a
+            (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_move_to_folder_modal', payload: [item]})"
+            href="#">
+            <i class="wicon-move-to-folder"></i> Move to folder
+          </a>
+        </li>
+        <li>
+          <a (click)="onBreadcrumbAction({action: 'note:folder:edit', payload: item})" href="javascript:;">
+            <i class="fa fa-pencil"></i> Rename
+          </a>
+        </li>
+      </ng-template>
+    </w-breadcrumbs>
+
+    <div *ngIf="!breadcrumbs" class="btn-group">
+      <h4 class="title can-click" data-toggle="dropdown">{{ context?.pathTitle }} <span class="caret"></span>
+      </h4>
+      <ul class="dropdown-menu">
+        <li><a (click)="onNewNote()" href="#"><i class="fa fa-sticky-note-o"></i> New Note</a></li>
+        <li><a (click)="onFolder()" href="#"><i class="fa fa-folder"></i> New Folder</a></li>
       </ul>
     </div>
-
-    <span [ngClass]="{'hidden-xs': selectedObjects.length>0}" *ngIf="(context$ | async).pathTitle !== ''"
-          class="btn-text no-wrap ml10">{{(context$ | async).pathTitle}}</span>
-
-
-    <span class="btn btn-text text-fade hidden" [ngClass]="{'visible-xs-block': selectedObjects.length>0}">
-        {{ selectedObjects.length }} Selected
-      </span>
-
-  </ng-container>
-
-
-  <z-note-shared-breadcrumb class="note-breadcrumb" [model]="breadcrumbs" [permissions]="(context$ | async).permissions"
-                            (onBreadcrumbAction)="onBreadcrumbAction($event)">
-  </z-note-shared-breadcrumb>
-</z-note-shared-toolbar>
-<div class="page-body-content has-page-body-control">
-  <ng-container *ngIf="!(context$ | async)?.loading; else loadingBlock">
-    <ng-container *ngIf="(noteItems$ | async)?.length + (folderItems$ | async)?.length > 0; else noDataBlock">
-      <note-list [noteItems]="noteItems$ | async"
-                 [folderItems]="folderItems$ | async"
-                 [allItems]="allItems$ | async"
-                 [viewOption]="(context$ | async)?.viewMode"
-                 [sortOption]="(context$ | async)?.sort"
-                 [groupBy]="(context$ | async)?.groupBy"
-                 [page]="(context$ | async).page"
-                 [isSelectAll]="isSelectAll$ | async">
-
-      </note-list>
+  </w-dataView-nav>
+  <ng-container *ngIf="!context?.loading && (data$ | async) as list; else templateloading">
+    <ng-container *ngIf="list?.length > 0; else templateNodata">
+      <w-dataView [data]="list"
+                  [viewMode]="context?.viewMode"
+                  (loadMoreCompleted)="onLoadMoreCompleted($event)"
+                  (selectCompleted)="onSelectCompleted()"
+                  (dblClick)="onDblClick($event)"
+                  #dataView>
+        <ng-template #viewHeader>
+          <div class="item-media-name">
+            <span>Name</span>
+          </div>
+          <div class="item-note-owner">Owner</div>
+          <div class="item-note-date">{{ DATE_MAP[context?.sort?.field] || 'Last Modified' }}</div>
+        </ng-template>
+        <ng-template #viewBody let-item>
+          <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === 'Note::Note'}">
+            <ng-container *ngIf="item.object_type === 'Note::Folder'">
+              <i
+                *ngIf="context?.page === noteConstants.PAGE_SHARED_WITH_ME || context?.page === noteConstants.PAGE_SHARED_BY_ME;else templateIconFolder"
+                class="wicon-shared-with-me"></i>
+              <ng-template #templateIconFolder>
+                <i class="fa fa-folder"></i>
+              </ng-template>
+            </ng-container>
+            <ng-container *ngIf="item.object_type === 'Note::Note'">
+              <i class="fa fa-sticky-note-o"></i><span [innerHTML]="item?.content | safeHtml"></span>
+            </ng-container>
+          </div>
+          <div class="item-media-name">
+            <span>{{ item.name || 'Untitled' }}</span>
+          </div>
+          <div class="item-note-owner">
+            {{ item?.owner | username }}
+          </div>
+          <div class="item-note-date">{{ (DATE_MAP[context?.sort?.field] ? item[context?.sort?.field] : item.updated_at)
+            | timeFormat }}
+          </div>
+        </ng-template>
+      </w-dataView>
+      <w-dataView-selected *ngIf="dataView.selectedDocuments?.length"
+                           [isSelectAll]="(list?.length === dataView.selectedDocuments?.length)"
+                           [selectedObjects]="dataView.selectedDocuments"
+                           (clear)="dataView.container.clearSelection()"
+                           (selectAll)="dataView.container.selectAll()">
+        <ul class="nav-selection-actions">
+          <ng-container *ngFor="let menu of menuActions | objectValues">
+            <li *ngIf="menu.active">
+              <button (click)="onMenuAction(menu.action)" class="btn btn-icon" type="button"><i [class]="menu.icon"></i>
+              </button>
+            </li>
+          </ng-container>
+          <li class="dropdown" *ngIf="!noOtherActions">
+            <button class="btn btn-icon" type="button" data-toggle="dropdown">
+              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <ng-container *ngFor="let menu of otherActions | objectValues">
+                <li *ngIf="menu.active && !menu.divider">
+                  <a (click)="onMenuAction(menu.action)" href="#"><i [class]="menu.icon"></i> {{ menu.text }}</a>
+                </li>
+                <li *ngIf="menu.active && menu.divider" class="divider"></li>
+              </ng-container>
+            </ul>
+          </li>
+        </ul>
+      </w-dataView-selected>
+      <shared-modals-addToAlbum #modalAddToAlbum (chooseCompleted)="onModalAddCompleted($event)">
+      </shared-modals-addToAlbum>
+      <shared-modals-share #modalShare></shared-modals-share>
+      <shared-modals-photoEditInfo #modalPhotoEditInfo></shared-modals-photoEditInfo>
     </ng-container>
+    <ng-template #templateNodata>
+      <div class="text-center">
+        <ng-container [ngSwitch]="context?.page">
+          <!-- the same view can be shown in more than one case -->
+          <ng-container *ngSwitchCase="noteConstants.PAGE_RECENT">
+            <box-no-data [icon]="'fa fa-clock-o'"
+                         title="There are not files in recent notes!"
+                         subTitle='You did not create or access to any notes.'>
+            </box-no-data>
+          </ng-container>
+          <ng-container *ngSwitchCase="noteConstants.PAGE_NOTE_FAVOURITE">
+            <box-no-data [icon]="'fa fa-star'"
+                         title="There are no favorite notes!"
+                         subTitle='"Favorite" notes and folders to easily find them later.'>
+            </box-no-data>
+          </ng-container>
+          <ng-container *ngSwitchCase="noteConstants.PAGE_SHARED_WITH_ME">
+            <box-no-data [icon]="'wicon-shared-with-me'"
+                         title="Nobody has shared files with you yet!"
+                         subTitle='Notes and folders can be shared by your WTH!Apps contacts.'>
+            </box-no-data>
+          </ng-container>
+          <ng-container *ngSwitchCase="noteConstants.PAGE_SHARED_BY_ME">
+            <box-no-data [icon]="'fa fa-share-alt'"
+                         title="You have not shared files with anyone."
+                         subTitle='You can share notes and folders with your WTH!Apps contacts.'>
+            </box-no-data>
+          </ng-container>
+
+          <!--default case when there are no matches -->
+          <ng-container *ngSwitchDefault>
+            <box-no-data [icon]="'fa fa-sticky-note'"
+                         title="There are no notes!"
+                         subTitle='Use "New" button to create new notes.'>
+            </box-no-data>
+          </ng-container>
+        </ng-container>
+
+
+        <ng-container *ngIf="context?.page === noteConstants.PAGE_MY_NOTE">
+
+        </ng-container>
+
+      </div>
+    </ng-template>
   </ng-container>
-
-  <ng-template #loadingBlock>
-    <box-loading outClass="long-height"></box-loading>
-  </ng-template>
-  <ng-template #noDataBlock>
-    <box-no-data [icon]="(context$ | async).noData.icon"
-                 [title]="(context$ | async).noData.title"
-                 [subTitle]="(context$ | async).noData.subTitle"
-                 outClass="long-height"
-    >
-
-      <button *ngIf="(context$ | async).noData.newNode" class="btn btn-outline-primary" (click)="onNewNote()"
-              href="javascript:;" [disabled]="!(context$ | async).permissions.enableEdit">
-        <i class="fa fa-plus" aria-hidden="true"></i> New note
-      </button>
-    </box-no-data>
+  <ng-template #templateloading>
+    <div class="text-center">
+      <box-loading></box-loading>
+    </div>
   </ng-template>
 </div>

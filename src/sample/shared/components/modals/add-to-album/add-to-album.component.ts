@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
-import { Media } from '@shared/shared/models/media.model';
 import { ApiBaseService } from '@shared/services';
+import Media from '@shared/modules/photo/models/media.model';
 
 @Component({
   selector: 'shared-modals-addToAlbum',
@@ -12,7 +12,7 @@ import { ApiBaseService } from '@shared/services';
 
 export class WModalsAddToAlbumComponent implements OnInit {
   @ViewChild('modal') modal: BsModalComponent;
-  @Output() chooseCompleted: EventEmitter<Media> = new EventEmitter<Media>();
+  @Output() chooseCompleted: EventEmitter <any> = new EventEmitter <any>();
   next: string;
   data: Media[];
 

@@ -25,7 +25,6 @@ import { FileUploaderService } from '@shared/services/file/file-uploader.service
 import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators/map';
-import { ConversationService } from '@chat/shared/services';
 import { BlackListPolicy } from '@shared/policies/black-list-policy';
 import { SizePolicy } from '@shared/policies/size-policy';
 import { from } from 'rxjs/observable/from';
@@ -70,7 +69,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
 
   initalize() {
     // Init get data
-    this.chatConversationService.apiGetConversations();
+    // this.chatConversationService.apiGetConversations();
   }
 
   getOutOfDateMessages() {
@@ -98,7 +97,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
       this.disconnectApiMap[group_id] = retry_num ? retry_num - 1 : MAX_RETRY;
       if (this.disconnectApiMap[group_id] <= 0) { return; }
       this.apiBaseService
-        .get('zone/chat/message/' + group_id, { last_message })
+        .get('chat/message/' + group_id, { last_message })
         .toPromise().then((res: any) => {
           console.log('get messages from success: ', res);
           res.data.forEach(message => {
@@ -155,7 +154,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   getLatestConversation(groupId: number) {
-    return this.apiBaseService.get('zone/chat/message/' + groupId);
+    return this.apiBaseService.get('chat/message/' + groupId);
   }
 
   sendMessage(groupId: any = null, data: any, option: any = {}): Promise<any> {
@@ -163,7 +162,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     const conversationId = groupId || this.storage.find(CONVERSATION_SELECT).value.group.id;
 
     return this.apiBaseService
-      .post('zone/chat/message', { group_id: conversationId, data: data })
+      .post('chat/message', { group_id: conversationId, data: data })
       .toPromise();
   }
 
@@ -173,53 +172,47 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
     );
   }
 
-  createUploadingFile(files?: any) {
-    const groupId = this.storage.find(CONVERSATION_SELECT).value.group.id;
-    const message: Message = new Message({
-      message: 'Sending file.....',
-      message_type: 'file',
-      content_type: 'media/generic'
-    });
-    const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35)]);
-    const validFiles = filesAddedPolicy.filter((item: any) => item.allow);
+  // createUploadingFile(files?: any) {
+  //   const groupId = this.storage.find(CONVERSATION_SELECT).value.group.id;
+  //   const message: Message = new Message({
+  //     message: 'Sending file.....',
+  //     message_type: 'file',
+  //     content_type: 'media/generic'
+  //   });
+  //   const filesAddedPolicy = FileUploadPolicy.allowMultiple(files, [new BlackListPolicy(), new SizePolicy(35)]);
+  //   const validFiles = filesAddedPolicy.filter((item: any) => item.allow);
 
-    // upload multiple files in batch of CONCURRENT_UPLOAD, usually set as 4
-    from(validFiles).pipe(
-      mergeMap(file => this.sendMessage(groupId, message, null),
-      (file, response) => {
-        return Object.assign(file, {parent: {
-                  id: response.data.id,
-                  uuid: '',
-                  type: 'Chat::Message'}});
-      },
-      CONCURRENT_UPLOAD
-      ),
-      mergeMap(file => this.fileUploaderService.uploadGenericFile(file),
-        (file, response) => (response),
-        CONCURRENT_UPLOAD
-      )
-    ).subscribe(res => {
-      console.log('send file successfully', res);
-              setTimeout(() => this.messageService.scrollToBottom(), 500);
-    });
+  //   // upload multiple files in batch of CONCURRENT_UPLOAD, usually set as 4
+  //   from(validFiles).pipe(
+  //     mergeMap(file => this.sendMessage(groupId, message, null),
+  //     (file, response) => {
+  //       return Object.assign(file, {parent: {
+  //                 id: response.data.id,
+  //                 uuid: '',
+  //                 type: 'Chat::Message'}});
+  //     },
+  //     CONCURRENT_UPLOAD
+  //     ),
+  //     mergeMap(file => this.fileUploaderService.uploadGenericFile(file),
+  //       (file, response) => (response),
+  //       CONCURRENT_UPLOAD
+  //     )
+  //   ).subscribe(res => {
+  //     console.log('send file successfully', res);
+  //             setTimeout(() => this.messageService.scrollToBottom(), 500);
+  //   });
 
-    const tmp = filesAddedPolicy.filter((item: any) => !item.allow);
-    if (tmp && tmp.length > 0) {
-      this.commonEventService.broadcast({
-        channel: 'LockMessage',
-        payload: tmp
-      });
-    }
-  }
+  //   const tmp = filesAddedPolicy.filter((item: any) => !item.allow);
+  //   if (tmp && tmp.length > 0) {
+  //     this.commonEventService.broadcast({
+  //       channel: 'LockMessage',
+  //       payload: tmp
+  //     });
+  //   }
+  // }
 
   getUsersOnline(): Observable<any> {
     return this.storage.getAsync(USERS_ONLINE);
-  }
-
-  addGroupUserFavorite(contact: any) {
-    const body: any = { favorite: !contact.favorite };
-    this.updateGroupUser(contact.group_id, body);
-    contact.favorite = !contact.favorite;
   }
 
   addGroupUserBlackList(userId: any) {
@@ -241,24 +234,6 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   deleteContact(contact: any) {
     // this.updateGroupUser(contact.group_id, { deleted: true })
     // .then(r2 => this.router.navigate(['/conversations']));
-  }
-
-  updateDisplay(contact: any, data: any) {
-    this.updateGroupUser(contact.group_id, data)
-      .then((res: any) => {
-      return this.updateDisplayNotification(contact.group.id);
-    });
-  }
-
-  removeFromConversation(contact: any, userId: any): Promise<any> {
-    return this.updateGroupUser(
-      contact.group_id,
-      { remove_from_conversation: true, user_id: userId })
-      .then((res: any) => {
-        // Update another conversations to update their status
-        return this.chatCommonService.updateConversationBroadcast(contact.group_id);
-      }
-    );
   }
 
   updateGroupUser(groupId: any, data: any) {
@@ -292,7 +267,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   getSetting() {
-    return this.apiBaseService.get('zone/chat/setting');
+    return this.apiBaseService.get('chat/settings');
   }
 
   updateSetting(body: any) {
@@ -314,7 +289,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
         const nextRecentConversation = this.storage.find(CHAT_RECENT_CONVERSATIONS).value
         && this.storage.find(CHAT_RECENT_CONVERSATIONS).value[0];
 
-        this.chatCommonService.updateAll();
+        // this.chatCommonService.updateAll();
         return this.router.navigate([ChatConstant.conversationUrl, _.get(nextRecentConversation, 'id', '')]);
       }
     );
@@ -325,7 +300,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
   }
 
   shareContact(ids: any) {
-    of(ids).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map(([ids, sc]) => {
+    of(ids).pipe(withLatestFrom(this.chatConversationService.getStoreSelectedConversation()), map((ids:any, sc:any) => {
       return {ids: ids, sc: sc}
     })).toPromise().then(res => {
       this.apiBaseService
@@ -363,17 +338,7 @@ export class ChatService extends CommonEventHandler implements OnDestroy {
             contact.notification_count = 0;
           }
         }
-        this.chatCommonService.updateAll();
       });
-  }
-
-  updateDisplayNotification(groupId: any): Promise<any
-    > {
-    return this.apiBaseService
-      .post('zone/chat/notification/broadcard_group_user_display', {
-        group_id: groupId
-      })
-      .toPromise();
   }
 
   getOwnUserProfile() {

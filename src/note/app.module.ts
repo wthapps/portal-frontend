@@ -28,6 +28,9 @@ import { ZNoteSharedByMeModule } from './shared-by-me/shared-by-me.module';
 import { ModalModule } from '@wth/shared/modals/modals.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { NoteStoreModule } from '@notes/store';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
+import { GuardModule } from '@shared/guards';
 
 @NgModule({
   imports: [
@@ -43,27 +46,26 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ZNoteSharedByMeModule,
     ZNoteSearchModule,
     ZNoteSharedWithMeModule,
-    // ZNoteMyProfileModule,
-    // ZNoteSettingsModule,
     ZNoteTrashModule,
     ZNotePhotoModule,
     ModalModule,
+
+    GuardModule,
+
+    // Store
+    NoteStoreModule,
+
     SharedServicesModule.forRoot(),
     ZNoteSharedModule.forRoot(),
 
     StoreModule.forRoot(AppStore),
-
-    // StoreDevtoolsModule.instrument({ maxAge: 50 }),
-
     EffectsModule.forRoot(AppEffects),
-
-    // StoreDevtoolsModule.instrumentOnlyWithExtension(),
 
     !environment.production
       ? StoreDevtoolsModule.instrument({ maxAge: 50 })
       : [],
     ServiceWorkerModule.register('/ngsw-worker.js', {
-      enabled: false
+      enabled: environment.production
     })
 
     // SharedModule.forRoot(),
@@ -73,7 +75,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    GoogleAnalyticsService
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: WthInterceptor,

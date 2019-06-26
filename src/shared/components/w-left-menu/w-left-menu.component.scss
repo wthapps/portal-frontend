@@ -58,6 +58,7 @@ $active-color: red;
   .menuleft-bottom {
     padding: 5px 10px;
   }
+
   .menuleft-item {
     @include flexbox;
     @include justify-content(space-between);
@@ -105,6 +106,13 @@ $active-color: red;
         color: $theme-color;
       }
     }
+    &.menuleft-topitem {
+      border-bottom: 1px solid $line;
+      > a {
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+    }
   }
 
   .ui-panelmenu {
@@ -136,8 +144,21 @@ $active-color: red;
         padding-left: 30px;
       }
     }
+    .ui-panelmenu-content {
+      padding-left: 45px;
+    }
+    .ui-submenu-list {
+      margin-left: 15px;
+    }
+    .ui-panelmenu-header-link, .ui-menuitem-link {
+      @include text-overflow;
+    }
     .ui-menuitem {
       .ui-menuitem-link {
+        padding-left: 0;
+      }
+
+      /*.ui-menuitem-link {
         padding-left: 45px;
       }
       .ui-menuitem {
@@ -169,7 +190,7 @@ $active-color: red;
             }
           }
         }
-      }
+      }*/
     }
 
     .fa-caret-right {

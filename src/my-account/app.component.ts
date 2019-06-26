@@ -6,7 +6,7 @@ import {
   ViewContainerRef,
   ViewChild,
   ComponentFactoryResolver,
-  AfterViewInit
+  AfterViewInit, enableProdMode
 } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -22,7 +22,6 @@ import {
 import { SubscriptionEditModalComponent } from './shared/subscription/modal/subscription-edit-modal.component';
 import { CommonEventService } from '../shared/services/common-event/common-event.service';
 import { WthConfirmService } from '../shared/shared/components/confirmation/wth-confirm.service';
-import { SubscriptionService } from './shared/subscription/subscription.service';
 import { ToastsService } from '../shared/shared/components/toast/toast-message.service';
 import { AccountService } from './shared/account/account.service';
 import { Store } from '@ngrx/store';
@@ -30,7 +29,11 @@ import * as fromRoot from './store';
 import * as fromAccount from './store/account';
 import { AuthService, UserService } from '@wth/shared/services';
 import { AccountRequestOwnershipModalComponent } from '@account/admin/accounts/account-request-ownership-modal.component';
+import { PageVisibilityService } from '@shared/services/page-visibility.service';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
+
+const CURRENT_MODULE = 'account';
 
 /**
  * This class represents the main application component.
@@ -63,11 +66,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private resolver: ComponentFactoryResolver,
     private commonEventService: CommonEventService,
+    private googleAnalytics: GoogleAnalyticsService,
     private wthConfirmService: WthConfirmService,
     private accountService: AccountService,
-    private subscriptionService: SubscriptionService,
     private toastsService: ToastsService,
     private userService: UserService,
+    private visibilityService: PageVisibilityService,
     private store: Store<fromRoot.State>
   ) {
     this.commonEventService
@@ -75,6 +79,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((event: any) => {
         this.doEvent(event);
       });
+
+    this.visibilityService.reloadIfProfileInvalid();
   }
 
   ngOnInit() {
@@ -92,6 +98,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
       window.scrollTo(0, 0);
+      this.googleAnalytics.sendPageView(`/${CURRENT_MODULE}${evt.urlAfterRedirects}`);
     });
   }
 

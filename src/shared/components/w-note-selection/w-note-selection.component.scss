@@ -1,24 +1,57 @@
 @import "../../../assets/styles/global";
-@import "../w-object-list/w-object-list-modal.component";
+@import "../../../assets/styles/components/objects-main";
 
-.modal-note-selection {
-  .wobject-box-description {
-    height: 80px;
-    overflow: hidden;
-    padding: 10px;
-    background-color: #ffffff;
-    p:last-child {
-      margin-bottom: 0;
+.note-selection-content {
+  @include flexbox;
+  @include flex-direction(column);
+  overflow: auto;
+  height: 100%;
+  .objects-main-menu {
+    padding: 5px 15px;
+    @include border-top-radius(5px);
+  }
+  .content-view.content-list ~ .dts-select-container {
+    top: 52px;
+  }
+  .dts-select-container {
+    position: absolute !important;
+  }
+  .content-grid {
+    .item-media-img {
+      background-color: #ffffff;
+    }
+    .item-note-owner, .item-note-date {
+      display: none;
+    }
+    .item-note-img {
+      > i.fa {
+        display: none;
+      }
+      > .item-note-content {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 10px;
+      }
     }
   }
-  .wobject-grid .wobject-row-body .wobject-row,
-  .wobject-timeline .wobject-row-body .wobject-row {
-    width: percentage(1/4);
-  }
-  .wobject-list {
-    .wobject-box-description {
+  .content-list {
+    .item-media {
+      @include flexbox;
+    }
+    .item-media-name {
+      @include flex(1);
+      @include text-overflow;
+    }
+    .item-note-owner, .item-note-date {
+      width: 110px;
+    }
+    .item-note-img {
+    }
+    .item-note-content {
       display: none;
     }
   }
 }
-

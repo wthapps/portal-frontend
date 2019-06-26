@@ -13,6 +13,7 @@ export class WNavTabComponent implements OnInit, OnChanges {
   @Input() tabs: WTab[];
   @Input() break: Number = 3;
   @Input() setTabActive: string;
+  @Input() cssClass: string;
   @Output() currentTab: EventEmitter<WTab> = new EventEmitter<WTab>();
   tabActive: WTab;
 

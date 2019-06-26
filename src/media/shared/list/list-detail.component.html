@@ -28,7 +28,7 @@
     </li>
   </ul>
 </ng-template>
-<div class="page-over-full-wrap gray-light" [ngClass]="{'active-info': showDetailsInfo}">
+<div class="page-over-full-wrap bg-white" [ngClass]="{'active-info': showDetailsInfo}">
   <div class="page-over-full-header">
     <ng-template #objectActionsTemplate>
       <ul class="page-body-control-menu">
@@ -71,7 +71,7 @@
       </div>
     </w-grid-list>
     <box-no-data *ngIf="objects && objects.length == 0 && !loading" [title]="titleNoData" [icon]="iconNoData || 'fa fa-video-camera'"
-      [subTitle]="subTitleNoData" style="margin-top: 50px; display: block;">
+      [subTitle]="subTitleNoData" class="box-no-data">
       <button *ngIf="actionNoData" class="btn btn-outline-primary" (click)="toolbar.doAction({action: 'openMediaSelectModal'})">
         <i class="fa fa-plus"></i> {{actionNoData}}
       </button>

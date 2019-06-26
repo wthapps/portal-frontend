@@ -14,7 +14,7 @@ import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-da
 import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
 import { WthConfirmModule } from '@shared/shared/components/confirmation/wth-confirm.module';
 import { DirectiveModule } from '@shared/shared/directive/directive.module';
-import { WDataViewModule } from '../shared/components/w-dataView/w-dataView.module';
+import { WDataViewModule } from '../../shared/components/w-dataView/w-dataView.module';
 import { WModalsModule } from '../shared/components/modals/modals.module';
 import { MAlbumsService } from './shared/services/albums.service';
 
@@ -31,7 +31,7 @@ import { MMediaService } from './shared/media.service';
     FormsModule,
     MediaRoutingModule,
     WDataViewModule,
-    LocalStorageModule.withConfig({
+    LocalStorageModule.forRoot({
       prefix: 'my-app',
       storageType: 'localStorage'
     }),

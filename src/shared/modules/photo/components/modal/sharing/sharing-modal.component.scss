@@ -1,0 +1,54 @@
+@import "../../../../../../assets/styles/global";
+
+.sharing-modal {
+  bs-modal-header {
+    border-bottom: 1px solid $line;
+  }
+  .text-primary {
+    color: $theme-color !important;
+  }
+
+  .sharing-chips {
+    .ui-inputtext {
+      height: auto;
+      min-height: 34px;
+    }
+  }
+
+  .media-list-item {
+    .media {
+      overflow: inherit;
+    }
+    .media-left {
+      figure {
+        img {
+          max-width: 25px;
+          max-height: 25px;
+        }
+      }
+    }
+  }
+
+  .changing {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px solid #FFD051;
+    padding: 6px 0 6px 10px;
+    border-radius: 2px;
+    web-kit-border-radius: 2px;
+    margin-right: 1px;
+  }
+
+  .modal-fixed-height {
+    min-height: 300px;
+    max-height: 300px;
+  }
+
+  .dropdown-menu {
+    &.dropdown-menu-right a i {
+      position: absolute;
+      right: 15px;
+    }
+  }
+}

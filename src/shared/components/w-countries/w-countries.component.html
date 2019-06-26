@@ -1,4 +1,4 @@
-<ng-container *ngIf="countriesCode$ | async as countriesCode">
+<ng-container *ngIf="countriesCode">
   <p-dropdown (onChange)="onComplete()" [options]="countriesCode"
               [(ngModel)]="selectedCountry" [autoDisplayFirst]="false" [placeholder]="'Select country'"
               [style]="{'width':'100%'}" filter="true">

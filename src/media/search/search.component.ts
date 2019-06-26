@@ -1,6 +1,7 @@
 import {
   Component, ComponentFactoryResolver, OnInit, ViewChild,
-  ViewContainerRef } from '@angular/core';
+  ViewContainerRef
+} from '@angular/core';
 import * as appStore from '../shared/store';
 import {
   Favorite,
@@ -14,21 +15,18 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { ApiBaseService, DateService } from '@shared/services';
+import { ApiBaseService, DateService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
-import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { LocationCustomService } from '@media/shared/service/location-custom.service';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
 import { mediaConstants } from '@media/shared/config/constants';
 import { Location } from '@angular/common';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaBasicListMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
 
 @Component({
   moduleId: module.id,
@@ -73,6 +71,7 @@ export class ZMediaSearchComponent implements
   subUpload: any;
   subSelect: any;
   endLoading: any;
+  title: string = 'Search';
   // ============
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
 
@@ -89,13 +88,14 @@ export class ZMediaSearchComponent implements
     public resolver: ComponentFactoryResolver,
     public confirmService: WthConfirmService,
     public localStorageService: LocalStorageService,
+
+    public commonEventService: CommonEventService,
     public dateService: DateService,
     // public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public route: ActivatedRoute,
     public location: Location
-    // private uploader: WUploader
-    ) { }
+  ) { }
 
   onAddedToPlaylist: (data: any) => void;
 
@@ -119,6 +119,7 @@ export class ZMediaSearchComponent implements
         break;
       case 'sort':
         this.sorting = e.payload.queryParams;
+        this.loadObjects(this.sorting);
         // this.loadObjects();
         break;
       case 'clickOnItem':
@@ -132,9 +133,9 @@ export class ZMediaSearchComponent implements
     switch (e.action) {
       case 'uploaded':
         this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: { id: this.object.id }, videos: [e.payload] })
-        .subscribe(res => {
-          this.loadObjects(this.object.uuid);
-        });
+          .subscribe(res => {
+            this.loadObjects(this.object.uuid);
+          });
         break;
       case 'changeView':
         this.changeViewMode(e.payload);
@@ -160,19 +161,19 @@ export class ZMediaSearchComponent implements
     }
   }
 
-  loadObjects(input: any) {
-    let new_input = { ...input};
-    if(input.searchFrom || input.searchTo) {
-      new_input.searchFrom = new Date(input.searchFrom)
-      new_input.searchTo = new Date(input.searchTo)
+  async loadObjects(input: any) {
+    const { queryParams } = this.route.snapshot;
+    const new_input = { ...input, ...queryParams, sort_name: input.sort_name || 'Date', sort: input.sort || 'desc' };
+    if (input.searchFrom || input.searchTo) {
+      new_input.searchFrom = new Date(input.searchFrom);
+      new_input.searchTo = new Date(input.searchTo);
     }
 
-    this.apiBaseService.get(`media/search`, input).subscribe(res => {
-      this.objects = res.data;
-      this.links = res.meta.links;
-      this.loading = false;
-      this.loadingEnd();
-    });
+    const res = await this.apiBaseService.get(`media/search`, new_input).toPromise();
+    this.objects = res.data;
+    this.links = res.meta.links;
+    this.loading = false;
+    this.loadingEnd();
   }
 
   validateActions: (menuActions: any, role_id: number) => any;
@@ -299,8 +300,10 @@ export class ZMediaSearchComponent implements
   }
 
   removeFromParent() {
-    this.apiBaseService.post(`media/playlists/remove_from_playlist`, { playlist: { id: this.object.id },
-     videos: this.selectedObjects.map(ob => ({ id: ob.id, model: ob.model })) }).subscribe(res => {
+    this.apiBaseService.post(`media/playlists/remove_from_playlist`, {
+      playlist: { id: this.object.id },
+      videos: this.selectedObjects.map(ob => ({ id: ob.id, model: ob.model }))
+    }).subscribe(res => {
       this.toastsService.success('You removed videos successfully!');
       this.loadObjects(this.object.uuid);
       this.selectedObjects = [];
@@ -361,53 +364,16 @@ export class ZMediaSearchComponent implements
     console.log('You should overwrite this one', e);
   }
 
-  // openSelectedModal() {
-
-  //   let options: any;
-
-  //   if (this.photoSharingTypes.includes(this.object.sharing_type)) {
-  //     options = {
-  //       selectedTab: 'photos',
-  //       hiddenTabs: ['videos', 'playlists'],
-  //       filter: 'photo',
-  //       allowedFileType: ['image/*'],
-  //       allowCancelUpload: true
-  //     };
-  //   } else if (this.videoSharingTypes.includes(this.object.sharing_type)) {
-  //     options = {
-  //       selectedTab: 'videos',
-  //       hiddenTabs: ['photos', 'albums'],
-  //       filter: 'video',
-  //       allowedFileType: ['video/*'],
-  //       allowCancelUpload: true,
-  //       uploadButtonText: 'Upload videos',
-  //       dragdropText: 'Drag your videos here'
-  //     };
-  //   }
-  //   this.mediaSelectionService.open(options);
-
-  //   if (this.subSelect) { this.subSelect.unsubscribe(); }
-  //   if (this.subUpload) { this.subUpload.unsubscribe(); }
-  //   this.subSelect = this.mediaSelectionService.selectedMedias$.filter((items: any[]) => items.length > 0)
-  //     .subscribe(objects => {
-  //       this.afterSelectMediaAction(this.object, objects);
-  //     });
-
-  //   this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe(event => {
-  //     this.handleUploadFiles(event);
-  //   });
-  // }
-
   afterSelectMediaAction(parent: any, children: any) {
     if (this.object.model === 'Common::Sharing') {
-      if (this.videoSharingTypes.includes(this.object.sharing_type)) {
+      if (this.videoSharingTypes.includes(this.object.model)) {
         this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, {
           objects: children.filter(c => c.model === 'Media::Video')
         }).subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
       }
-      if (this.photoSharingTypes.includes(this.object.sharing_type)) {
+      if (this.photoSharingTypes.includes(this.object.model)) {
         this.apiBaseService.post(`media/sharings/${this.object.id}/objects`, {
           objects: children.filter(c => c.model === 'Media::Photo')
         }).subscribe(res => {
@@ -426,9 +392,9 @@ export class ZMediaSearchComponent implements
         const file = event.payload.resp;
 
         // just allow allow files depend on sharing_type and file's content_type
-        if (this.videoSharingTypes.includes(this.object.sharing_type) && file.content_type.startsWith('video')) {
+        if (this.videoSharingTypes.includes(this.object.model) && file.content_type.startsWith('video')) {
           this.uploadingFiles.push({ ...file, model: 'Media::Video' });
-        } else if (this.photoSharingTypes.includes(this.object.sharing_type) && file.content_type.startsWith('image')) {
+        } else if (this.photoSharingTypes.includes(this.object.model) && file.content_type.startsWith('image')) {
           this.uploadingFiles.push({ ...file, model: 'Media::Photo' });
         }
         break;
@@ -455,7 +421,7 @@ export class ZMediaSearchComponent implements
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.object.sharing_type === 'Media::Album' ? this.tooltip.addPhotos : this.tooltip.addVideos,
+        tooltip: this.object.object_type === 'Media::Album' ? this.tooltip.addPhotos : this.tooltip.addVideos,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-plus-square'
       },

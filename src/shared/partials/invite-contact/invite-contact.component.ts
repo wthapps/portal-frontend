@@ -27,7 +27,7 @@ export class InviteContactComponent implements OnInit {
 
   openModal() {
     this.apiBaseService.get(`contact/wcontacts/contacts_not_wthuser`, { sort_name: 'name', sort: 'asc' }).subscribe(res => {
-      this.contacts = res.data.filter(e => !e.wthapps_user);
+      this.contacts = res.data;
     });
     this.modal.open();
   }
@@ -40,15 +40,15 @@ export class InviteContactComponent implements OnInit {
     this.contacts.filter(c => c.selected).forEach(c => {
       if (c.emails && c.emails.length > 0) {
         c.emails.forEach(e => {
-          data.push({ fullName: c.name, contactId: c.id, email: e.value });
+          data.push({ firstName: c.name, lastName: c.family_name, contactId: c.id, email: e.value });
         });
       } else {
-        data.push({ fullName: c.name, contactId: c.id, email: '' });
+        data.push({ firstName: c.name, lastName: c.family_name, contactId: c.id, email: '' });
       }
     });
     this.createModal.open({ data: data, back: true });
     this.createModal.event.pipe(take(1)).subscribe(data => {
-      if (data.action == 'back') {
+      if (data.action === 'back') {
         this.onBack();
         this.selectedUsers = tmp;
       }
@@ -63,7 +63,7 @@ export class InviteContactComponent implements OnInit {
   selectUser(e: any) {
     e.selected = true;
     this.contacts = this.contacts.map(c => {
-      if (c.id == e.id) {
+      if (c.id === e.id) {
         return e;
       }
       return c;
@@ -73,7 +73,7 @@ export class InviteContactComponent implements OnInit {
   deselectUser(e: any) {
     e.selected = false;
     this.contacts = this.contacts.map(c => {
-      if (c.id == e.id) {
+      if (c.id === e.id) {
         return e;
       }
       return c;
@@ -81,6 +81,7 @@ export class InviteContactComponent implements OnInit {
   }
 
   onCheckboxChange(user) {
+    user.selected = !user.selected;
     if (user.selected) {
       this.selectedUsers.push(user);
     } else {

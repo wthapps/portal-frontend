@@ -13,6 +13,10 @@ import { ZChatEmojiModule } from '@shared/shared/emoji/emoji.module';
 import { TooltipModule } from 'primeng/components/tooltip/tooltip';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { BsModalModule } from 'ng2-bs3-modal';
+import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-loading.module';
+import { BoxNoDataModule } from '@shared/shared/components/box-no-data/box-no-data.module';
+import { ChatPipeModule } from '@shared/chat/pipe';
+// import { SubscriptionModule } from '@shared/common/subscription';
 
 @NgModule({
   imports: [
@@ -22,10 +26,14 @@ import { BsModalModule } from 'ng2-bs3-modal';
     InfiniteScrollModule,
     NotificationListModule,
     ZChatEmojiModule,
+    ChatPipeModule,
     PipeModule,
     TooltipModule,
     BsModalModule,
-    WTHEmojiModule
+    WTHEmojiModule,
+    BoxLoadingModule,
+    BoxNoDataModule,
+    // SubscriptionModule
   ],
   declarations: [
     AppsNavigationComponent,

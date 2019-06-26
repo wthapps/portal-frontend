@@ -10,6 +10,10 @@
   }
 }
 
+.text-left {
+  text-align: left;
+}
+
 .image-viewer-wrap {
   position: fixed;
   top: 0;
@@ -217,6 +221,12 @@
     .media {
       margin: 7px 0;
     }
+  }
+  
+  .limit-length {
+    min-width: 400px;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 

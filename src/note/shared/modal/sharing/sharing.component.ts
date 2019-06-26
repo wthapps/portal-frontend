@@ -8,6 +8,8 @@ import { Constants } from '@shared/constant/config/constants';
 import { Store } from '@ngrx/store';
 import * as fromShareModal from '../../reducers/share-modal';
 import { AutoComplete } from 'primeng/primeng';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 declare var $: any;
 
@@ -17,7 +19,7 @@ declare var $: any;
   styleUrls: ['sharing.component.scss']
 })
 
-export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('auto') auto: AutoComplete;
 
@@ -47,7 +49,7 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
   searchSubscription: Subscription;
   readonly searchDebounceTime: number = Constants.searchDebounceTime;
 
-  constructor(private apiBaseService: ApiBaseService, private store: Store<any>) {
+  constructor(private apiBaseService: ApiBaseService, private toastsService: ToastsService, private store: Store<any>) {
     this.subscription = store.select('share').subscribe((state: any) => {
       this.selectedUsers = state.current.selectedContacts;
       this.sharings = state.current.sharedSharings;
@@ -64,8 +66,8 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
       distinctUntilChanged(),
       switchMap((term: any) => this.apiBaseService.get(`account/search?q=${term.query}`)))
       .subscribe((res: any) => {
-        const selectedIds = this.selectedUsers.map(ct => ct.id);
-        const sharedIds = this.sharings.map(ss => ss.recipient.id);
+        const selectedIds = this.selectedUsers ? this.selectedUsers.map(ct => ct.id) : [];
+        const sharedIds = this.sharings ? this.sharings.map(ss => ss.recipient.id) : [];
         this.users = res.data.filter(ct => !selectedIds.includes(ct.id) && !sharedIds.includes(ct.id));
       },
 (error: any) => {
@@ -77,23 +79,6 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
 
   ngOnInit(): void {
 
-  }
-
-  ngAfterViewInit() {
-    $(document).ready(function() {
-      $('.dropdown').on('show.bs.dropdown', function() {
-        alert('The dropdown is about to be shown.');
-      });
-      $('.dropdown').on('shown.bs.dropdown', function() {
-        alert('The dropdown is now fully shown.');
-      });
-      $('.dropdown').on('hide.bs.dropdown', function(e) {
-        alert('The dropdown is about to be hidden.');
-      });
-      $('.dropdown').on('hidden.bs.dropdown', function() {
-        alert('The dropdown is now fully hidden.');
-      });
-    });
   }
 
   ngOnDestroy() {
@@ -196,6 +181,8 @@ export class ZNoteSharedModalSharingComponent implements OnInit, OnDestroy, Afte
         if (this.sharedObjects.length > 1) {
           this.modal.close();
         }
+      }, (errResponse: HttpErrorResponse) => {
+        this.toastsService.danger('Oops, a wild bug appears: ', errResponse.error.error);
       });
     } else {
       // Only update single object

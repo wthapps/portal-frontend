@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { BehaviorSubject ,  Observable ,  Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
-import { Media } from '@shared/shared/models/media.model';
 import { ApiBaseService } from '@shared/services';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { map } from 'rxjs/operators/map';
+import Media from '@shared/modules/photo/models/media.model';
 
 declare let _: any;
 
 const DEFAULT_OPTIONS = {
   selectedTab: 'photos',
+  photoOnly: false,
   hiddenTabs: [],
   allowSelectMultiple: true,
   allowCancelUpload: false,
@@ -42,8 +43,8 @@ export class WMediaSelectionService {
 
   private options = DEFAULT_OPTIONS;
   constructor(private apiBaseService: ApiBaseService,
-              private objectListService: WObjectListService,
-              private datePipe: DatePipe) {
+    private objectListService: WObjectListService,
+    private datePipe: DatePipe) {
     this.medias$ = this.mediasSubject.asObservable();
     this.uploadingMedias$ = this.uploadingMediaSubject.asObservable();
     this.selectedMedias$ = this.selectedMediasSubject.asObservable();
@@ -77,7 +78,8 @@ export class WMediaSelectionService {
     const link = nextLink ? nextLink : 'media/photos';
     return this.apiBaseService.get(link).pipe(
       map((res: ResponseMetaData) => {
-        const data = res.data.map((item) => ({...item, group_by_day: this.datePipe.transform(item.created_at, 'yyyy-MM-dd'),
+        const data = res.data.map((item) => ({
+          ...item, group_by_day: this.datePipe.transform(item.created_at, 'yyyy-MM-dd'),
           group_by_month: this.datePipe.transform(item.created_at, 'yyyy-MM'),
           group_by_year: this.datePipe.transform(item.created_at, 'yyyy')
         }));

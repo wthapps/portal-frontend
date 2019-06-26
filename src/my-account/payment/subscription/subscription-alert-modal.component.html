@@ -1,0 +1,16 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Upgrade fails</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p> There is error while you request to upgrade your account. </p>
+    <p *ngIf="error"> {{ error }}</p>
+    <p>For more information, please visit <a [href]="faqUrl">FAQ</a> page or <a [href]="contactUsUrl">Contact us</a>.</p>
+  </bs-modal-body>
+
+  <bs-modal-footer>
+    <button (click)="close()" type="submit" class="btn btn-outline-primary btn-min">
+      Ok
+    </button>
+  </bs-modal-footer>
+</bs-modal>

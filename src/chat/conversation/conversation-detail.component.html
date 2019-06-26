@@ -1,28 +1,38 @@
-<ng-container *ngIf="selectedConversation">
-  <z-chat-share-toolbar [contactSelect]="selectedConversation"
-                        [chatContactList]="chatContactList$ | async"
-                        class="page-body-control">
+<ng-container *ngIf="joinedConversation$ | async as conversation">
+  <z-chat-share-toolbar [conversation]="conversation" class="page-body-control"
+                        (onUpdateDisplay)="updateDisplay($event)"
+                        (onAddMember)="openContactSelection($event)"
+                        (onViewDetail)="viewProfile($event)"
+                        (onLeave)="leaveConversation($event)"
+                        (onToggleInfo)="toggleInfo($event)">
   </z-chat-share-toolbar>
-  <div class="page-body-content page-body-content-chat has-page-body-control" (drop)="drop($event)"
-       (dragover)="drag($event)" (dragenter)="drag($event)">
+  <div class="page-body-content page-body-content-chat has-page-body-control"
+       (drop)="drop($event)"
+       (dragover)="drag($event)"
+       (dragenter)="drag($event)">
 
-    <z-chat-share-item-request
-      *ngIf="selectedConversation.status == 'sent_request' || selectedConversation.status == 'pending'"
-      [selectedConversation]="selectedConversation"
-      [message]="(currentMessages$ | async)?.data[0]">
-    </z-chat-share-item-request>
+    <message-invitation [conversation]="conversation"
+                        (onAccept)="acceptInvitation(conversation)"
+                        (onDecline)="declineInvitation(conversation)">
+    </message-invitation>
 
-    <message-list [currentMessages]="(currentMessages$ | async)?.data"
-                  [contactItem]="selectedConversation"
-                  [currentUser]="currentUser$ | async"
-                  class="message-list-body"
-                  #messageList>
+    <message-list class="message-list-body" #messageList
+                  [messages]="messages$ | async | messageDisplay:(currentUser$|async)"
+                  [conversation]="conversation"
+                  [currentUser]="currentUser$ | async">
     </message-list>
     <message-editor class="chat-message-container"
                     #messageEditor
-                    [isDisabled]="!selectedConversation.active || selectedConversation.blacklist || !(networkOnline$ | async)"
-                    [contactSelect]="selectedConversation">
+                    [isDisabled]="!conversation.active || conversation.status === 'pending' || !(networkOnline$ | async)"
+                    [conversation]="conversation"
+                    (onCreate)="createMessage($event)"
+                    (onError)="showEditorError($event)">
     </message-editor>
-    <message-assets class="message-assets" [chatContactList]="chatContactList$ | async"></message-assets>
+    <message-assets class="message-assets"
+                    [conversation]="conversation"
+                    (onViewProfile)="viewProfile($event)">
+
+    </message-assets>
   </div>
 </ng-container>
+

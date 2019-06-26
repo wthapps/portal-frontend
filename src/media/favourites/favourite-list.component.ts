@@ -7,8 +7,8 @@ import {
 
 import { Store } from '@ngrx/store';
 import { MediaUploaderDataService } from '@media/shared/uploader/media-uploader-data.service';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { Constants } from '@wth/shared/constant';
 import * as appStore from '../shared/store';
 import {
@@ -17,20 +17,18 @@ import {
   AddSuccess,
   DeleteMany
 } from '../shared/store/media/media.actions';
-import { MediaActionHandler } from '@media/shared/media';
-import { DeleteManySuccess } from '@media/shared/store/media';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
-import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
-import { ApiBaseService } from '@shared/services';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
+import { ApiBaseService, CommonEventService } from '@shared/services';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { mediaConstants } from '@media/shared/config/constants';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { takeUntil } from 'rxjs/operators';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { SharingModalResult } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import { MediaBasicListMixin, MediaAdditionalListMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
+import Sharing from '@shared/modules/photo/models/sharing.model';
 
 @Mixins([MediaBasicListMixin, SharingModalMixin, MediaAdditionalListMixin, MediaDownloadMixin])
 @Component({
@@ -60,34 +58,70 @@ export class ZMediaFavoriteListComponent implements OnInit,
   viewMode: any = this.viewModes.grid;
   menuActions: any = {};
   // ============
-  titleNoData: any = 'There are no favorite photos or albums';
-  subTitleNoData: any = 'Add star to items to find easier';
+  titleNoData: any = 'There are no favorite items!';
+  subTitleNoData: any = '"Favorite" photos, videos or albums to easily find them later';
   iconNoData: any = 'fa fa-star';
   sorting: any;
   endLoading: any;
   disableMoreAction: boolean = true;
+  title: string = 'Favorites';
+  destroy$: any = new Subject();
+  filters: any = [{ title: 'Photos', active: true, link: '/favorites/photos', model: 'Media::Photo' }, { title: 'Albums', active: false, link: '/favorites/albums', model: 'Media::Album' }];
 
   constructor(
     public apiBaseService: ApiBaseService,
     private router: Router,
+    private route: ActivatedRoute,
     public sharingModalService: SharingModalService,
     public toastsService: ToastsService,
     public localStorageService: LocalStorageService,
     public confirmService: WthConfirmService,
+    public commonEventService: CommonEventService,
     public resolver: ComponentFactoryResolver
   ) {
   }
 
+  ngOnInit() {
+    this.menuActions = this.getMenuActions();
+    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      this.selectedObjects = [];
+      if (!params.filter || params.filter == 'photos') {
+        this.loadObjects({ 'filter[where][object_type]': 'Media::Photo', 'filter[or][object_type]': 'Media::Video' });
+        this.filters = this.filters.map(f => {
+          if (f.model == 'Media::Photo') {
+            f.active = true;
+          } else {
+            f.active = false;
+          }
+          return f;
+        })
+      } else {
+        this.loadObjects({ 'filter[where][object_type]': 'Media::Album', 'filter[or][object_type]': 'Common::Sharing' });
+        this.filters = this.filters.map(f => {
+          if (f.model == 'Media::Album') {
+            f.active = true;
+          } else {
+            f.active = false;
+          }
+          return f;
+        })
+      }
+    })
+  }
+
   openModalShare: () => void;
   loadingEnd: () => void;
-  onSaveShare: (e: SharingModalResult) => void;
+  onSaveShare: (sharing: Sharing) => void;
   onEditShare: (e: SharingModalResult, sharing: any) => void;
+  deSelect: () => void;
+
   /* MediaListMixin This is media list methods, to
   custom method please overwirte any method*/
   selectedObjectsChanged: (objectsChanged?: any) => void;
-  deleteObjects (term: any) {
-    const sharings_with_me = this.selectedObjects.filter(s => s.object_type == 'sharing' && s.role_id < 5);
-    const others = this.selectedObjects.filter(s => !(s.object_type == 'sharing' && s.role_id < 5));
+  deleteObjects(term: any) {
+    const sharings_with_me = this.selectedObjects.filter(s => s.model == 'Common::Sharing' && s.role_id < 5);
+    const others = this.selectedObjects.filter(s => !(s.model == 'Common::Sharing' && s.role_id < 5));
     this.confirmService.confirm({
       header: 'Delete',
       acceptLabel: 'Delete',
@@ -106,8 +140,8 @@ export class ZMediaFavoriteListComponent implements OnInit,
     });
   };
   changeViewMode: (mode: any) => void;
-  validateActions:(menuActions: any, role_id: number) => any;
-  downloadMedia:(media: any) => void;
+  validateActions: (menuActions: any, role_id: number) => any;
+  downloadMedia: (media: any) => void;
 
   toggleFavorite(items?: any) {
     let data = this.selectedObjects;
@@ -127,19 +161,22 @@ export class ZMediaFavoriteListComponent implements OnInit,
       });
       this.favoriteAll = this.selectedObjects.every(s => s.favorite);
       this.objects = this.objects.filter(ob => ob.favorite);
+      this.selectedObjects = [];
     });
-  }
-
-  ngOnInit() {
-    this.loadObjects();
-    this.menuActions = this.getMenuActions();
-    this.viewMode = this.localStorageService.get('media_view_mode') || this.viewModes.grid;
   }
 
   doListEvent(e: any) {
     switch (e.action) {
       case 'viewDetails':
         this.viewDetails(e.payload);
+        break;
+      case 'filter':
+        this.filters.forEach(f => {
+          if (f.title == e.data.title) {
+            this.router.navigate([f.link]);
+          }
+          return f;
+        })
         break;
       case 'favorite':
         this.toggleFavorite(e.payload);
@@ -172,11 +209,12 @@ export class ZMediaFavoriteListComponent implements OnInit,
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        if(e.payload && e.payload.length == 1) {
-          this.validateActions(this.menuActions, e.payload[0].role_id);
+        if (this.selectedObjects && this.selectedObjects.length == 1) {
+          this.validateActions(this.menuActions, this.selectedObjects[0].role_id);
         } else {
           // only view when select many
           this.validateActions(this.menuActions, 1);
+          this.menuActions.preview.active = false;
           this.menuActions.download.active = false;
           this.menuActions.share.active = false;
           this.menuActions.shareMobile.active = false;
@@ -190,6 +228,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
   loadObjects(opts: any = {}) {
     this.loading = true;
     this.sorting = { sort_name: opts.sort_name || "Date", sort: opts.sort || "desc" };
+    this.objects = [];
     this.apiBaseService.get(`media/favorites`, opts).subscribe(res => {
       this.objects = res.data;
       this.links = res.meta.links;
@@ -200,28 +239,27 @@ export class ZMediaFavoriteListComponent implements OnInit,
   viewDetail(uuid: string) {
     // this.router.navigate(['/playlists', uuid]);
   }
-  loadMoreObjects:(input?: any) => void;
+  loadMoreObjects: (input?: any) => void;
 
   viewDetails(payload: any) {
     switch (payload.selectedObject.model) {
-      case 'Media::Playlist' :
-        this.router.navigate([`/playlists`, payload.selectedObject.uuid], { queryParams: { returnUrls: ['/', '/favourites'] } });
+      case 'Media::Playlist':
+        this.router.navigate([`/playlists`, payload.selectedObject.uuid], { queryParams: { returnUrls: ['/', '/favorites'] } });
         break;
-      case 'Media::Album' :
-        this.router.navigate([`/albums`, payload.selectedObject.uuid], { queryParams: { returnUrls: ['/', '/favourites'] } });
+      case 'Media::Album':
+        this.router.navigate([`/albums`, payload.selectedObject.uuid], { queryParams: { returnUrls: ['/', '/favorites/albums'] } });
         break;
-      case 'Media::Photo' :
-        this.router.navigate(['photos', payload.selectedObject.uuid]);
+      case 'Media::Photo':
+      case 'Media::Video':
+        const data: any = { returnUrls: '/favorites/photos', preview: true, model: payload.selectedObject.model };
+        this.router.navigate(['photos', payload.selectedObject.uuid], { queryParams: data });
         break;
-      case 'Media::Video' :
-        this.router.navigate(['videos', payload.selectedObject.uuid]);
-        break;
-      case 'Common::Sharing' :
+      case 'Common::Sharing':
         this.router.navigate(['shared', payload.selectedObject.uuid]);
         break;
       default:
         break;
-      }
+    }
   }
 
   getMenuActions() {
@@ -231,7 +269,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
         permission: mediaConstants.SHARING_PERMISSIONS.VIEW,
         inDropDown: false, // Outside dropdown list
         action: () => {
-          this.viewDetails({selectedObject: this.selectedObjects[0]});
+          this.viewDetails({ selectedObject: this.selectedObjects[0] });
         },
         class: 'btn btn-default',
         liclass: '',
@@ -326,7 +364,7 @@ export class ZMediaFavoriteListComponent implements OnInit,
         permission: mediaConstants.SHARING_PERMISSIONS.DOWNLOAD,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          if (this.selectedObjects[0].object_type == 'sharing') {
+          if (this.selectedObjects[0].model == 'Common::Sharing') {
             this.apiBaseService.get(`media/sharings/${this.selectedObjects[0].uuid}/objects`).subscribe(res => {
               this.downloadMedia(res.data);
             });

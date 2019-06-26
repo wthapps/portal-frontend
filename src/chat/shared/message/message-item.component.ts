@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
-import { Constants, CHAT_ACTIONS, ChatConstant, CONVERSATION_SELECT } from '@wth/shared/constant';
-import { CommonEvent, CommonEventService, WMessageService, StorageService } from '@wth/shared/services';
-import { ConversationDetailComponent } from '@chat/conversation/conversation-detail.component';
+import { Constants, CHAT_ACTIONS, ChatConstant } from '@wth/shared/constant';
+import { CommonEvent, CommonEventService, StorageService } from '@wth/shared/services';
+import { MessageEventService } from '@chat/shared/message/message-event.service';
+import { MESSAGE_DELETE } from '@chat/shared/message/message-event.constant';
 
 declare var _: any;
 
@@ -25,7 +26,9 @@ export class MessageItemComponent implements OnInit {
   @Input() prevMessage: any;
   @Input() contactItem: any;
   @Input() emojiMap: any;
-  @Output() onAddContact: EventEmitter<any> = new EventEmitter<any>();
+  @Input() selectedConversation;
+  @Output() onChat: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onViewProfile: EventEmitter<any> = new EventEmitter<any>();
   @Output() event: EventEmitter<any> = new EventEmitter<any>();
 
 
@@ -33,7 +36,6 @@ export class MessageItemComponent implements OnInit {
   readonly noteUrl: any = Constants.baseUrls.note;
   readonly socialUrl: any = Constants.baseUrls.social;
   readonly actions = CHAT_ACTIONS;
-  readonly profileUrl: any = ChatConstant.profileUrl;
   readonly NO_ACTION_MESSAGES = ['message_deleted', 'message_cancel', 'request', 'request_accepted'];
 
   private modifiedMessage: any;
@@ -43,32 +45,17 @@ export class MessageItemComponent implements OnInit {
     private chatService: ChatService,
     private storageService: StorageService,
     private pubSubEventService: CommonEventService,
-    private messageService: WMessageService
-  ) {
-    // this.profileUrl = this.chatService.constant.profileUrl;
-  }
+    private messageEventService: MessageEventService,
+  ) { }
 
   ngOnInit() {
     // console.log(this.message);
-
   }
 
-  onPreviewPhoto(message: any) {
-    if (!_.get(message, 'file.uuid')) { return; }
-    const currentConversation = this.storageService.get(CONVERSATION_SELECT);
-    this.router.navigate([{
-      outlets: {
-        modal: [
-          'preview',
-          message.file.uuid,
-          {
-            object: 'conversation',
-            parent_uuid: _.get(currentConversation, 'group.uuid'),
-            only_preview: true
-          }
-        ]
-      }
-    }], { queryParamsHandling: 'preserve', preserveFragment: true });
+  preview(message: any) {
+    this.messageEventService.preview({
+      message: message
+    });
   }
 
   doAction(event: CommonEvent) {
@@ -78,43 +65,28 @@ export class MessageItemComponent implements OnInit {
   }
 
   copy() {
-    this.doAction({
-      channel: 'ConversationDetailComponent',
-      action: CHAT_ACTIONS.CHAT_MESSAGE_COPY,
-      payload: this.message
-    });
+    this.messageEventService.copy({message: {
+      group_id: this.message.group_id,
+      message: this.message.message,
+      message_type: this.message.message_type,
+      content_type: this.message.content_type,
+    }});
   }
 
   quote() {
-    this.doAction({
-      channel: 'ConversationDetailComponent',
-      action: CHAT_ACTIONS.CHAT_MESSAGE_QUOTE,
-      payload: this.message
-    });
+    this.messageEventService.quote({message: this.message});
   }
 
   edit() {
-    this.doAction({
-      channel: 'ConversationDetailComponent',
-      action: CHAT_ACTIONS.CHAT_MESSAGE_EDIT,
-      payload: this.message
-    });
+    this.messageEventService.edit({message: this.message});
   }
 
   delete() {
-    this.doAction({
-      channel: 'ConversationDetailComponent',
-      action: CHAT_ACTIONS.CHAT_MESSAGE_DELETE,
-      payload: this.message
-    });
+    this.messageEventService.delete({message: this.message});
   }
 
   download() {
-    this.doAction({
-      channel: 'ConversationDetailComponent',
-      action: CHAT_ACTIONS.CHAT_MESSAGE_DOWNLOAD,
-      payload: this.message
-    });
+    this.messageEventService.download({message: this.message});
   }
 
   cancel() {
@@ -133,8 +105,12 @@ export class MessageItemComponent implements OnInit {
     });
   }
 
-  onAdd() {
-    this.onAddContact.emit(this.message.display.share_contact);
+  createChat(user: any) {
+    this.onChat.emit(user);
+  }
+
+  viewProfile(user: any) {
+    this.onViewProfile.emit(user);
   }
 
   onShareContact(data: any) {
@@ -147,40 +123,7 @@ export class MessageItemComponent implements OnInit {
     }
   }
 
-  cancelContactRequest(contact: any) {}
+  cancelContactRequest(contact: any) { }
 
-  hasShowOwner(): boolean {
-    if (this.prevMessage == null) {
-      return true;
-    }
-    if (
-      this.message.user &&
-      this.prevMessage.user &&
-      this.message.user.id === this.prevMessage.user.id
-    ) {
-      return false;
-    }
-    return true;
-  }
 
-  // hasShowDate(): boolean {
-  //   if (this.prevMessage == null || this.message.status == 'pending') {
-  //     return true;
-  //   }
-  //   if (
-  //     this.message.created_at &&
-  //     this.prevMessage.created_at &&
-  //     this.message.created_at.slice(0, 10) ===
-  //       this.prevMessage.created_at.slice(0, 10)
-  //   ) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
-  onImgLoaded() {
-    // setTimeout(() => {
-    //   this.messageService.scrollToBottom();
-    // }, 200);
-  }
 }

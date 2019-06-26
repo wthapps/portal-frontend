@@ -4,7 +4,8 @@ import {
   OnDestroy,
   ComponentFactoryResolver,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
@@ -16,31 +17,29 @@ import {
 import { Constants } from '@wth/shared/constant';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { MediaBasicListMixin } from '@shared/mixin/media-basic-list.mixin';
-import { MediaAdditionalListMixin } from '@shared/mixin/media-additional-list.mixin';
 import { LoadModalAble } from '@shared/shared/mixins/modal/load-modal-able.mixin';
-import { SharingModalMixin } from '@shared/shared/components/photo/modal/sharing/sharing-modal.mixin';
-import { MediaDownloadMixin } from '@shared/mixin/media-download.mixin';
-import { Mixins  } from '@shared/design-patterns/decorator/mixin-decorator';
-import { SharingCreateParams, SharingModalResult } from '@shared/shared/components/photo/modal/sharing/sharing-modal';
-import { MediaRenameModalComponent } from '@shared/shared/components/photo/modal/media/media-rename-modal.component';
-import { MediaAddModalService } from '@shared/shared/components/photo/modal/media/media-add-modal.service';
-import { MediaCreateModalService } from '@shared/shared/components/photo/modal/media/media-create-modal.service';
-import { SharingModalService } from '@shared/shared/components/photo/modal/sharing/sharing-modal.service';
+import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { Location } from '@angular/common';
 import { MediaDetailInfoComponent } from '@media/shared/media/media-detail-info.component';
 import { mediaConstants } from '@media/shared/config/constants';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
-import { AlbumAddMixin } from '@shared/mixin/album/album-add.mixin';
-import { MediaModalMixin } from '@shared/mixin/media-modal.mixin';
 import { WUploader } from '@shared/services/w-uploader';
 import { takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 
-import { MediaListDetailMixin } from '@shared/mixin/media-list-detail.mixin';
-import { MediaParentMixin } from '@shared/mixin/media-parent.mixin';
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { SharingModalMixin } from '@shared/modules/photo/components/modal/sharing/sharing-modal.mixin';
+import { MediaAddModalService } from '@shared/modules/photo/components/modal/media/media-add-modal.service';
+import { MediaCreateModalService } from '@shared/modules/photo/components/modal/media/media-create-modal.service';
+import { SharingModalService } from '@shared/modules/photo/components/modal/sharing/sharing-modal.service';
+import { MediaRenameModalComponent } from '@shared/modules/photo/components/modal/media/media-rename-modal.component';
+import { SharingModalResult, SharingCreateParams } from '@shared/modules/photo/components/modal/sharing/sharing-modal';
+import { MediaBasicListMixin, MediaAdditionalListMixin, MediaListDetailMixin, AlbumAddMixin, MediaModalMixin, MediaParentMixin, MediaDownloadMixin } from '@shared/modules/photo/mixins';
+import Sharing from '@shared/modules/photo/models/sharing.model';
+import MediaList from '@shared/modules/photo/models/list-functions/media-list.model';
+import Album from '@shared/modules/photo/models/album.model';
+import { MediaType } from '@shared/modules/photo/models/interfaces/media';
 
 declare var _: any;
 @Mixins([
@@ -56,7 +55,7 @@ declare var _: any;
 ])
 @Component({
   templateUrl: '../shared/list/parent-detail.component.html',
-  styleUrls: ['album-detail.component.scss']
+  styleUrls: ['album-detail.component.scss'],
 })
 export class ZMediaAlbumDetailComponent
   implements
@@ -70,9 +69,9 @@ export class ZMediaAlbumDetailComponent
   AlbumAddMixin,
   MediaParentMixin,
   MediaDownloadMixin {
-  objects: any;
+  objects: Array<MediaType>;
   cloneObjects: any;
-  object: any;
+  object: Album;
   recipients: any;
   sharingOwner: any;
   hasSelectedObjects: boolean;
@@ -89,8 +88,8 @@ export class ZMediaAlbumDetailComponent
   sharings: any;
   moreRecipients: any;
   // ============
-  titleNoData: any = 'There are no photos!';
-  subTitleNoData: any = 'Try to add a photo';
+  titleNoData: any = 'There are no items in this albums!';
+  actionNoData: any = 'Add items';
   iconNoData: any = 'fa fa-file-image-o';
   // ===========
   menuActions: any = {};
@@ -104,8 +103,9 @@ export class ZMediaAlbumDetailComponent
   subOpenCreateAlbum: any;
   subCreateAlbum: any;
   endLoading: any;
-  returnUrls: any;
+  returnUrls: any = [];
   destroy$ = new Subject();
+  title: string = 'Album Detail';
   // ============
 
   @ViewChild('modalContainer', { read: ViewContainerRef }) modalContainer: ViewContainerRef;
@@ -123,6 +123,7 @@ export class ZMediaAlbumDetailComponent
     public apiBaseService: ApiBaseService,
     public resolver: ComponentFactoryResolver,
     public confirmService: WthConfirmService,
+    public commonEventService: CommonEventService,
     public mediaSelectionService: WMediaSelectionService,
     public router: Router,
     public route: ActivatedRoute,
@@ -163,6 +164,9 @@ export class ZMediaAlbumDetailComponent
         this.sorting = event.payload.queryParams;
         this.loadObjects(this.object.uuid, this.sorting);
         break;
+      case 'noData':
+        this.openSelectedModal();
+        break;
       case 'clickOnItem':
       case 'clickOnCircle':
         this.selectedObjectsChanged();
@@ -194,12 +198,12 @@ export class ZMediaAlbumDetailComponent
   }
 
   setCover(event) {
-    this.apiBaseService.put('media/albums/' + this.object.id, {thumbnail_url: this.selectedCoverObjects[0].thumbnail_url})
-    .subscribe(res => {
-      this.doToolbarCoverEvent({action: 'close'});
-      this.coverModal.close();
-      this.toastsService.success('Set cover image successfully');
-    });
+    this.apiBaseService.put('media/albums/' + this.object.id, { thumbnail_url: this.selectedCoverObjects[0].thumbnail_url })
+      .subscribe(res => {
+        this.doToolbarCoverEvent({ action: 'close' });
+        this.coverModal.close();
+        this.toastsService.success('Set cover image successfully');
+      });
   }
 
   doToolbarCoverEvent(event: any) {
@@ -225,10 +229,10 @@ export class ZMediaAlbumDetailComponent
     this.subSelect = this.mediaSelectionService.selectedMedias$.pipe(
       filter(photos => photos.length > 0)
     ).pipe(takeUntil(this.destroy$)).subscribe(photos => {
-        this.onAddToAlbum({parents: [this.object], children: photos});
-        // this.objects = [...photos.filter(p => p.model === this.objectType), ...this.objects];
-        // this.loadObjects(this.object.uuid);
-      });
+      this.onAddToAlbum({ parents: [this.object], children: photos });
+      // this.objects = [...photos.filter(p => p.model === this.objectType), ...this.objects];
+      // this.loadObjects(this.object.uuid);
+    });
 
     this.uploader.event$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       this.handleUploadFiles(event);
@@ -245,11 +249,8 @@ export class ZMediaAlbumDetailComponent
         this.uploadingFiles = [];
         break;
       case 'success':
-        const file = event.payload.resp;
-        // just add to playlist all files are videos
-        if (file.content_type.startsWith('image')) {
-          this.uploadingFiles.push({...file, model: this.objectType});
-        }
+        const file = event.payload.resp.data;
+        this.uploadingFiles.push(file);
         break;
       case 'complete':
         if (this.uploadingFiles.length > 0) {
@@ -263,8 +264,10 @@ export class ZMediaAlbumDetailComponent
   doToolbarEvent(e: any) {
     switch (e.action) {
       case 'uploaded':
-        this.apiBaseService.post(`media/playlists/add_to_playlist`, { playlist: { id: this.object.id },
-         videos: [e.payload] }).subscribe(res => {
+        this.apiBaseService.post(`media/playlists/add_to_playlist`, {
+          playlist: { id: this.object.id },
+          videos: [e.payload]
+        }).subscribe(res => {
           this.loadObjects(this.object.uuid);
         });
         break;
@@ -276,10 +279,11 @@ export class ZMediaAlbumDetailComponent
 
   loadObjects(input: any, opts: any = {}) {
     this.loading = true;
-    opts = { ...opts, model: 'Media::Album' };
+    // opts = { ...opts, model: 'Media::Album' };
     this.sorting = { sort_name: opts.sort_name || 'Date', sort: opts.sort || 'desc' };
+    this.objects = [];
     this.apiBaseService.get(`media/albums/${input}/objects`, opts).toPromise().then(res => {
-      this.objects = res.data;
+      this.objects = MediaList.map(res.data);
       this.cloneObjects = _.cloneDeep(this.objects);
       this.links = res.meta.links;
       this.loading = false;
@@ -294,16 +298,16 @@ export class ZMediaAlbumDetailComponent
 
   loadObject(input: any) {
     this.apiBaseService.get(`media/albums/${input}`).subscribe(res => {
-      this.object = res.data;
+      this.object = new Album(res.data);
       if (this.object.favorite) {
         this.menuActions.favorite.iconClass = 'fa fa-star';
       } else {
         this.menuActions.favorite.iconClass = 'fa fa-star-o';
       }
       this.validateActions(this.subMenuActions, this.object.recipient ? this.object.recipient.role_id :
-         mediaConstants.SHARING_PERMISSIONS.OWNER);
+        mediaConstants.SHARING_PERMISSIONS.OWNER);
       this.validateActions(this.parentMenuActions, this.object.recipient ? this.object.recipient.role_id :
-         mediaConstants.SHARING_PERMISSIONS.OWNER);
+        mediaConstants.SHARING_PERMISSIONS.OWNER);
     });
   }
   validateActions: (menuActions: any, role_id: number) => any;
@@ -311,7 +315,7 @@ export class ZMediaAlbumDetailComponent
   loadMoreObjects(input?: any) {
     if (this.links && this.links.next) {
       this.apiBaseService.get(this.links.next).subscribe(res => {
-        this.objects = [...this.objects, ...res.data];
+        this.objects = [...this.objects, ...MediaList.map(res.data)];
         this.cloneObjects = _.cloneDeep(this.objects);
         this.links = res.meta.links;
         this.loadingEnd();
@@ -322,11 +326,13 @@ export class ZMediaAlbumDetailComponent
   loadingEnd: () => void;
 
   viewDetail() {
-    const data: any = { returnUrls: [...this.returnUrls, `/albums/${this.object.uuid}`], model: this.selectedObjects[0].object_type,
-     preview: true, parent_id: this.object.id };
+    const data: any = {
+      returnUrls: [...this.returnUrls, `/albums/${this.object.uuid}`], model: this.selectedObjects[0].object_type,
+      preview: true, parent_id: this.object.id
+    };
     if (this.selectedObjects && this.selectedObjects.length > 1) { data.ids = this.selectedObjects.map(s => s.id).join(','); }
     this.router.navigate([`/photos/${this.selectedObjects[0].uuid}`],
-     { queryParams: data });
+      { queryParams: data });
   }
 
   doNoData() {
@@ -352,7 +358,7 @@ export class ZMediaAlbumDetailComponent
         // this.menuActions.favorite.iconClass = this.favoriteAll ? 'fa fa-star' : 'fa fa-star-o';
         break;
       case 'selectedObjectsChanged':
-        if (this.object.sharing_type === 'Media::Playlist' || this.object.sharing_type === 'Media::Video') {
+        if (this.object.model === 'Media::Playlist' || this.object.model === 'Media::Video') {
           this.subMenuActions.edit.title = 'Add to Playlist';
           this.subMenuActions.remove.title = 'Remove from Playlist';
         } else {
@@ -361,7 +367,7 @@ export class ZMediaAlbumDetailComponent
         }
         this.menuActions = this.hasSelectedObjects ? this.subMenuActions : this.parentMenuActions;
         this.subMenuActions.favorite.iconClass = this.selectedObjects.every(s => s.favorite) ? 'fa fa-star' : 'fa fa-star-o';
-        if(this.selectedObjects.length > 0) this.showDetailsInfo = false;
+        if (this.selectedObjects.length > 0) this.showDetailsInfo = false;
         break;
       default:
         break;
@@ -453,8 +459,10 @@ export class ZMediaAlbumDetailComponent
   }
 
   removeFromParent() {
-    this.apiBaseService.post(`media/playlists/remove_from_playlist`, { playlist: { id: this.object.id },
-     videos: this.selectedObjects.map(ob => ({ id: ob.id, model: ob.model })) }).subscribe(res => {
+    this.apiBaseService.post(`media/playlists/remove_from_playlist`, {
+      playlist: { id: this.object.id },
+      videos: this.selectedObjects.map(ob => ({ id: ob.id, model: ob.model }))
+    }).subscribe(res => {
       this.toastsService.success('You removed videos successfully!');
       this.loadObjects(this.object.uuid);
       this.selectedObjects = [];
@@ -463,29 +471,19 @@ export class ZMediaAlbumDetailComponent
   }
 
   openModalShareParent() {
-    this.openModalShare([this.object.sharing_object]);
-    const sub = this.sharingModalService.update$.subscribe(res => {
-      if (!this.object.sharing_object) {
-        this.object.sharing_object = res.sharing_object;
-      }
-      sub.unsubscribe();
-    });
+    this.openModalShare([this.object]);
   }
 
   openModalShare: (input: any) => void;
 
-  onSaveShare(e: SharingModalResult) {
-    const objects = this.hasSelectedObjects ? this.selectedObjects : [this.object];
-    const data: SharingCreateParams = {
-      objects: objects.map(s => ({ id: s.id, model: s.model })),
-      recipients: e.users,
-      role_id: e.role.id
-    };
-    this.apiBaseService.post('media/sharings', data).subscribe(res => {
-      // this.toastsService.success('You have just create sharing successful');
-      this.sharingModalService.update.next(res.data);
-    });
+  onSaveShare(sharing: Sharing) {
+    if (sharing.isSharingAlbum()) {
+      this.object.sharing_id = sharing.id;
+      this.object.recipients_count = sharing.recipients_count;
+    }
+    this.toastsService.success("success");
   }
+
   onEditShare: (e: SharingModalResult, sharing: any) => void;
 
   downloadMediaCustom() {
@@ -523,7 +521,7 @@ export class ZMediaAlbumDetailComponent
         },
         class: 'btn btn-default',
         liclass: 'hidden-xs',
-        tooltip: this.tooltip.addPhotos,
+        tooltip: this.tooltip.addItems,
         tooltipPosition: 'bottom',
         iconClass: 'fa fa-plus-square'
       },
@@ -624,8 +622,8 @@ export class ZMediaAlbumDetailComponent
         inDropDown: false, // Outside dropdown list
         action: () => {
           this.toggleInfo();
-          if (this.object.sharing_object) {
-            this.getSharingParentInfo(this.object.sharing_object.sharing_id);
+          if (this.object.sharing_id) {
+            this.getSharingParentInfo(this.object.sharing_id);
           }
         },
         class: 'btn btn-default',
@@ -741,10 +739,12 @@ export class ZMediaAlbumDetailComponent
         permission: mediaConstants.SHARING_PERMISSIONS.EDIT,
         inDropDown: true, // Outside dropdown list
         action: () => {
-          this.selectedObjects = this.selectedObjects.map(el => { el._destroy = true;
-             return { id: el.id, model: el.model, _destroy: el._destroy }; });
+          this.selectedObjects = this.selectedObjects.map(el => {
+            el._destroy = true;
+            return { id: el.id, model: el.model, _destroy: el._destroy };
+          });
           this.apiBaseService.put(`media/albums/${this.object.id}/objects`, { objects: this.selectedObjects }).subscribe(res => {
-            this.objects = this.objects.filter(ob => ob.selected !== true );
+            this.objects = this.objects.filter(ob => ob.selected !== true);
             this.selectedObjectsChanged(this.objects);
             this.loadObjects(this.object.uuid);
           });

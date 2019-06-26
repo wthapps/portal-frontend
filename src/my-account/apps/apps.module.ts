@@ -8,16 +8,15 @@ import { MyAppsService } from './apps.service';
 
 import { MyAppsSharedModule } from './shared/shared.module';
 import { MySharedModule } from '../shared/shared.module';
-import { SharedModule } from '@wth/shared/shared.module';
+// import { SharedModule } from '@wth/shared/shared.module';
 import { SharedServicesModule } from '@wth/shared/shared-services.module';
 
 @NgModule({
   imports: [
     MyAppsRoutingModule,
-    MyAppsSharedModule.forRoot(),
-    MySharedModule.forRoot(),
-    SharedModule.forRoot(),
-    SharedServicesModule.forRoot()
+    MyAppsSharedModule,
+    MySharedModule,
+    // SharedModule.forRoot(),
   ],
   declarations: [MyAppsComponent, MyAppsListComponent, MyAppsDetailComponent],
   exports: [MyAppsComponent],

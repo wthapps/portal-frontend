@@ -11,6 +11,8 @@ declare let ActionCable: any;
 declare let App: any;
 declare let $: any;
 
+const ACTIVE_TIME = 5000;
+
 @Injectable()
 export class NoteChannelService extends CableService {
   profile;
@@ -20,6 +22,7 @@ export class NoteChannelService extends CableService {
 
   private reloadSubject: Subject<any> = new Subject();
   private lockSubject: Subject<any> = new Subject();
+  private idleTimeout;
 
   constructor(
     private userService: UserService,
@@ -46,12 +49,18 @@ export class NoteChannelService extends CableService {
             return this.install();
           },
           // Called when the WebSocket connection is closed
-          disconnected: () => {
+          disconnected: function() {
             return this.uninstall();
           },
           // Called when the subscription is rejected by the server
-          rejected: () => {
+          rejected: function() {
             return this.uninstall();
+          },
+          uninstall: function() {
+            const {user_uuid, note_uuid} = this;
+            if ( user_uuid && note_uuid ) {
+              this.perform('idle', {user_uuid, note_uuid});
+            }
           },
           idle: function({ user_uuid, user_name, note_uuid }) {
             // Calls `this.NoteChannel#idle` on the server
@@ -60,6 +69,11 @@ export class NoteChannelService extends CableService {
           editing: function({ user_uuid, user_name, note_uuid }) {
             // Calls `this.NoteChannel#editing` on the server
             return this.perform('editing', { user_uuid, user_name, note_uuid });
+          },
+          setData: function({user_uuid, user_name, note_uuid}) {
+            this.note_uuid = note_uuid;
+            this.user_uuid = user_uuid;
+            this.user_name = user_name;
           },
           received: (data: any) => {
             // console.log('received', data);
@@ -74,6 +88,7 @@ export class NoteChannelService extends CableService {
                 if (this.profile.uuid !== user_uuid) {
                   this.lockSubject.next({user_uuid, user_name});
                 }
+                this.checkIdle();
                 break;
               }
               case 'idle': {
@@ -97,20 +112,35 @@ export class NoteChannelService extends CableService {
           }
         }
       );
+      App[`note_${uuid}`].setData({note_uuid: uuid, user_uuid: this.userService.getSyncProfile().uuid,
+         user_name: this.userService.getSyncProfile().user_name });
     }
   }
 
+  // Auto goes idle after 5s if user does not receive ws information from user holds the lock
+  checkIdle() {
+    if (this.idleTimeout) { clearTimeout(this.idleTimeout); }
+    this.idleTimeout = setTimeout(() => {
+      this.editing_user = {};
+      this.lockSubject.next({});
+    }, ACTIVE_TIME);
+  }
+
   unsubscribe(note_uuid) {
-    if (App[`note_${note_uuid}`]) { App[`note_${note_uuid}`].unsubscribe(); }
+    if (App[`note_${note_uuid}`]) {
+      App[`note_${note_uuid}`].uninstall();
+      App[`note_${note_uuid}`].unsubscribe();
+      delete App[`note_${note_uuid}`];
+     }
   }
 
   install() {
     console.log('installing ...', App);
   }
 
-  uninstall() {
-    console.log('uninstalling ...');
-  }
+  // uninstall() {
+  //   console.log('uninstalling ...');
+  // }
 
   editing( note_uuid) {
     const {uuid, name} = this.profile;

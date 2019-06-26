@@ -1,22 +1,22 @@
-<ng-container *ngIf="contactSelect">
+<ng-container *ngIf="conversation">
   <div class="page-body-nav">
     <div class="page-body-nav-left">
-      <z-chat-share-user [data]="contactSelect" [displayAvatar]="false" [isPending]="contactSelect?.group_type === 'couple' && contactSelect?.status == 'sent_request'"
+      <z-chat-share-user [data]="conversation" [displayAvatar]="false" [isPending]="conversation?.group_type === 'couple' && conversation?.status == 'pending'"
         [usersOnlineItem]="usersOnlineItem$ | async">
       </z-chat-share-user>
     </div>
-    <div *ngIf="contactSelect && !contactSelect.blacklist" class="page-body-nav-right">
-      <button *ngIf="contactSelect.group.group_type == 'multiple' && (userService.profile.id == contactSelect.group.creator_id || contactSelect.group.allow_add)"
-        type="button" class="btn btn-default" (click)="onAddMember()" pTooltip="{{ tooltip.addMembers }}" tooltipPosition="top">
+    <div *ngIf="conversation && !conversation.blacklist" class="page-body-nav-right">
+      <button *ngIf="conversation.group_type == 'multiple' && (userService.profile.id == conversation.creator_id || conversation.allow_add)"
+        type="button" class="btn btn-default" (click)="addMember()" pTooltip="{{ tooltip.addMembers }}" tooltipPosition="top">
         <i class="fa fa-user-plus"></i>
       </button>
-      <button type="button" class="btn btn-default" (click)="onFavorite()" pTooltip="{{ (contactSelect.favorite) ? tooltip.removeFromFavorites : tooltip.addToFavorites }}"
+      <button type="button" class="btn btn-default" (click)="favorite()" pTooltip="{{ (conversation.favorite) ? tooltip.removeFromFavorites : tooltip.addToFavorites }}"
         tooltipPosition="top">
-        <i class="fa" [ngClass]="contactSelect.favorite? 'fa-star': 'fa-star-o'"></i>
+        <i class="fa" [ngClass]="conversation.favorite? 'fa-star': 'fa-star-o'"></i>
       </button>
-      <button type="button" class="btn btn-default" (click)="toggleNotification()" pTooltip="{{ (contactSelect.notification) ? tooltip.disable_notification : tooltip.enable_notification }}"
+      <button type="button" class="btn btn-default" (click)="toggleNotification()" pTooltip="{{ (conversation.notification) ? tooltip.disable_notification : tooltip.enable_notification }}"
         tooltipPosition="top">
-        <i class="fa" [ngClass]="contactSelect.notification? 'fw fw-megaphone': 'fw fw-megaphone-mute'"></i>
+        <i class="fa" [ngClass]="conversation.notification? 'fw fw-megaphone': 'fw fw-megaphone-mute'"></i>
       </button>
       <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
@@ -25,40 +25,37 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <!--show if current isn't one user-->
-          <ng-container *ngIf="contactSelect.group.group_type === 'multiple' && userService.profile.id == contactSelect.group.creator_id">
+          <ng-container *ngIf="conversation.group_type === 'multiple' && userService.profile.id == conversation.creator_id">
             <li>
-              <a href="javascript:void(0);" (click)="onEditConversation()">Group settings</a>
+              <a href="javascript:void(0);" (click)="onEditConversation()">Group Settings</a>
             </li>
             <li role="separator" class="divider"></li>
           </ng-container>
-          <li *ngIf="contactSelect.group.group_type == 'multiple'">
-            <a href="javascript:;" (click)="leaveConversation()">Leave chat</a>
-          </li>
+          <ng-container *ngIf="conversation.group_type === 'couple'">
+            <li><a href="javascript:void(0)" (click)="viewProfile()">View Profile</a></li>
+            <li role="separator" class="divider"></li>
+          </ng-container>
+
+          <ng-container *ngIf="conversation.group_type === 'multiple'">
+            <li>
+              <a href="javascript:;" (click)="leaveConversation()">Leave Chat</a>
+            </li>
+          </ng-container>
           <!--show if current isn't one user-->
           <li>
-            <a href="javascript:;" (click)="onHideConversation()">Hide chat</a>
+            <a href="javascript:;" (click)="hideConversation()">Hide Chat</a>
           </li>
           <li>
-            <a href="javascript:;" (click)="onDeleteConversation()">Delete conversation</a>
+            <a href="javascript:;" (click)="deleteConversation()">Delete Chat</a>
           </li>
-          <!--show if current is one user-->
-          <li *ngIf="contactSelect.group.group_type == 'couple'">
-            <a [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a>
-          </li>
-          <!-- <li role="separator" class="divider"></li>
-          <li *ngIf="contactSelect.notification">
-            <a href="javascript:;" (click)="disableNotification()">Disable Notification</a>
-          </li>
-          <li *ngIf="!contactSelect.notification">
-            <a href="javascript:;" (click)="enableNotification()">Enable Notification</a>
-          </li> -->
+
         </ul>
       </div>
       <button class="btn btn-default" (click)="onShowAssets()" type="button">
         <i [ngClass]="{'text-primary': openAssets}" class="fa fa-info-circle"></i>
       </button>
     </div>
-    <div *ngIf="contactSelect && contactSelect.blacklist" class="page-body-nav-right">
+    <div *ngIf="conversation && conversation.blacklist" class="page-body-nav-right">
       <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" pTooltip="{{ tooltip.moreAction }}"
           tooltipPosition="top">
@@ -66,8 +63,8 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
           <!--show if current is one user-->
-          <li *ngIf="contactSelect.group.group_type == 'couple'">
-            <a [routerLink]="[profileUrl, contactSelect.display.uuid]">View Profile</a>
+          <li *ngIf="conversation.group_type == 'couple'">
+            <a [routerLink]="[profileUrl, conversation.uuid]">View Profile</a>
           </li>
         </ul>
       </div>
@@ -77,4 +74,4 @@
     </div>
   </div>
 </ng-container>
-<z-chat-share-edit-conversation #editConversation [conversation]="contactSelect"></z-chat-share-edit-conversation>
+<z-chat-share-edit-conversation #editConversation [conversation]="conversation"></z-chat-share-edit-conversation>

@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   Input,
-  ViewEncapsulation,
   HostBinding,
   ViewContainerRef,
   ViewChild,
@@ -14,36 +13,32 @@ import { NotificationUndoComponent } from '@shared/shared/components/notificatio
 import { Router } from '@angular/router';
 import { NotificationService, ApiBaseService } from '@shared/services';
 import { ConnectionNotificationService } from '@wth/shared/services/connection-notification.service';
-import { Constants } from '@wth/shared/constant';
+import { Constants } from '@shared/constant';
 
 declare let _: any;
+declare let $: any;
 
 @Component({
   selector: 'notification-item',
   templateUrl: 'notification-item.component.html',
+  styleUrls: ['./notification-item.component.scss'],
   entryComponents: [NotificationUndoComponent]
 })
 
 export class NotificationItemComponent implements OnInit {
   @ViewChild('notificationUndo', {read: ViewContainerRef}) undoNotificationRef: ViewContainerRef;
-  @ViewChild('notiItemMenuEl') notiItemMenuEl: ElementRef;
+  // @ViewChild('notiItemMenuEl') notiItemMenuEl: ElementRef;
   @Input() notification: any;
   @Input() type = 'update';
+  @Input() inDropdown = false;
 
   @HostBinding('class') classes = 'notification-item';
   itemSettings: any = {};
   showToggle: boolean;
   modules: string[] = ['', 'social', 'chat', 'media', 'portal', 'contact', 'note', 'profile'];
+  readonly tooltip = Constants.tooltip;
   // Should be consistent with Constants.moduleMap
 
-
-  @HostListener('document:click', ['$event']) clickedOutside(event: Event) {
-    // here you can hide your menu
-    const tmpOld = document.getElementById('notiItemMenuEl');
-    if (tmpOld) {
-      this.renderer.removeChild(document.body, tmpOld);
-    }
-  }
 
   constructor(public notificationService: NotificationService,
               public connectionService: ConnectionNotificationService,
@@ -57,50 +52,19 @@ export class NotificationItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  clickedInside(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+  subToggle(e: any) {
+    console.log('inside sub toggle ...', e);
+    e.stopPropagation();
+    e.preventDefault();
+
+    $(e.target)
+      .next('ul')
+      .toggle();
+    $('#nav-notification-list')
+      .find('ul.dropdown-menu')
+      .not($(e.target).next('ul'))
+      .hide();
   }
-
-  showMenu(event: any) {
-    const tmpOld = document.getElementById('notiItemMenuEl');
-    if (tmpOld) {
-      this.renderer.removeChild(document.body, tmpOld);
-    }
-    const el = this.notiItemMenuEl.nativeElement.cloneNode(true);
-    const tmp = document.createElement('div');
-    tmp.setAttribute('id', 'notiItemMenuEl');
-    tmp.appendChild(el);
-    if (tmp.querySelector('.js-confirmHideNotification') !== null) {
-      tmp.querySelector('.js-confirmHideNotification').addEventListener('click', (e: any) => {
-        this.hideNotificationById(e.currentTarget.id);
-      });
-    }
-
-    if (tmp.querySelector('.js-toggleNotification') !== null) {
-      tmp.querySelector('.js-toggleNotification').addEventListener('click', (e: any) => {
-        this.toggleNotificationById(e.currentTarget.id);
-      });
-    }
-
-    // $('body').on('click', '#notiItemMenuEl .js-confirmHideNotification', (e: any) => {
-    //   console.debug('_this.hideNotificationById');
-    //   // _this.hideNotificationById(e.currentTarget.id);
-    // });
-    //
-    // $('body').on('click', '#notiItemMenuEl .js-toggleNotification', (e: any) => {
-    //   _this.toggleNotificationById(e.currentTarget.id);
-    // });
-
-
-    this.renderer.appendChild(document.body, tmp);
-    this.renderer.setStyle(tmp, 'top', event.clientY + 'px');
-    this.renderer.setStyle(tmp, 'left', event.clientX + 'px');
-  }
-
-  // navigateTo(actions: any[], notif_id: string): void {
-  //   this.notificationService.navigateTo(actions, notif_id);
-  // }
 
 
   hideNotificationById(id: any) {
@@ -114,22 +78,18 @@ export class NotificationItemComponent implements OnInit {
     console.log(id);
   }
 
-  confirmHideNotification(notification: any) {
-    // this.hideNotification(notification);
-  }
-
-  hideNotification(notification: any) {
-    // if(this.type === 'connection')
-    //   this.connectionService.hideNotification(notification);
-    // else
-    //   this.notificationService.hideNotification(notification);
-  }
-
   viewProfile(user: any) {
     this.router.navigate(['/profile', user.uuid]);
   }
 
-  // TODO:
+  markAsUnread(notification) {
+    console.log('mark as unread, ', notification);
+    if (this.type === 'connection')
+      this.connectionService.markAsRead(notification);
+    else
+      this.notificationService.markAsRead(notification);
+  }
+
   toggleNotification() {
     switch (this.notification.object_type) {
       case 'SocialNetwork::Post':

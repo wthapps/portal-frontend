@@ -1,10 +1,8 @@
-import { DeleteAccountComponent } from '@account/settings/delete-account/delete-account.component';
 import { SettingsPasswordComponent } from '@account/settings/password/password.component';
 import { MyStorageComponent } from '@account/settings/storage/storage.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedServicesModule } from '@wth/shared/shared-services.module';
-import { SharedModule } from '@wth/shared/shared.module';
+
 
 import { MySharedModule } from '../shared/shared.module';
 import { MyAccountComponent } from './account/account.component';
@@ -16,6 +14,7 @@ import { MySettingRoutingModule } from './setting-routing.module';
 import { MySettingComponent } from './setting.component';
 import { ModalModule } from '@shared/modals';
 import { AutofocusModule } from '@shared/directives/autofocus';
+import { ProfileService } from '@shared/user/services';
 
 @NgModule({
   imports: [
@@ -23,20 +22,18 @@ import { AutofocusModule } from '@shared/directives/autofocus';
     MySettingRoutingModule,
     ModalModule,
     AutofocusModule,
-    MySharedModule.forRoot(),
-    SharedModule.forRoot(),
-    SharedServicesModule.forRoot()
+    MySharedModule,
   ],
   declarations: [
     MySettingComponent,
     MyProfileComponent,
     SettingsPasswordComponent,
     MyAccountComponent,
-    DeleteAccountComponent,
+    // DeleteAccountComponent,
     MyPreferencesComponent,
     MyStorageComponent
   ],
-  exports: [MySettingComponent]
+  exports: [MySettingComponent],
+  providers: [ProfileService]
 })
-export class MySettingModule {
-}
+export class MySettingModule {}

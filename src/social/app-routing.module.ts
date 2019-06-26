@@ -25,11 +25,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'my-profile',
-    loadChildren: './my-profile/my-profile.module#ZSocialMyProfileModule',
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'posts/:id',
     redirectTo: '/home(detail:posts/:id)',
     canActivate: [AuthGuard]

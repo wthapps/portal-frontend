@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { Subscription ,  Observable ,  Subject, BehaviorSubject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, combineLatest, map } from 'rxjs/operators';
 
 import { ZContactService, ITEM_PER_PAGE, MY_CONTACTS, OTHER_CONTACTS } from '../../shared/services/contact.service';
@@ -17,8 +17,6 @@ import { _contact } from '../../shared/utils/contact.functions';
 import { GroupService } from '../../group/group.service';
 import { InvitationCreateModalComponent } from '../../../shared/shared/components/invitation/invitation-create-modal.component';
 import { LoadingService } from '../../../shared/shared/components/loading/loading.service';
-import { InvitationService } from '../../../shared/shared/components/invitation/invitation.service';
-import { ToastsService } from '../../../shared/shared/components/toast/toast-message.service';
 import { Recipient } from '../../../shared/shared/components/invitation/recipient.model';
 
 import { Config } from '../../../shared/constant/config/env.config';
@@ -66,8 +64,6 @@ export class ZContactListComponent
     private groupService: GroupService,
     private loadingService: LoadingService,
     private commonEventService: CommonEventService,
-    private invitationService: InvitationService,
-    private toaster: ToastsService
   ) {
     this.commonEventService
       .filter(
@@ -116,7 +112,7 @@ export class ZContactListComponent
         const category = location.pathname === '/others' ? 'others' : 'myContacts';
         let group = '';
         switch (params['group']) {
-          case 'all contacts':
+          case 'my contacts':
           case 'undefined':
             group = undefined;
             break;
@@ -174,10 +170,8 @@ export class ZContactListComponent
     this.contactService.viewContactDetail(contact);
   }
 
-
-
   editContact(contactId: any) {
-    this.router.navigate(['contacts/' + contactId]).then();
+    this.contactService.editContact(contactId);
   }
 
   doEvent(event: any) {

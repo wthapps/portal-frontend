@@ -36,7 +36,7 @@
     </bs-modal-header>
     <bs-modal-body>
       <div formArrayName="media">
-        <div *ngFor="let add_phone of getFormControls(); let i=index" class="media mt0">
+        <div *ngFor="let add_phone of form.controls.media['controls']; let i=index" class="media mt0">
           <div class="media-body" [formGroupName]="i">
             <div class="row row-10">
               <div class="col-sm-4">

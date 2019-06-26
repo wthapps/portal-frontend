@@ -7,6 +7,7 @@
 //@import '../../../node_modules/bootstrap/scss/bootstrap';
 // font-wthapps
 @import '../../../src/assets/font-wthapps/scss/font-wthapps';
+@import '../../../src/assets/fonts/wicon/style.css';
 @import 'general/mixin';
 @import 'general/breakpoints';
 @import 'general/setting';
@@ -45,6 +46,7 @@
 @import 'partials/display';
 @import 'partials/progress-bars';
 @import 'partials/w-uploader';
+@import 'partials/breadcrumbs';
 //
 // =Third parties
 // --------------------------------------------------

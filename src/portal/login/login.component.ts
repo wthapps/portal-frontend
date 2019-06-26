@@ -9,13 +9,11 @@ import { UserService } from '../../shared/services/user.service';
 import { LoadingService } from '../../shared/shared/components/loading/loading.service';
 import { CustomValidator } from '../../shared/shared/validator/custom.validator';
 
-declare var $: any;
 
 /**
  * This class represents the lazy loaded LoginComponent.
  */
 @Component({
-  moduleId: module.id,
   selector: 'page-login',
   templateUrl: 'login.component.html',
   styleUrls: ['login.component.scss']
@@ -54,7 +52,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loadingService.stop();
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+
+    // Force redirect if user cookie still valid
+    if (this.userService.validProfile()) {
+      this.redirectAfterLogin();
+    }
   }
 
   onSubmit(values: any): void {
@@ -70,18 +72,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(body).subscribe(
         (response: any) => {
           this.loadingService.stop();
-          this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-          if (this.returnUrl.indexOf(Constants.baseUrls.app) >= 0) {
-            this.router.navigate([this.returnUrl]);
-          } else {
-            if (this.returnUrl === '' && Constants.useDefaultPage) {
-              window.location.href = Constants.urls.default;
-            } else if (this.returnUrl === '' && !Constants.useDefaultPage) {
-              this.router.navigate(['']);
-            } else {
-              window.location.href = this.returnUrl;
-            }
-          }
+          this.redirectAfterLogin();
         },
         (error: any) => {
           // stop loading
@@ -89,6 +80,21 @@ export class LoginComponent implements OnInit {
           this.errorMessage = error.error.error;
         }
       );
+    }
+  }
+
+  redirectAfterLogin() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+    if (this.returnUrl.indexOf(Constants.baseUrls.app) >= 0) {
+      this.router.navigate([this.returnUrl]);
+    } else {
+      if (this.returnUrl === '' && Constants.useDefaultPage) {
+        location.href = Constants.urls.default;
+      } else if (this.returnUrl === '' && !Constants.useDefaultPage) {
+        this.router.navigate(['']);
+      } else {
+        location.href = this.returnUrl;
+      }
     }
   }
 }

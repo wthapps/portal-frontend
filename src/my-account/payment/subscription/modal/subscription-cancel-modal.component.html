@@ -1,0 +1,23 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Cancel subscription</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p>Once you cancel this subscription, you still able to use this account
+      until the end of your subscription period on {{ subscription?.ended_bc_at | date: 'MMM dd yyyy'}}.</p>
+    <p>All data in this account will be deleted after {{ deletedDayNum }} days.
+      Make sure you export or download all information you want to keep.
+      After {{ deletedDayNum }} days we can't recover your data.</p>
+    <p>Please confirm you want to cancel your subscription.</p>
+  </bs-modal-body>
+
+  <bs-modal-footer>
+    <button (click)="close()" type="submit" class="btn btn-outline-default btn-min">
+      Don't cancel
+    </button>
+
+    <button (click)="close(true)" type="submit" class="btn btn-outline-primary btn-min">
+      Cancel subscription
+    </button>
+  </bs-modal-footer>
+</bs-modal>

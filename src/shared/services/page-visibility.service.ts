@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+import { UserService } from '.';
 
 /**
  * This injectable class is a wrapper for the native Page Visibility API
@@ -12,9 +13,18 @@ export class PageVisibilityService {
 
   private hiddenStateSubject: Subject<boolean> = new Subject<boolean>();
 
-  constructor() {
+  constructor(private userService: UserService) {
     this.hiddenState$ = this.hiddenStateSubject.asObservable();
     this.registerVisibilityChange();
+  }
+
+  reloadIfProfileInvalid() {
+    this.hiddenState$
+    .subscribe(hidden => {
+      if (!hidden && this.userService.isProfileUpdated()) {
+        window.location.reload();
+      }
+    });
   }
 
   registerVisibilityChange() {

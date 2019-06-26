@@ -22,3 +22,11 @@
   @extend .modal-backdrop;
   @extend .in;
 }
+
+.wth-confirm-dialog {
+  width: 600px;
+
+  @media (max-width: $screen-xs-max) {
+    width: 100%;
+  }
+}

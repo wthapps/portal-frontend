@@ -8,4 +8,9 @@
     overflow: hidden;
     word-break: break-word;
   }
+  .media-heading a, .media-heading a:hover {
+    text-decoration: none;
+    color: #4a4a4a;
+    font-weight: bold;
+  }
 }

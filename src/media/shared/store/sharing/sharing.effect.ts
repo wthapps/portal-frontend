@@ -2,7 +2,7 @@
 
 
 import { Injectable }             from '@angular/core';
-import { Effect, Actions }        from '@ngrx/effects';
+import { Effect, Actions, ofType }        from '@ngrx/effects';
 import { Action }                 from '@ngrx/store';
 import { Store }                  from '@ngrx/store';
 
@@ -40,8 +40,8 @@ export class SharingEffects {
    * Photo
    */
   @Effect()
-  get$: Observable<Action> = this.actions$
-    .ofType(photoActions.ActionTypes.GET).pipe(
+  get$: Observable<Action> = this.actions$.pipe(
+    ofType(photoActions.ActionTypes.GET),
     map((action: photoActions.Get) => action.payload),
     switchMap((state: any) => {
       return this.photoService.getPhoto(state).pipe(
@@ -50,16 +50,15 @@ export class SharingEffects {
     }));
 
   @Effect()
-  getAll$: Observable<Action> = this.actions$
-    .ofType(photoActions.ActionTypes.GET_ALL)
-    .pipe(
-      map((action: photoActions.GetAll) => action.payload),
-      switchMap(state => {
-        return this.photoService.listPhoto(state)
-          .pipe(
-            map(response => new photoActions.GetAllSuccess(...response)),
-            catchError(error  => of(new photoActions.GetAllFail()))
-          );
-      })
-    );
+  getAll$: Observable<Action> = this.actions$.pipe(
+    ofType(photoActions.ActionTypes.GET_ALL),
+    map((action: photoActions.GetAll) => action.payload),
+    switchMap(state => {
+      return this.photoService.listPhoto(state)
+        .pipe(
+          map(response => new photoActions.GetAllSuccess(...response)),
+          catchError(error  => of(new photoActions.GetAllFail()))
+        );
+    })
+  );
 }

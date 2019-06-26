@@ -1,0 +1,35 @@
+<ng-container *ngIf="viewMode == 'list'">
+  <div class="content-view content-list">
+    <div class="content-item content-item-header">
+      <div class="item-media">
+        <ng-template [ngTemplateOutlet]="viewHeaderTmpl" [ngTemplateOutletContext]="{$implicit: item}"></ng-template>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<dts-select-container #container="dts-select-container"
+                      [disableDrag]="disableDrag"
+                      [selectOnDrag]="selectOnDrag"
+                      [(selectedItems)]="selectedDocuments"
+                      (select)="onSelect($event)"
+                      infinite-scroll
+                      [infiniteScrollDistance]="2"
+                      [infiniteScrollThrottle]="50"
+                      [scrollWindow]="scrollWindow"
+                      (scrolled)="onLoadMore()">
+  <div *ngIf="!isUpdatedView" class="content-view content-{{viewMode}} content-grid-{{ sliderView }}">
+    <div *ngFor="let item of data; trackBy: trackItem" [dtsSelectItem]="item?.uuid" class="content-item">
+      <div class="item-media">
+        <div class="item-actions">
+          <i (mouseover)="container.selectMode = true" class="form-checkbox"></i>
+        </div>
+        <div (mouseover)="container.selectMode = false" class="item-select" (dblclick)="dblClick.emit(item)"></div>
+        <ng-template [ngTemplateOutlet]="viewBodyTmpl"
+                     [ngTemplateOutletContext]="{$implicit: item}"></ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="text-center p10">
+    {{ data.length }} {{ data.length > 1 ? 'items' : 'item' }}
+  </div>
+</dts-select-container>

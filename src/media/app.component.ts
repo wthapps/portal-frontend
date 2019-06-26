@@ -9,7 +9,10 @@ import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wt
 // import { AppSandbox } from './app.sandbox';
 import { AuthService } from '@wth/shared/services';
 import { IntroductionModalComponent } from '@wth/shared/modals/introduction/introduction.component';
+import { PageVisibilityService } from './../shared/services/page-visibility.service';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
 
+const CURRENT_MODULE = 'photos';
 /**
  * This class represents the main application component.
  */
@@ -33,6 +36,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public authService: AuthService,
     private router: Router,
+    private visibilityService: PageVisibilityService,
+    private googleAnalytics: GoogleAnalyticsService,
     private wthConfirmService: WthConfirmService
   ) {
     this.wthConfirmService.confirmDialog$.subscribe((res: any) => {
@@ -45,6 +50,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         document.body.scrollTop = 0;
+
+        this.googleAnalytics.sendPageView(`/${CURRENT_MODULE}${event.urlAfterRedirects}`);
       });
     // fix scroll to top after changing route
     this.router.events.subscribe(evt => {
@@ -53,6 +60,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       window.scrollTo(0, 0);
     });
+
+    this.visibilityService.reloadIfProfileInvalid();
   }
 
   ngAfterViewInit() {

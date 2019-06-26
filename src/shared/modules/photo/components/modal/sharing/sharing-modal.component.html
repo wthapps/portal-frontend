@@ -1,0 +1,137 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" class="sharing-modal modal-full-height">
+  <bs-modal-header [showDismiss]="true">
+    <h4 *ngIf="cMode == modes.add" class="modal-title">Sharing</h4>
+    <h4 *ngIf="cMode != modes.add" class="modal-title">Manage Sharing</h4>
+    <w-list-item class="pl0">
+      <p-chips [(ngModel)]="newUsers" class="flex-1 sharing-chips" (onRemove)="unSelectUser($event)"
+        [ngClass]="cMode == 'add' || cMode == 'loading' ? 'flex-1 sharing-chips' : 'hidden'"
+        [inputId]="'p-chips-sharing'" placeholder="Enter name or email">
+        <ng-template let-item pTemplate="item">
+          <span class="pr15">{{ item.name }}</span>
+        </ng-template>
+      </p-chips>
+      <div *ngIf="cMode == 'add'" class="btn-group pl10">
+        <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" [title]="'role.display_name'">
+          <i class="fa" [ngClass]="role.name == 'view'? 'fa-eye' :
+                                              role.name == 'download'? 'fa-download' :
+                                              role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
+          </i>
+          <span class="caret ml5"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li *ngFor="let r of roles" (click)="changeRole(r)">
+            <a href="javascript:void(0);"> {{ r.display_name }}
+              <i class="" [ngClass]="{'fa fa-check': (r.id === role.id)}"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="cMode == 'updating'" class="text-left changing p5 rounded border bg-warning border-1 flex-1">
+        <i class="fa fa-exclamation-triangle text-warning"></i>
+        Your sharing list has changes that you need to be saved.
+      </div>
+      <button *ngIf="cMode == 'update'" type="button" class="btn btn-outline-default flex-1"
+        (click)="changeMode(modes.add)"><i class="fa fa-user-plus"></i>
+        Share with others</button>
+    </w-list-item>
+  </bs-modal-header>
+  <hr class="mt10 mb10">
+
+  <bs-modal-body>
+    <section *ngIf="contacts && contacts.length > 0 && cMode == modes.add">
+      <p class="text-fade">My Contacts</p>
+      <w-list class="media-user-list">
+        <w-list-item *ngFor="let contact of contactsFilter" class="user-row p0 can-click"
+          (click)="clickContact(contact)">
+          <div class="avatar">
+            <img class="img-circle" [src]="contact.profile_image" alt="">
+          </div>
+          <div class="name flex-1">
+            <p class="mb0">{{contact.name}}</p>
+            <small class="text-fade"> {{contact.email}} </small>
+          </div>
+          <div>
+            <i class="form-checkbox" [ngClass]="contact.selected ? 'active' : ''"></i>
+          </div>
+          <hr style="flex-basis: 100%" class="mt10 mb10">
+        </w-list-item>
+      </w-list>
+    </section>
+    <ng-container *ngIf="sharing.recipients && sharing.recipients.length > 0 && cMode != modes.add">
+      <p class="text-fade">Shared</p>
+      <div class="w-list-scroll">
+        <w-list-item class="user-row p0">
+          <div class="avatar">
+            <img class="img-circle" [src]="sharing.user.profile_image" alt="">
+          </div>
+          <div class="name flex-1">
+            <p class="mb0">{{ sharing.user.name }}</p>
+            <small class="text-fade"> {{ sharing.user.email}} </small>
+          </div>
+          <div>
+            <span class="text-fade pr30">Is owner</span>
+          </div>
+          <hr style="flex-basis: 100%" class="mt5 mb5">
+        </w-list-item>
+        <ng-container *ngFor="let recipient of sharing.recipients" class="d-flex align-content-center p5">
+          <w-list-item class="user-row p0">
+            <div class="avatar">
+              <img class="img-circle" [src]="recipient.user.profile_image" alt="">
+            </div>
+            <div class="name flex-1">
+              <p class="mb0">{{ recipient.user.name }}</p>
+              <small class="text-fade"> {{recipient.user.email}} </small>
+            </div>
+            <div>
+              <w-list-item>
+                <div class="btn-group" *ngIf="!recipient._destroy">
+                  <button type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" [title]="recipient.role.display_name"
+                    aria-haspopup="true">
+                    <i class="fa"
+                      [ngClass]="recipient.role.name == 'view'? 'fa-eye' :
+                                                                                                           recipient.role.name == 'download'? 'fa-download' :
+                                                                                                           recipient.role.name == 'edit'? 'fa-pencil' : 'fa-unlock'">
+                    </i>
+                    <span class="caret ml5"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <ng-container *ngFor="let r of roles">
+                      <li (click)="changeRole(r, recipient)">
+                        <a [ngClass]="{'text-primary': (recipient.role?.id == r.id)}" href="javascript:void(0);">
+                          {{ r.display_name }}
+                          <i class="pull-right" [ngClass]="{'fa fa-check': (recipient.role?.id == r.id)}"></i>
+                        </a>
+                      </li>
+                    </ng-container>
+
+                  </ul>
+                </div>
+                <p *ngIf="recipient._destroy" class="m0 text-fade pr10">Removed</p>
+                <a class="btn btn-default" (click)="toggleRemoving(recipient)"
+                  [title]="recipient._destroy ? 'Undo removing':'Remove'" href="javascript:void(0)">
+                  <i *ngIf="!recipient._destroy" class="fa fa-times" title="remove"></i>
+                  <i *ngIf="recipient._destroy" class="fa fa-undo" title="Undo removing"></i>
+                </a>
+              </w-list-item>
+            </div>
+            <hr style="flex-basis: 100%" class="mt5 mb5">
+          </w-list-item>
+        </ng-container>
+      </div>
+
+    </ng-container>
+    <box-loading *ngIf="cMode === modes.loading"></box-loading>
+  </bs-modal-body>
+  <bs-modal-footer>
+
+    <button *ngIf="changed" type="button" class="btn btn-outline-default btn-min" (click)="cancel()">Cancel</button>
+    <button *ngIf="!changed" type="button" (click)="clickDone()" class="btn btn-outline-primary btn-min">Done </button>
+    <button *ngIf="changed && cMode == modes.updating" type="button" (click)="save()"
+      class="btn btn-outline-primary btn-min">Save
+      Changes</button>
+    <button *ngIf="changed && cMode != modes.updating" type="button" class="btn btn-outline-primary btn-min"
+      [ngClass]="{'text-disable': !changed}" [disabled]="!changed" (click)="save()">Share</button>
+  </bs-modal-footer>
+</bs-modal>

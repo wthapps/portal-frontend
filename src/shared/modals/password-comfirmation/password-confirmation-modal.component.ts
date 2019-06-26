@@ -1,7 +1,11 @@
 import { Component, ViewChild, Input, OnDestroy, OnInit, EventEmitter, Output } from '@angular/core';
 import { BsModalComponent } from 'ng2-bs3-modal';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { ApiBaseService } from '@wth/shared/services';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Constants } from '@shared/constant';
+import { Confirmation } from 'primeng/components/common/confirmation';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -12,14 +16,17 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 
 export class PasswordConfirmationModalComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
+  @ViewChild('wrongPasswordModal') wrongPasswordModal: BsModalComponent;
   @Input() email: any;
-  @Output() onNext: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onBack: EventEmitter<any> = new EventEmitter<any>();
 
   sub: any;
-  sub2: any;
+  attemptsFailed = 0;
+  readonly retryTimes = 3;
 
+  readonly forgotPasswordUrl = `${Constants.baseUrls.app}/recovery/forgottenpassword`;
   passwordConfirmationForm: FormGroup;
+
+  confirmation: Confirmation;
 
 
   constructor(private fb: FormBuilder, private apiBaseService: ApiBaseService) {
@@ -37,13 +44,37 @@ export class PasswordConfirmationModalComponent implements OnInit, OnDestroy {
   open(options?: any) {
     if (options) {
       this.email = options.email;
+      this.confirmation = options;
+
+      if (this.confirmation.accept) {
+          this.confirmation.acceptEvent = new EventEmitter();
+          this.confirmation.acceptEvent.subscribe(this.confirmation.accept);
+      }
+
+      if (this.confirmation.reject) {
+          this.confirmation.rejectEvent = new EventEmitter();
+          this.confirmation.rejectEvent.subscribe(this.confirmation.reject);
+      }
     }
     this.initializeForm();
-    this.modal.open();
+
+    // TODO: Check last confirm password attempt time in local storage. After x time, allow user to confirm password again.
+    if(true) {
+      this.attemptsFailed = 0;
+      this.modal.open();
+      this.wrongPasswordModal.close();
+    } else {
+      this.close();
+    }
   }
 
   close() {
     this.modal.close();
+    this.wrongPasswordModal.close();
+
+    if (this.confirmation.reject) {
+      this.confirmation.rejectEvent.emit();
+    }
   }
 
   submit(values) {
@@ -51,10 +82,22 @@ export class PasswordConfirmationModalComponent implements OnInit, OnDestroy {
       email: this.email,
       password: values.password
     }).subscribe(response => {
-      this.modal.close();
-      this.onNext.emit({password: values.password});
-    }, error => {
-      this.passwordConfirmationForm.controls['password'].setErrors({notMatched: true});
+      this.close();
+      if (this.confirmation.acceptEvent) {
+        this.confirmation.acceptEvent.emit({password: values.password});
+      }
+    }, (errorCode: HttpErrorResponse) => {
+      if (errorCode.error.error === "Invalid password") {
+
+        this.attemptsFailed++;
+        if(this.attemptsFailed >= this.retryTimes) {
+          // TODO: Store last attempts time in local device. Make sure user can only retry after x times.
+          this.modal.close();
+          this.wrongPasswordModal.open();
+        }
+        this.passwordConfirmationForm.controls['password'].setErrors({notMatched: true});
+      }
+
     });
   }
 

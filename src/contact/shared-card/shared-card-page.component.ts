@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '@shared/services';
 import { ProfileService } from '@shared/user/services';
 import { CardService } from '@contacts/shared/card';
-import { CardDetailModalComponent } from '@contacts/shared/card/components';
+import { CardDetailModalComponent } from '@shared/user/card';
 
 @Component({
   selector: 'shared-card-page',

@@ -19,7 +19,7 @@ export class ZNoteMyNoteComponent implements OnInit {
 
   constructor(
     private store: Store<any>
-  ) {}
+  ) { }
   ngOnInit() {
     this.store.dispatch({ type: note.LOAD, payload: { parent_id: null } });
     this.store.dispatch({

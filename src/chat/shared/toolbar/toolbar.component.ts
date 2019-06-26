@@ -1,18 +1,16 @@
-import { Component, ViewChild, OnInit, Input, Renderer2, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, Renderer2, OnDestroy, EventEmitter, Output } from '@angular/core';
 
 import { Subject, Observable } from 'rxjs';
 import { takeUntil, merge } from 'rxjs/operators';
 
 import { ChatService } from '../services/chat.service';
 import { ZChatShareEditConversationComponent } from '../modal/edit-conversation.component';
-import { ZChatShareAddContactComponent } from '../modal/add-contact.component';
 import { WthConfirmService } from '@wth/shared/shared/components/confirmation/wth-confirm.service';
 import { Constants } from '@wth/shared/constant';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
 import { MessageAssetsService } from '@chat/shared/message/assets/message-assets.service';
-import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { UserService, CommonEventService } from '@shared/services';
 import { ChatConversationService } from '../services/chat-conversation.service';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
 
 
 declare let $: any;
@@ -27,10 +25,13 @@ declare let window: any;
 
 export class ZChatToolbarComponent implements OnInit, OnDestroy {
   @ViewChild('editConversation') editConversation: ZChatShareEditConversationComponent;
-  @ViewChild('addContact') addContact: ZChatShareAddContactComponent;
-  @Input() contactSelect: any;
-  @Input() chatContactList: { [partner_id: string]: any } = {};
+  @Input() conversation: any;
   @Input() inContactBook = true;
+  @Output() onAddMember: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onUpdateDisplay: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onViewDetail: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onLeave: EventEmitter<any> = new EventEmitter<any>();
+
   showMemberBar = false;
   usersOnlineItem$: Observable<any>;
   profileUrl: any;
@@ -47,10 +48,11 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     private chatConversationService: ChatConversationService,
     private wthConfirmService: WthConfirmService,
-    private addContactService: ZChatShareAddContactService,
     private commonEventService: CommonEventService,
     private renderer: Renderer2,
-    private messageAssetsService: MessageAssetsService) {
+    private messageAssetsService: MessageAssetsService,
+    private contactSelectionService: ContactSelectionService
+    ) {
     this.profileUrl = this.chatService.constant.profileUrl;
 
     this.messageAssetsService.open$
@@ -78,60 +80,68 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
   }
 
   onAddContact() {
-    this.addContactService.open('addContact');
+    // this.addContactService.open('addContact');
+    this.contactSelectionService.open({type: 'addContact'});
   }
 
-  onAddMember() {
-    // this.addContactService.open('addMember');
-    this.commonEventService.broadcast({
-      channel: 'ZChatShareAddContactComponent',
-      action: 'open',
-      payload: {option: 'addMember'}
-    })
-
+  addMember() {
+    this.onAddMember.emit(this.conversation);
   }
 
   sendContact() {
-    this.addContactService.open('shareContact');
+    // this.addContactService.open('shareContact');
+    this.contactSelectionService.open({type: 'shareContact'});
   }
 
   onEditConversation() {
     this.editConversation.open();
   }
 
-  onFavorite() {
-    this.chatService.addGroupUserFavorite(this.contactSelect);
+  favorite() {
+    // this.chatConversationService.apiFavoriteGroupUser(this.conversation);
+    this.onUpdateDisplay.emit(Object.assign({}, {...this.conversation, favorite: !this.conversation.favorite}));
   }
 
   toggleNotification() {
-    this.chatService.updateNotification(this.contactSelect, { notification: !this.contactSelect.notification });
+    // this.chatConversationService.apiNotificationGroupUser(this.conversation);
+    this.onUpdateDisplay.emit(Object.assign({}, {...this.conversation, notification: !this.conversation.notification}));
+
+  }
+
+  viewProfile() {
+    if ( this.conversation.partner && this.conversation.partner.uuid) {
+      this.onViewDetail.emit(this.conversation.partner);
+    }
   }
 
   leaveConversation() {
-    this.chatConversationService.leaveConversation(this.contactSelect);
+    // this.onUpdateDisplay.emit({...this.conversation, left: true});
+    this.onLeave.emit(this.conversation);
   }
 
-  onHideConversation() {
+  hideConversation() {
     this.wthConfirmService.confirm({
       acceptLabel: 'Hide',
       message: 'Are you sure you want to hide this conversation?',
       header: 'Hide Chat',
       accept: () => {
-        this.chatConversationService.apHideConversation(this.contactSelect);
+        this.onUpdateDisplay.emit({...this.conversation, hidden: true});
       }
     });
   }
 
-  onDeleteConversation() {
+  deleteConversation() {
     this.wthConfirmService.confirm({
       acceptLabel: 'Delete',
-      message: 'This conversation will be deleted from your message list only. not everyone else.<br><br> This action can\'t be undone',
+      message: `This conversation will be deleted from your message list only. not everyone else.<br><br>
+                This action can\'t be undone`,
       header: 'Delete Conversation',
       accept: () => {
-        this.chatConversationService.apiDeleteConversation(this.contactSelect);
+        this.onUpdateDisplay.emit({...this.conversation, deleted: true});
       }
     });
   }
+
 
   onSelect(user: any) {
     this.chatService.selectContactByPartnerId(user.id);
@@ -144,41 +154,4 @@ export class ZChatToolbarComponent implements OnInit, OnDestroy {
       this.messageAssetsService.open();
     }
   }
-
-  /*onRemoveFromConversation(user: any) {
-    this.chatService.removeFromConversation(this.contactSelect, user.id);
-  }
-
-  onShowMemberBar() {
-    this.showMemberBar = !this.showMemberBar;
-  }
-
-  showDropdownMenu(e: any) {
-    let showDropdownMenu_ul = e.target.nextElementSibling;
-    if (e.screenX + 240 > window.innerWidth) {
-      showDropdownMenu_ul.style.left = 'auto';
-    }
-  }
-
-  checkBlacklist(user: any) {
-    if (this.chatService.userService.getSyncProfile().id == user.id) {
-      this.showBlacklist = false;
-    } else {
-      this.showBlacklist = true;
-    }
-  }
-
-  checkSendMessage(user: any) {
-    this.showSendMessage = !!this.chatContactList[user.id] && this.userService.getSyncProfile().id !== user.id;
-  }
-
-  onAddToBlackList(user: any) {
-    this.wthConfirmService.confirm({
-      message: 'Are you sure you want to add this contact to black list ?',
-      header: 'Add To Black List',
-      accept: () => {
-        this.chatService.addGroupUserBlackList(user.id);
-      }
-    });
-  }*/
 }

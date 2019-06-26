@@ -1,12 +1,15 @@
 <form [formGroup]="messageEditorForm" novalidate>
-
-  <mini-editor #miniEditor *ngIf="contactSelect" [(ngModel)]="message.message" [ngModelOptions]="{standalone: true}" [placeholder]="contactSelect.blacklist ? placeholderBl : placeholder"
-               [isDisabled]="isDisabled" [style]="{'height':'auto', 'min-height': '27px', 'max-height': '160px', overflow: 'auto'}"
+  <mini-editor #miniEditor *ngIf="conversation"
+               [placeholder]="conversation.blacklist ? placeholderBl : placeholder"
+               [(ngModel)]="message.message"
+               [ngModelOptions]="{standalone: true}"
+               [htmlResourcesFilter]="['img', 'video', 'audio', 'picture', 'source']"
+               [isDisabled]="isDisabled"
                (onKeyUp)="handleKeyUp($event)" (onImagePaste)="handleImagePaste($event)">
     <p-header>
     </p-header>
   </mini-editor>
-  <div *ngIf="contactSelect && !contactSelect.blacklist" class="chat-message-action">
+  <div *ngIf="conversation && !conversation.blacklist" class="chat-message-action">
     <div class="btn-group dropup">
       <button type="button" class="btn btn-default dropdown-toggle" [attr.disabled]="isDisabled ? 'disabled' : null" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">
@@ -14,19 +17,19 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-right" *ngIf="!isDisabled">
         <li>
-          <a (click)="onOpenSelectPhotos()" href="javascript:;">
+          <a (click)="openPhotosSelection()" href="javascript:void(0);">
             <i class="icon-zone-media"></i> Share photos</a>
         </li>
         <li>
-          <a (click)="noteSelectOpen()" href="javascript:;">
+          <a (click)="openNotesSelection()" href="javascript:void(0);">
             <i class="icon-zone-note"></i> Share notes</a>
         </li>
         <li>
-          <a (click)="shareContacts()" href="javascript:;">
-            <i class="fa fa-user-plus"></i> Share contacts</a>
+          <a (click)="openContactsSelection()" href="javascript:void(0);">
+            <i class="icon-zone-contact"></i> Share contacts</a>
         </li>
         <li>
-          <a (click)="openAddFile()" href="javascript:;">
+          <a (click)="openAddFile()" href="javascript:void(0);">
             <i class="fa fa-paperclip"></i> Add files</a>
         </li>
       </ul>
@@ -34,12 +37,15 @@
     <button class="btn btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="showEmojiBtn($event)">
       <i class="fa fa-smile-o"></i>
     </button>
-    <a class="btn chat-message-action-send btn-default" [attr.disabled]="isDisabled ? 'disabled' : null" (click)="validateAndSend()">
+    <a class="btn chat-message-action-send btn-default" href="javascript:void(0)"
+       [attr.disabled]="isDisabled ? 'disabled' : null" (click)="send()">
       <i class="fa fa-send"></i>
     </a>
   </div>
 </form>
-<chat-note-list-modal #noteList (insertNoteEvent)="noteSelectOnInsert()">
-</chat-note-list-modal>
+<!--<chat-note-list-modal #noteList (onSelect)="createMessage('notes', $event)"></chat-note-list-modal>-->
+<w-note-selection #noteList (selectCompleted)="createMessage('notes', $event)"></w-note-selection>
+
+
 <long-message-modal #longMessageModal></long-message-modal>
 

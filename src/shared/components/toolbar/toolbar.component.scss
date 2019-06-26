@@ -1,11 +1,21 @@
 @import "../../../assets/styles/global";
 
 .page-body-control {
+  &.sub-toolbar {
+    display: none;
+  }
   &.sub-object-actions {
     @include transition($transition-base);
     @include box-shadow(none);
     background-color: $theme-color;
     color: #ffffff;
+    height: $header-height;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1005;
+    display: block;
     .btn {
       color: #ffffff;
       &:not(.btn-text) {
@@ -15,11 +25,15 @@
       }
     }
     .divider {
-      border-right-color: #fff;
+      border-right-color: #ffffff !important;
     }
     &.active {
       top: 0;
     }
+  }
+  &.object-actions {
+    background: #ffffff;
+    display: block;
   }
   .fileinput-button {
     padding: 10px 15px;

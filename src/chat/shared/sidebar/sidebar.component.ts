@@ -1,22 +1,44 @@
-import { Component, HostBinding, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostBinding, OnDestroy,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
-import { Observable } from 'rxjs';
-import { take, filter } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { take, filter, map, takeUntil } from 'rxjs/operators';
 
 import { Constants } from '@shared/constant/config/constants';
 import { ChatService } from '../services/chat.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { ApiBaseService, StorageService, UrlService, WMessageService, CommonEventService } from '@shared/services';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
-import { Conversation } from '@chat/shared/models/conversation.model';
+import {
+  ApiBaseService,
+  StorageService,
+  UrlService,
+  CommonEventService,
+  CommonEventHandler, AuthService
+} from '@shared/services';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
-import { ModalService } from '@shared/components/modal/modal-service';
 import { TextBoxSearchComponent } from '@shared/partials/search-box';
-import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 import { ChatConversationService } from '../services/chat-conversation.service';
-import { Store } from '@ngrx/store';
-import { STORE_CONVERSATIONS } from '@shared/constant';
+import { select, Store } from '@ngrx/store';
+import {
+  AppState,
+  ConversationActions,
+  ConversationSelectors
+} from '@chat/store';
+import { WebsocketService } from '@shared/channels/websocket.service';
+import { ChannelEvents } from '@shared/channels';
+import { ContactSelectionService } from '@chat/shared/selections/contact/contact-selection.service';
+import { UserEventService } from '@shared/user/event';
+import { NotificationEventService } from '@shared/services/notification';
+import { MessageActions } from '@chat/store/message';
 
 
 @Component({
@@ -25,109 +47,201 @@ import { STORE_CONVERSATIONS } from '@shared/constant';
   styleUrls: ['sidebar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ZChatSidebarComponent implements OnInit {
+export class ZChatSidebarComponent extends CommonEventHandler implements OnInit, OnDestroy {
   @HostBinding('class') cssClass = 'menuleft-chat';
   @ViewChild('textbox') textbox: TextBoxSearchComponent;
 
   readonly chatMenu = Constants.chatMenuItems;
 
   usersOnlineItem$: Observable<any>;
-  favouriteContacts$: Observable<any>;
-  historyContacts$: Observable<any>;
-  recentContacts$: Observable<any>;
-  contactItem$: Observable<any>;
+  loading$: Observable<boolean>;
+  loadingMore$: Observable<boolean>;
+  loaded$: Observable<boolean>;
   conversations$: any;
-  contactSelect$: Observable<any>;
-  historyShow: any = true;
-  isRedirect: boolean;
+  searchConversations$: Observable<any>;
+  nextLink: string;
+  nextLinkSearch: string;
+  conversationId: string;
+
+  destroy$ = new Subject();
+
   filter = 'All';
   emojiMap$: Observable<{ [name: string]: WTHEmojiCateCode }>;
 
   searching = false;
-  searchConversations: Array<any> = [];
   searched = false;
+
+  channel = 'CONVERSATION_ACTIONS';
 
   constructor(
     public chatService: ChatService,
     public chatConversationService: ChatConversationService,
     private router: Router,
-    private urlService: UrlService,
-    private storageService: StorageService,
-    private store: Store<any>,
+    private store$: Store<AppState>,
     private renderer: Renderer2,
-    private commonEventService: CommonEventService,
-    private addContactService: ZChatShareAddContactService,
+    public commonEventService: CommonEventService,
     private wthEmojiService: WTHEmojiService,
-    private modalService: ModalService,
-    private apiBaseService: ApiBaseService
+    private apiBaseService: ApiBaseService,
+    private authService: AuthService,
+    private websocketService: WebsocketService,
+    private contactSelectionService: ContactSelectionService,
+    private userEventService: UserEventService,
+    private notificationEventService: NotificationEventService,
   ) {
+    super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
   ngOnInit() {
     this.usersOnlineItem$ = this.chatService.getUsersOnline();
-    this.contactSelect$ = this.chatService.getContactSelectAsync();
-    this.conversations$ = this.store.select(STORE_CONVERSATIONS);
+    this.loading$ = this.store$.pipe(select(ConversationSelectors.selectIsLoading));
+    this.loadingMore$ = this.store$.pipe(select(ConversationSelectors.selectIsLoadingMore));
+    this.loaded$ = this.store$.pipe(select(ConversationSelectors.selectLoaded));
+    this.conversations$ = this.store$.pipe(select(ConversationSelectors.selectAllConversations));
+    this.searchConversations$ = this.store$.pipe(select(ConversationSelectors.selectSearchedConversations));
+    this.store$.pipe(select(ConversationSelectors.getLinks), takeUntil(this.destroy$)).subscribe(links => {
+      this.nextLink = links.next;
+    });
+    this.store$.pipe(select(ConversationSelectors.getSearchedLinks), takeUntil(this.destroy$)).subscribe(links => {
+      this.nextLinkSearch = links.next;
+    });
+    this.store$.pipe(
+      select(ConversationSelectors.selectJoinedConversationId),
+      filter(conversationId => conversationId != null),
+      takeUntil(this.destroy$))
+      .subscribe((conversationId: any) => {
+        this.conversationId = conversationId;
+        // this.store$.dispatch(new ConversationActions.SetState({joinedConversationId: conversationId}));
+        console.log('conversationId:::', conversationId);
+        this.redirectToConversationDetails(conversationId);
+    });
+
+    this.loadConversations();
+
+    // handle adding members
+    this.contactSelectionService.onSelect$.pipe(
+      filter((event: any) => event.eventName === 'NEW_CHAT'),
+      takeUntil(this.destroy$)
+    ).subscribe((response: any) => {
+      this.createConversation({users: response.payload.data});
+    });
+
+    // handle user channel events
+    this.websocketService.userChannel.on(ChannelEvents.CHAT_CONVERSATION_CREATED, (response: any) => {
+      const conversation = response.data.attributes;
+      this.createConversationCallback(conversation);
+    });
+
+    this.websocketService.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPSERTED, (response: any) => {
+      const conversation = response.data.attributes;
+      this.upsertConversationCallback(conversation);
+    });
+
+    this.websocketService.userChannel.on(ChannelEvents.CHAT_CONVERSATION_UPDATED, (response: any) => {
+      const conversation = response.data.attributes;
+      this.updateConversationCallback(conversation);
+    });
+
+    // Handle user events
+    this.userEventService.createChat$.pipe(takeUntil(this.destroy$)).subscribe(user => {
+      this.createConversation({ users: [user] });
+    });
+
+    this.notificationEventService.markAsRead$.pipe(takeUntil(this.destroy$)).subscribe(conversation => {
+      this.markAsReadCallBack(conversation);
+    });
+
+    this.notificationEventService.markAllAsRead$.pipe(takeUntil(this.destroy$)).subscribe(response => {
+      this.markAllAsReadCallBack();
+    });
+  }
+
+  /*
+    Load conversations
+   */
+  loadConversations(query: any = {}) {
+    this.store$.dispatch(new ConversationActions.GetItems({query: query}));
+  }
+
+  loadMoreConversations() {
+    if (this.searching) {
+      if (this.nextLinkSearch) {
+        this.store$.dispatch(new ConversationActions.SearchMore({path: this.nextLinkSearch}));
+      }
+    } else {
+      if (this.nextLink) {
+        this.store$.dispatch(new ConversationActions.GetMoreItems({path: this.nextLink}));
+      }
+    }
   }
 
   doFilter(param) {
-    if (param === 'unread') {
-      this.chatConversationService.apiGetConversations({ 'filter[where][gt][notification_count]': 0})
-        .then((res: any) => {
-          this.filter = 'Unread';
-        });
-    }
-    if (param === 'all') {
-      this.chatConversationService.apiGetConversations().then((res: any) => {
+    let query = {};
+    switch (param) {
+      case 'all':
         this.filter = 'All';
-      });
+        break;
+      case 'unread':
+        query = {unread: true};
+        this.filter = 'Unread';
+        break;
+      case 'sent':
+        query = {status: 'sent_request'};
+        this.filter = 'Sent Request';
+        break;
+      case 'pending':
+        query = {status: 'pending'};
+        this.filter = 'Pending Request';
+        break;
     }
-    if (param === 'sent') {
-      this.chatConversationService.apiGetConversations({ 'filter[where][status]': 'sent_request' })
-        .then((res: any) => {
-          this.filter = 'Sent Request';
-        });
-    }
-    if (param === 'pending') {
-      this.chatConversationService.apiGetConversations({ 'filter[where][status]': 'pending' })
-        .then((res: any) => {
-          this.filter = 'Pending Request';
-        });
-    }
+    this.loadConversations(query);
   }
 
-  onSelect(event: any, contact: any) {
+  selectConversation(conversation: any, event: any) {
     event.preventDefault();
     event.stopPropagation();
     $('#chat-message-text').focus();
-    if (contact.deleted) {
-      this.chatConversationService.apiUpdateGroupUser(contact.group_id, { deleted: false, notification_count: 0 }).then(res => {
-        this.chatConversationService.apiGetConversations().then(r2 => {
-          this.chatConversationService.navigateToConversation(contact.group_id);
-        })
-      });
-    } else {
-      const last = contact.notification_count;
-      this.chatConversationService.apiUpdateGroupUser(contact.group_id, { notification_count: 0 }).then(res => {
-        this.commonEventService.broadcast({
-          channel: 'ChatNotificationComponent',
-          action: 'addNotification',
-          payload: { notification_count: 0, last_notification_count: last}
-        });
-        this.chatConversationService.navigateToConversation(contact.group_id);
-      })
-    }
-    this.commonEventService.broadcast({
-      channel: 'MessageEditorComponent',
-      action: 'resetEditor'
-    })
+
+    this.redirectToConversationDetails(conversation.uuid);
+    this.notificationEventService.updateNotificationCount({count: conversation.notification_count, type: 'remove'});
   }
 
-  onAddContact() {
-    this.commonEventService.broadcast({
-        channel: 'ZChatShareAddContactComponent',
-        action: 'open',
-        payload: {option: 'addChat'}
+  createConversation(payload: any) {
+    this.store$.dispatch(new ConversationActions.Create(payload));
+  }
+
+  createConversationCallback(conversation: any) {
+    // console.log('CREATED CONVERSATION:::', conversation);
+    this.store$.dispatch(new ConversationActions.UpsertSuccess({conversation: conversation}));
+    // update cursor if current user is conversation owner
+    if (this.authService.user.id === conversation.creator_id) {
+      this.store$.dispatch(new MessageActions.SetState({ cursor: conversation.latest_message.cursor + 1}));
+    }
+    if (conversation.notification_count > 0) {
+      this.notificationEventService.updateNotificationCount({count: conversation.notification_count, type: 'add'});
+    }
+  }
+
+  upsertConversationCallback(conversation: any) {
+    // console.log('UPSERTED CONVERSATION:::', conversation);
+    // if currentUser is a member then add to conversation list
+    this.store$.dispatch(new ConversationActions.UpsertSuccess({conversation: conversation}));
+
+    // increase notification to 1 if having a new message
+    // Just recalculate chat notification count for conversation is not current
+    // if ((this.conversationId !== conversation.uuid) && (conversation.notification_count > 0)) {
+    //   this.notificationEventService.updateNotificationCount({count: 1, type: 'add'});
+    // }
+  }
+
+  updateConversationCallback(conversation: any) {
+    console.log('UPDATED CONVERSATION:::', conversation);
+    this.store$.dispatch(new ConversationActions.UpdateSuccess({conversation: conversation}));
+  }
+
+  openContactSelectionModal() {
+    this.contactSelectionService.open({
+      type: 'NEW_CHAT'
     });
   }
 
@@ -140,23 +254,16 @@ export class ZChatSidebarComponent implements OnInit {
     });
   }
 
-  onFavourite(conversation: any) {
-    this.chatService.addGroupUserFavorite(conversation);
-  }
-
-  historyToggle() {
-    this.historyShow = !this.historyShow;
+  redirectToConversationDetails(conversationId: string) {
+    this.router.navigate(['conversations', conversationId]).then();
   }
 
   onCloseMenu() {
     this.renderer.removeClass(document.body, 'left-sidebar-open');
   }
-
-
   /*
   * Handle searching here
    */
-
   search(keyword: string) {
     if (keyword === '') {
       this.clearSearch({});
@@ -164,21 +271,46 @@ export class ZChatSidebarComponent implements OnInit {
     }
     this.searching = true;
     this.searched = false;
-    this.apiBaseService.get('zone/chat/search', { q: keyword }).subscribe((res: any) => {
-      this.searchConversations = res.data;
-      this.searched = true;
-    });
+
+    this.store$.dispatch(new ConversationActions.Search({
+      q: keyword,
+      sort: 'name'
+    }));
+    this.searched = true;
   }
 
   clearSearch(event: any) {
     this.searching = false;
     this.searched = false;
-    this.searchConversations = [];
     this.textbox.search = '';
+    this.store$.dispatch(new ConversationActions.ClearSearch());
   }
   /*
   * End of searching here
-   */
+  */
 
+  markAllAsRead() {
+    this.notificationEventService.markAllAsRead();
+  }
 
+  markAsReadCallBack(conversation: any) {
+    // Clear notification count on Top right
+    // And current conversations' notification count as well
+    this.store$.dispatch(new ConversationActions.MarkAsReadSuccess({conversation: conversation}));
+  }
+
+  markAllAsReadCallBack() {
+    // Clear notification count on Top right and conversation list's notification count as well
+    this.store$.dispatch(new ConversationActions.MarkAllAsRead({}));
+  }
+
+  trackById(index: number, conversation: any) {
+    return conversation.uuid;
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
+
+

@@ -1,31 +1,24 @@
-<div class="menuleft-logo">
+<!-- <div class="menuleft-logo">
   <img src="/assets/images_new/logo-chat.png" alt="">
-</div>
+</div> -->
 
 <div class="menuleft-chat-header">
   <div class="menuleft-chat-nav">
-    <a href="javascript:void(0);" (click)="onAddContact(); onCloseMenu()">
+    <a href="javascript:void(0);" (click)="openContactSelectionModal(); onCloseMenu()">
       <i class="fa fa-plus"></i> Chat
     </a>
     <a href="javascript:void(0);" (click)="openContactModal();">
       <i class="fa fa-address-book-o"></i> Contacts
     </a>
-    <a [routerLink]="['/setting']" [routerLinkActive]="['active']" href="javascript:void(0);" (click)="onCloseMenu()">
-      <i class="fa fa-cog"></i> Settings
+    <!--<a href="javascript:void(0);" (click)="onCloseMenu()">-->
+      <!--<i class="fa fa-cog"></i> Settings-->
+    <!--</a>-->
+    <!-- Temp disable settings -->
+    <a href="javascript:void(0);">
+      <div style="width: 77px"></div>
     </a>
   </div>
   <div class="menuleft-chat-form">
-    <!--<div class="input-group-wrap input-group-wrap-search">-->
-    <!--<form class="input-group" novalidate="">-->
-    <!--<span class="input-group-btn input-group-left">-->
-    <!--<button class="btn btn-default" tooltipposition="bottom" type="button">-->
-    <!--<i class="fa fa-search"></i>-->
-    <!--</button>-->
-    <!--</span>-->
-    <!--<input autocomplete="off" class="form-control" name="search" type="text" placeholder="Search Conversations">-->
-    <!--</form>-->
-    <!--</div>-->
-
     <textbox-search #textbox [showSearchClearText]="false" [placeholder]="'Search conversation name'"
                     (onEnterEvent)="search(textbox.search)"
                     (onEscapeEvent)="clearSearch($event)" (onKeyUpEvent)="search(textbox.search)">
@@ -66,67 +59,73 @@
         </li>
         <li role="separator" class="divider"></li>
         <li>
-          <a href="#">Mark all as read</a>
+          <a href="javascript:void(0)" (click)="markAllAsRead()">Mark all as read</a>
         </li>
       </ul>
     </div>
   </div>
 </div>
-<div class="menuleft-chat-content">
-  <ng-container *ngIf="!searching">
-    <ng-container *ngIf="((conversations$ | async)?.data | chatGroupFavorite)?.length > 0">
-      <div class="text-bold conversation-label">
-        <p>Favorites</p>
-      </div>
-      <ng-container *ngIf="((conversations$ | async)?.data | chatGroupFavorite)?.length > 0; else templateNoMessage">
-        <div *ngFor="let contact of ((conversations$ | async)?.data | chatGroupFavorite)" class="menu-left-item">
-          <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
-        </div>
+<div class="menuleft-chat-content" infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="loadMoreConversations()"
+      [scrollWindow]="false">
+  <ng-container *ngIf="!(loading$|async); else loadingBlock">
+    <ng-container *ngIf="!searching">
+      <ng-container *ngIf="conversations$ | async as conversations">
+        <ng-container *ngIf="(conversations | chatGroupFavorite)?.length > 0">
+          <div class="text-bold conversation-label">
+            <p>Favorites</p>
+          </div>
+          <div *ngFor="let conversation of conversations | chatGroupFavorite" class="menu-left-item">
+            <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="(conversations | chatGroupRecent)?.length > 0; else templateNoMessage">
+          <div class="text-bold conversation-label">
+            <p>Chats</p>
+          </div>
+          <div *ngFor="let conversation of conversations | chatGroupRecent" class="menu-left-item">
+            <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
+          </div>
+        </ng-container>
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="((conversations$ | async)?.data | chatGroupRecent)?.length > 0">
-      <div class="text-bold conversation-label">
-        <p>Chats</p>
-      </div>
-      <ng-container *ngIf="((conversations$ | async)?.data | chatGroupRecent)?.length > 0; else templateNoMessage">
-        <div *ngFor="let contact of ((conversations$ | async)?.data | chatGroupRecent)" class="menu-left-item">
-          <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: contact}"></ng-container>
+    <ng-container *ngIf="searching && searched">
+      <ng-container *ngIf="(searchConversations$|async).length > 0; else templateNodata">
+        <div *ngFor="let conversation of searchConversations$|async; trackBy: trackById" class="menu-left-item">
+          <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
         </div>
       </ng-container>
     </ng-container>
   </ng-container>
-
-  <ng-container *ngIf="searching && searched">
-    <ng-container *ngIf="searchConversations.length > 0; else templateNodata">
-      <div *ngFor="let conversation of searchConversations" class="menu-left-item">
-        <ng-container *ngTemplateOutlet="conversationTemplate; context: {conversation: conversation}"></ng-container>
-      </div>
-    </ng-container>
+  <ng-container *ngIf="loadingMore$|async">
+    <box-loading boxClass="box-loading-no-padding" iconClass="fa-2x"></box-loading>
   </ng-container>
 </div>
 
 <ng-template #conversationTemplate let-conversation="conversation">
-  <div class="media-chat-user" [routerLink]="['/conversations', conversation.group_id]" [routerLinkActive]="['active']">
+  <div class="media-chat-user" [routerLink]="['/conversations', conversation.uuid]" [routerLinkActive]="['active']">
     <z-chat-share-user-avatar class="media-chat-user-row"
-                              [isPending]="conversation.group_type == 'couple' && conversation?.status == 'sent_request'"
+                              [isPending]="conversation.group_type == 'couple' && conversation?.status == 'pending'"
                               [data]="conversation" [usersOnlineItem]="usersOnlineItem$ | async">
       <div class="user-content">
-        <small class="media-chat-user-message" *ngIf="conversation.latest_message as latest_message">
-          <span class="emojione-sm" *ngIf="latest_message?.message_type == 'text'"
-                [innerHtml]="latest_message?.message | wth2Emojis:(emojiMap$ | async) | linkify  | safeHtml"></span>
-          <span *ngIf="latest_message?.message_type == 'request'"> Sent you a request </span>
-          <span *ngIf="latest_message?.message_type == 'file'"> Sent a file </span>
+        <small class="media-chat-user-message">
+          <span class="emojione-sm"
+                [innerHtml]="conversation | shortMessage | wth2Emojis:(emojiMap$ | async) | linkify  | safeHtml">
+          </span>
         </small>
         <!-- {{conversation.latest_message}} -->
         <small *ngIf="conversation.latest_message">{{ conversation?.latest_message?.created_at | timeFormat }}</small>
-        <a class="media-chat-user-link"
-           (click)="onSelect($event, conversation); onCloseMenu()"
-           href="javascript:;"></a>
+        <a class="media-chat-user-link" href="javascript:void(0);"
+           (click)="selectConversation(conversation, $event); onCloseMenu()"></a>
+        <!--<a class="media-chat-user-link" [routerLink]="['/conversations', conversation.uuid]"></a>-->
       </div>
       <div class="user-action">
         <div class="user-action-col">
-          <span class="badge badge-wth badge-rounded" [ngClass]="{'invisible': conversation.notification_count == 0}">{{
-            conversation?.notification_count | maxCount: 10}}</span>
+          <span class="badge badge-wth badge-rounded" [ngClass]="{'invisible': conversation.notification_count == 0}">
+            {{ conversation?.notification_count | maxCount: 10 }}
+          </span>
           <i class="fw text-fade"
              [ngClass]="{'fw-megaphone-mute': !conversation.notification}"></i>
         </div>
@@ -137,19 +136,29 @@
 
 
 <ng-template #templateNodata>
-  <div class="conversation-no-data">
-    <box-no-data [icon]="'fa fa-comments-o'" [subTitle]="'There is no matching conversation'">
-    </box-no-data>
-  </div>
+  <ng-container *ngIf="loaded$|async">
+    <div class="conversation-no-data">
+      <box-no-data [icon]="'fa fa-comments-o'" [subTitle]="'There is no matching conversation'">
+      </box-no-data>
+    </div>
+  </ng-container>
 </ng-template>
 
 <ng-template #templateNoMessage>
-  <div class="conversation-no-data">
-    <box-no-data *ngIf="filter === 'All'"
-                 [icon]="'fa fa-comments-o'" [subTitle]="'No conversations'"></box-no-data>
-    <box-no-data *ngIf="filter === 'Pending Request'"
-                 [icon]="'fa fa-comments-o'" [subTitle]="'No pending request'"></box-no-data>
-    <box-no-data *ngIf="filter === 'Sent Request'"
-                 [icon]="'fa fa-comments-o'" [subTitle]="'No sent request'"></box-no-data>
-  </div>
+  <ng-container *ngIf="loaded$|async">
+    <div class="conversation-no-data">
+      <box-no-data *ngIf="filter === 'All'"
+                   [icon]="'fa fa-comments-o'" [subTitle]="'No conversations'"></box-no-data>
+      <box-no-data *ngIf="filter === 'Unread'"
+                   [icon]="'fa fa-comments-o'" [subTitle]="'No unread conversations'"></box-no-data>
+      <box-no-data *ngIf="filter === 'Pending Request'"
+                   [icon]="'fa fa-comments-o'" [subTitle]="'No pending request'"></box-no-data>
+      <box-no-data *ngIf="filter === 'Sent Request'"
+                   [icon]="'fa fa-comments-o'" [subTitle]="'No sent request'"></box-no-data>
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template #loadingBlock>
+  <box-loading iconClass="fa-2x"></box-loading>
 </ng-template>

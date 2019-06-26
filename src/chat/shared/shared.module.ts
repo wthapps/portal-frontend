@@ -18,19 +18,17 @@ import {
   TooltipModule
 } from 'primeng/primeng';
 
-import { ZChatShareItemRequestComponent } from './message/item-request.component';
+import { MessageInvitationComponent } from './message/message-invitation.component';
 import { PartialModule } from './../../shared/partials/partial.module';
 
 import { ZChatSidebarComponent } from './sidebar/sidebar.component';
 import { ZChatToolbarComponent } from './toolbar/toolbar.component';
 import { ZChatContactActionsComponent } from './contact-action/contact-actions.component';
-import { ConversationService } from '../conversation/conversation.service';
+import { ConversationService } from '../../shared/services/chat/conversation.service';
 import { ChatService } from './services/chat.service';
 import { ChatContactService } from './services/chat-contact.service';
 import { ZChatSharedHeaderComponent } from './header/header.component';
 import { ChatCommonService } from '@wth/shared/services';
-import { ZChatShareAddContactService } from '@chat/shared/modal/add-contact.service';
-import { ContactListModalComponent } from '@chat/contact/contact-list-modal.component';
 import { ChatMessageService } from './services/chat-message.service';
 import { ChatConversationService } from './services/chat-conversation.service';
 import { WthCommonModule } from '@shared/common/wth-common.module';
@@ -44,9 +42,12 @@ import { WNavTabModule } from '@shared/components/w-nav-tab/w-nav-tab.module';
 import { ZChatShareUserModule } from './user/user.module';
 import { WTHEmojiModule } from '@shared/components/emoji/emoji.module';
 import { ZSharedReportModule } from '@shared/shared/components/zone/report/report.module';
-// import { ZChatShareRequestContactComponent } from './modal/request-contact.component';
 import { ZChatSharedModalModule } from './modal/chat-shared-modal.module';
 import { ZChatPipeModule } from './pipe/chat-pipe.module';
+import { CardUserModule } from '@shared/components/card-user/card-user.module';
+import { ChatNotificationService, MemberService } from '@chat/shared/services';
+import {  } from './modal/cards/chat-card-detail-modal.module';
+import { ChatPipeModule } from '@shared/chat/pipe';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -57,6 +58,7 @@ import { ZChatPipeModule } from './pipe/chat-pipe.module';
     FormsModule,
     ReactiveFormsModule,
     WthCommonModule,
+    CardUserModule,
 
     // custom component
     ModalDockModule,
@@ -65,7 +67,6 @@ import { ZChatPipeModule } from './pipe/chat-pipe.module';
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
-    // ZSharedMenuModule,
     BoxNoDataModule,
     WNavTabModule,
     WTHEmojiModule,
@@ -77,7 +78,7 @@ import { ZChatPipeModule } from './pipe/chat-pipe.module';
     ZChatSharedModalModule,
     ZChatShareUserModule,
     ZChatPipeModule,
-    // ZChatMessageModule,
+    ChatPipeModule,
 
     // third party libs
     TagInputModule,
@@ -92,17 +93,13 @@ import { ZChatPipeModule } from './pipe/chat-pipe.module';
   declarations: [
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    // ZChatShareEditConversationComponent,
-    // ZChatShareAddContactComponent,
-    // ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
     ZChatContactActionsComponent,
-    ContactListModalComponent,
-    ZChatShareItemRequestComponent
-    // ZChatShareRequestContactComponent,
+    MessageInvitationComponent
   ],
   exports: [
     WthCommonModule,
+    CardUserModule,
 
     // custom component
     ModalDockModule,
@@ -111,7 +108,6 @@ import { ZChatPipeModule } from './pipe/chat-pipe.module';
     PartialModule,
     WMediaSelectionModule,
     ComponentsModule,
-    // ZSharedMenuModule,
     BoxNoDataModule,
     WNavTabModule,
     WTHEmojiModule,
@@ -120,12 +116,10 @@ import { ZChatPipeModule } from './pipe/chat-pipe.module';
     // Chat scoped modules
     MessagesModule,
     MessageModule,
-    ZChatShareItemRequestComponent,
-    // ZChatShareRequestContactComponent,
+    MessageInvitationComponent,
     ZChatSharedModalModule,
     ZChatShareUserModule,
     ZChatPipeModule,
-    // ZChatMessageModule,
 
     // third party libs
     TagInputModule,
@@ -139,12 +133,8 @@ import { ZChatPipeModule } from './pipe/chat-pipe.module';
 
     ZChatSidebarComponent,
     ZChatToolbarComponent,
-    // ZChatShareEditConversationComponent,
-    // ZChatShareAddContactComponent,
-    // ZChatShareAddToConversationComponent,
     ZChatSharedHeaderComponent,
-    ZChatContactActionsComponent,
-    ContactListModalComponent
+    ZChatContactActionsComponent
   ]
 })
 export class ZChatSharedModule {
@@ -159,7 +149,8 @@ export class ZChatSharedModule {
         ChatConversationService,
         ChatCommonService,
         MessageService,
-        ZChatShareAddContactService
+        ChatNotificationService,
+        MemberService
       ]
     };
   }

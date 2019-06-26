@@ -6,7 +6,6 @@ import { ZMediaSharedModule } from '../shared/shared.module';
 
 import { ZMediaSharedWithMeComponent } from './shared-with-me.component';
 import { ZMediaSharedWithMeService } from './shared-with-me.service';
-import { SharedModule } from '@wth/shared/shared.module';
 import { WGridListModule } from '@wth/shared/components/grid-list';
 import { WToolbarModule } from '@wth/shared/components/toolbar';
 
@@ -14,7 +13,6 @@ import { WToolbarModule } from '@wth/shared/components/toolbar';
   imports: [
     ZMediaSharedWithMeRoutingModule,
     ZMediaSharedModule,
-    SharedModule,
     WGridListModule,
     WToolbarModule
   ],
@@ -22,4 +20,4 @@ import { WToolbarModule } from '@wth/shared/components/toolbar';
   exports: [ZMediaSharedWithMeComponent],
   providers: [ZMediaSharedWithMeService]
 })
-export class ZMediaSharedWithMeModule {}
+export class ZMediaSharedWithMeModule { }

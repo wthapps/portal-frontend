@@ -4,8 +4,8 @@
       <h4 class="text-center modal-title"> {{data[index].title}} </h4>
     </bs-modal-header>
     <bs-modal-body *ngIf="data && data[index]">
-      <div class="text-center">
-        <img *ngIf="data[index].icon" alt="" [src]="data[index].icon" style="width: 120px; padding: 25px">
+      <div *ngIf="data[index].icon" class="text-center">
+        <i class="{{data[index].icon}}"></i>
       </div>
       <p *ngIf="data[index].content">{{data[index].content}}</p>
       <p *ngIf="data[index].content2">{{data[index].content2}}</p>
@@ -13,13 +13,16 @@
       <!-- <img alt="" src="../../assets/images_new/pricing/note.png"> -->
     </bs-modal-body>
     <bs-modal-footer>
-      <ul class="list-inline pull-left">
+      <ng-container *ngIf="data?.length > 1"><ul class="list-inline pull-left">
         <li *ngFor="let d of data; let i = index" class="can-click" (click)="setIndex(i)">
           <i class="fa fa-circle" [ngClass]="(i == index)? 'active' : 'normal'" aria-hidden="true"></i>
         </li>
       </ul>
       <button [disabled]="index == 0" type="button" class="btn btn-outline-default btn-min"
               (click)="setIndex(index-1)">Back</button>
+      
+      </ng-container>
+      
       <button *ngIf="data && index == data.length - 1" type="submit" class="btn btn-outline-primary btn-min"
               (click)="done()">Done</button>
       <button *ngIf="data && index < data.length - 1" type="submit" class="btn btn-outline-primary btn-min"

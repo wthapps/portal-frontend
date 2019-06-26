@@ -2,6 +2,7 @@
   <w-dataView-nav [sliderView]="mediaService.sliderView$ | async"
                   (sliderViewCompleted)="mediaService.changeSliderView($event)"
                   (sortComplete)="onSortComplete($event)">
+    <h4 class="title">Photos</h4>
   </w-dataView-nav>
   <ng-container *ngIf="data$ | async as list; else templateloading">
     <ng-container *ngIf="list?.length > 0; else templateNodata">

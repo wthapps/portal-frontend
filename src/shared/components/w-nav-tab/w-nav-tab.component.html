@@ -1,4 +1,4 @@
-<nav *ngIf="tabs" class="nav-tabs-wrap">
+<nav *ngIf="tabs" class="nav-tabs-wrap" [ngClass]="cssClass">
   <div *ngIf="tabs.length > break" class="btn-group visible-xs-inline-block">
     <button *ngIf="tabActive" type="button" class="btn btn-outline-default dropdown-toggle" data-toggle="dropdown"
             aria-haspopup="true"

@@ -11,6 +11,7 @@ import { ContactAddGroupModalComponent } from '@contacts/shared/modal/contact-ad
 import { InvitationCreateModalComponent } from '@shared/shared/components/invitation/invitation-create-modal.component';
 import { Subscription } from 'rxjs/Subscription';
 import { Contact } from '@contacts/contact/contact.model';
+import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
 
 declare var _: any;
 
@@ -32,6 +33,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
 
   readonly linkSocial = `${Config.SUB_DOMAIN.SOCIAL}/profile/`;
   readonly linkChat = `${Config.SUB_DOMAIN.CHAT}/conversations/`;
+  readonly TABS = { mine: 'mine', wth: 'wth', others: 'others'};
 
   constructor(
     public contactService: ZContactService,
@@ -40,17 +42,18 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
     private urlService: UrlService,
     private commonEventService: CommonEventService,
     private groupService: GroupService,
+    private toastsService: ToastsService,
     private apiBaseService: ApiBaseService
   ) {
     this.route.params.subscribe(params => {
-      this.currentTab = params['id'] || 'mine';
-      if (!params['id']  || params['id'] === 'mine') {
+      this.currentTab = params['id'] || this.TABS.mine;
+      if (!params['id']  || params['id'] === this.TABS.mine) {
         this.getMine(params);
       }
-      if (params['id'] === 'others') {
+      if (params['id'] === this.TABS.others) {
         this.getOtherContacts(params);
       }
-      if (params['id'] === 'wth') {
+      if (params['id'] === this.TABS.wth) {
         this.getWTH(params);
       }
 
@@ -74,7 +77,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   }
 
   getOtherContacts(params: any): void {
-    this.apiBaseService.get(`contact/search/other_contacts`, { q: `name:${params.q || ''}` })
+    this.apiBaseService.get(`contact/search/other_contacts`, { q: `${params.q || ''}` })
       .toPromise().then(res => {
         this.contacts = res.data;
         this.nextWTH = res.meta.links.next;
@@ -82,7 +85,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   }
 
   getMine(params: any): void {
-    this.apiBaseService.get(`contact/search/my_contacts`, {q: `name:${params.q || ''}`})
+    this.apiBaseService.get(`contact/search/my_contacts`, {q: `${params.q || ''}`})
     .toPromise().then(res => {
         this.contacts = res.data;
         this.nextWTH = res.meta.links.next;
@@ -90,7 +93,7 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   }
 
   getWTH(params: any): void {
-    this.apiBaseService.get(`contact/search/wth_users_not_in_contact`, {q: `name:${params.q || ''}`})
+    this.apiBaseService.get(`contact/search/wth_users_not_in_contact`, {q: `${params.q || ''}`})
     .toPromise().then(res => {
         this.contacts = res.data;
         this.nextWTH = res.meta.links.next;
@@ -107,89 +110,107 @@ export class ContactSearchComponent implements OnInit, OnDestroy {
   }
 
   doActionsToolbar(event: any) {
-    if (event.action === 'favourite') {
-      this.toggleGroup('favourite');
-    }
-
-    if (event.action === 'blacklist') {
-      this.toggleGroup('blacklist');
-    }
-
-    if (event.action === 'tag') {
-      this.doEvent({ action: 'open_add_group_modal' });
-    }
-
-    if (event.action === 'delete') {
-      const selectedIds = this.contactService.selectedObjects.map(ct => ct.id);
-      this.contactService.confirmDeleteContacts()
-        .then(contact => this.contacts = this.contacts.filter(ct => !selectedIds.includes(ct.id)));
-    }
-
-    if (event.action === 'save') {
-      this.save();
-    }
-
-    if (event.action === 'social') {
-      if (
-        this.contactService.selectedObjects &&
-        this.contactService.selectedObjects[0].wthapps_user &&
-        this.contactService.selectedObjects[0].wthapps_user.uuid
-      ) {
-        window.location.href =
-          this.linkSocial +
-          this.contactService.selectedObjects[0].wthapps_user.uuid;
+    switch (event.action) {
+      case 'favourite':
+      case 'blacklist': {
+        this.toggleGroup(event.action);
+        break;
       }
-    }
-
-    if (event.action === 'chat') {
-      if (
-        this.contactService.selectedObjects &&
-        this.contactService.selectedObjects[0].wthapps_user &&
-        this.contactService.selectedObjects[0].wthapps_user.uuid
-      ) {
-        window.location.href =
-          this.linkChat +
-          this.contactService.selectedObjects[0].wthapps_user.uuid;
+      case 'tag': {
+        this.doEvent({ action: 'open_add_group_modal' });
+        break;
       }
-    }
+      case 'delete': {
+        const selectedIds = this.contactService.selectedObjects.map(ct => ct.id);
+        this.contactService.confirmDeleteContacts()
+          .then(contact => this.contacts = this.contacts.filter(ct => !selectedIds.includes(ct.id)));
+        break;
+      }
+      case 'save': {
+        this.save();
+        break;
+      }
+      case 'import_contacts': {
+        const users = event.payload;
+        const uuids = users.map(u => u.uuid);
+        this.contactService.importContacts(uuids).then(
+          (res) => {
+            this.contactService.addLocalContacts(res.data);
 
-    if (event.action === 'view_detail') {
-      this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, {mode: 'view'}]).then();
-    }
-
-    if (event.action === 'edit_contact') {
-      this.router
-        .navigate([
-          'contacts',
-          this.contactService.selectedObjects[0].id,
-          { mode: 'edit' }
-        ])
-        .then();
-    }
-
-    if (event.action === 'invitation:open_modal') {
-      const recipients: Array<Recipient> = new Array<Recipient>();
-      const objects: any[] = _.get(
-        event,
-        'payload.objects',
-        this.contactService.selectedObjects
-      );
-      _.forEach(objects, (contact: any) => {
-        if (contact.wthapps_user == null) {
-          _.forEach(contact.emails, (email: any) => {
-            recipients.push(
-              new Recipient({
-                email: email.value,
-                fullName: contact.name,
-                contactId: contact.id
-              })
-            );
-          });
+            // Remove imported user from user list
+            this.contacts = this.contacts.filter(ct => !uuids.includes(ct.uuid));
+            this.toastsService.success(`Yay, import ${users.length} user(s) into contact book successfully`);
+          },
+          error => this.toastsService.danger(`Oops, cannot import ${users.length} user(s) into contact book. Please try again`)
+        );
+        break;
+      }
+      case 'social': {
+        if (
+          this.contactService.selectedObjects &&
+          this.contactService.selectedObjects[0].wthapps_user &&
+          this.contactService.selectedObjects[0].wthapps_user.uuid
+        ) {
+          window.location.href =
+            this.linkSocial +
+            this.contactService.selectedObjects[0].wthapps_user.uuid;
         }
-      });
+        break;
+      }
+      case 'chat': {
+        if (
+          this.contactService.selectedObjects &&
+          this.contactService.selectedObjects[0].wthapps_user &&
+          this.contactService.selectedObjects[0].wthapps_user.uuid
+        ) {
+          window.location.href =
+            this.linkChat +
+            this.contactService.selectedObjects[0].wthapps_user.uuid;
+        }
+        break;
+      }
+      case 'view_detail': {
+        this.router.navigate(['contacts', this.contactService.selectedObjects[0].id, {mode: 'view'}]).then();
+        break;
+      }
+      case 'edit_contact': {
+          this.router
+          .navigate([
+            'contacts',
+            this.contactService.selectedObjects[0].id,
+            { mode: 'edit' }
+          ]);
+        break;
+      }
+      case 'invitation:open_modal': {
+        const recipients: Array<Recipient> = new Array<Recipient>();
+        const objects: any[] = _.get(
+          event,
+          'payload.objects',
+          this.contactService.selectedObjects
+        );
+        _.forEach(objects, (contact: any) => {
+          if (contact.wthapps_user == null) {
+            _.forEach(contact.emails, (email: any) => {
+              recipients.push(
+                new Recipient({
+                  email: email.value,
+                  fullName: contact.name,
+                  contactId: contact.id
+                })
+              );
+            });
+          }
+        });
 
-      this.invitationModal.open({ data: recipients });
+        this.invitationModal.open({ data: recipients });
+        break;
+      }
+      default: {
+        break;
+      }
     }
+
   }
 
   toggleGroup(name: string) {

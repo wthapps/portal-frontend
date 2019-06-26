@@ -1,15 +1,26 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
-import { CountryModel, WCountriesService } from '@shared/components/w-countries/w-countries.service';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output,
+  SimpleChanges, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { OverlayPanel } from 'primeng/primeng';
-import { Observable } from 'rxjs/Observable';
+import { map, takeUntil } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
 
+
+import { CountryService } from '@shared/shared/components/countries/countries.service';
+
+export class CountryModel {
+  value: string;
+  label: string;
+  code: string;
+  name: string;
+  dial_code: string;
+}
 @Component({
   selector: 'w-countries',
   templateUrl: 'w-countries.component.html',
   styleUrls: ['w-countries.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class WCountriesComponent implements OnInit, OnChanges {
+export class WCountriesComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('overlayPanel') overlayPanel: OverlayPanel;
   //  Aland Islands (+358)
   @Input() country: string;
@@ -21,30 +32,46 @@ export class WCountriesComponent implements OnInit, OnChanges {
   selectedCountryObject: any;
   countriesCode$: Observable<CountryModel[]>;
   countriesCode: any;
+  private destroySubject: Subject<any> = new Subject();
 
-  constructor(private countriesService: WCountriesService) {
+  constructor(private countriesService: CountryService) {
     this.countriesCode$ = this.countriesService.countriesCode$;
   }
 
+  ngOnDestroy() {
+    this.destroySubject.next('');
+    this.destroySubject.complete();
+  }
+
   ngOnInit(): void {
-    this.countriesService.getCountries().subscribe();
-    this.countriesCode$.subscribe(res => {
-      if(res) {
-        this.countriesCode = res;
+    this.countriesService.countriesCode$.pipe(
+      map((res: Array<any>) => {
+        return res.map((v: any) => ({
+          value: v.name + ' (' + v.dial_code + ')',
+          label: v.name + ' (' + v.dial_code + ')',
+          name: v.name,
+          dial_code: v.dial_code,
+          code: v.code.toLowerCase()
+        }));
+      }),
+      takeUntil(this.destroySubject)
+    ).subscribe((res: Array<any>) => {
+      if (res) {
+        this.countriesCode = [...res];
       }
-      if (this.countryCode && res) {
-        if (res.find(r => r.code == this.countryCode)) {
-          this.selectedCountry = res.find(r => r.code == this.countryCode).value;
-          this.selectedCountryObject = res.find(r => r.code == this.countryCode);
+      if (this.countryCode && Array.isArray(res) && res.length > 0) {
+        if (res.find(r => r.code === this.countryCode)) {
+          this.selectedCountry = res.find(r => r.code === this.countryCode).value;
+          this.selectedCountryObject = res.find(r => r.code === this.countryCode);
         } else {
           this.selectedCountry = res[0].value;
           this.selectedCountryObject = res[0];
         }
       }
-      if (this.country && res) {
-        this.selectedCountryObject = res.find((r: any) => r.value == this.country);
+      if (this.country && Array.isArray(res) && res.length > 0) {
+        this.selectedCountryObject = res.find((r: any) => r.value === this.country);
       }
-    })
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -54,7 +81,7 @@ export class WCountriesComponent implements OnInit, OnChanges {
   }
 
   onComplete() {
-    this.selectedCountryObject = this.countriesCode.find((r: any) => r.value == this.selectedCountry);
+    this.selectedCountryObject = this.countriesCode.find((r: any) => r.value === this.selectedCountry);
     this.completeChange.emit(this.selectedCountryObject);
   }
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Media } from '@shared/shared/models/media.model';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -9,6 +8,7 @@ import { componentDestroyed } from 'ng2-rx-componentdestroyed';
 import { WObjectListService } from '@shared/components/w-object-list/w-object-list.service';
 import { WMediaSelectionService } from '@shared/components/w-media-selection/w-media-selection.service';
 import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model';
+import Media from '@shared/modules/photo/models/media.model';
 
 @Component({
   selector: 'app-photo-html',
@@ -55,7 +55,7 @@ export class PhotoHtmlComponent implements OnInit, OnDestroy {
     this.getObjects();
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   testasasfd() {
     console.log('testasasfd');

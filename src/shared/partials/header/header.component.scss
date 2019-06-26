@@ -1,4 +1,5 @@
-@import '../../scss/global';
+@import '../../../assets/styles/global';
+
 
 .header {
   position: fixed;
@@ -7,13 +8,6 @@
   left: 0;
   z-index: 1000;
   border-bottom: 1px solid $line;
-
-  .header-nav-mobile {
-    display: none;
-    @media (max-width: $screen-xs-max) {
-      display: inline-block;
-    }
-  }
 
   .header-nav {
     padding: 0 $grid-gutter-width/2;
@@ -78,17 +72,6 @@
 
     @media (max-width: $screen-xs-max) {
       display: none;
-      /*margin-right: 0;
-      @include flexbox;
-      @include align-items(center);
-      img {
-        display: none;
-        //height: 24px;
-      }
-      &:before {
-        content: url('/assets/images_new/logo-sm.png');
-        height: 32px;
-      }*/
     }
   }
 
@@ -232,6 +215,10 @@
   .header-nav-notification {
     .dropdown-menu {
       width: 400px;
+
+      @media (max-width: $screen-xs-max) {
+        width: 100%;
+      }
     }
     .dropdown-menu-bar {
       padding: 10px;
@@ -287,15 +274,20 @@
           text-align: center;
           padding: 10px;
           i {
-            font-size: 48px;
-            line-height: 48px;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            width: 50px;
+            height: 50px;
+            position: relative;
+            font-size: 50px;
+            vertical-align: middle;
+            &:before {
+              @include center();
+            }
           }
           span {
             display: block;
             font-weight: bold;
             font-size: 16px;
+            margin-top: 10px;
           }
           &:hover {
             background-color: #eee;

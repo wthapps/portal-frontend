@@ -1,4 +1,3 @@
-import { StorageService } from './../../../shared/services/storage.service';
 import {
   Component,
   OnInit,
@@ -10,23 +9,27 @@ import {
   EventEmitter,
   ViewEncapsulation,
   ElementRef,
-  OnDestroy
+  OnDestroy, AfterViewInit
 } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import { ChatService } from '../services/chat.service';
 import { ZChatShareRequestContactComponent } from '../modal/request-contact.component';
-import { WMessageService, CommonEventHandler, CommonEventService } from '@wth/shared/services';
 import { Router } from '@angular/router';
 import { User } from '@wth/shared/shared/models';
 import { WTHEmojiService } from '@shared/components/emoji/emoji.service';
 import { Observable } from 'rxjs/Observable';
 import { WTHEmojiCateCode } from '@shared/components/emoji/emoji';
 import { ChatContactService } from '@chat/shared/services/chat-contact.service';
-import { ChatMessageService } from '../services/chat-message.service';
 import { ChatConversationService } from '../services/chat-conversation.service';
+
+import { Store, select } from '@ngrx/store';
+import { AppState } from '@chat/store';
+import { MessageActions, MessageSelectors } from '@chat/store/message';
+import { UserEventService } from '@shared/user/event';
+
 
 declare var _: any;
 declare var $: any;
@@ -37,80 +40,101 @@ declare var $: any;
   styleUrls: ['message-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MessageListComponent extends CommonEventHandler implements OnInit, OnDestroy {
+export class MessageListComponent implements OnInit, OnDestroy {
   @ViewChild('request') requestModal: ZChatShareRequestContactComponent;
   @ViewChild('listEl') listEl: ElementRef;
 
-  @Input() currentMessages: any;
-  @Input() contactItem: any;
+  @Input() messages: any;
+  @Input() conversation: any;
   @Input() currentUser: User;
-  @Input() channel: string = 'MessageListComponent';
-  emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
-  prevMessage: any;
-  readonly scrollDistance: number = 1000;
-  // currentMessages: any[] = [];
+  @Input() channel = 'MessageListComponent';
 
-  private destroySubject: Subject<any> = new Subject();
+  emojiMap$: Observable<{[name: string]: WTHEmojiCateCode}>;
+  loading$: Observable<boolean>;
+  loadingMore$: Observable<boolean>;
+  currentCursor: number;
+  links: any;
+
+  private destroy$ = new Subject();
 
   constructor(
     private chatService: ChatService,
     private router: Router,
-    private messageService: WMessageService,
-    private storageService: StorageService,
-    public commonEventService: CommonEventService,
+    private store$: Store<AppState>,
     private chatContactService: ChatContactService,
     private chatConversationService: ChatConversationService,
-    private chatMessageService: ChatMessageService,
-    private wthEmojiService: WTHEmojiService
+    private wthEmojiService: WTHEmojiService,
+    private userEventService: UserEventService
   ) {
-    // this.messageService.scrollToBottom$
-    //   .pipe(
-    //     takeUntil(this.destroySubject)
-    //   )
-    //   .subscribe((res: boolean) => {
-    //   if (res && this.listEl) {
-    //     this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
-    //   }
-    // });
-    super(commonEventService);
     this.emojiMap$ = this.wthEmojiService.name2baseCodeMap$;
   }
 
-  // ngOnDestroy() {
-  //   this.destroySubject.next('');
-  //   this.destroySubject.complete();
-  // }
+
 
   ngOnInit() {
-    // setInterval(() => {
-      //   this.item = this.chatService.getCurrentMessages();
-      //   this.contactItem = this.chatService.getContactSelect();
-      //   this.ref.markForCheck();
-      // }, 200);
-    }
+    this.loading$ = this.store$.pipe(select(MessageSelectors.getLoading));
+    this.loadingMore$ = this.store$.pipe(select(MessageSelectors.getLoadingMore));
+    this.store$.pipe(
+      select(MessageSelectors.getCurrentCursor),
+      takeUntil(this.destroy$)
+    ).subscribe(cursor => {
+      if (cursor !== 0) {
+        this.currentCursor = cursor;
+      }
+    });
 
-  scrollToBottom(res: any) {
-    if (res && this.listEl) {
-      this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight;
+    this.store$.pipe(
+      select(MessageSelectors.getLinks),
+      takeUntil(this.destroy$)
+    ).subscribe(links => {
+        this.links = links;
+    });
+
+    this.store$.pipe(
+      select(MessageSelectors.getScrollable),
+      filter(scrollable => scrollable === true),
+      takeUntil(this.destroy$)
+    ).subscribe(scrollable => {
+      this.scrollToBottom(scrollable);
+    });
+  }
+
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  scrollToBottom(scrollable: any) {
+    if (scrollable && this.listEl) {
+      setTimeout(() => {
+        this.listEl.nativeElement.scrollTop = this.listEl.nativeElement.scrollHeight + 99999;
+        this.store$.dispatch(new MessageActions.SetState({scrollable: false}));
+      }, 200);
     }
   }
 
-  onLoadMore() {
-    this.chatMessageService.loadMoreMessages();
+  loadMoreMessages() {
+    if (this.links.next && this.links.next !== this.links.self) {
+      this.store$.dispatch(new MessageActions.GetMore({path: this.links.next}));
+    }
   }
 
   scrollDown() {
-    if ($('#chat-message-text').is(':focus')) {
-      this.chatService.markAsRead(this.contactItem.value.group_id);
-    }
+    // this.chatConversationService.getStoreSelectedConversation().pipe(take(1)).subscribe(res => {
+    //   this.chatConversationService.markAsRead(res);
+    // });
+    // if ($('#chat-message-text').is(':focus')) {
+    // }
   }
 
-  onAddContact(contact: any) {
-    this.requestModal.contact = contact;
-    this.chatContactService.addContact([contact.id], '',).then(res => {
-      this.chatConversationService.updateStoreConversation(res.data);
-      this.chatConversationService.navigateToConversation(res.data.group_id);
-    })
+  // Create directly chat with user
+  createChat(user: any) {
+    this.userEventService.createChat(user);
+  }
+
+  viewProfile(user: any) {
+    this.userEventService.viewProfile(user);
   }
 
   doEvent(event: any) {
@@ -130,10 +154,7 @@ export class MessageListComponent extends CommonEventHandler implements OnInit, 
     }
   }
 
-  getPrevMessage(currentMessage: any) {
-    const curMsgIndex = _.findIndex(this.currentMessages, {
-      id: currentMessage.id
-    });
-    return curMsgIndex <= 0 ? null : this.currentMessages[curMsgIndex - 1];
+  trackById(index: number, message: any) {
+    return message.uuid;
   }
 }

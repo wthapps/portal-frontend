@@ -48,14 +48,15 @@ export class PromptUpdateService {
   }
 
   private confirmUpdate() {
-    this.wthConfirmService.confirm({
-      acceptLabel: 'Accept',
-      rejectLabel: 'Cancel',
-      message: 'There is a newer app version. Update now ?',
-      header: 'Update Available',
-      accept: () => {
-        this.swUpdate.activateUpdate().then(() => document.location.reload());
-      }
-    });
+    this.swUpdate.activateUpdate().then(() => document.location.reload());
+    // this.wthConfirmService.confirm({
+    //   acceptLabel: 'Accept',
+    //   rejectLabel: 'Cancel',
+    //   message: 'There is a newer app version. Update now ?',
+    //   header: 'Update Available',
+    //   accept: () => {
+    //     this.swUpdate.activateUpdate().then(() => document.location.reload());
+    //   }
+    // });
   }
 }

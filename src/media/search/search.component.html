@@ -1,11 +1,5 @@
 <ng-template #leftMenuTemplate>
   <ul class="page-body-control-menu">
-    <!-- <li class="divider">
-      <a class="btn btn-default" draggable="false" href="javascript:void(0);" (click)="back()"
-        pTooltip="{{ tooltip.back }}" tooltipPosition="bottom">
-        <i class="fa fa-arrow-left"></i>
-      </a>
-    </li> -->
     <li>
       <h5>
         Search result
@@ -21,49 +15,61 @@
   <ul class="page-body-control-menu">
     <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
       <li *ngIf="!action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
-        <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false" pTooltip="{{action.val.tooltip}}"
-          tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);" (click)="action.val.action()">
+        <button [disabled]="!action.val.active" class="{{action.val.class}}" draggable="false"
+          pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}" href="javascript:void(0);"
+          (click)="action.val.action()">
           <i class="{{action.val.iconClass}}"></i>
         </button>
       </li>
     </ng-template>
 
     <!-- <li class="dropdown action">
-      <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction}}"
-        tooltipPosition="bottom">
-        <i class="fa fa-ellipsis-v"></i>
-      </a>
-      <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-        <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
-          <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
-            <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"
-              href="javascript:void(0);" (click)="action.val.action()">
-              <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
-            </a>
-          </li>
-        </ng-template>
-      </ul>
-    </li> -->
+          <a class="btn btn-default" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" pTooltip="{{ tooltip.moreAction}}"
+            tooltipPosition="bottom">
+            <i class="fa fa-ellipsis-v"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+            <ng-template ngFor let-action [ngForOf]="menuActions | mapToIterable">
+              <li *ngIf="action.val.inDropDown && action.val.active" class="{{action.val.liclass}}">
+                <a *ngIf="action.val.active" class="{{action.val.class}}" pTooltip="{{action.val.tooltip}}" tooltipPosition="{{action.val.tooltipPosition}}"
+                  href="javascript:void(0);" (click)="action.val.action()">
+                  <i class="{{action.val.iconClass}}"></i> {{action.val.title}}
+                </a>
+              </li>
+            </ng-template>
+          </ul>
+        </li> -->
   </ul>
 </ng-template>
 
-<w-toolbar #toolbar [object]="object" [viewMode]="viewMode" [selectedObjects]="selectedObjects" [objectActionsTemplate]="objectActionsTemplate"
-  [leftActionsTemplate]="leftMenuTemplate" (event)="doToolbarEvent($event)">
+
+<w-toolbar #toolbar [object]="object" [viewMode]="viewMode" [selectedObjects]="selectedObjects"
+  [objectActionsTemplate]="objectActionsTemplate" [leftActionsTemplate]="leftMenuTemplate"
+  (event)="doToolbarEvent($event)">
 </w-toolbar>
 
-<w-grid-list #gridlist [objects]="objects" [view]="viewMode" (event)="doListEvent($event)">
-</w-grid-list>
-<!--no data region-->
-<box-loading *ngIf="links?.next"></box-loading>
 
-<div class="zone-no-photo text-center" *ngIf="objects && objects.length == 0 && !loading">
-  <div>
-    <h2>
-      <i class="fa fa-search"></i>
-    </h2>
-    <h3>Data not matched</h3>
-    <h4>Please change your search criteria!</h4>
+<w-grid-list #gridlist [scrollWindow]="false" [view]="viewMode" [objects]="objects" (event)="doListEvent($event)"
+  [title]="'Search result'">
+  <div footer-grid-list>
+    <box-loading *ngIf="links?.next"></box-loading>
+    <div class="pl10 text-fade" *ngIf="objects && objects.length == 0 && !loading">
+      <div>
+        <h3>No matched search results</h3>
+        <p>Your searh did not match any data.</p>
+        <p>Here are some suggestions:</p>
+        <ul>
+          <li>Make sure the words are spelled correct</li>
+          <li>Try different keywords</li>
+          <li>Try more general keyworks </li>
+        </ul>
+      </div>
+    </div>
   </div>
+</w-grid-list>
+<div class="page-body-content has-page-body-control" *ngIf="loading">
+  <box-loading></box-loading>
 </div>
+
 
 <ng-template #modalContainer></ng-template>

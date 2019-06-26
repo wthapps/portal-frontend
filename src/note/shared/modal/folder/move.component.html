@@ -1,25 +1,28 @@
 <form [formGroup]="form" novalidate>
-  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;"
+            cssClass="modal-move-folder modal-full-height">
     <bs-modal-header [showDismiss]="true">
       <h4 class="modal-title">{{ titleModal }}</h4>
+      <p class="mt5">Choose folder to move to</p>
     </bs-modal-header>
+    <div class="well-folder-move-header">
+      <button *ngIf="rootFolder" (click)="prevFolder(rootFolder)" class="btn btn-outline-default" type="button">
+        <i class="fa fa-arrow-left mr5" aria-hidden="true"></i><i class="fa fa-folder-o" aria-hidden="true"></i>
+        {{ rootFolder.name }}
+      </button>
+      <button *ngIf="!rootFolder" [disabled]="!rootFolder" class="btn btn-outline-default" type="button">
+        <i class="icon-zone-note"></i> My Notes
+      </button>
+    </div>
     <bs-modal-body>
-      <p>Choose folder to move to</p>
-      <div class="form-group">
-        <div class="well-folder-move">
-          <div class="well-folder-move-header">
-            <button *ngIf="rootFolder" (click)="prevFolder(rootFolder)" class="btn btn-outline-default" type="button">
-              <i class="fa fa-arrow-left" aria-hidden="true"></i> <i class="fa fa-folder-o" aria-hidden="true"></i>
-              {{ rootFolder.name }}
-            </button>
-            <button *ngIf="!rootFolder" [disabled]="!rootFolder" class="btn btn-outline-default" type="button">
-              <i class="icon-zone-note"></i> My Notes
-            </button>
-          </div>
-          <div class="well-folder-move-content">
+      <div class="well-folder-move-content">
+        <ng-container *ngIf="listFolder;else templateLoading">
+          <ng-container *ngIf="listFolder?.length > 0; else templateNodata">
+
             <ul class="list-unstyled">
               <li *ngFor="let item of listFolder" [ngClass]="{'disabled': isCurrent(item)}">
-                <span *ngIf="item.child_count > 0" class="can-click" (click)="nextFolder(item)"><i class="fa fa-chevron-right"></i></span>
+              <span *ngIf="item.child_count > 0" class="can-click" (click)="nextFolder(item)"><i
+                class="fa fa-chevron-right"></i></span>
                 <div class="can-click"
                      [ngClass]="{'active': item.id == folder?.id }"
                      (click)="chooseFolder(item)"
@@ -28,13 +31,28 @@
                 </div>
               </li>
             </ul>
+
+          </ng-container>
+          <ng-template #templateNodata>
+            <div class="align-self-center p15">
+              <box-no-data [icon]="'fa fa-folder-o'"
+                           [subTitle]="'There are no folders!'">
+                Use "New" button to create new folders.
+              </box-no-data>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-template #templateLoading>
+          <div class="align-self-center p15">
+            <box-loading></box-loading>
           </div>
-        </div>
+        </ng-template>
       </div>
     </bs-modal-body>
     <bs-modal-footer>
       <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
-              (click)="modal.close()">Cancel</button>
+              (click)="modal.close()">Cancel
+      </button>
       <button type="button" [disabled]="!folder" (click)="onMove()" class="btn btn-outline-primary btn-min">Move
       </button>
     </bs-modal-footer>

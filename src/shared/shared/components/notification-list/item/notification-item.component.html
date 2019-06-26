@@ -1,19 +1,19 @@
 <!-- Update -->
 <ng-container *ngIf="type == 'update' && notification?.actions.length>0">
-  <div class="noti-item" *ngIf="!notification?.isHidden && notification?.actions[0]?.name == 'view'">
+  <div class="noti-item" [ngClass]="{'unread': !notification?.is_read}" *ngIf="!notification?.isHidden && notification?.actions[0]?.name == 'view'">
     <div class="noti-item-avatar can-click" (click)="navigateTo(notification?.actions, notification?.id)">
       <span class="avatar-xs">
         <img [src]="notification?.actor.profile_image" alt="{{ notification?.actor?.name }}">
       </span>
     </div>
     <div class="noti-item-content can-click" (click)="navigateTo(notification?.actions, notification?.id)">
-      <div class="bold" [routerLink]="['/profile', notification?.actor.uuid]" style="width: 65px; overflow: hidden; text-overflow: ellipsis">
-        {{ notification?.actor?.name }}
+      <div class="noti-item-content-text">
+        <span><a class="user-name" [routerLink]="['/profile', notification?.actor.uuid]" routerLinkActive="router-link-active" > <b>{{ notification?.actor?.name }}</b>&nbsp;</a></span>
+        <span class="noti-item-content-inner" [innerHTML]="notification?.text"></span>
       </div>
-      <div style="min-width: 164px;" [innerHTML]="notification?.text"></div>
-      <div class="bold" href="javascript:;" (click)="navigateToSocial(['/communities', notification?.community?.uuid])"
+      <div href="javascript:;" (click)="navigateToSocial(['/communities', notification?.community?.uuid])"
         *ngIf="notification?.community?.name">
-        {{ notification?.community?.name }}</div>
+        <b>{{ notification?.community?.name }}</b> &nbsp;</div>
       <div class="help-block text-fade">
         {{ notification?.created_at | timeFormat }}
       </div>
@@ -31,88 +31,41 @@
         <li>
           <i class="icon-zone-{{ modules[(notification?.actions[0]?.module || notification?.module)] }}"></i>
         </li>
-        <li (click)="clickedInside($event)">
-          <i (click)="showMenu($event)" class="fa fa-ellipsis-v"></i>
-          <ul #notiItemMenuEl class="dropdown-menu">
-            <li>
-              <a class="js-toggleNotification" id="data-toggle-{{ notification?.id }}" href="javascript:;" *ngIf="showToggle"
-                (click)="toggleNotification()">{{ itemSettings?.mute ? 'Enable' : 'Disable' }} Notification for this
-                post</a>
-            <li>
-              <a class="js-confirmHideNotification" id="{{ notification?.id }}" href="javascript:;" (click)="confirmHideNotification(notification)">Hide
-                this notification</a>
-            </li>
-          </ul>
+        <li class="dropdown-submenu" (click)="subToggle($event)" *ngIf="inDropdown">
+          <i class="fa fa-ellipsis-v"></i>
+          <ng-container *ngTemplateOutlet="moreActions"></ng-container>
+          
+        </li>
+
+        <li class="dropdown" *ngIf="!inDropdown">
+          <a href="javascript:;" class="dropdown-toggle text-muted" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <i class="fa fa-ellipsis-v"></i></a>
+          <ng-container *ngTemplateOutlet="moreActions"></ng-container>
         </li>
       </ul>
     </div>
+
   </div>
 </ng-container>
+
+<ng-template #moreActions>
+    <ul class="dropdown-menu dropdown-menu-right" style="width: auto !important; top: 22px">
+        <li>
+          <a href="javascript:;" *ngIf="showToggle"
+            (click)="toggleNotification()">{{ itemSettings?.mute ? 'Enable' : 'Disable' }} Notification for this
+            post</a>
+        <li>
+          <a href="javascript:;" (click)="hideNotificationById(notification?.id)">Hide
+            this notification</a>
+        </li>
+        <li>
+            <a href="javascript:;" (click)="markAsUnread(notification)">Mark as {{ notification?.is_read ? 'unread' : 'read'}}</a>
+          </li>
+      </ul>
+</ng-template>
+
 
 <!-- End Update -->
 
-
-<!--Connection-->
-<ng-container *ngIf="type == 'connection' && notification?.actions.length>0">
-  <div class="noti-item" *ngIf="!notification?.isHidden">
-    <div class="noti-item-avatar can-click" [routerLink]="['/profile', notification?.actor.uuid]">
-      <span class="avatar-xs">
-        <img [src]="notification?.actor.profile_image" alt="{{ notification?.actor?.name }}">
-      </span>
-    </div>
-    <div class="noti-item-content">
-      <div>
-        <span class="bold can-click" [routerLink]="['/profile', notification?.actor.uuid]">
-          {{ notification?.actor?.name }}</span>
-        <span [innerHTML]="notification?.text"></span>
-        <span class="bold" href="javascript:;" (click)="navigateToSocial(['/communities', notification?.community?.uuid])"
-          *ngIf="notification?.community?.name">
-          {{ notification?.community?.name }}</span>
-        <small class="help-block text-fade">
-          {{ notification?.created_at | timeFormat }}
-        </small>
-        <div class="mt5" *ngIf="notification?.actions[0]?.name !== 'view'">
-          <button *ngFor="let action of notification?.actions" class="btn btn-xs mr5 text-capitalize" type="button"
-            [ngClass]="{'btn-outline-primary': action?.name == 'accept', 'btn-outline-default': (action.name == 'cancel' || action.name == 'reject')}"
-            (click)="doAction(action, notification?.id)">
-            <i class="fa" [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
-            {{ action.name }}
-          </button>
-        </div>
-
-        <div *ngIf="notification?.response_actions[0]">
-          <div class="notifications-item-button">
-            <span *ngFor="let action of notification?.response_actions" class="btn-text btn-xs mr5 text-capitalize">
-              <i class="fa" [ngClass]="{'fa-check': action.name == 'accept', 'fa-times': (action.name == 'cancel' || action.name == 'reject')}"></i>
-              {{ action.name }}ed
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="noti-item-action">
-      <ul>
-        <li>
-          <i class="icon-zone-{{ modules[(notification?.actions[0]?.module || notification?.module)] }}"></i>
-        </li>
-        <li (click)="clickedInside($event)">
-          <i (click)="showMenu($event)" class="fa fa-ellipsis-v"></i>
-          <ul #notiItemMenuEl class="dropdown-menu">
-            <li>
-              <a class="js-toggleNotification" id="data-toggle-{{ notification?.id }}" href="javascript:;" *ngIf="showToggle"
-                (click)="toggleNotification()">{{ itemSettings?.mute ? 'Enable' : 'Disable' }} Notification for this
-                post</a>
-            <li>
-              <a class="js-confirmHideNotification" id="{{ notification?.id }}" href="javascript:;" (click)="confirmHideNotification(notification)">Hide
-                this notification</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
-</ng-container>
-<!-- End Connection -->
 
 <app-partials-notification-undo *ngIf="!!notification?.isHidden" [notification]="notification" [type]="type">
 </app-partials-notification-undo>

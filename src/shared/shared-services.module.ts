@@ -1,9 +1,4 @@
-import {
-  NgModule,
-  ModuleWithProviders,
-  SkipSelf,
-  Optional
-} from '@angular/core';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 
@@ -52,6 +47,11 @@ import { LogUpdateService } from './services/service-worker/log-update.service';
 import { SwPushService } from './services/service-worker/sw-push.service';
 import { PageVisibilityService } from './services/page-visibility.service';
 import { NoteChannelService } from './channels/note-channel.service';
+import { DatePipe } from '@angular/common';
+import { WHttpClientService } from '@shared/services/w-http-client.service';
+import { WebsocketService } from '@shared/channels/websocket.service';
+import { NotificationEventService } from '@shared/services/notification';
+import { SubscriptionService } from '@shared/common/subscription';
 
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
@@ -66,7 +66,7 @@ export class SharedServicesModule {
   constructor(
     @Optional()
     @SkipSelf()
-    parentModule: SharedServicesModule
+      parentModule: SharedServicesModule
   ) {
     if (parentModule) {
       throw new Error(
@@ -79,6 +79,8 @@ export class SharedServicesModule {
     return {
       ngModule: SharedServicesModule,
       providers: [
+        DatePipe,
+
         ApiBaseService,
         ClientDetectorService,
         LoadingService,
@@ -122,12 +124,18 @@ export class SharedServicesModule {
         WUploader,
         ModalService,
         PageVisibilityService,
+        WHttpClientService,
+        WebsocketService,
+        SubscriptionService,
+
+        // Event Service
+        NotificationEventService,
 
         // Service worker related modules
         PromptUpdateService,
         LogUpdateService,
         CheckForUpdateService,
-        SwPushService
+        SwPushService,
       ]
     };
   }

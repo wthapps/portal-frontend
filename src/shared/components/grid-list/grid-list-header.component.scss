@@ -1,4 +1,4 @@
-@import '../../scss/global';
+@import '../../../assets/styles/global';
 
 .sortbar-wrap {
   margin: 0 0 15px;
@@ -20,5 +20,13 @@
     width: 90px;
     margin: 0 15px;
 
+  }
+}
+.grid-list-head {
+  margin: 20px 0px;
+}
+.dropdown {
+  a {
+    color: inherit;
   }
 }

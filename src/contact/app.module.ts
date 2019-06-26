@@ -17,12 +17,13 @@ import { CoreModule } from '../core/core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ContactModule } from './contact/contact.module';
-// import { MyProfileModule } from './my-profile/my-profile.module';
 import { GroupModule } from './group/group.module';
 import { ContactSharedModule } from './shared/shared.module';
 // import { ProfileModule } from '@wth/shared/user';
 import { ProfilePageModule } from '@contacts/profile/profile-page.module';
-
+import { ContactStoreModule } from '@contacts/store';
+import { GoogleAnalyticsService } from '@shared/services/analytics/google-analytics.service';
+import { GuardModule } from '@shared/guards';
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,7 +42,12 @@ import { ProfilePageModule } from '@contacts/profile/profile-page.module';
     GroupModule,
     ModalModule,
     CardModule,
-    // environment.production ? [] : ContactHtmlModule,
+
+    GuardModule,
+
+    // Store
+    ContactStoreModule,
+
     ScrollToModule.forRoot(),
     ContactSharedModule.forRoot(),
 
@@ -57,7 +63,8 @@ import { ProfilePageModule } from '@contacts/profile/profile-page.module';
     {
       provide: APP_BASE_HREF,
       useValue: '/'
-    }
+    },
+    GoogleAnalyticsService
     // {
     //   provide: HTTP_INTERCEPTORS,
     //   useClass: WthInterceptor,
@@ -66,5 +73,4 @@ import { ProfilePageModule } from '@contacts/profile/profile-page.module';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}

@@ -1,13 +1,13 @@
 <div class="page-body-control-nav">
   <ul class="page-body-control-menu" *ngIf="hasBack">
     <li>
-      <button type="button" class="btn btn-default mr10" pTooltip="{{ tooltip.back }}" tooltipPosition="top" (click)="back()">
+      <button type="button" class="btn btn-default mr10 bdr1" pTooltip="{{ tooltip.back }}" tooltipPosition="top" (click)="back()">
         <i class="fa fa-arrow-left"></i>
       </button>
     </li>
   </ul>
 
-  <div *ngIf="pageTitle!='' && contactService.selectedObjects.length == 0;else templateShowSelected" class="inline-block">
+  <div *ngIf="contactService.selectedObjects.length == 0;else templateShowSelected" class="inline-block">
     <h4>{{ pageTitle | titleCase }}
       <button *ngIf="pageTitle===OTHER_CONTACTS" class="btn btn-default" [pTooltip]="otherContactsInfo" tooltipPosition="bottom">
         <i class="fa fa-info-circle"></i>

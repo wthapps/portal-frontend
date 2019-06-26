@@ -1,10 +1,33 @@
 <div class="menuleft-logo">
   <img src="/assets/images_new/logo-picture.png" alt="">
 </div>
+<!-- <div class="menuleft-item mt10"><a href="#"><i aria-hidden="true" class="fa fa-plus"></i> New</a></div> -->
+<div class="menuleft-item mt10 dropdown">
+  <a aria-expanded="true" aria-haspopup="true" class="btn dropdown-toggle" data-toggle="dropdown"
+    tooltipposition="bottom" type="button">
+    <i class="fa fa-plus"></i>
+    <span class="hidden-xs"> New</span>
+  </a>
+  <ul class="dropdown-menu">
+    <li>
+      <a href="#" (click)="upload(['image/*', 'video/mp4', 'video/x-m4v', 'video/*'])">
+        <span class="fileinput-button">
+          <i class="fa fa-image"></i> Upload Item
+        </span>
+      </a>
+    </li>
 
+    <li>
+      <a href="#"  (click)="openCreateAlbumModal(selectedObjects)">
+        <i class="fa fa-plus-circle"></i> Create Album
+      </a>
+    </li>
+  </ul>
+</div>
+<hr class="mt10 mb10">
 <ng-container *ngFor="let media of mediaMenu">
   <div *ngIf="media.name != ''" class="menuleft-item" [routerLinkActive]="['active']" [ngClass]="{'hidden': media.link == '/search'}">
-    <a draggable="false" [routerLink]="[media.link]" [queryParams]="{}" (click)="onCloseMenu()">
+    <a draggable="false" [routerLink]="[media.link]" [queryParams]="media.queryParams" (click)="onCloseMenu()">
       <i class="{{ media.icon }}"></i> {{ media.name }}
     </a>
   </div>

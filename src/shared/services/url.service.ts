@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class UrlService {
   url: string;
+  routePattern = /(\/[\/\w\d]*)/i; // Ex: /search/wth
 
   setUrl(url: string) {
     this.url = url;
@@ -29,6 +30,12 @@ export class UrlService {
     return urls[0];
   }
 
+  // Get route parts of an url. For instance: /search/wth;q=helo => /search/wth
+  parseRoute(url) {
+    const match = this.routePattern.exec(url);
+    return match ? match[0] : null;
+  }
+
   getPatch() {
     return window.location.pathname;
   }
@@ -47,4 +54,5 @@ export class UrlService {
     hashes.id = hashes.paths[hashes.paths.length - 1];
     return hashes;
   }
+  
 }
