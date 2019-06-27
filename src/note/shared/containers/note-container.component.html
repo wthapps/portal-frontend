@@ -157,6 +157,20 @@
                          subTitle='You can share notes and folders with your WTH!Apps contacts.'>
             </box-no-data>
           </ng-container>
+          <ng-container *ngSwitchCase="noteConstants.PAGE_SEARCH">
+            <div class="text-left pl15 pr15 pl30-sm pr30-sm text-muted">
+              <h3>No matched search results</h3>
+              <p class="m0">
+                Your search did not match any data. <br>
+                Here are some suggestions:
+              </p>
+              <ul>
+                <li>Make sure all words are spelled correctly</li>
+                <li>Try different keywords</li>
+                <li>Try more general keywords</li>
+              </ul>
+            </div>
+          </ng-container>
 
           <!--default case when there are no matches -->
           <ng-container *ngSwitchDefault>
