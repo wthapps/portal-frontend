@@ -183,8 +183,8 @@ export class UserService {
     return this.profile$;
   }
 
-  validProfile() {
-    return this.cookieService.get(Constants.cookieKeys.loggedIn) && this.cookieService.get(Constants.cookieKeys.profile);
+  validProfile(): boolean {
+    return !!this.cookieService.get(Constants.cookieKeys.loggedIn) && !!this.cookieService.get(Constants.cookieKeys.profile);
   }
 
   isProfileUpdated(): boolean {
