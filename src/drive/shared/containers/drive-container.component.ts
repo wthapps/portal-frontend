@@ -222,7 +222,8 @@ export class DriveContainerComponent implements OnInit, OnDestroy {
 
         // Download multiple file as a single zip file
         const objects = this.selectedObjects.map(({id, uuid, object_type}) => ({id, uuid, object_type}));
-        this.driveApiService.download(objects).toPromise().then(response => {
+        const parent_id = _.get(this.dataStorage.currentFolder, 'id');
+        this.driveApiService.download(objects, parent_id).toPromise().then(response => {
           const blob = new Blob([response], { type: 'zip' });
           saveAs(blob, `drive-download-${Date.now()}.zip`);
         });

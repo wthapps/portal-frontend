@@ -21,8 +21,8 @@ export class DriveApiService  extends BaseEntityService<any> {
     return this.apiBaseService.post(`${this.url}/delete_many`, {folders: folderIds, files: fileIds});
   }
 
-  download(objects: any[]): Observable<any> {
-    return this.apiBaseService.download(`${this.url}/download`, {objects});
+  download(objects: any[], parent_id?: string): Observable<any> {
+    return this.apiBaseService.download(`${this.url}/download`, {objects, parent_id});
   }
 
   permanentDelete(body): Observable<any> {
