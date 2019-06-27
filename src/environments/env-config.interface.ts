@@ -17,6 +17,7 @@ export interface EnvConfig {
   GOOGLE_ANALYTICS_ID?: string;
   ENV?: string;
   CLOUDFRONT?: string;
+  S3BUCKET?: string;
   DOMAIN?: string;
   SUB_DOMAIN?: EnvConfigSubDomain;
   RES?: string;
