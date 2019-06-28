@@ -1,0 +1,23 @@
+@import '../../../../assets/styles/global';
+
+:host {
+  display: block;
+  li > a {
+    display: block;
+    padding: 8px 15px;
+    font-weight: bold;
+  }
+}
+.menuleft-item {
+  a {
+    text-align: left;
+  }
+}
+.well-folder-tree-left-wrap {
+  .well-folder-tree {
+    width: 100%;
+  }
+  &, &:hover {
+    background-color: transparent;
+  }
+}

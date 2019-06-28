@@ -23,15 +23,15 @@ export const REDO = '[Note] Redo';
 export const SET_FOLDERS = '[Note] Set Folders';
 export const RESET_CURRENT_NOTE = '[Note] Reset Current Note';
 export const MOVE_TO_FOLDER = '[MixedEntity] MOVE_TO_FOLDER';
-export const MAKE_A_COPY    = '[MixedEntity] MAKE_A_COPY';
-export const RESTORE    = '[Trash] Restore';
-export const PERMANENT_DELETE    = '[Trash] Permanent Delete';
-export const EMPTY_ALL    = '[Trash] Empty All';
-export const ALL_DELETED    = '[Trash] All Deleted';
-export const SET_PAGE_TYPE    = '[MixedEntity] Set Page Type';
-export const SET_LIST_PERMISSION    = '[MixedEntity] Set List Permission';
-export const REMOVE_SHARE_WITH_ME    = '[MixedEntity] Remove Share With Me';
-export const REMOVED_SHARE_WITH_ME    = '[MixedEntity] Removed Share With Me';
+export const MAKE_A_COPY = '[MixedEntity] MAKE_A_COPY';
+export const RESTORE = '[Trash] Restore';
+export const PERMANENT_DELETE = '[Trash] Permanent Delete';
+export const EMPTY_ALL = '[Trash] Empty All';
+export const ALL_DELETED = '[Trash] All Deleted';
+export const SET_PAGE_TYPE = '[MixedEntity] Set Page Type';
+export const SET_LIST_PERMISSION = '[MixedEntity] Set List Permission';
+export const REMOVE_SHARE_WITH_ME = '[MixedEntity] Remove Share With Me';
+export const REMOVED_SHARE_WITH_ME = '[MixedEntity] Removed Share With Me';
 
 // Actions
 
@@ -50,14 +50,14 @@ export class Edit implements Action {
 }
 
 export class NoteUpdated implements Action {
-  readonly  type = NOTE_UPDATED;
+  readonly type = NOTE_UPDATED;
 
   constructor(public payload: Note) {
   }
 }
 
 export class MultiNotesUpdated implements Action {
-  readonly  type = MULTI_NOTES_UPDATED;
+  readonly type = MULTI_NOTES_UPDATED;
 
   constructor(public payload: Note[]) {
   }
@@ -112,7 +112,7 @@ export class LoadFail implements Action {
 export class Delete implements Action {
   readonly type = DELETE;
 
-  constructor(public payload: {id: number, object_type: string}[]) {
+  constructor(public payload: { id: number, object_type: string }[]) {
   }
 }
 
@@ -126,7 +126,7 @@ export class MultiDelete implements Action {
 export class NotesDeleted implements Action {
   readonly type = NOTES_DELETED;
 
-  constructor(public payload: {id: number, object_type: string}[]) {
+  constructor(public payload: { id: number, object_type: string }[]) {
   }
 }
 

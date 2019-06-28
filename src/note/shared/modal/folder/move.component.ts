@@ -36,9 +36,9 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   private breadscrumb: boolean;
 
   constructor(private fb: FormBuilder,
-              private commonEventService: CommonEventService,
-              private apiBaseService: ApiBaseService,
-              private store: Store<fromRoot.State>) {
+    private commonEventService: CommonEventService,
+    private apiBaseService: ApiBaseService,
+    private store: Store<fromRoot.State>) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
     });

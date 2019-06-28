@@ -33,13 +33,14 @@ BK=`date '+%Y-%m-%d_%H%M%S'`
 proceed() {
   var=$1
   echo " ===== Start build module [$var] ... " &&
-  ng build $var -c $ENV || failed $var &&  
+  ng build $var -c $ENV || failed $var &&
   echo " ===== Finish build folder [$var] " &&
 
 
+  BACKUP="$TARGET_FOLDER/backup/${ENV}_${var}_${BK}"
   echo " ===== Start backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&
-  ssh -i $PEM_KEY $TARGET_MACHINE "cp -rf $TARGET_FOLDER/$var $TARGET_FOLDER/${ENV}_${var}_${BK}" &&
-  echo " ===== Finish backup folder [$var] $TARGET_MACHINE:$TARGET_FOLDER/${ENV}_${var}_${BK} ... " &&
+  ssh -i $PEM_KEY $TARGET_MACHINE "cp -rf $TARGET_FOLDER/$var $BACKUP" &&
+  echo " ===== Finish backup folder [$var] $TARGET_MACHINE:$BACKUP ... " &&
 
 
   echo " ===== Start deploying folder [$var] from /dist/$var/* to $TARGET_MACHINE:$TARGET_FOLDER/$var ... " &&

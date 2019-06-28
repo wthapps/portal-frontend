@@ -1,8 +1,8 @@
 import Album from "../album.model";
-import ItemsList from "@shared/common/models/items-list.model";
 import Media from "../media.model";
 import { MediaType } from "../interfaces/media";
 import Sharing from "../sharing.model";
+import ItemsList from "@shared/models/items-list.model";
 
 export default class MediaList extends ItemsList {
   static map(array: Array<any>): Array<any> {

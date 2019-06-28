@@ -1,0 +1,42 @@
+<form [formGroup]="form" novalidate>
+  <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;">
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title">{{ titleModal }}</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+      <p>Choose folder to move to</p>
+      <div class="form-group">
+        <div class="well-folder-move">
+          <div class="well-folder-move-header">
+            <button *ngIf="rootFolder" (click)="prevFolder(rootFolder)" class="btn btn-outline-default" type="button">
+              <i class="fa fa-arrow-left" aria-hidden="true"></i> <i class="fa fa-folder-o" aria-hidden="true"></i>
+              {{ rootFolder.name }}
+            </button>
+            <button *ngIf="!rootFolder" [disabled]="!rootFolder" class="btn btn-outline-default" type="button">
+              <i class="icon-zone-note"></i> My Drive
+            </button>
+          </div>
+          <div class="well-folder-move-content">
+            <ul class="list-unstyled">
+              <li *ngFor="let item of listFolder" [ngClass]="{'disabled': isCurrent(item)}">
+                <span *ngIf="item.child_count > 0" class="can-click" (click)="nextFolder(item)"><i class="fa fa-chevron-right"></i></span>
+                <div class="can-click"
+                     [ngClass]="{'active': item.id == folder?.id }"
+                     (click)="chooseFolder(item)"
+                     (dblclick)="nextFolder(item)">
+                  <i class="fa fa-folder-o" aria-hidden="true"></i> {{ item.name }}
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
+              (click)="modal.close()">Cancel</button>
+      <button type="button" [disabled]="!folder" (click)="onMove()" class="btn btn-outline-primary btn-min">Move
+      </button>
+    </bs-modal-footer>
+  </bs-modal>
+</form>
