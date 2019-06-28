@@ -25,7 +25,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   data$: Observable<any>;
 
   title: string;
-  breadcrumb: Note[];
+  breadcrumb: any[];
   searchShow: boolean;
   searchText = '';
   viewMode = 'grid';
@@ -88,7 +88,21 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
 
   async getParentDataAsync(id) {
     const res = await this.dataService.getParent(id).toPromise();
-    this.breadcrumb = res.data;
+    this.breadcrumb = res.data.map(v => {
+      return {
+        id: v.id,
+        name: v.name,
+        label: v.name ? v.name : 'My notes',
+        routerLink: id ? `/folders/${id}` : '/'
+      };
+    });
+    this.breadcrumb.unshift({ id: null, name: null, label: 'My notes', routerLink: '/' });
+    // [
+    //   { "id": null, "name": null, "label": "My notes", "routerLink": "/" },
+    //   { "id": 96, "name": "10", "object_type": "Note::Folder", "parent_id": null, "label": "10", "routerLink": "/folders/96" },
+    //   { "id": 357, "name": "sdfsadf", "object_type": "Note::Folder", "parent_id": 96, "label": "sdfsadf", "routerLink": "/folders/357" }
+    // ]
+
   }
 
   onLoadMoreCompleted(event: any) {
@@ -115,11 +129,11 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     this.getRootData();
   }
 
-  onBreadcrumb(id?: any) {
-    if (!id) {
-      this.getRootData();
+  onBreadcrumb(event?: any) {
+    if (event && event.id) {
+      this.getFolderContent(event.id);
     } else {
-      this.getFolderContent(id);
+      this.getRootData();
     }
   }
 

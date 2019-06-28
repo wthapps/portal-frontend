@@ -1,0 +1,47 @@
+<div *ngIf="data && data.length > 0" class="breadcrumb-wrap">
+  <ol class="breadcrumb m0 p0">
+    <li>
+      <button class="btn btn-default" [title]="data[0].label" (click)="onAction(data[0])">
+        {{ data[0].label }}
+      </button>
+    </li>
+
+    <li *ngIf="data.length - max > 1">
+      <div class="btn-group">
+        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-ellipsis-h"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-sm">
+          <ng-container *ngFor="let item of data; let i = index">
+            <li *ngIf="i > 0 && i < data.length - max">
+              <a href="javascript:;" [title]="item.label" (click)="onAction(item)">
+                <span class="text-overflow d-block">{{ item.label }}</span>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </li>
+
+    <ng-container *ngFor="let item of data; let i = index">
+      <ng-container *ngIf="i > 0">
+        <ng-container *ngIf="i === data.length - 1;else templateBreadcrumbItem">
+          <li>
+            <span class="text-overflow">{{ item.label }}</span>
+          </li>
+        </ng-container>
+        <ng-template #templateBreadcrumbItem>
+          <ng-container *ngIf="i + max >= data.length">
+            <li>
+              <button class="btn btn-default" [title]="item.label" (click)="onAction(item)">
+                <span class="text-overflow">
+                  {{ item.label }}
+                </span>
+              </button>
+            </li>
+          </ng-container>
+        </ng-template>
+      </ng-container>
+    </ng-container>
+  </ol>
+</div>
