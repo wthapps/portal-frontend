@@ -134,7 +134,8 @@
                     </div>
                     <div class="item-note-owner">{{ item?.owner | username }}</div>
                     <div class="item-note-date">{{ item.updated_at | timeFormat }}</div>
-                    <div class="item-note-size">{{ item.size || '--' }}</div>
+                    <div *ngIf="!item.size" class="item-note-size"> -- </div>
+                    <div *ngIf="item.size" class="item-note-size">{{ item.size | fileSize }}</div>
                 </ng-template>
             </w-dataView>
         </ng-container>
