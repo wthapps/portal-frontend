@@ -50,8 +50,8 @@ export class SubscriptionUpgradeComponent implements OnInit {
       this.storageUpgrading = params['storage'] || false;
     });
       // Get storage list
-    this.storageService.getAll().subscribe(response => {
-      this.storages = response.data;
+    this.storageService.getAll().subscribe(storages => {
+      this.storages = storages;
     });
 
     this.subscriptionService.getCurrent().subscribe(response => {

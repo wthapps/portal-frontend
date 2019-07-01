@@ -17,7 +17,9 @@ export class StorageService {
   }
 
   getAll(): Observable<any> {
-    return this.apiBaseService.get(`admin/storages`);
+    return this.apiBaseService.get(`account/storages`).pipe(map(response => {
+      return response.data.map(item => item.attributes);
+    }));
   }
 
   getCurrent(): Observable<any> {

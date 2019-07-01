@@ -19,6 +19,12 @@
           <span> {{ storage?.photo_size | fileSize }}</span>
         </div>
       </dd>
+      <dd>
+        <div class="d-flex justify-content-between">
+          <span class="text-bold"><i class="fa fa-folder"></i> WTHDrive</span>
+          <span> {{ storage?.drive_size | fileSize }}</span>
+        </div>
+      </dd>
       <dt> {{ storage?.storage_size - storage?.used_size | fileSize }} available</dt>
     </dl>
   </bs-modal-body>

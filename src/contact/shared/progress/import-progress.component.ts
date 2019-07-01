@@ -102,7 +102,8 @@ export class ZContactShareImportProgressComponent implements OnDestroy {
             'application/vnd.ms-excel',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           ],
-          maxNumberOfFiles: 1
+          maxNumberOfFiles: 1,
+          storage_module: 'drive'
         });
         this.importInfo = event.payload;
         break;
