@@ -69,7 +69,7 @@
           <div class="item-media-img" [ngClass]="{'item-note-icon': item.object_type === 'Note::Note'}">
             <ng-container *ngIf="item.object_type === 'Note::Folder'">
               <i
-                *ngIf="context?.page === noteConstants.PAGE_SHARED_WITH_ME || context?.page === noteConstants.PAGE_SHARED_BY_ME;else templateIconFolder"
+                *ngIf="context?.page === noteConstants.PAGE_SHARED_BY_ME || item.is_sharing;else templateIconFolder"
                 class="wicon-shared-with-me"></i>
               <ng-template #templateIconFolder>
                 <i class="fa fa-folder"></i>
