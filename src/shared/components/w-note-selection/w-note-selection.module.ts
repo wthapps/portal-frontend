@@ -13,6 +13,7 @@ import { BoxLoadingModule } from '@shared/shared/components/box-loading/box-load
 import { PartialModule } from '@shared/partials';
 import { WDataViewModule } from '../w-dataView/w-dataView.module';
 import { LocalStorageModule } from 'angular-2-local-storage';
+import { WBreadcrumbsLiteModule } from '@shared/components/w-breadcrumbs-lite/w-breadcrumbs-lite.module';
 
 @NgModule({
   imports: [
@@ -28,10 +29,12 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     BoxLoadingModule,
     PartialModule,
     WNavTabModule,
-    WDataViewModule
+    WDataViewModule,
+    WBreadcrumbsLiteModule
   ],
   declarations: [WNoteSelectionComponent],
   exports: [WNoteSelectionComponent],
   providers: [DatePipe, WNoteSelectionService]
 })
-export class WNoteSelectionModule {}
+export class WNoteSelectionModule {
+}

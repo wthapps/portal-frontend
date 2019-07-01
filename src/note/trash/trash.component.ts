@@ -72,8 +72,8 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
   private destroySubject: Subject<any> = new Subject();
 
   constructor(private store: Store<fromRoot.State>,
-              private wthConfirm: WthConfirmService,
-              public commonEventService: CommonEventService) {
+    private wthConfirm: WthConfirmService,
+    public commonEventService: CommonEventService) {
     this.data$ = this.store.select(listReducer.getAllItems);
   }
 

@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Communication } from "@shared/shared/helpers/communication/communication";
 import { Subject, Observable } from "rxjs";
 
 @Injectable()

@@ -1,0 +1,28 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Upgrade storage</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <p>Choose a plan to fit your personal storage needs</p>
+    <div class="list-group-radio">
+      <div class="list-group-radio-item">
+        <p-radioButton name="group1" value="1" label="50 GB - $1/user/month" [(ngModel)]="val1"></p-radioButton>
+      </div>
+      <div class="list-group-radio-item">
+        <p-radioButton name="group1" value="2" label="200 GB - $3/user/month" [(ngModel)]="val1"></p-radioButton>
+      </div>
+      <div class="list-group-radio-item">
+        <p-radioButton name="group1" value="3" label="2 TB - $10/user/month" [(ngModel)]="val1"></p-radioButton>
+      </div>
+    </div>
+  </bs-modal-body>
+
+  <bs-modal-footer>
+    <button (click)="close()" type="submit" class="btn btn-outline-default btn-min">
+      Cancel
+    </button>
+    <button [disabled]="!val1" type="submit" class="btn btn-outline-primary btn-min">
+      Continue
+    </button>
+  </bs-modal-footer>
+</bs-modal>

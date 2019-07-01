@@ -1,0 +1,65 @@
+<div *ngIf="model?.length > 0" class="breadcrumb-wrap">
+    <ol class="breadcrumb m0 p0">
+      <ng-container *ngFor="let item of model; let i = index">
+        <li>
+          <ng-container *ngIf="i === model.length - 1;else templateBreadcrumbItem">
+            <div class="btn-group">
+              <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                {{ item.label }} <span *ngIf="page == 'my-drive'" class="caret"></span>
+              </button>
+              <ul *ngIf="page == 'my-drive'" class="dropdown-menu dropdown-menu-sm">
+                    <li>
+                      <a (click)="onMenu({action: 'drive:folder:create'})" href="javascript:;">
+                        <i class="fa fa-folder-o"></i> New folder
+                      </a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                      <a href="javascript:;" (click)="onOpenFileUpload()">
+                        <i class="fa fa-folder-o"></i> Upload files
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:;" (click)="onOpenFolderUpload()">
+                        <i class="fa fa-folder-o"></i> Upload folder
+                      </a>
+                    </li>
+
+                    <li role="separator" class="divider"></li>
+                    <li>
+                      <a (click)="onMenu({action: 'drive:mixed_entity:open_sharing_modal', payload: [item]})"
+                        href="javascript:void(0);">
+                        <i class="fa fa-share-alt"></i> Sharing
+                      </a>
+                    </li>
+                    <li>
+                      <a (click)="onMenu({action: 'drive:mixed_entity:delete', payload: [item]})" href="javascript:void(0);">
+                        <i class="fa fa-trash-o"></i> Delete</a>
+                    </li>
+                    <li>
+                      <a (click)="onMenu({action: 'drive:folder:edit', payload: item})" href="javascript:;">
+                        <i class="fa fa-pencil"></i> Rename
+                      </a>
+                    </li>
+                    <li>
+                      <a (click)="onMenu({action: 'drive:mixed_entity:open_move_to_folder_modal', payload: [item]})"
+                        href="javascript:;">Move
+                        to folder</a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                      <a href="javascript:;">
+                        <i class="fa fa-download"></i> Download</a>
+                    </li>
+              </ul>
+            </div>
+          </ng-container>
+          <ng-template #templateBreadcrumbItem>
+            <a class="btn btn-default" [routerLink]="[item.routerLink]">
+              {{ item.label }}
+            </a>
+          </ng-template>
+        </li>
+      </ng-container>
+    </ol>
+  </div>

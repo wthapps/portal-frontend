@@ -1,0 +1,32 @@
+<bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'">
+  <bs-modal-header [showDismiss]="true">
+    <h4 class="modal-title">Storage detail</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div class="progress mt10 mb10">
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+           [attr.aria-valuenow]="storage?.used_percent"
+           [ngStyle]="{'width': storage?.used_percent + '%', 'min-width': storage?.used_percent === 0 ? 0 : 1 + 'px'}">
+        <span class="sr-only"> {{ storage?.used_percent }}%</span>
+      </div>
+    </div>
+    <h4 class="text-normal"> {{ storage?.storage_size | fileSize }} total storage</h4>
+    <dl class="dl-storage-dt">
+      <dt class="active">{{ storage?.used_size | fileSize }} used</dt>
+      <dd>
+        <div class="d-flex justify-content-between">
+          <span class="text-bold"><i class="icon-zone-media"></i> WTHPhotos</span>
+          <span> {{ storage?.photo_size | fileSize }}</span>
+        </div>
+      </dd>
+      <dt> {{ storage?.storage_size - storage?.used_size | fileSize }} available</dt>
+    </dl>
+  </bs-modal-body>
+
+  <bs-modal-footer>
+    <button (click)="close()" type="submit" class="btn btn-outline-primary btn-min">
+      Done
+    </button>
+  </bs-modal-footer>
+</bs-modal>
+

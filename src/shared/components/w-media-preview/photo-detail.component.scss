@@ -1,5 +1,9 @@
 @import "../../../assets/styles/global";
 
+.text-left {
+  text-align: left;
+}
+
 .image-viewer-content-fixed {
   @include flexbox;
   @include align-items(center);

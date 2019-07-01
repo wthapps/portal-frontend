@@ -18,24 +18,21 @@
         </li>
         <li>
           <a (click)="onBreadcrumbAction({action: 'note:folder:create'})" href="javascript:;">
-            <i class="fa fa-folder"></i> New folder
+            <i class="fa fa-folder-o"></i> New folder
           </a>
         </li>
         <li role="separator" class="divider"></li>
         <li>
-          <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_sharing_modal', payload: [item]})"
-             href="#">
+          <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_sharing_modal', payload: [item]})" href="#">
             <i class="fa fa-share-alt"></i> Sharing
           </a>
         </li>
         <li>
-          <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:delete', payload: [item]})"
-             href="#">
+          <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:delete', payload: [item]})" href="#">
             <i class="fa fa-trash-o"></i> Delete</a>
         </li>
         <li>
-          <a
-            (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_move_to_folder_modal', payload: [item]})"
+          <a (click)="onBreadcrumbAction({action: 'note:mixed_entity:open_move_to_folder_modal', payload: [item]})"
             href="#">
             <i class="wicon-move-to-folder"></i> Move to folder
           </a>
@@ -59,12 +56,8 @@
   </w-dataView-nav>
   <ng-container *ngIf="!context?.loading && (data$ | async) as list; else templateloading">
     <ng-container *ngIf="list?.length > 0; else templateNodata">
-      <w-dataView [data]="list"
-                  [viewMode]="context?.viewMode"
-                  (loadMoreCompleted)="onLoadMoreCompleted($event)"
-                  (selectCompleted)="onSelectCompleted()"
-                  (dblClick)="onDblClick($event)"
-                  #dataView>
+      <w-dataView [data]="list" [viewMode]="context?.viewMode" (loadMoreCompleted)="onLoadMoreCompleted($event)"
+        (selectCompleted)="onSelectCompleted()" (dblClick)="onDblClick($event)" #dataView>
         <ng-template #viewHeader>
           <div class="item-media-name">
             <span>Name</span>
@@ -185,7 +178,6 @@
         <ng-container *ngIf="context?.page === noteConstants.PAGE_MY_NOTE">
 
         </ng-container>
-
       </div>
     </ng-template>
   </ng-container>

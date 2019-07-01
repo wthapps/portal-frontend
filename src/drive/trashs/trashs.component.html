@@ -1,0 +1,35 @@
+<drive-container
+    [handleViewItem]="handleViewItem.bind(this)"
+    [apiUrl]="apiUrl"
+    [list]="data$ | async">
+    Trash  works
+
+    <ng-template #leftToolbarActions>
+      <div class="btn-group ">
+        <h4 class="title can-click" data-toggle="dropdown">
+          Trash <span class="caret"></span>
+        </h4>
+        <ul class="dropdown-menu">
+          <li><a (click)="emptyTrash()" href="javascript:;"><i class="fa fa-trash-o"></i> Empty Trash</a></li>
+        </ul>
+      </div>
+    </ng-template>
+
+    <ng-template #selectedRightActions>
+      <ul
+        class="nav-selection-actions" >
+        <ng-container *ngFor="let menu of rightMenuActions">
+            <li>
+                <button
+                    (click)="menu.command()"
+                    class="btn btn-icon"
+                    type="button">
+                    <i [class]="menu.icon"></i>
+                </button>
+            </li>
+        </ng-container>
+    </ul>
+    </ng-template>
+</drive-container>
+
+

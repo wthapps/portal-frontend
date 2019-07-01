@@ -1,13 +1,13 @@
-import ObjectDataModel from "@shared/common/models/object-data.model";
 import { ApiBaseService } from "@shared/services";
 import { MediaType } from "./interfaces/media";
+import ObjectDataModel from "@shared/models/object-data.model";
 
 export default class Album extends ObjectDataModel implements MediaType {
   id: number;
   uuid: string;
   sharing_id: number;
   recipients_count: number;
-  favorite: boolean;
+  favorite: any;
   selected: boolean;
   model: string;
   object_type: string;
@@ -33,6 +33,7 @@ export default class Album extends ObjectDataModel implements MediaType {
     if (this.sharing_id && this.recipients_count > 0) return true;
     return false;
   }
+
   existSharing(): boolean {
     if (this.sharing_id) return true;
     return false;

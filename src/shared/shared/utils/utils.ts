@@ -352,7 +352,7 @@ export module _wu {
     }
   }
 
-  export function getValue(obj: any, field: any) {
+  export function getValue(obj: any, field: any): number {
     let val = obj && obj[field];
     val = val || '';
     return (typeof val === 'string') ? val.toLowerCase() : val;

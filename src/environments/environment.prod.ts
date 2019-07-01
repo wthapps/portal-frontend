@@ -24,7 +24,9 @@ export const ConfigByEnv: EnvConfig = {
   SOCKET_API: `wss://socket.${domain}/socket`,
   GOOGLE_ANALYTICS_ID: 'UA-139547065-1',
   ENV: 'PROD',
+  CLOUDFRONT: 'https://d3ukayp3hgsz16.cloudfront.net',
   DOMAIN: `${domain}`,
+  S3BUCKET: 'production-oregon',
   SUB_DOMAIN: {
     APP: `${protocol}://www${fullDomain}`,
     MYACCOUNT: `${protocol}://myaccount${fullDomain}`,

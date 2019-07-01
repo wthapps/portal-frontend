@@ -1,0 +1,32 @@
+@import "../../../../assets/styles/global";
+
+
+.vam {
+  vertical-align: middle;
+}
+
+.fwb {
+  font-weight: bold;
+}
+
+.table {
+  margin-bottom: 0px;
+}
+
+:host ::ng-deep .media-uploader-dock {
+  .modal-dock-content {
+    .modal-dock-header {
+      background: unset !important;
+
+      .modal-dock-header-title, .modal-dock-header-action {
+        color: unset !important;
+      }
+    }
+
+    .modal-dock-body {
+      padding: 0;
+      overflow-y: scroll;
+      max-height:200px;
+    }
+  }
+}

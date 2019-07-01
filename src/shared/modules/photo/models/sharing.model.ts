@@ -1,6 +1,6 @@
-import ObjectDataModel from "@shared/common/models/object-data.model";
 import { ApiBaseService } from "@shared/services";
 import { MediaType } from "./interfaces/media";
+import ObjectDataModel from "@shared/models/object-data.model";
 
 export default class Sharing extends ObjectDataModel implements MediaType {
   apiBaseService = (): ApiBaseService => {
@@ -16,7 +16,7 @@ export default class Sharing extends ObjectDataModel implements MediaType {
   recipient: any;
   model: string;
   // client fields
-  favorite: boolean;
+  favorite: any;
   selected: boolean;
 
   constructor(data: Object = {}) {

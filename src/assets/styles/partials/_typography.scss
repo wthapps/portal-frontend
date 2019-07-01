@@ -127,6 +127,10 @@ a.disabled {
   font-size: 120%;
 }
 
+.text-overflow {
+ @include text-overflow();
+}
+
 /**
 <div class="text-1-line">
   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque dolorem dolores eaque enim et, impedit labore laudantium nulla odio officiis perspiciatis repellendus, saepe unde vitae voluptate. Eos iste non quibusdam.</p>

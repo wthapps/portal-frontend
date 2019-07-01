@@ -32,25 +32,8 @@
                       (sortComplete)="onSortComplete($event)"
                       (viewComplete)="onViewComplete($event)">
         <h4 *ngIf="!breadcrumb" class="title">{{ title }}</h4>
-        <div *ngIf="breadcrumb" class="breadcrumb-wrap">
-          <ol class="breadcrumb m0 p0">
-            <li>
-              <button (click)="onBreadcrumb()" class="btn btn-default" type="button">{{ title }}</button>
-            </li>
-            <ng-container *ngFor="let item of breadcrumb; let i = index">
-              <li>
-                <ng-container *ngIf="i === breadcrumb.length - 1;else templateBreadcrumb">
-                  {{ item.name }}
-                </ng-container>
-                <ng-template #templateBreadcrumb>
-                  <button (click)="onBreadcrumb(item.id)" class="btn btn-default" type="button">
-                    {{ item.name }}
-                  </button>
-                </ng-template>
-              </li>
-            </ng-container>
-          </ol>
-        </div>
+        <w-breadcrumbs-lite *ngIf="breadcrumb && breadcrumb.length > 0" (action)="onBreadcrumb($event)"
+                            [data]="breadcrumb"></w-breadcrumbs-lite>
       </w-dataView-nav>
       <ng-container *ngIf="(data$ | async) as notesList; else templateloading">
         <ng-container *ngIf="notesList?.length > 0; else templateNodata">

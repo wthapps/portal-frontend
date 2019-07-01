@@ -15,6 +15,9 @@ export class ConstantsBase {
   cdn: any = Config.CDN;
   googleAnalyticsId = Config.GOOGLE_ANALYTICS_ID;
   currentVersion = '2018 WTHApps - v1.16.0';
+  env: any = Config.ENV;
+  cloudfront = Config.CLOUDFRONT;
+  s3Bucket = Config.S3BUCKET;
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
