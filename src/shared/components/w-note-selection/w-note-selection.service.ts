@@ -6,6 +6,7 @@ import { ResponseMetaData } from '@shared/shared/models/response-meta-data.model
 import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
 import { catchError, distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { _wu } from '@shared/shared/utils/utils';
 
 declare let _: any;
 
@@ -89,10 +90,11 @@ export class WNoteSelectionService {
     return this.api.get(link);
   }
 
-  sort(sort: any) {
-    // console.log(sort); // orderBy: "asc" sortBy: "created_at"
+  sort({sortBy, orderBy}) {
+    const lSortBy = sortBy.toLocaleLowerCase();
     const data = this.dataSubject.getValue();
-    const dataSorted = _.orderBy(data, ['object_type', sort.sortBy.toLocaleLowerCase()], ['asc', sort.orderBy]);
+    const dataSorted = data.sort((a, b) =>
+    (_wu.compareByFn(a, b, true, 'object_type') || _wu.compareByFn(a, b, orderBy === 'desc', lSortBy)));
     this.dataSubject.next(dataSorted);
   }
 

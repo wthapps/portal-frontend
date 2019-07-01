@@ -360,6 +360,20 @@ export module _wu {
 
   export function compareBy(objA: any, objB: any, orderDesc: boolean, field: string = 'name'): number {
     if (!objA || !objB) { return; }
+    // const o = orderDesc ? 1 : -1;
+
+    // if (getValue(objA, field) > getValue(objB, field)) {
+    //   return 1 * o;
+    // } else if (getValue(objA, field) < getValue(objB, field)) {
+    //   return -1 * o;
+    //        }
+
+    // Compare by id
+    return compareByFn(objA, objB, orderDesc, field) || compareByFn(objA, objB, orderDesc, 'id');
+  }
+
+  export function compareByFn(objA: any, objB: any, orderDesc: boolean, field: string = 'name'): number {
+    if (!objA || !objB) { return; }
     const o = orderDesc ? 1 : -1;
 
     if (getValue(objA, field) > getValue(objB, field)) {
@@ -368,8 +382,7 @@ export module _wu {
       return -1 * o;
            }
 
-    // Compare by id
-    return compareBy(objA, objB, orderDesc, 'id');
+    return 0;
   }
 
 }

@@ -18,6 +18,7 @@ export interface EnvConfig {
   ENV?: string;
   CLOUDFRONT?: string;
   DOMAIN?: string;
+  S3BUCKET?: string;
   SUB_DOMAIN?: EnvConfigSubDomain;
   RES?: string;
 }

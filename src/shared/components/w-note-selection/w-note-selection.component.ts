@@ -21,7 +21,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('dataView') dataView: WDataViewComponent;
   @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   data$: Observable<any>;
 
   title: string;
@@ -84,6 +84,7 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
 
   async getDataAsync() {
     await this.dataService.getData(this.currentTab, this.parentID).toPromise();
+    this.onSortComplete({sortBy: 'Name', orderBy: 'desc'});
   }
 
   async getParentDataAsync(id) {
