@@ -16,9 +16,9 @@
           <div class="list-group-radio">
 
             <ng-container *ngFor="let storage of storages">
-              <div class="list-group-radio-item" [ngClass]="{'item-disabled' : storage.id < currentStorage?.id}">
+              <div class="list-group-radio-item" [ngClass]="{'item-disabled' : storage.id < currentStorage?.id || storageUpgrading && currentStorage?.id == storage.id}">
                 <p-radioButton name="storageSelection"
-                               [disabled]="storage.id < currentStorage?.id"
+                               [disabled]="storage.id < currentStorage?.id || storageUpgrading && currentStorage?.id == storage.id"
                                [value]="storage?.id"
                                label="{{ storage?.name }} {{ storage?.price | currency }} per month {{ subscription?.status === 'ACTIVATING' && subscription?.storage?.id === storage?.id ? ' - current': '' }}"
                                [(ngModel)]="selectedStorageId"
