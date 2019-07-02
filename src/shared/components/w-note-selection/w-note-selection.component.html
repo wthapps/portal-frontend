@@ -27,7 +27,7 @@
   </bs-modal-header>
   <bs-modal-body>
     <div class="note-selection-content">
-      <w-dataView-nav [showViewMode]="true"
+      <w-dataView-nav #dataViewNav [showViewMode]="true"
                       [viewBy]="viewMode"
                       (sortComplete)="onSortComplete($event)"
                       (viewComplete)="onViewComplete($event)">

@@ -1,12 +1,15 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
-import { WDataViewComponent } from '../w-dataView/w-dataView.component';
-import { Constants } from '@shared/constant';
-import { Observable } from 'rxjs';
-import { WNoteSelectionService } from '@shared/components/w-note-selection/w-note-selection.service';
-import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
+
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { takeUntil } from 'rxjs/operators';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { Observable } from 'rxjs';
+
+import { WDataViewComponent } from '../w-dataView/w-dataView.component';
+import { Constants } from '@shared/constant';
+import { WNoteSelectionService } from '@shared/components/w-note-selection/w-note-selection.service';
+import { WDataViewNavComponent } from './../w-dataView/w-dataView-nav.component';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { Note } from '@shared/shared/models/note.model';
 
 @Component({
@@ -19,6 +22,7 @@ import { Note } from '@shared/shared/models/note.model';
 export class WNoteSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('dataView') dataView: WDataViewComponent;
+  @ViewChild('dataViewNav') dataViewNav: WDataViewNavComponent;
   @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
 
   readonly tooltip: any = Constants.tooltip;
@@ -84,7 +88,8 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
 
   async getDataAsync() {
     await this.dataService.getData(this.currentTab, this.parentID).toPromise();
-    this.onSortComplete({sortBy: 'Name', orderBy: 'desc'});
+    const { sortBy, orderBy } = this.dataViewNav;
+    this.onSortComplete({sortBy, orderBy});
   }
 
   async getParentDataAsync(id) {
