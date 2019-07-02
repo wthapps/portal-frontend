@@ -155,7 +155,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     this.store.select('context').pipe(takeUntil(this.destroySubject))
       .subscribe(context => {
         this.context = context;
-        const {field, desc} = context.sort;
+        const { field, desc } = context.sort;
         if ([noteConstants.PAGE_SHARED_WITH_ME, noteConstants.PAGE_SHARED_BY_ME].includes(context.page)) {
           this.sortState = [...this.DEFAULT_SORT_STATE, {
             key: 'shared_date',
@@ -165,9 +165,9 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
           this.sortState = this.DEFAULT_SORT_STATE.slice();
 
           // Reset sort option if current sort option is shared date
-          const notExistSortField = !this.sortState.some(({key}) => key === field);
-          if(notExistSortField) {
-            this.onSortComplete({sortBy: 'updated_at', orderBy: (desc ? 'desc' : 'asc')});
+          const notExistSortField = !this.sortState.some(({ key }) => key === field);
+          if (notExistSortField) {
+            this.onSortComplete({ sortBy: 'updated_at', orderBy: (desc ? 'desc' : 'asc') });
           }
         }
       });
@@ -215,6 +215,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     ====================================*/
     if (['/shared-with-me'].includes(path)) {
       this.menuActions['share'].active = false;
+      this.menuActions['favorite'].active = false;
 
       const viewOnly = objects.some(o => o.permission === 'view');
       if (viewOnly) {
@@ -230,6 +231,9 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
             ['edit', 'divider'].forEach(k => this.otherActions[k].active = true);
           }
         }
+        if (_.some(objects, ['object_type', 'Note::Folder'])) {
+          this.hideAllOtherActions();
+        }
       }
       return;
     }
@@ -239,7 +243,7 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
     [Path And Page] validate (recents, shared-by-me)
     ====================================*/
     if (['/recent', '/shared-by-me'].includes(path) && objects.length === 1) {
-      this.otherActions['find_folder'].active = true;
+      this.otherActions['find_folder'].active = false;
     }
 
     /*====================================
@@ -311,9 +315,9 @@ export class ZNoteContainerComponent implements OnInit, OnChanges, OnDestroy {
           this.router.navigate([
             '../',
             event.id
-          ], {relativeTo: this.route});
+          ], { relativeTo: this.route });
         } else if (url.includes('shared')) {
-          this.router.navigate(['folders', event.id], {relativeTo: this.route});
+          this.router.navigate(['folders', event.id], { relativeTo: this.route });
         } else {
           this.router.navigate(['folders', event.id]);
         }
