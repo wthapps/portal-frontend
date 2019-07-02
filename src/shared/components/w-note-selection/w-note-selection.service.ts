@@ -94,7 +94,7 @@ export class WNoteSelectionService {
     const lSortBy = sortBy.toLocaleLowerCase();
     const data = this.dataSubject.getValue();
     const dataSorted = data.sort((a, b) =>
-    (_wu.compareByFn(a, b, true, 'object_type') || _wu.compareByFn(a, b, orderBy === 'desc', lSortBy)));
+    (_wu.compareByFn(a, b, true, 'object_type') || _wu.compareByFn(a, b, orderBy !== 'desc', lSortBy)));
     this.dataSubject.next(dataSorted);
   }
 
