@@ -10,6 +10,7 @@ import { Input, Component, ViewEncapsulation, EventEmitter, Output, ContentChild
 export class WBreadcrumbComponent {
   @Input() data: any[];
   @Input() max = 2;
+  @Input() icon: string;
 
   @Output() action: EventEmitter<any> = new EventEmitter<any>();
 

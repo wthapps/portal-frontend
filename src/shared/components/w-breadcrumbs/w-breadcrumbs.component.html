@@ -15,7 +15,7 @@
           <ng-container *ngFor="let item of data; let i = index">
             <li *ngIf="i > 0 && i < data.length - max">
               <a href="#" [routerLink]="[item.routerLink]" [title]="item.label">
-                {{ item.label }}
+                <i *ngIf="icon" class="{{ icon }}"></i> {{ item.label }}
               </a>
             </li>
           </ng-container>
