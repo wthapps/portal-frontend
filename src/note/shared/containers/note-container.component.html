@@ -8,7 +8,7 @@
                   (sortComplete)="onSortComplete($event)"
                   (viewComplete)="onViewComplete($event)">
 
-    <w-breadcrumbs *ngIf="breadcrumbs && breadcrumbs.length > 0" [data]="breadcrumbs">
+    <w-breadcrumbs *ngIf="breadcrumbs && breadcrumbs.length > 0" [data]="breadcrumbs" [icon]="'fa fa-folder'">
       <ng-template #viewMenu let-item>
         <li>
           <a (click)="onBreadcrumbAction({action: 'note:open_note_add_modal', payload: {parent_id: item.id}})"
