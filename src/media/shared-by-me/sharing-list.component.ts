@@ -39,7 +39,7 @@ export class ZMediaSharingListComponent implements OnInit, MediaBasicListMixin, 
   endLoading: any;
   iconNoData: any = 'fa fa-share-alt';
   titleNoData: any = 'You have not shared albums with anyone.';
-  subTitleNoData: any = 'You can share albums with your WTH!Apps contacts.';
+  subTitleNoData: any = 'You can share albums with your WTHApps contacts.';
   title: string = 'Shared by me';
   disableMoreAction: boolean;
   filters: any = [];

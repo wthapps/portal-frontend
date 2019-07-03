@@ -4,7 +4,6 @@ import { AuthService } from '@shared/services/auth.service';
 import { Constants } from '@shared/constant';
 import { Subject } from 'rxjs/Subject';
 import { ApiBaseService } from '@shared/services/apibase.service';
-import { FileUploadPolicy } from '@shared/policies/file-upload.policy';
 import { FileInputCustom } from '@core/third-parties/uppy/file-input';
 import { CommonEventService } from '@shared/services/common-event/common-event.service';
 import { BlackListPolicy } from '@shared/policies/black-list-policy';
@@ -88,9 +87,6 @@ export class WUploader {
       formData: true,
       fieldName: 'file'
     });
-
-    console.log('storage_module:::', options.storage_module);
-
     this.uppy.on('file-added', (file) => {
       // data: File(7775842) { allow: true, validateErrors: Array(0), name: "400.pdf", lastModified: 1538536306875, lastModifiedDate: Wed Oct 03 2018 10: 11: 46 GMT + 0700(Indochina Time), … }
       // extension: "pdf"

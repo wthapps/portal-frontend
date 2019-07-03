@@ -32,7 +32,7 @@ export class ZContactSearchSharedToolbarComponent implements OnInit {
         type: 'tab'
       },
       {
-        name: 'WTH!Apps',
+        name: 'WTHApps',
         link: 'wth',
         icon: 'fa fa-info-circle',
         number: null,

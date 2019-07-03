@@ -557,7 +557,7 @@ export class ConstantsBase {
     doubleClickToEdit: 'Double click to edit',
     addToSharing: 'Add to sharing',
     addToContacts: 'Add to contacts',
-    wthContacts: 'Public contact information of other users from WTH!Apps.'
+    wthContacts: 'Public contact information of other users from WTHApps.'
   };
 
   confirmDialog: any = {
