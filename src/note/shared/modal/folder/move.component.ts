@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers/index';
 
 import { BsModalComponent } from 'ng2-bs3-modal';
@@ -36,9 +36,9 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   private breadscrumb: boolean;
 
   constructor(private fb: FormBuilder,
-              private commonEventService: CommonEventService,
-              private apiBaseService: ApiBaseService,
-              private store: Store<fromRoot.State>) {
+    private commonEventService: CommonEventService,
+    private apiBaseService: ApiBaseService,
+    private store: Store<fromRoot.State>) {
     this.form = fb.group({
       'name': ['', Validators.compose([Validators.required])]
     });
@@ -115,11 +115,11 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
       } else {
         this.folder = item;
       }
-    }
-
-    // if modal is opened from breadscrumb then update path to query folders
-    if (this.breadscrumb) {
-      path = item.parent_id ? `note/folders/${ item.parent_id }`: `note/folders`
+    } else {
+      // if modal is opened from breadscrumb then update path to query folders
+      if (this.breadscrumb) {
+        path = item.parent_id ? `note/folders/${ item.parent_id }`: `note/folders`
+      }
     }
 
     this.apiBaseService.get(path).subscribe(
@@ -157,6 +157,8 @@ export class ZNoteSharedModalFolderMoveComponent implements OnInit {
   }
 
   chooseFolder(item: any) {
+    console.log('choose folder', item, this.selectedObjects[0]);
+
     if (this.selectedObjects[0].parent_id === item.id) {
       this.folder = null;
     } else {

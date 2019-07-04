@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  redirectAfterLogin() {
+  private redirectAfterLogin() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
     if (this.returnUrl.indexOf(Constants.baseUrls.app) >= 0) {
       this.router.navigate([this.returnUrl]);

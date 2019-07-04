@@ -5,6 +5,7 @@ import { Mixins } from '@shared/design-patterns/decorator/mixin-decorator';
 import { Constants } from '../../shared/constant/config/constants';
 
 import { fadeInAnimation } from '../../shared/shared/animations/route.animation';
+import { UserService } from '@shared/services';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -20,11 +21,14 @@ import { fadeInAnimation } from '../../shared/shared/animations/route.animation'
 export class HomeComponent {
   @HostBinding('@fadeInAnimation') fadeInAnimation = true;
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
+  validProfile: boolean;
 
   constructor(
+    private userService: UserService,
     private router: Router
   ) {
+    this.validProfile = this.userService.validProfile();
   }
 
   gotoHashtag(link: string, prodID: string) {

@@ -1,12 +1,12 @@
 import { Component, AfterViewInit, NgZone, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { UserService } from '@shared/services/user.service';
 import { Constants } from '@shared/constant/config/constants';
 import { PaymentMethodAddModalComponent } from '@account/payment/payment-method/payment-method-add-modal.component';
 import { PaymentMethodService } from '@account/payment/payment-method/payment-method.service';
 import { ToastsService } from '@shared/shared/components/toast/toast-message.service';
-import { StorageService } from '@shared/common/storage';
+import { StorageService } from '@shared/components/storage';
 import { SubscriptionService } from '@shared/common/subscription';
 import { SubscriptionAlertModalComponent } from '@account/payment/subscription/subscription-alert-modal.component';
 
@@ -31,10 +31,13 @@ export class SubscriptionUpgradeComponent implements OnInit {
   subscription: any;
   loading = false;
 
+  private storageUpgrading = false;
+
   readonly termsOfServiceUrl = Constants.baseUrls.app + '/policies/terms';
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private userService: UserService,
     private subscriptionService: SubscriptionService,
     private paymentMethodService: PaymentMethodService,
@@ -43,9 +46,12 @@ export class SubscriptionUpgradeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Get storage list
-    this.storageService.getAll().subscribe(response => {
-      this.storages = response.data;
+    this.route.queryParams.subscribe(params => {
+      this.storageUpgrading = params['storage'] || false;
+    });
+      // Get storage list
+    this.storageService.getAll().subscribe(storages => {
+      this.storages = storages;
     });
 
     this.subscriptionService.getCurrent().subscribe(response => {

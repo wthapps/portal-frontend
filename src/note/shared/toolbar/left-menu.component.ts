@@ -65,7 +65,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
           case 'update': {
             console.log('folders: ', payload);
             for (const folder of payload) {
-              this.noteFoldersTree =  this.update(folder, this.noteFoldersTree);
+              this.noteFoldersTree = this.update(folder, this.noteFoldersTree);
             }
             break;
           }
@@ -96,7 +96,7 @@ export class ZNoteSharedLeftMenuComponent implements OnDestroy {
               .subscribe((folders: any) => {
                 folders.forEach((folder: any) => {
                   folder.expanded = true;
-                  this.noteFoldersTree  = this.update(folder, this.noteFoldersTree);
+                  this.noteFoldersTree = this.update(folder, this.noteFoldersTree);
                 });
               });
             break;

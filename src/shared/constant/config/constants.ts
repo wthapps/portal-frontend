@@ -15,6 +15,9 @@ export class ConstantsBase {
   cdn: any = Config.CDN;
   googleAnalyticsId = Config.GOOGLE_ANALYTICS_ID;
   currentVersion = '2018 WTHApps - v1.16.0';
+  env: any = Config.ENV;
+  cloudfront = Config.CLOUDFRONT;
+  s3Bucket = Config.S3BUCKET;
   useDefaultPage: any = true;
   flagsRelease: any = false;
 
@@ -554,7 +557,7 @@ export class ConstantsBase {
     doubleClickToEdit: 'Double click to edit',
     addToSharing: 'Add to sharing',
     addToContacts: 'Add to contacts',
-    wthContacts: 'Public contact information of other users from WTH!Apps.'
+    wthContacts: 'Public contact information of other users from WTHApps.'
   };
 
   confirmDialog: any = {

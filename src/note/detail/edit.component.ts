@@ -1042,7 +1042,8 @@ export class ZNoteDetailEditComponent
   onSelectFiles() {
     this.uploader.open('FileInput', '.w-uploader-file-input-container', {
       allowedFileTypes: null,
-      module: 'note'
+      module: 'note',
+      storage_module: 'drive'
     });
   }
 

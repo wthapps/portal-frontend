@@ -3,7 +3,7 @@
     <div class="hero-banner-txt">
       <h2>All the tools you need in one place.</h2>
       <p>WTH!APPS gives you everything you need to connect, simplify and organize your digital life.</p>
-      <a [routerLink]="['/signup']" href="#" class="btn btn-primary">Get started for free</a>
+      <a *ngIf="!validProfile"  [routerLink]="['/signup']" href="#" class="btn btn-primary">Get started for free</a>
     </div>
     <div class="hero-banner-img">
       <img src="/assets/images_new/home/hero-banner-img.png" alt="">
@@ -34,7 +34,7 @@
         </div>
         <div class="media-body">
           <h4 class="media-heading">WTH! I can’t remember my password!</h4>
-          <p>We made that easy, too. There’s one login for everything on WTH!Apps!</p>
+          <p>We made that easy, too. There’s one login for everything on WTHApps!</p>
         </div>
       </div>
       <div class="media">

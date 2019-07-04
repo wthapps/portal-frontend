@@ -12,6 +12,8 @@ import { SubscriptionService } from '@shared/common/subscription';
 import { Constants } from '@shared/constant';
 import { AccountService } from '@account/shared/account/account.service';
 import { PaymentMethodAddModalComponent } from '@account/payment/payment-method/payment-method-add-modal.component';
+import { StorageService } from '@shared/components/storage';
+import { StorageDetailModalComponent, StorageUpgradeModalComponent } from '@shared/components/storage';
 
 @Component({
   selector: 'current-subscription',
@@ -22,13 +24,16 @@ export class CurrentSubscriptionComponent implements OnInit {
   @ViewChild('cancelModal') cancelModal: SubscriptionCancelModalComponent;
   @ViewChild('passwordConfirmationModal') passwordConfirmationModal: PasswordConfirmationModalComponent;
   @ViewChild('addModal') addModal: PaymentMethodAddModalComponent;
-
+  @ViewChild('storageDetailModal') storageDetailModal: StorageDetailModalComponent;
+  @ViewChild('storageUpgradeModal') storageUpgradeModal: StorageUpgradeModalComponent;
 
   editing;
   subscription: any;
   plan: any;
   storage: any;
   paymentMethod: any;
+  currentStorage: any;
+
   mode: 'add' | 'edit';
 
   readonly TRIALING = 'TRIALING';
@@ -40,6 +45,7 @@ export class CurrentSubscriptionComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private subscriptionService: SubscriptionService,
+    private storageService: StorageService,
     private wthConfirm: WthConfirmService,
     private userService: UserService,
     private accountService: AccountService,
@@ -51,6 +57,7 @@ export class CurrentSubscriptionComponent implements OnInit {
 
   ngOnInit() {
     this.getCurrentSubscription();
+    this.getCurrentStorage();
   }
 
   getCurrentSubscription() {
@@ -59,6 +66,8 @@ export class CurrentSubscriptionComponent implements OnInit {
       }
     );
   }
+
+
 
   upgradeSubscription() {
     this.router.navigate(['payment/subscription/upgrade']);
@@ -153,12 +162,19 @@ export class CurrentSubscriptionComponent implements OnInit {
     });
   }
 
-  viewStorageDetail() {
-
+  openStorageDetailModal() {
+    this.storageDetailModal.open({storage: this.currentStorage});
   }
 
   upgradeStorage() {
+    this.router.navigate(['payment/subscription/upgrade'], {queryParams: {storage: true}});
+  }
 
+  private getCurrentStorage() {
+    this.storageService.getCurrent().subscribe(storage => {
+        this.currentStorage = storage;
+      }
+    );
   }
 
   private updateCurrentSubscriptionValues(subscription: any) {

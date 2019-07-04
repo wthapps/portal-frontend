@@ -21,8 +21,12 @@
   <!-- Third party libs -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"
-          integrity="sha256-IyWBFJYclFY8Pn32bwWdSHmV4B9M5mby5bhPHEmeY8w="
-          crossorigin="anonymous"></script>
+    integrity="sha256-IyWBFJYclFY8Pn32bwWdSHmV4B9M5mby5bhPHEmeY8w=" crossorigin="anonymous"></script>
+  <script>
+    if (global === undefined) {
+      var global = window;
+    }
+  </script>
   <!-- inject:css -->
   <!-- endinject -->
 
@@ -32,7 +36,8 @@
       height: 100%;
     }
 
-    .app-loading, .app-loading .loading-box {
+    .app-loading,
+    .app-loading .loading-box {
       position: relative;
       display: flex;
       flex-direction: column;
@@ -98,23 +103,22 @@
 
 <body>
 
-<app-root class="wrapper">
-  <!-- loading layout replaced by app after startupp -->
-  <div class="app-loading">
-    <div class="loading-box">
-      <div class="logo"></div>
-      <svg class="spinner" viewBox="25 25 50 50">
-        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-      </svg>
+  <app-root class="wrapper">
+    <!-- loading layout replaced by app after startupp -->
+    <div class="app-loading">
+      <div class="loading-box">
+        <div class="logo"></div>
+        <svg class="spinner" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+      </div>
     </div>
-  </div>
-</app-root>
+  </app-root>
 
-<script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8="
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/4.0.1/lazysizes.min.js" async=""></script>
-<link rel="stylesheet" type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css" async>
+  <script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/4.0.1/lazysizes.min.js" async=""></script>
+  <link rel="stylesheet" type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css" async>
 
 
 </body>

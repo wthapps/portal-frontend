@@ -38,5 +38,4 @@ import { WNoteSelectionModule } from '@shared/components/w-note-selection/w-note
   exports: [HomeComponent],
   providers: []
 })
-export class HomeModule {
-}
+export class HomeModule {}

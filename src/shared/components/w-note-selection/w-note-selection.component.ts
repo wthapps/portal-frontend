@@ -1,12 +1,15 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
-import { WDataViewComponent } from '../w-dataView/w-dataView.component';
-import { Constants } from '@shared/constant';
-import { Observable } from 'rxjs';
-import { WNoteSelectionService } from '@shared/components/w-note-selection/w-note-selection.service';
-import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
+
 import { BsModalComponent } from 'ng2-bs3-modal';
 import { takeUntil } from 'rxjs/operators';
 import { componentDestroyed } from 'ng2-rx-componentdestroyed';
+import { Observable } from 'rxjs';
+
+import { WDataViewComponent } from '../w-dataView/w-dataView.component';
+import { Constants } from '@shared/constant';
+import { WNoteSelectionService } from '@shared/components/w-note-selection/w-note-selection.service';
+import { WDataViewNavComponent } from './../w-dataView/w-dataView-nav.component';
+import { WTab } from '@shared/components/w-nav-tab/w-nav-tab';
 import { Note } from '@shared/shared/models/note.model';
 
 @Component({
@@ -19,13 +22,14 @@ import { Note } from '@shared/shared/models/note.model';
 export class WNoteSelectionComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal: BsModalComponent;
   @ViewChild('dataView') dataView: WDataViewComponent;
+  @ViewChild('dataViewNav') dataViewNav: WDataViewNavComponent;
   @Output() selectCompleted: EventEmitter<any> = new EventEmitter<any>();
 
-  tooltip: any = Constants.tooltip;
+  readonly tooltip: any = Constants.tooltip;
   data$: Observable<any>;
 
   title: string;
-  breadcrumb: Note[];
+  breadcrumb: any[];
   searchShow: boolean;
   searchText = '';
   viewMode = 'grid';
@@ -84,11 +88,27 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
 
   async getDataAsync() {
     await this.dataService.getData(this.currentTab, this.parentID).toPromise();
+    const { sortBy, orderBy } = this.dataViewNav;
+    this.onSortComplete({sortBy, orderBy});
   }
 
   async getParentDataAsync(id) {
     const res = await this.dataService.getParent(id).toPromise();
-    this.breadcrumb = res.data;
+    this.breadcrumb = res.data.map(v => {
+      return {
+        id: v.id,
+        name: v.name,
+        label: v.name ? v.name : 'My notes',
+        routerLink: id ? `/folders/${id}` : '/'
+      };
+    });
+    this.breadcrumb.unshift({ id: null, name: null, label: 'My notes', routerLink: '/' });
+    // [
+    //   { "id": null, "name": null, "label": "My notes", "routerLink": "/" },
+    //   { "id": 96, "name": "10", "object_type": "Note::Folder", "parent_id": null, "label": "10", "routerLink": "/folders/96" },
+    //   { "id": 357, "name": "sdfsadf", "object_type": "Note::Folder", "parent_id": 96, "label": "sdfsadf", "routerLink": "/folders/357" }
+    // ]
+
   }
 
   onLoadMoreCompleted(event: any) {
@@ -115,11 +135,11 @@ export class WNoteSelectionComponent implements OnInit, OnDestroy {
     this.getRootData();
   }
 
-  onBreadcrumb(id?: any) {
-    if (!id) {
-      this.getRootData();
+  onBreadcrumb(event?: any) {
+    if (event && event.id) {
+      this.getFolderContent(event.id);
     } else {
-      this.getFolderContent(id);
+      this.getRootData();
     }
   }
 

@@ -87,13 +87,13 @@ export class ConfirmationComponent implements OnInit {
         this.title = 'Email verification successful';
         this.message = `<p>Your email address has been confirmed and your account is successfully verified.</p>
                         <p>If you have any questions, please visit <a [href]="${ this.faqUrl }">FAQs</a>.</p>
-                        <p>Or click on the button below and redirect to WTH!Apps.</p>`;
+                        <p>Or click on the button below and redirect to WTHApps.</p>`;
         break;
       case this.CONFIRMED:
         this.iconClass = 'fa-envelope-o icon-error';
         this.title = 'Email verification failed';
         this.message = `<p>Your email address already confirmed</p>
-                        <p>Click on the button below and redirect to WTH!Apps.</p>`;
+                        <p>Click on the button below and redirect to WTHApps.</p>`;
         break;
       case this.FAILED:
         this.iconClass = 'fa-times-circle-o icon-error';

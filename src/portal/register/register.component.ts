@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HandleReCaptchaMixin } from '@portal/shared/mixins/handle-login-recaptcha.mixin';
@@ -21,7 +21,7 @@ declare var $: any;
   styleUrls: ['register.component.scss']
 })
 @Mixins([HandleReCaptchaMixin])
-export class RegisterComponent implements HandleReCaptchaMixin {
+export class RegisterComponent implements HandleReCaptchaMixin, OnInit {
   errorMessage = '';
   sex = 0;
 
@@ -83,6 +83,14 @@ export class RegisterComponent implements HandleReCaptchaMixin {
     });
   }
 
+  ngOnInit(): void {
+
+    // Force redirect if user cookie still valid
+    if (this.userService.validProfile()) {
+      this.redirectAfterLogin();
+    }
+  }
+
   handleCaptcha: (event: any) => void;
   handleCaptchaExpire: (event: any) => void;
 
@@ -121,6 +129,21 @@ export class RegisterComponent implements HandleReCaptchaMixin {
           }
         }
       );
+    }
+  }
+
+  private redirectAfterLogin() {
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+    if (returnUrl.indexOf(Constants.baseUrls.app) >= 0) {
+      this.router.navigate([returnUrl]);
+    } else {
+      if (returnUrl === '' && Constants.useDefaultPage) {
+        location.href = Constants.urls.default;
+      } else if (returnUrl === '' && !Constants.useDefaultPage) {
+        this.router.navigate(['']);
+      } else {
+        location.href = returnUrl;
+      }
     }
   }
 }

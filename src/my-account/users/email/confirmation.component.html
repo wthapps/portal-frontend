@@ -10,7 +10,7 @@
       <div class="text-left pl50" [innerHtml]="message"></div>
       <div class="text-center">
         <div class="form-group">
-          <a *ngIf="[SUCCESSFUL, CONFIRMED].includes(status)" class="btn btn-primary" [href]="dashboard">Continue to WTH!Apps</a>
+          <a *ngIf="[SUCCESSFUL, CONFIRMED].includes(status)" class="btn btn-primary" [href]="dashboard">Continue to WTHApps</a>
           <a *ngIf="status === FAILED" class="btn btn-primary" href="#" (click)="sendVerificationEmail()">Resend verification email</a>
           <a *ngIf="status === LOGIN_REQUIRED" class="btn btn-primary" href="#" (click)="gotoLogin()">Go to Log in</a>
         </div>

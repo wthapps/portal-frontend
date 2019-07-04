@@ -100,7 +100,11 @@
       }
     }
     &.item-disabled{
-      background: $line;
+      background: $bg-color;
+      .ui-radiobutton-box, .ui-radiobutton-icon {
+        border-color: $bg-color;
+        background: $bg-color;
+      }
     }
   }
 }

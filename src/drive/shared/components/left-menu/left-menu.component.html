@@ -1,0 +1,58 @@
+<div class="main-left-menu">
+  <div class="menuleft-container">
+    <div class="menuleft-content">
+      <div class="menuleft-item mt10 dropdown">
+        <a aria-expanded="true" aria-haspopup="true" class="btn dropdown-toggle" data-toggle="dropdown"
+          tooltipposition="bottom" type="button">
+          <i class="fa fa-plus"></i>
+          <span class="hidden-xs"> New</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="javascript:;" (click)="onFolder()">
+              <i class="fa fa-folder-o"></i> New folder
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a (click)="onOpenFileUpload()" href="javascript:;">
+              <i class="fa fa-upload"></i> Upload files
+            </a>
+          </li>
+          <li>
+            <a (click)="onOpenFolderUpload()" href="javascript:;">
+              <i class="fa fa-cloud-upload"></i> Upload folder
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="menuleft-item-divider">
+        <div class="menuleft-item" routerLinkActive="active">
+          <a [routerLink]="['/my-drive']" (click)="showFolderTree = !showFolderTree"><i
+              class="fa fa-folder" aria-hidden="true"></i> My Drive</a>
+        </div>
+        <div class="well-folder-tree" [ngClass]="{'active': showFolderTree}">
+          <p-panelMenu [(model)]="noteFoldersTree"></p-panelMenu>
+        </div>
+        <div [routerLink]="['/recents']" routerLinkActive="active" class="menuleft-item"><a href="#"><i
+              class="fa fa-clock-o" aria-hidden="true"></i> Recent</a></div>
+        <div [routerLink]="['/favorites']" routerLinkActive="active" class="menuleft-item"><a href="#"><i
+              class="fa fa-star" aria-hidden="true"></i> Favorite</a></div>
+        <div class="menuleft-item"><a href="#"><i class="fa fa-plus" aria-hidden="true"></i> Shared with me</a></div>
+        <div class="menuleft-item" routerLinkActive="active"><a [routerLink]="['/trashs']"  ><i class="fa fa-trash" aria-hidden="true"></i> Trash</a></div>
+      </div>
+
+    </div>
+    <div class="menuleft-footer ng-star-inserted">
+      <div>
+        <a rel="noopener" target="_blank" href="https://test.wthapps.com/policies/terms">
+          Term of service</a> •
+        <a rel="noopener" target="_blank" href="https://test.wthapps.com/policies/privacy">
+          Privacy &amp; policies</a>
+      </div>
+      <span>©2018 WTHApps - v1.7.0</span>
+    </div>
+  </div>
+</div>
+
+<!-- <z-note-shared-setting #setting></z-note-shared-setting> -->

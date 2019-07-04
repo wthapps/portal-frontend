@@ -1,0 +1,22 @@
+<!-- <bs-modal #modal [keyboard]="false" [animation]="false" [backdrop]="'static'" style="display: inline;"> -->
+<bs-modal #modal>
+    
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" novalidate>
+    <bs-modal-header [showDismiss]="true">
+      <h4 class="modal-title">{{ titleModal }}</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+      <div class="form-group no-label" [ngClass]="{'has-error': (!name.valid && name.touched)}">
+        <input autofocus [formControl]="name" type="text" class="form-control" id="note_form_name"
+               placeholder="Name">
+      </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+      <button type="button" class="btn btn-outline-default btn-min" data-dismiss="modal"
+              (click)="modal.close()">Cancel</button>
+      <button type="submit" [disabled]="!form.valid || !form.dirty" class="btn btn-outline-primary btn-min">Done
+      </button>
+    </bs-modal-footer>
+
+  </form>
+</bs-modal>

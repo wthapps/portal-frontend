@@ -396,7 +396,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": true,
+              "serviceWorker": false,
               "fileReplacements": [
                 {
                   "replace": "src/media/../environments/environment.ts",
@@ -414,7 +414,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": true,
+              "serviceWorker": false,
               "fileReplacements": [
                 {
                   "replace": "src/media/../environments/environment.ts",
@@ -432,7 +432,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": true,
+              "serviceWorker": false,
               "fileReplacements": [
                 {
                   "replace": "src/media/../environments/environment.ts",
@@ -1428,6 +1428,153 @@
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/cropperjs/dist/cropper.min.css",
               "src/sample/styles/sample.scss"
+            ],
+            "assets": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "drive": {
+      "root": "src",
+      "sourceRoot": "src/drive",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/drive",
+            "index": "src/drive/index.html",
+            "main": "src/drive/main.ts",
+            "polyfills": "src/drive/polyfills.ts",
+            "tsConfig": "src/drive/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets/",
+                "output": "/assets/"
+              }
+            ],
+            "styles": [
+              "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/cropperjs/dist/cropper.min.css",
+              "src/drive/styles/drive.scss"
+            ],
+            "scripts": [
+              "node_modules/cropperjs/dist/cropper.min.js",
+              "src/shared/channels/common.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "serviceWorker": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/drive/../environments/environment.ts",
+                  "with": "src/drive/../environments/environment.prod.ts"
+                }
+              ]
+            },
+            "stag": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/drive/../environments/environment.ts",
+                  "with": "src/drive/../environments/environment.stag.ts"
+                }
+              ]
+            },
+            "test": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/drive/../environments/environment.ts",
+                  "with": "src/drive/../environments/environment.test.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "drive:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "drive:build:production"
+            },
+            "stag": {
+              "browserTarget": "drive:build:stag"
+            },
+            "test": {
+              "browserTarget": "drive:build:test"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "drive:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/drive/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/drive/polyfills.ts",
+            "tsConfig": "src/drive/tsconfig.spec.json",
+            "scripts": [
+              "node_modules/cropperjs/dist/cropper.min.js",
+              "src/shared/channels/common.js"
+            ],
+            "styles": [
+              "src/assets/styles/styles-app-loading.scss",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/cropperjs/dist/cropper.min.css",
+              "src/drive/styles/drive.scss"
             ],
             "assets": []
           }

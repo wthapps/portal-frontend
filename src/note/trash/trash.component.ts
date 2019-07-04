@@ -67,13 +67,15 @@ export class ZNoteTrashComponent implements OnInit, OnDestroy {
     }
   };
 
+  noteConstants = noteConstants;
+
   subTitle = `Moves notes or folders you want to permanently delete to Trash.<br>Click 'Empty Trash' from the Trash's menu to permanently delete these files.`
 
   private destroySubject: Subject<any> = new Subject();
 
   constructor(private store: Store<fromRoot.State>,
-              private wthConfirm: WthConfirmService,
-              public commonEventService: CommonEventService) {
+    private wthConfirm: WthConfirmService,
+    public commonEventService: CommonEventService) {
     this.data$ = this.store.select(listReducer.getAllItems);
   }
 

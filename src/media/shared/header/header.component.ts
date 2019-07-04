@@ -89,7 +89,6 @@ export class ZMediaSharedHeaderComponent implements OnInit {
   }
 
   onEscape(e?: any) {
-    console.log('inside onEscape', e);
     this.commonEventService.broadcast({
       channel: 'HeaderComponent',
       action: 'clickedOutside',
