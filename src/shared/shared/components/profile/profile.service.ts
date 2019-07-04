@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ApiBaseService, UserService } from '@shared/services';
-import { Communication } from '@shared/shared/helpers/communication/communication';
 
 @Injectable()
-export class PartialsProfileService extends Communication {
+export class PartialsProfileService {
 
   constructor(private apiBaseService: ApiBaseService,
               private userService: UserService) {
-    super();
   }
 
   getMyProfile() {
